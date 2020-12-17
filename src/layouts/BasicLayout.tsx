@@ -40,6 +40,7 @@ export interface BasicLayoutProps extends ProLayoutProps {
   };
   settings: Settings;
   dispatch: Dispatch;
+  isLogin: Boolean;
 }
 export type BasicLayoutContext = { [ K in 'location' ]: BasicLayoutProps[ K ] } & {
   breadcrumbNameMap: {
@@ -72,28 +73,21 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
     location = {
       pathname: '/',
     },
+    isLogin
   } = props;
 
   const menuDataRef = useRef<MenuDataItem[]>([]);
 
   useEffect(() => {
-    // if (dispatch) {
-    //   dispatch({
-    //     type: 'login/token',
-    //     callback: (status: boolean) => {
-    //       if (status) {
-    //         dispatch({
-    //           type: 'user/fetchCurrent',
-    //         });
-    //       }
-    //     }
-    //   })
-    // }
+    if (dispatch && isLogin) {
+      dispatch({
+        type: 'user/fetchCurrent',
+      });
+    }
   }, []);
   /**
    * init variables
    */
-
   const handleMenuCollapse = (payload: boolean): void => {
     if (dispatch) {
       dispatch({
@@ -157,7 +151,8 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
   );
 };
 
-export default connect(({ global, settings }: ConnectState) => ({
+export default connect(({ global, settings, login }: ConnectState) => ({
   collapsed: global.collapsed,
   settings,
+  isLogin: login.currentAuthority === 'admin' || login.currentAuthority === 'user'
 }))(BasicLayout);

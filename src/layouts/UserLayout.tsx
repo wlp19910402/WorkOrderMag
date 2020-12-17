@@ -36,7 +36,7 @@ const UserLayout: React.FC<UserLayoutProps> = (props) => {
   return (
     <HelmetProvider>
       <Helmet>
-        <title>{ title }222222</title>
+        <title>{ title }</title>
         <meta name="description" content={ title } />
       </Helmet>
 
@@ -49,19 +49,20 @@ const UserLayout: React.FC<UserLayoutProps> = (props) => {
             <div className={ styles.header }>
               <Link to="/">
                 <img alt="logo" className={ styles.logo } src={ logo } />
-                <span className={ styles.title }>Ant Design</span>
+                <span className={ styles.title }>Home-D</span>
               </Link>
             </div>
             <div className={ styles.desc }>
               <FormattedMessage
                 id="pages.layouts.userLayout.title"
-                defaultMessage="Ant Design 是西湖区最具影响力的 Web 设计规范"
+                defaultMessage="Home-D resume模板，优化，简洁，清晰。开始您的resume"
               />
             </div>
           </div>
           { children }
         </div>
-        <DefaultFooter />
+        <DefaultFooter copyright={ `${new Date().getFullYear()} Home-D` }
+          links={ false } />
       </div>
     </HelmetProvider>
   );

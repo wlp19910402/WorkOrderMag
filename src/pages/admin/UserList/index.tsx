@@ -1,5 +1,5 @@
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, message, Input, Drawer } from 'antd';
+import { Button, message, Input, Drawer, Avatar } from 'antd';
 import React, { useState, useRef } from 'react';
 import { useIntl, FormattedMessage } from 'umi';
 import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
@@ -7,7 +7,7 @@ import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import { ModalForm, ProFormText, ProFormTextArea } from '@ant-design/pro-form';
 import ProDescriptions, { ProDescriptionsItemProps } from '@ant-design/pro-descriptions';
 import UpdateForm, { FormValueType } from './components/UpdateForm';
-import { TableListItem } from './data.d';
+import { TableListItem } from './data';
 import { queryRule, updateRule, addRule, removeRule } from './service';
 
 /**
@@ -95,10 +95,19 @@ const TableList: React.FC<{}> = () => {
 
   const columns: ProColumns<TableListItem>[] = [
     {
+      title: <FormattedMessage id="pages.userListTable.headImage" defaultMessage="头像" />,
+      dataIndex: 'avatar',
+      render: (dom) => {
+        return (
+          <Avatar shape="square" size="large" src={ dom } />
+        )
+      }
+    },
+    {
       title: (
         <FormattedMessage
-          id="pages.searchTable.updateForm.ruleName.nameLabel"
-          defaultMessage="规则名称"
+          id="pages.userListTable.userId"
+          defaultMessage="用户ID"
         />
       ),
       dataIndex: 'name',
@@ -117,12 +126,22 @@ const TableList: React.FC<{}> = () => {
       },
     },
     {
-      title: <FormattedMessage id="pages.searchTable.titleDesc" defaultMessage="描述" />,
+      title: <FormattedMessage id="pages.userListTable.nickName" defaultMessage="别名" />,
       dataIndex: 'desc',
       valueType: 'textarea',
     },
     {
-      title: <FormattedMessage id="pages.searchTable.titleCallNo" defaultMessage="服务调用次数" />,
+      title: <FormattedMessage id="pages.userListTable.role" defaultMessage="角色" />,
+      dataIndex: 'role',
+      valueType: 'textarea',
+    },
+    {
+      title: <FormattedMessage id="pages.userListTable.sex" defaultMessage="性别" />,
+      dataIndex: 'sex',
+      valueType: 'textarea',
+    },
+    {
+      title: <FormattedMessage id="pages.userListTable.resumeNum" defaultMessage="简历数量" />,
       dataIndex: 'callNo',
       sorter: true,
       hideInForm: true,
@@ -165,7 +184,7 @@ const TableList: React.FC<{}> = () => {
     },
     {
       title: (
-        <FormattedMessage id="pages.searchTable.titleUpdatedAt" defaultMessage="上次调度时间" />
+        <FormattedMessage id="pages.userListTable.lastLoginDate" defaultMessage="上次登陆时间" />
       ),
       sorter: true,
       dataIndex: 'updatedAt',
@@ -190,7 +209,7 @@ const TableList: React.FC<{}> = () => {
       },
     },
     {
-      title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="操作" />,
+      title: <FormattedMessage id="pages.userListTable.operation" defaultMessage="操作" />,
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record) => [
@@ -200,10 +219,13 @@ const TableList: React.FC<{}> = () => {
             setCurrentRow(record);
           } }
         >
-          <FormattedMessage id="pages.searchTable.config" defaultMessage="配置" />
+          <FormattedMessage id="pages.userListTable.edit" defaultMessage="编辑" />
         </a>,
         <a href="https://procomponents.ant.design/">
-          <FormattedMessage id="pages.searchTable.subscribeAlert" defaultMessage="订阅警报" />
+          <FormattedMessage id="pages.userListTable.view" defaultMessage="查看" />
+        </a>,
+        <a href="https://procomponents.ant.design/">
+          <FormattedMessage id="pages.userListTable.resetPwd" defaultMessage="重置密码" />
         </a>,
       ],
     },

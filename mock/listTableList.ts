@@ -16,10 +16,12 @@ const genList = (current: number, pageSize: number) => {
       avatar: [
         'https://gw.alipayobjects.com/zos/rmsportal/eeHMaZBwmTvLdIwMfBpg.png',
         'https://gw.alipayobjects.com/zos/rmsportal/udxAbMEhpwthVVcjLXik.png',
-      ][i % 2],
+      ][ i % 2 ],
       name: `TradeCode ${index}`,
       owner: '曲丽丽',
-      desc: '这是一段描述',
+      desc: '%咫尺',
+      role: [ "admin", "user" ][ i % 2 ],
+      sex: [ "女", "男" ][ i % 2 ],
       callNo: Math.floor(Math.random() * 1000),
       status: Math.floor(Math.random() * 10) % 4,
       updatedAt: new Date(),
@@ -33,7 +35,7 @@ const genList = (current: number, pageSize: number) => {
 
 let tableListDataSource = genList(1, 100);
 
-function getRule(req: Request, res: Response, u: string) {
+function getRule (req: Request, res: Response, u: string) {
   let realUrl = u;
   if (!realUrl || Object.prototype.toString.call(realUrl) !== '[object String]') {
     realUrl = req.url;
@@ -41,7 +43,7 @@ function getRule(req: Request, res: Response, u: string) {
   const { current = 1, pageSize = 10 } = req.query;
   const params = (parse(realUrl, true).query as unknown) as TableListParams;
 
-  let dataSource = [...tableListDataSource].slice(
+  let dataSource = [ ...tableListDataSource ].slice(
     ((current as number) - 1) * (pageSize as number),
     (current as number) * (pageSize as number),
   );
@@ -50,15 +52,15 @@ function getRule(req: Request, res: Response, u: string) {
     dataSource = dataSource.sort((prev, next) => {
       let sortNumber = 0;
       Object.keys(sorter).forEach((key) => {
-        if (sorter[key] === 'descend') {
-          if (prev[key] - next[key] > 0) {
+        if (sorter[ key ] === 'descend') {
+          if (prev[ key ] - next[ key ] > 0) {
             sortNumber += -1;
           } else {
             sortNumber += 1;
           }
           return;
         }
-        if (prev[key] - next[key] > 0) {
+        if (prev[ key ] - next[ key ] > 0) {
           sortNumber += 1;
         } else {
           sortNumber += -1;
@@ -69,15 +71,15 @@ function getRule(req: Request, res: Response, u: string) {
   }
   if (params.filter) {
     const filter = JSON.parse(params.filter as any) as {
-      [key: string]: string[];
+      [ key: string ]: string[];
     };
     if (Object.keys(filter).length > 0) {
       dataSource = dataSource.filter((item) => {
         return Object.keys(filter).some((key) => {
-          if (!filter[key]) {
+          if (!filter[ key ]) {
             return true;
           }
-          if (filter[key].includes(`${item[key]}`)) {
+          if (filter[ key ].includes(`${item[ key ]}`)) {
             return true;
           }
           return false;
@@ -100,7 +102,7 @@ function getRule(req: Request, res: Response, u: string) {
   return res.json(result);
 }
 
-function postRule(req: Request, res: Response, u: string, b: Request) {
+function postRule (req: Request, res: Response, u: string, b: Request) {
   let realUrl = u;
   if (!realUrl || Object.prototype.toString.call(realUrl) !== '[object String]') {
     realUrl = req.url;
@@ -123,7 +125,7 @@ function postRule(req: Request, res: Response, u: string, b: Request) {
           avatar: [
             'https://gw.alipayobjects.com/zos/rmsportal/eeHMaZBwmTvLdIwMfBpg.png',
             'https://gw.alipayobjects.com/zos/rmsportal/udxAbMEhpwthVVcjLXik.png',
-          ][i % 2],
+          ][ i % 2 ],
           name,
           owner: '曲丽丽',
           desc,

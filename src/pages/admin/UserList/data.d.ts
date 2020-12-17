@@ -4,8 +4,6 @@ export interface TableListItem {
   href: string;
   avatar: string;
   name: string;
-  role: string;
-  sex: string;
   owner: string;
   desc: string;
   callNo: number;
@@ -30,9 +28,7 @@ export interface TableListParams {
   status?: string;
   name?: string;
   desc?: string;
-  role?: string;
   key?: number;
-  sex?: string;
   pageSize?: number;
   currentPage?: number;
   filter?: { [ key: string ]: any[] };

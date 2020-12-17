@@ -2,7 +2,7 @@
  * request 网络请求工具
  * 更详细的 api 文档: https://github.com/umijs/umi-request
  */
-import { extend } from 'umi-request';
+import { extend, RequestInterceptor, OnionOptions } from 'umi-request';
 import { notification } from 'antd';
 import localforage from 'localforage'
 

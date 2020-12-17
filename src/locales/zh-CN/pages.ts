@@ -1,5 +1,5 @@
 export default {
-  'pages.layouts.userLayout.title': 'Ant Design 是西湖区最具影响力的 Web 设计规范',
+  'pages.layouts.userLayout.title': 'Home-D resume模板，优化，简洁，清晰。开始您的resume。',
   'pages.login.accountLogin.tab': '账户密码登录',
   'pages.login.accountLogin.errorMessage': '错误的用户名和密码（admin/ant.design)',
   'pages.login.username.placeholder': '用户名: admin or user',
@@ -62,4 +62,17 @@ export default {
   'pages.searchTable.tenThousand': '万',
   'pages.searchTable.batchDeletion': '批量删除',
   'pages.searchTable.batchApproval': '批量审批',
+
+  'pages.userListTable.userId': "用户ID",
+  "pages.userListTable.nickName": "别名",
+  "pages.userListTable.lastLoginDate": "上次登陆时间",
+  "pages.userListTable.role": "角色",
+  "pages.userListTable.headImage": "头像",
+  "pages.userListTable.resumeNum": "简历数量",
+  "pages.userListTable.sex": "性别",
+  "pages.userListTable.star": "星级",
+  "pages.userListTable.operation": "操作",
+  "pages.userListTable.edit": "编辑",
+  "pages.userListTable.view": "查看",
+  "pages.userListTable.resetPwd": "重置密码"
 };

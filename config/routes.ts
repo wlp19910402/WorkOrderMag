@@ -21,7 +21,7 @@
           {
             path: '/',
             component: '../layouts/BasicLayout',
-            authority: ['admin', 'user'],
+            authority: [ 'admin', 'user' ],
             routes: [
               {
                 path: '/',
@@ -37,15 +37,21 @@
                 path: '/admin',
                 name: 'admin',
                 icon: 'crown',
-                component: './Admin',
-                authority: ['admin'],
+                authority: [ 'admin' ],
                 routes: [
                   {
                     path: '/admin/sub-page',
                     name: 'sub-page',
                     icon: 'smile',
-                    component: './Welcome',
-                    authority: ['admin'],
+                    component: './Admin',
+                    authority: [ 'admin' ],
+                  },
+                  {
+                    path: '/admin/user',
+                    name: 'user',
+                    icon: 'smile',
+                    component: './admin/UserList',
+                    authority: [ 'admin' ],
                   },
                 ],
               },
