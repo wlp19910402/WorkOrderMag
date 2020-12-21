@@ -1,23 +1,10 @@
 import { PlusOutlined } from '@ant-design/icons';
 import { Button, Divider, Popconfirm, Table } from 'antd';
 import React, { FC, useState } from 'react';
-import styles from '../style.less';
 import ModalViewWorkExp from './modalViewWorkExp'
-import { WorkExperienceDataType } from './API'
-import ModalCreateWorkExp from './modalCreateWorkExp'
-// {
-//   key: `1${index}`,
-//     projectName: "",
-//       projectTime: "",
-//         projectDetail: "",
-//           projectSkill: "",
-//             workContent: "",
-//               projectRole: "",
-//                 projectUrl: "",
-//                   projectStatus: "",
-//                     isNew: true,
-//                       editable: true
-// }
+import { WorkExperienceDataType, workExpDefault } from './API.d'
+import ModalModifyWorkExp from './ModalModifyWorkExp'
+import ModalCreateProjectExp from './ModalCreateProjectExp'
 interface ExperienceFormFormProps {
   value?: WorkExperienceDataType[];
   onChange?: (value: WorkExperienceDataType[]) => void;
@@ -27,18 +14,9 @@ const ExperienceForm: FC<ExperienceFormFormProps> = ({ value, onChange }) => {
   const [ clickedCancel, setClickedCancel ] = useState(false);
   const [ loading, setLoading ] = useState(false);
   const [ index, setIndex ] = useState(0);
+  const [ projectIndex, setProjectIndex ] = useState(0);
   const [ cacheOriginData, setCacheOriginData ] = useState({});
-  const [ cacheWorkExpData, setCacheWorkExpData ] = useState({
-    key: "",
-    companyName: "",
-    workTime: "",
-    companyDetail: "",
-    jobName: "",
-    jobDetail: "",
-    projectExpreience: [],
-    editable: true,
-    isNew: true,
-  })
+  const [ cacheWorkExpData, setCacheWorkExpData ] = useState(workExpDefault)
   const [ data, setData ] = useState(value);
   const [ viewWorkExpreienceModal, handelViewWorkExpModal ] = useState<boolean>(false)
   /**
@@ -46,46 +24,31 @@ const ExperienceForm: FC<ExperienceFormFormProps> = ({ value, onChange }) => {
      */
   const [ createWorkExpreienceModal, handelWorkExpreienceModal ] = useState<boolean>(false);
   const [ createProjectExpreienceModal, handelProjectExpreienceModal ] = useState<boolean>(false);
+  const [ workKey, setCurrentWorkKey ] = useState<string>('')
+  const [ projectKey, setCurrentProjectKey ] = useState<string>('')
+  const [ isEditWorkExp, setEditWorkExp ] = useState<boolean>(false);
   const getRowByKey = (key: string, newData?: WorkExperienceDataType[]) =>
     (newData || data)?.filter((item) => item.key === key)[ 0 ];
-  const toggleEditable = (e: React.MouseEvent | React.KeyboardEvent, key: string) => {
+  //编辑工作经验
+  const workEditTable = async (e: React.MouseEvent | React.KeyboardEvent, record: WorkExperienceDataType) => {
     e.preventDefault();
-    const newData = data?.map((item) => ({ ...item }));
-    const target = getRowByKey(key, newData);
-    if (target) {
-      // 进入编辑状态时保存原始数据
-      if (!target.editable) {
-        cacheOriginData[ key ] = { ...target };
-        setCacheOriginData(cacheOriginData);
-      }
-      target.editable = !target.editable;
-      setData(newData);
-    }
+    await setEditWorkExp(true);
+    await setCacheWorkExpData(record);
+    setCurrentWorkKey(record.key)
+    handelWorkExpreienceModal(true)
   };
-  const newMember = () => {
-    const newData = data?.map((item) => ({ ...item })) || [];
-
-    newData.push({
-      key: `NEW_TEMP_ID_${index}`,
-      companyName: "",
-      workTime: "",
-      companyDetail: "",
-      jobName: "",
-      jobDetail: "",
-      projectExpreience: [],
-      editable: true,
-      isNew: true,
-    });
-    setIndex(index + 1);
+  const workCreateTable = async (e: React.MouseEvent | React.KeyboardEvent) => {
+    e.preventDefault();
+    await setEditWorkExp(false);
+    await setCacheWorkExpData({ ...workExpDefault });
+    handelWorkExpreienceModal(true)
+  };
+  const removeWorkExp = (key: string) => {
+    const newData = data?.filter((item) => item.key !== key) as WorkExperienceDataType[];
     setData(newData);
-  };
-
-  const remove = (key: string) => {
-    // const newData = data?.filter((item) => item.key !== key) as WorkExperienceDataType[];
-    // setData(newData);
-    // if (onChange) {
-    //   onChange(newData);
-    // }
+    if (onChange) {
+      onChange(newData);
+    }
   };
   const saveRow = (e: React.MouseEvent | React.KeyboardEvent, key: string) => {
     console.log(e, key)
@@ -120,32 +83,55 @@ const ExperienceForm: FC<ExperienceFormFormProps> = ({ value, onChange }) => {
   //   }
   // };
   const createProjectExp = async (value: any) => {
-
-  }
-  const createWorkExp = async (value: any) => {
     const newData = data?.map((item) => ({ ...item })) || [];
-    newData.push({
-      key: `NEW_TEMP_ID_${index}`,
-      companyName: "",
-      workTime: "",
-      companyDetail: "",
-      jobName: "",
-      jobDetail: "",
-      projectExpreience: [],
-      ...value,
-      editable: true,
-      isNew: true,
-    });
-    handelWorkExpreienceModal(false)
-    setIndex(index + 1);
+    newData.forEach(item => {
+      if ((item.key === workKey)) {
+        item.projectExpreience.push({
+          key: '',
+          projectName: "",
+          projectTime: "",
+          projectDetail: "",
+          projectSkill: "",
+          workContent: "",
+          projectRole: "",
+          projectUrl: "",
+          projectStatus: "",
+          ...value
+        })
+        setProjectIndex(projectIndex + 1)
+      }
+    })
+    setData(undefined);
     setData(newData);
-    // const success = await handleAdd(value as TableListItem);
-    // if (success) {
-    //   handelWorkExpreienceModal(false);
-    //   if (actionRef.current) {
-    //     actionRef.current.reload();
-    //   }
-    // }
+    handelProjectExpreienceModal(false)
+  }
+  const handelProjectExpreience = async (key: string) => {
+    setCurrentWorkKey(key)
+    handelProjectExpreienceModal(true)
+  }
+  //保存工作经验
+  const saveWorkExp = async (value: any) => {
+    const newData = data?.map((item) => ({ ...item })) || [];
+    if (isEditWorkExp) {
+      newData.forEach((item: any, index: number) => {
+        if (item.key === workKey) {
+          newData[ index ] = {
+            ...item,
+            ...value
+          }
+        }
+      })
+    } else {
+      newData.push({
+        ...workExpDefault,
+        key: `NEW_TEMP_ID_${index}`,
+        ...value
+      });
+      setIndex(index + 1);
+    }
+    handelWorkExpreienceModal(false)
+    setData(undefined)
+    setData(newData);
   }
   const cancel = (e: React.MouseEvent, key: string) => {
     setClickedCancel(true);
@@ -195,16 +181,13 @@ const ExperienceForm: FC<ExperienceFormFormProps> = ({ value, onChange }) => {
       title: '操作',
       key: 'action',
       render: (text: string, record: WorkExperienceDataType) => {
-        if (!!record.editable && loading) {
-          return null;
-        }
         return (
           <span >
             <a onClick={ () => { setCacheWorkExpData(record); handelViewWorkExpModal(true) } }>查看</a>
             <Divider type="vertical" />
-            <a onClick={ (e) => toggleEditable(e, record.key) }>编辑</a>
+            <a onClick={ (e) => { workEditTable(e, record) } }>编辑</a>
             <Divider type="vertical" />
-            <Popconfirm title="是否要删除此行？" onConfirm={ () => remove(record.key) }>
+            <Popconfirm title="是否要删除此行？" onConfirm={ () => removeWorkExp(record.key) }>
               <a>删除</a>
             </Popconfirm>
           </span>
@@ -241,12 +224,9 @@ const ExperienceForm: FC<ExperienceFormFormProps> = ({ value, onChange }) => {
       title: '操作',
       key: 'action',
       render: (text: string, record: WorkExperienceDataType) => {
-        if (!!record.editable && loading) {
-          return null;
-        }
+
         return (
           <span >
-            <a onClick={ (e) => toggleEditable(e, record.key) }>编辑</a>
             <Divider type="vertical" />
             <Popconfirm title="是否要删除此行？" onConfirm={ () => remove(record.key) }>
               <a>删除</a>
@@ -263,20 +243,18 @@ const ExperienceForm: FC<ExperienceFormFormProps> = ({ value, onChange }) => {
         columns={ columns }
         dataSource={ data }
         pagination={ false }
-        rowClassName={ (record) => (record.editable ? styles.editable : '') }
         expandable={ {
           expandedRowRender: record => (<div style={ { backgroundColor: "#d4eaff", padding: "20px" } }>
             <Table<WorkExperienceDataType>
               loading={ loading }
               columns={ columns2 }
-              dataSource={ record && record.projectExpreience ? record.projectExpreience : undefined }
+              dataSource={ record && record.projectExpreience ? record.projectExpreience : [] }
               pagination={ false }
-              rowClassName={ (record) => (record.editable ? styles.editable : '') }
             />
             <Button
               style={ { width: '100%', marginTop: 16, marginBottom: 8 } }
               type="dashed"
-              onClick={ handelProjectExpreienceModal }
+              onClick={ () => handelProjectExpreience(record.key) }
             ><PlusOutlined />
               新增项目经验
             </Button>
@@ -286,21 +264,27 @@ const ExperienceForm: FC<ExperienceFormFormProps> = ({ value, onChange }) => {
       <Button
         style={ { width: '100%', marginTop: 16, marginBottom: 8 } }
         type="dashed"
-        onClick={ () => { handelWorkExpreienceModal(true) } }
+        onClick={ (e: React.MouseEvent | React.KeyboardEvent) => { workCreateTable(e) } }
       >
         <PlusOutlined />
         新增工作经验
       </Button>
-
-      <ModalCreateWorkExp
+      { createWorkExpreienceModal ? <ModalModifyWorkExp
         createWorkExpreienceModal={ createWorkExpreienceModal }
         handelWorkExpreienceModal={ handelWorkExpreienceModal }
-        CreateWorkExp={ createWorkExp }
-      />
+        saveWorkExp={ saveWorkExp }
+        editData={ cacheWorkExpData }
+      /> : <></> }
+
       <ModalViewWorkExp
         hide={ handelViewWorkExpModal }
         visible={ viewWorkExpreienceModal }
         initialValues={ cacheWorkExpData }
+      />
+      <ModalCreateProjectExp
+        createProjectExpreienceModal={ createProjectExpreienceModal }
+        handelProjectExpreienceModal={ handelProjectExpreienceModal }
+        CreateProjectExp={ createProjectExp }
       />
     </>
   );

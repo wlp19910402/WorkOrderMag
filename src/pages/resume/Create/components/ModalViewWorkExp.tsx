@@ -1,4 +1,4 @@
-import { Modal, Empty, Descriptions, Space } from 'antd';
+import { Modal, Empty, Descriptions } from 'antd';
 import React, { FC } from 'react';
 import { WorkExperienceDataType } from './API'
 interface ModalViewWorkExpProps {
