@@ -12,6 +12,11 @@
             path: '/user/login',
             component: './user/login',
           },
+          {
+            name: 'register',
+            path: '/user/register',
+            component: './user/register',
+          },
         ],
       },
       {
@@ -60,6 +65,28 @@
                 icon: 'table',
                 path: '/list',
                 component: './ListTableList',
+              },
+              {
+                path: '/resume',
+                name: 'resume',
+                icon: 'crown',
+                authority: [ 'admin', 'user' ],
+                routes: [
+                  {
+                    path: '/resume/create',
+                    name: 'create',
+                    icon: 'smile',
+                    component: './resume/create',
+                    authority: [ 'admin', 'user' ],
+                  },
+                  {
+                    path: '/resume/list',
+                    name: 'list',
+                    icon: 'smile',
+                    component: './resume/list',
+                    authority: [ 'admin', 'user' ],
+                  },
+                ],
               },
               {
                 component: './404',

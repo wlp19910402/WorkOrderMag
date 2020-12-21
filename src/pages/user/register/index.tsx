@@ -3,9 +3,9 @@ import {
   LockTwoTone,
   MailTwoTone,
   MobileTwoTone,
-  TaobaoCircleOutlined,
+  ArrowLeftOutlined,
   UserOutlined,
-  WeiboCircleOutlined,
+  SwapLeftOutlined,
 } from '@ant-design/icons';
 import { Alert, Space, message, Tabs } from 'antd';
 import React, { useState } from 'react';
@@ -52,9 +52,6 @@ const Login: React.FC<LoginProps> = (props) => {
   return (
     <div className={ styles.main }>
       <ProForm
-        initialValues={ {
-          autoLogin: true,
-        } }
         submitter={ {
           render: (_, dom) => dom.pop(),
           submitButtonProps: {
@@ -72,17 +69,7 @@ const Login: React.FC<LoginProps> = (props) => {
         <Tabs activeKey={ type } onChange={ setType }>
           <Tabs.TabPane
             key="account"
-            tab={ intl.formatMessage({
-              id: 'pages.login.accountLogin.tab',
-              defaultMessage: '账户密码登录',
-            }) }
-          />
-          <Tabs.TabPane
-            key="mobile"
-            tab={ intl.formatMessage({
-              id: 'pages.login.phoneLogin.tab',
-              defaultMessage: '手机号登录',
-            }) }
+            tab="注册"
           />
         </Tabs>
 
@@ -95,58 +82,6 @@ const Login: React.FC<LoginProps> = (props) => {
           />
         ) }
         { type === 'account' && (
-          <>
-            <ProFormText
-              name="userName"
-              fieldProps={ {
-                size: 'large',
-                prefix: <UserOutlined className={ styles.prefixIcon } />,
-              } }
-              placeholder={ intl.formatMessage({
-                id: 'pages.login.username.placeholder',
-                defaultMessage: '用户名: admin or user',
-              }) }
-              rules={ [
-                {
-                  required: true,
-                  message: (
-                    <FormattedMessage
-                      id="pages.login.username.required"
-                      defaultMessage="请输入用户名!"
-                    />
-                  ),
-                },
-              ] }
-            />
-            <ProFormText.Password
-              name="password"
-              fieldProps={ {
-                size: 'large',
-                prefix: <LockTwoTone className={ styles.prefixIcon } />,
-              } }
-              placeholder={ intl.formatMessage({
-                id: 'pages.login.password.placeholder',
-                defaultMessage: '密码: ant.design',
-              }) }
-              rules={ [
-                {
-                  required: true,
-                  message: (
-                    <FormattedMessage
-                      id="pages.login.password.required"
-                      defaultMessage="请输入密码！"
-                    />
-                  ),
-                },
-              ] }
-            />
-          </>
-        ) }
-
-        { status === 'error' && loginType === 'mobile' && !submitting && (
-          <LoginMessage content="验证码错误" />
-        ) }
-        { type === 'mobile' && (
           <>
             <ProFormText
               fieldProps={ {
@@ -222,27 +157,60 @@ const Login: React.FC<LoginProps> = (props) => {
                 message.success('获取验证码成功！验证码为：1234');
               } }
             />
+            <ProFormText
+              name="userName"
+              fieldProps={ {
+                size: 'large',
+                prefix: <UserOutlined className={ styles.prefixIcon } />,
+              } }
+              placeholder={ intl.formatMessage({
+                id: 'pages.login.username.placeholder',
+                defaultMessage: '用户名: admin or user',
+              }) }
+              rules={ [
+                {
+                  required: true,
+                  message: (
+                    <FormattedMessage
+                      id="pages.login.username.required"
+                      defaultMessage="请输入用户名!"
+                    />
+                  ),
+                },
+              ] }
+            />
+            <ProFormText.Password
+              name="password"
+              fieldProps={ {
+                size: 'large',
+                prefix: <LockTwoTone className={ styles.prefixIcon } />,
+              } }
+              placeholder={ intl.formatMessage({
+                id: 'pages.login.password.placeholder',
+                defaultMessage: '密码: ant.design',
+              }) }
+              rules={ [
+                {
+                  required: true,
+                  message: (
+                    <FormattedMessage
+                      id="pages.login.password.required"
+                      defaultMessage="请输入密码！"
+                    />
+                  ),
+                },
+              ] }
+            />
           </>
         ) }
-        <div
-          style={ {
-            marginBottom: 24,
-          } }
-        >
-          <ProFormCheckbox noStyle name="autoLogin">
-            <FormattedMessage id="pages.login.rememberMe" defaultMessage="自动登录" />
-          </ProFormCheckbox>
-          <a
-            style={ {
-              float: 'right',
-            } }
-          >
-            <FormattedMessage id="pages.login.forgotPassword" defaultMessage="忘记密码" />
-          </a>
-        </div>
+
+        { status === 'error' && loginType === 'mobile' && !submitting && (
+          <LoginMessage content="验证码错误" />
+        ) }
+
       </ProForm>
       <Space className={ styles.other }>
-        没账号,去<Link to="/user/register">注册</Link>?
+        <Link to="/user/login"><ArrowLeftOutlined />&nbsp;登录</Link>
       </Space>
     </div>
   );

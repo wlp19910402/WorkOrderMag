@@ -30,6 +30,10 @@ export default {
   'menu.list.search-list.articles': '搜索列表（文章）',
   'menu.list.search-list.projects': '搜索列表（项目）',
   'menu.list.search-list.applications': '搜索列表（应用）',
+
+  'menu.resume': "简历管理",
+  "menu.resume.create": "新增",
+  "menu.resume.list": "列表",
   'menu.profile': '详情页',
   'menu.profile.basic': '基础详情页',
   'menu.profile.advanced': '高级详情页',
