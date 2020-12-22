@@ -3,7 +3,7 @@ import { ModalForm } from '@ant-design/pro-form';
 import React, { FC } from 'react';
 import { WorkExperienceDataType, workExpDefault } from './API.d'
 import moment from 'moment'
-import { dateFormat } from '@/utils/parameter'
+import { dateFormat, rangePickerArrFormat } from '@/utils/parameter'
 interface ModalCreateWorkExpProps {
   modifyWorkExpModalShow: boolean;
   handelWorkExpModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -20,7 +20,13 @@ const ModalModifyWorkExp: FC<ModalCreateWorkExpProps> = ({ modifyWorkExpModalSho
         width="400px"
         visible={ modifyWorkExpModalShow }
         onVisibleChange={ handelWorkExpModal }
-        onFinish={ async (value = editData) => { await saveWorkExp(value); } }
+        onFinish={ async (value = editData) => {
+          value = {
+            ...value,
+            workTime: rangePickerArrFormat(value.workTime)
+          }
+          await saveWorkExp(value);
+        } }
       >
         <Form.Item
           label='公司名称'
@@ -35,7 +41,7 @@ const ModalModifyWorkExp: FC<ModalCreateWorkExpProps> = ({ modifyWorkExpModalSho
           name="workTime"
         >
           <DatePicker.RangePicker
-            defaultValue={ [ moment('2015/01/01', dateFormat), moment('2015/01/01', dateFormat) ] }
+            defaultValue={ workTime ? [ moment(workTime.split('~')[ 0 ], dateFormat), moment(workTime.split('~')[ 1 ], dateFormat) ] : null }
             placeholder={ [ '入职日期', '离职日期' ] } style={ { width: '100%' } }
             format={ dateFormat }
           />

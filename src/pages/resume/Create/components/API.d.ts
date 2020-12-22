@@ -5,7 +5,7 @@ export interface ProjectExperiencesDataType {
   key: string;
   workKey?: string;
   projectName?: string,
-  projectTime?: string,
+  projectTime?: string | null | undefined,
   projectDetail?: string,
   projectSkill?: string,
   workContent?: string,
@@ -17,7 +17,7 @@ export const projectExpDefault: ProjectExperiencesDataType = {
   key: '',
   workKey: '',
   projectName: "",
-  projectTime: "",
+  projectTime: null,
   projectDetail: "",
   projectSkill: "",
   workContent: "",
@@ -31,7 +31,7 @@ export const projectExpDefault: ProjectExperiencesDataType = {
 export interface WorkExperienceDataType {
   key: string;
   companyName: string;
-  workTime: string;
+  workTime: string | null | undefined,
   companyDetail: string;
   jobName: string;
   jobDetail: string;
@@ -41,7 +41,7 @@ export interface WorkExperienceDataType {
 export const workExpDefault: WorkExperienceDataType = {
   key: "",
   companyName: "",
-  workTime: "",
+  workTime: null,
   companyDetail: "",
   jobName: "",
   jobDetail: "",

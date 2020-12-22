@@ -24,7 +24,7 @@ function beforeUpload (file: any) {
   }
   return isJpgOrPng && isLt2M;
 }
-
+const colProps = { xs: 24, sm: 24, md: 12, lg: 12, xl: 8, xxl: 8 };
 function getBase64 (img: any, callback: any) {
   const reader = new FileReader();
   reader.addEventListener('load', () => callback(reader.result));
@@ -47,15 +47,15 @@ const SkillForm: FC<TableFormProps> = ({ value, onChange }) => {
     if (info.file.status === 'done') {
       getBase64(info.file.originFileObj, (imageUrl: any) => {
         setImageUrl(imageUrl)
+        console.log(imageUrl)
         setLoading(false)
         return
       })
     }
   };
   return (
-    <>
-      <Row gutter={ 16 }>
-        <Col lg={ 6 } md={ 12 } sm={ 24 }>
+      <Row gutter={ 10 }>
+        <Col { ...colProps }>
           <Form.Item
             label='名称'
             name="name"
@@ -64,7 +64,7 @@ const SkillForm: FC<TableFormProps> = ({ value, onChange }) => {
             <Input placeholder="请输入名称" />
           </Form.Item>
         </Col>
-        <Col xl={ { span: 6, offset: 2 } } lg={ { span: 8 } } md={ { span: 12 } } sm={ 24 }>
+        <Col { ...colProps }>
           <Form.Item
             label='性别'
             name="sex"
@@ -76,7 +76,7 @@ const SkillForm: FC<TableFormProps> = ({ value, onChange }) => {
             </Select>
           </Form.Item>
         </Col>
-        <Col xl={ { span: 8, offset: 2 } } lg={ { span: 10 } } md={ { span: 24 } } sm={ 24 }>
+        <Col { ...colProps }>
           <Form.Item
             label='籍贯'
             name="nativePlace"
@@ -85,9 +85,7 @@ const SkillForm: FC<TableFormProps> = ({ value, onChange }) => {
             <Input placeholder="请输入籍贯" />
           </Form.Item>
         </Col>
-      </Row>
-      <Row gutter={ 16 }>
-        <Col lg={ 6 } md={ 12 } sm={ 24 }>
+        <Col { ...colProps }>
           <Form.Item
             label='民族'
             name="ethnic"
@@ -96,7 +94,7 @@ const SkillForm: FC<TableFormProps> = ({ value, onChange }) => {
             <Input placeholder="请输入民族" />
           </Form.Item>
         </Col>
-        <Col xl={ { span: 6, offset: 2 } } lg={ { span: 8 } } md={ { span: 12 } } sm={ 24 }>
+        <Col { ...colProps }>
           <Form.Item
             label='电子邮箱'
             name="email"
@@ -105,7 +103,7 @@ const SkillForm: FC<TableFormProps> = ({ value, onChange }) => {
             <Input placeholder="请输入电子邮箱" />
           </Form.Item>
         </Col>
-        <Col xl={ { span: 8, offset: 2 } } lg={ { span: 10 } } md={ { span: 24 } } sm={ 24 }>
+        <Col { ...colProps }>
           <Form.Item
             label='联系方式'
             name="phone"
@@ -114,9 +112,7 @@ const SkillForm: FC<TableFormProps> = ({ value, onChange }) => {
             <Input placeholder="请输入联系方式" />
           </Form.Item>
         </Col>
-      </Row>
-      <Row gutter={ 16 }>
-        <Col lg={ 6 } md={ 12 } sm={ 24 }>
+        <Col { ...colProps }>
           <Form.Item
             label='出生日期'
             name="dateBirth"
@@ -125,7 +121,7 @@ const SkillForm: FC<TableFormProps> = ({ value, onChange }) => {
             <DatePicker placeholder='请选择出生日期' style={ { width: '100%' } } />
           </Form.Item>
         </Col>
-        <Col xl={ { span: 6, offset: 2 } } lg={ { span: 8 } } md={ { span: 12 } } sm={ 24 }>
+        <Col { ...colProps }>
           <Upload
             name="avatar"
             listType="picture-card"
@@ -137,29 +133,8 @@ const SkillForm: FC<TableFormProps> = ({ value, onChange }) => {
           >
             { imageUrl ? <img src={ imageUrl } alt="avatar" style={ { width: '100%' } } /> : uploadButton }
           </Upload>
-          {/* <Upload
-                action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                listType="picture-card"
-                fileList={ fileList }
-                onPreview={ handlePreview }
-                onChange={ handleChange }
-              >
-                { fileList.length >= 8 ? null : uploadButton }
-              </Upload>
-              <Modal
-                visible={ previewVisible }
-                title={ previewTitle }
-                footer={ null }
-                onCancel={ this.handleCancel }
-              >
-                <img alt="example" style={ { width: '100%' } } src={ previewImage } />
-              </Modal> */}
-        </Col>
-        <Col xl={ { span: 8, offset: 2 } } lg={ { span: 10 } } md={ { span: 24 } } sm={ 24 }>
         </Col>
       </Row>
-
-    </>
   );
 };
 
