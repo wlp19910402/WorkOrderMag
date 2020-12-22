@@ -1,5 +1,5 @@
 import { CloseCircleOutlined } from '@ant-design/icons';
-import { Button, Card, Col, DatePicker, Form, Popover, Row, Select, TimePicker, Upload, Modal, message } from 'antd';
+import { Button, Card, Form, Popover } from 'antd';
 import React, { FC, useState } from 'react';
 import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
 import { connect, Dispatch } from 'umi';
@@ -37,6 +37,7 @@ const workExperienceData = [
     projectExpreience: [
       {
         key: "1",
+        workKey: "1",
         projectName: "家装分期",
         projectTime: "2018/09/08-2021/02/02",
         projectDetail: "发布任务，执行任务，下发贷款",
@@ -48,6 +49,7 @@ const workExperienceData = [
       },
       {
         key: "2",
+        workKey: "1",
         projectName: "家装分期",
         projectTime: "2018/09/08-2021/02/02",
         projectDetail: "发布任务，执行任务，下发贷款",
@@ -69,6 +71,7 @@ const workExperienceData = [
     projectExpreience: [
       {
         key: "1",
+        workKey: "2",
         projectName: "家装分期",
         projectTime: "2018/09/08-2021/02/02",
         projectDetail: "发布任务，执行任务，下发贷款",
@@ -80,6 +83,7 @@ const workExperienceData = [
       },
       {
         key: "2",
+        workKey: "2",
         projectName: "家装分期",
         projectTime: "2018/09/08-2021/02/02",
         projectDetail: "发布任务，执行任务，下发贷款",
@@ -93,7 +97,7 @@ const workExperienceData = [
   }
 ]
 interface AdvancedFormProps {
-  dispatch: Dispatch<any>;
+  dispatch: Dispatch;
   submitting: boolean;
 }
 
@@ -150,6 +154,7 @@ const AdvancedForm: FC<AdvancedFormProps> = ({ submitting, dispatch }) => {
   };
   const onFinish = (values: { [ key: string ]: any }) => {
     setError([]);
+    console.log(values);
     dispatch({
       type: 'formAndadvancedForm/submitAdvancedForm',
       payload: values,
@@ -173,16 +178,12 @@ const AdvancedForm: FC<AdvancedFormProps> = ({ submitting, dispatch }) => {
         <Card title="基本信息" className={ styles.card } bordered={ false }>
           <BasicForm />
         </Card>
-        <Card title="技能掌握" className={ styles.card } bordered={ false }>
-          <Form.Item name="members">
-            <SkillForm />
-          </Form.Item>
-        </Card>
-        <Card title="工作经验" className={ styles.card } bordered={ false }>
-          <Form.Item name="experiences">
-            <ExperienceForm />
-          </Form.Item>
-        </Card>
+        <Form.Item name="members">
+          <SkillForm />
+        </Form.Item>
+        <Form.Item name="experiences" className={ styles.card }>
+          <ExperienceForm />
+        </Form.Item>
       </PageContainer>
       <FooterToolbar>
         { getErrorInfo(error) }

@@ -3,10 +3,13 @@ import { defineConfig } from 'umi';
 import defaultSettings from './defaultSettings';
 import proxy from './proxy';
 import routes from './routes';
-
+const path = require("path");
 const { REACT_APP_ENV } = process.env;
 
 export default defineConfig({
+  alias: {
+    '@': path.resolve(__dirname, "src"),
+  },
   hash: true,
   antd: {},
   dva: {
@@ -36,13 +39,13 @@ export default defineConfig({
   },
   title: false,
   ignoreMomentLocale: true,
-  proxy: proxy[REACT_APP_ENV || 'dev'],
+  proxy: proxy[ REACT_APP_ENV || 'dev' ],
   manifest: {
     basePath: '/',
   },
   esbuild: {},
   // https://github.com/zthxxx/react-dev-inspector
-  plugins: ['react-dev-inspector/plugins/umi/react-inspector'],
+  plugins: [ 'react-dev-inspector/plugins/umi/react-inspector' ],
   inspectorConfig: {
     // loader options type and docs see below
     exclude: [],

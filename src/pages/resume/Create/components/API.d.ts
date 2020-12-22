@@ -2,7 +2,8 @@
  * 项目经验
  */
 export interface ProjectExperiencesDataType {
-  key?: string;
+  key: string;
+  workKey?: string;
   projectName?: string,
   projectTime?: string,
   projectDetail?: string,
@@ -12,7 +13,18 @@ export interface ProjectExperiencesDataType {
   projectUrl?: string,
   projectStatus?: string,
 }
-
+export const projectExpDefault: ProjectExperiencesDataType = {
+  key: '',
+  workKey: '',
+  projectName: "",
+  projectTime: "",
+  projectDetail: "",
+  projectSkill: "",
+  workContent: "",
+  projectRole: "",
+  projectUrl: "",
+  projectStatus: "",
+}
 /**
  * 工作经验
  */

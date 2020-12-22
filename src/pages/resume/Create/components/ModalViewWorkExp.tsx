@@ -1,6 +1,6 @@
 import { Modal, Empty, Descriptions } from 'antd';
 import React, { FC } from 'react';
-import { WorkExperienceDataType } from './API'
+import { WorkExperienceDataType, ProjectExperiencesDataType } from './API.d'
 interface ModalViewWorkExpProps {
   hide: any;
   visible: boolean;
@@ -11,7 +11,7 @@ const ModalViewWorkExp: FC<ModalViewWorkExpProps> = ({ hide, visible, initialVal
   return (
     <>
       <Modal
-        title={ companyName }
+        title="工作详情"
         centered
         visible={ visible }
         onOk={ () => { hide(false) } }
@@ -24,7 +24,7 @@ const ModalViewWorkExp: FC<ModalViewWorkExpProps> = ({ hide, visible, initialVal
           <Descriptions.Item label="岗位名称">{ jobName }</Descriptions.Item>
           <Descriptions.Item label="岗位描述">{ jobDetail }</Descriptions.Item>
         </Descriptions>
-        { !projectExpreience || projectExpreience.length === 0 ? <Empty description="尚未添加项目经验" /> : (projectExpreience.map((item, index) => (
+        { !projectExpreience || projectExpreience.length === 0 ? <Empty description="尚未添加项目经验" /> : (projectExpreience.map((item: ProjectExperiencesDataType, index: number) => (
           <>
             <Descriptions size="small" style={ { marginBottom: "20px" } } key={ index } title={ item.projectName } bordered column={ 1 }>
               <Descriptions.Item label="项目名称" >{ item.projectName }</Descriptions.Item>

@@ -1,5 +1,5 @@
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, Divider, Input, Popconfirm, Table, message, Slider, Progress } from 'antd';
+import { Button, Divider, Input, Popconfirm, Table, message, Slider, Progress, Card } from 'antd';
 import React, { FC, useState } from 'react';
 
 import styles from '../style.less';
@@ -218,7 +218,11 @@ const SkillForm: FC<TableFormProps> = ({ value, onChange }) => {
   ];
 
   return (
-    <>
+    <Card title="技能掌握"
+      className={ styles.card }
+      bordered={ false }
+      extra={ <Button type="primary" key="primary" onClick={ newMember }><PlusOutlined />新建</Button> }
+    >
       <Table<TableFormDateType>
         loading={ loading }
         columns={ columns }
@@ -226,15 +230,7 @@ const SkillForm: FC<TableFormProps> = ({ value, onChange }) => {
         pagination={ false }
         rowClassName={ (record) => (record.editable ? styles.editable : '') }
       />
-      <Button
-        style={ { width: '100%', marginTop: 16, marginBottom: 8 } }
-        type="dashed"
-        onClick={ newMember }
-      >
-        <PlusOutlined />
-        新增技能
-      </Button>
-    </>
+    </Card>
   );
 };
 
