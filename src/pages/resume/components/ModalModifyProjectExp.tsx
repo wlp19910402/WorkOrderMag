@@ -1,7 +1,7 @@
 import { Form, Input, DatePicker } from 'antd';
 import { ModalForm } from '@ant-design/pro-form';
 import React, { FC } from 'react';
-import { WorkExperienceDataType, workExpDefault, ProjectExperiencesDataType, projectExpDefault } from '../../API.d'
+import { WorkExperienceDataType, workExpDefault, ProjectExperiencesDataType, projectExpDefault } from '../API.d'
 import moment from 'moment'
 import { dateFormat } from '@/utils/parameter'
 interface ModalCreateProjectExpProps {

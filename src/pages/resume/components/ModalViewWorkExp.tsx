@@ -1,6 +1,6 @@
 import { Modal, Empty, Descriptions } from 'antd';
 import React, { FC } from 'react';
-import { WorkExperienceDataType, ProjectExperiencesDataType } from '../../API.d'
+import { WorkExperienceDataType, ProjectExperiencesDataType } from '../API.d'
 interface ModalViewWorkExpProps {
   hide: any;
   visible: boolean;

@@ -1,7 +1,7 @@
 import { PlusOutlined, LoadingOutlined } from '@ant-design/icons';
 import { Select, Form, Input, Row, Col, message, DatePicker, Upload } from 'antd';
 import React, { FC, useState } from 'react';
-import { BaseInfoDataType, BaseInfoDefault } from '../../API.d'
+import { BaseInfoDataType, BaseInfoDefault } from '../API.d'
 interface TableFormProps {
   value?: BaseInfoDataType;
   onChange?: (value: BaseInfoDataType[]) => void;

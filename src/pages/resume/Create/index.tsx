@@ -3,10 +3,10 @@ import { Button, Card, Form, Popover } from 'antd';
 import React, { FC, useState } from 'react';
 import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
 import { connect, Dispatch } from 'umi';
-import SkillMaster from './components/SkillMaster';
-import BasicInfoForm from './components/BasicInfoForm';
-import ExperienceForm from './components/ExperienceForm'
-import styles from './style.less';
+import SkillMaster from '../components/SkillMaster';
+import BasicInfoForm from '../components/BasicInfoForm';
+import ExperienceForm from '../components/ExperienceForm'
+import styles from '../style.less';
 type InternalNamePath = (string | number)[];
 
 const baseInfoData = {

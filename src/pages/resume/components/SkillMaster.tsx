@@ -1,7 +1,7 @@
 import { PlusOutlined } from '@ant-design/icons';
 import { Button, Divider, Input, Popconfirm, Table, message, Slider, Progress, Card } from 'antd';
 import React, { FC, useState } from 'react';
-import { SkillMasterDateType } from '../../API'
+import { SkillMasterDateType } from '../API.d'
 import styles from '../style.less';
 
 interface SkillMasterModifyDataType extends SkillMasterDateType {
