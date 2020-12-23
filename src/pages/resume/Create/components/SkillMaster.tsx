@@ -1,31 +1,26 @@
 import { PlusOutlined } from '@ant-design/icons';
 import { Button, Divider, Input, Popconfirm, Table, message, Slider, Progress, Card } from 'antd';
 import React, { FC, useState } from 'react';
-
+import { SkillMasterDateType } from '../../API'
 import styles from '../style.less';
 
-interface TableFormDateType {
-  key: string;
-  skillName?: string;
-  skillProficiency?: number;
+interface SkillMasterModifyDataType extends SkillMasterDateType {
   isNew?: boolean;
   editable?: boolean;
 }
-interface TableFormProps {
-  value?: TableFormDateType[];
-  onChange?: (value: TableFormDateType[]) => void;
+interface SkillMasterProps {
+  value?: SkillMasterModifyDataType[];
+  onChange?: (value: SkillMasterModifyDataType[]) => void;
 }
 
-const SkillForm: FC<TableFormProps> = ({ value, onChange }) => {
+const SkillMaster: FC<SkillMasterProps> = ({ value, onChange }) => {
   const [ clickedCancel, setClickedCancel ] = useState(false);
   const [ loading, setLoading ] = useState(false);
   const [ index, setIndex ] = useState(0);
   const [ cacheOriginData, setCacheOriginData ] = useState({});
   const [ data, setData ] = useState(value);
-
-  const getRowByKey = (key: string, newData?: TableFormDateType[]) =>
+  const getRowByKey = (key: string, newData?: SkillMasterModifyDataType[]) =>
     (newData || data)?.filter((item) => item.key === key)[ 0 ];
-
   const toggleEditable = (e: React.MouseEvent | React.KeyboardEvent, key: string) => {
     e.preventDefault();
     const newData = data?.map((item) => ({ ...item }));
@@ -56,7 +51,7 @@ const SkillForm: FC<TableFormProps> = ({ value, onChange }) => {
   };
 
   const remove = (key: string) => {
-    const newData = data?.filter((item) => item.key !== key) as TableFormDateType[];
+    const newData = data?.filter((item) => item.key !== key) as SkillMasterModifyDataType[];
     setData(newData);
     if (onChange) {
       onChange(newData);
@@ -68,7 +63,7 @@ const SkillForm: FC<TableFormProps> = ({ value, onChange }) => {
     fieldName: string,
     key: string,
   ) => {
-    const newData = [ ...(data as TableFormDateType[]) ];
+    const newData = [ ...(data as SkillMasterModifyDataType[]) ];
     const target = getRowByKey(key, newData);
     if (target) {
       target[ fieldName ] = e.target.value;
@@ -80,7 +75,7 @@ const SkillForm: FC<TableFormProps> = ({ value, onChange }) => {
     fieldName: string,
     key: string
   ) => {
-    const newData = [ ...(data as TableFormDateType[]) ];
+    const newData = [ ...(data as SkillMasterModifyDataType[]) ];
     const target = getRowByKey(key, newData);
     if (target) {
       target[ fieldName ] = e;
@@ -105,7 +100,7 @@ const SkillForm: FC<TableFormProps> = ({ value, onChange }) => {
       delete target.isNew;
       toggleEditable(e, key);
       if (onChange) {
-        onChange(data as TableFormDateType[]);
+        onChange(data as SkillMasterModifyDataType[]);
       }
       setLoading(false);
     }, 500);
@@ -120,7 +115,7 @@ const SkillForm: FC<TableFormProps> = ({ value, onChange }) => {
   const cancel = (e: React.MouseEvent, key: string) => {
     setClickedCancel(true);
     e.preventDefault();
-    const newData = [ ...(data as TableFormDateType[]) ];
+    const newData = [ ...(data as SkillMasterModifyDataType[]) ];
     // 编辑前的原始数据
     let cacheData = [];
     cacheData = newData.map((item) => {
@@ -148,7 +143,7 @@ const SkillForm: FC<TableFormProps> = ({ value, onChange }) => {
       dataIndex: 'skillName',
       key: 'skillName',
       width: '40%',
-      render: (text: string, record: TableFormDateType) => {
+      render: (text: string, record: SkillMasterModifyDataType) => {
         if (record.editable) {
           return (
             <Input
@@ -168,7 +163,7 @@ const SkillForm: FC<TableFormProps> = ({ value, onChange }) => {
       dataIndex: 'skillProficiency',
       key: 'skillProficiency',
       width: '40%',
-      render: (text: number = 30, record: TableFormDateType) => {
+      render: (text: number = 30, record: SkillMasterModifyDataType) => {
         if (record.editable) {
           return (
             <Slider defaultValue={ text } onChange={ (e: any) => sliderChange(e, 'skillProficiency', record.key) } />
@@ -180,7 +175,7 @@ const SkillForm: FC<TableFormProps> = ({ value, onChange }) => {
     {
       title: '操作',
       key: 'action',
-      render: (text: string, record: TableFormDateType) => {
+      render: (text: string, record: SkillMasterModifyDataType) => {
         if (!!record.editable && loading) {
           return null;
         }
@@ -223,7 +218,7 @@ const SkillForm: FC<TableFormProps> = ({ value, onChange }) => {
       bordered={ false }
       extra={ <Button type="primary" key="primary" onClick={ newMember }><PlusOutlined />新建</Button> }
     >
-      <Table<TableFormDateType>
+      <Table<SkillMasterModifyDataType>
         loading={ loading }
         columns={ columns }
         dataSource={ data }
@@ -234,4 +229,4 @@ const SkillForm: FC<TableFormProps> = ({ value, onChange }) => {
   );
 };
 
-export default SkillForm;
+export default SkillMaster;

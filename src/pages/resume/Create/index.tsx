@@ -3,13 +3,30 @@ import { Button, Card, Form, Popover } from 'antd';
 import React, { FC, useState } from 'react';
 import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
 import { connect, Dispatch } from 'umi';
-import SkillForm from './components/SkillForm';
+import SkillMaster from './components/SkillMaster';
 import BasicInfoForm from './components/BasicInfoForm';
 import ExperienceForm from './components/ExperienceForm'
 import styles from './style.less';
-
 type InternalNamePath = (string | number)[];
-const tableData = [
+
+const baseInfoData = {
+  key: "782",
+  name: "wlp",
+  sex: '女',
+  nativePlace: "西安",
+  residencePlace: "北京市北京城市昌平区",
+  ethnic: "汉",
+  email: "wlp6897@163.com",
+  phone: "15701578892",
+  dateBirth: "1991/04/02",
+  education: "本科",
+  headerImgUrl: require('@/assets/images/header-avatar.png'),
+  jobIntention: "Java工程师",
+  salaryExpectation: "15-20k",
+  yearsWork: "8年",
+}
+
+const skillMasterData = [
   {
     key: '1',
     skillName: "Java",
@@ -84,7 +101,7 @@ const workExperienceData = [
       {
         key: "2",
         workKey: "2",
-        projectName: "家装分期",
+        projectName: "家装分期2",
         projectTime: "2018/09/08~2021/02/02",
         projectDetail: "发布任务，执行任务，下发贷款",
         projectSkill: "React,typescript,umi,onsenui,...",
@@ -118,7 +135,7 @@ const AdvancedForm: FC<AdvancedFormProps> = ({ submitting, dispatch }) => {
       if (labelNode) {
         labelNode.scrollIntoView(true);
       }
-    };
+    }
     const errorList = errors.map((err) => {
       if (!err || err.errors.length === 0) {
         return null;
@@ -131,7 +148,7 @@ const AdvancedForm: FC<AdvancedFormProps> = ({ submitting, dispatch }) => {
 
         </li>
       );
-    });
+    })
     return (
       <span className={ styles.errorIcon }>
         <Popover
@@ -151,7 +168,7 @@ const AdvancedForm: FC<AdvancedFormProps> = ({ submitting, dispatch }) => {
         {errorCount }
       </span>
     );
-  };
+  }
   const onFinish = (values: { [ key: string ]: any }) => {
     setError([]);
     console.log(values);
@@ -159,29 +176,31 @@ const AdvancedForm: FC<AdvancedFormProps> = ({ submitting, dispatch }) => {
       type: 'formAndadvancedForm/submitAdvancedForm',
       payload: values,
     });
-  };
+  }
 
   const onFinishFailed = (errorInfo: any) => {
     setError(errorInfo.errorFields);
-  };
+  }
 
   return (
     <Form
       form={ form }
       layout="vertical"
       hideRequiredMark
-      initialValues={ { members: tableData, experiences: workExperienceData } }
+      initialValues={ { baseInfo: baseInfoData, skillMaster: skillMasterData, workExperience: workExperienceData } }
       onFinish={ onFinish }
       onFinishFailed={ onFinishFailed }
     >
       <PageContainer content="制作resume。">
-        <Card title="基本信息" className={ styles.card } bordered={ false }>
-          <BasicInfoForm />
-        </Card>
-        <Form.Item name="members">
-          <SkillForm />
+        <Form.Item name="baseInfo">
+          <Card title="基本信息" className={ styles.card } bordered={ false }>
+            <BasicInfoForm />
+          </Card>
         </Form.Item>
-        <Form.Item name="experiences" className={ styles.card }>
+        <Form.Item name="skillMaster">
+          <SkillMaster />
+        </Form.Item>
+        <Form.Item name="workExperience" className={ styles.card }>
           <ExperienceForm />
         </Form.Item>
       </PageContainer>

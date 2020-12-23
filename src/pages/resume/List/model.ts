@@ -1,10 +1,25 @@
 import { Effect, Reducer } from 'umi';
 
-import { CardListItemDataType } from './data.d';
+import { BaseInfoDataType } from '../API.d';
 import { queryFakeList } from './service';
-
+const baseInfoData: BaseInfoDataType = {
+  key: "782",
+  name: "wlp",
+  sex: '女',
+  nativePlace: "西安",
+  residencePlace: "北京市北京城市昌平区",
+  ethnic: "汉",
+  email: "wlp6897@163.com",
+  phone: "15701578892",
+  dateBirth: "1991/04/02",
+  education: "本科",
+  headerImgUrl: require('@/assets/images/header-avatar.png'),
+  jobIntention: "Java工程师",
+  salaryExpectation: "15-20k",
+  yearsWork: "8年",
+}
 export interface StateType {
-  list: CardListItemDataType[];
+  list: BaseInfoDataType[];
 }
 
 export interface ModelType {
@@ -20,13 +35,17 @@ export interface ModelType {
 
 const Model: ModelType = {
   namespace: 'listAndcardList',
-
   state: {
-    list: [],
+    list: [
+      { ...baseInfoData, key: "1" },
+      { ...baseInfoData, key: "2" },
+      { ...baseInfoData, key: "3" },
+      { ...baseInfoData, key: "4" },
+      { ...baseInfoData, key: "5" }
+    ],
   },
-
   effects: {
-    *fetch({ payload }, { call, put }) {
+    *fetch ({ payload }, { call, put }) {
       const response = yield call(queryFakeList, payload);
       yield put({
         type: 'queryList',
@@ -36,7 +55,7 @@ const Model: ModelType = {
   },
 
   reducers: {
-    queryList(state, action) {
+    queryList (state, action) {
       return {
         ...state,
         list: action.payload,

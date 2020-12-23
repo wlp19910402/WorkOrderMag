@@ -2,7 +2,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import { Button, Divider, Popconfirm, Table, Card } from 'antd';
 import React, { FC, useState } from 'react';
 import ModalViewWorkExp from './ModalViewWorkExp'
-import { WorkExperienceDataType, workExpDefault, ProjectExperiencesDataType, projectExpDefault } from './API.d'
+import { WorkExperienceDataType, workExpDefault, ProjectExperiencesDataType, projectExpDefault } from '../../API.d'
 import ModalModifyWorkExp from './ModalModifyWorkExp'
 import ModalModifyProjectExp from './ModalModifyProjectExp'
 import ModalViewProjectExp from './ModalViewProjectExp'
