@@ -4,7 +4,7 @@ import React, { FC, useState } from 'react';
 import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
 import { connect, Dispatch } from 'umi';
 import SkillForm from './components/SkillForm';
-import BasicForm from './components/BasicForm';
+import BasicInfoForm from './components/BasicInfoForm';
 import ExperienceForm from './components/ExperienceForm'
 import styles from './style.less';
 
@@ -176,7 +176,7 @@ const AdvancedForm: FC<AdvancedFormProps> = ({ submitting, dispatch }) => {
     >
       <PageContainer content="制作resume。">
         <Card title="基本信息" className={ styles.card } bordered={ false }>
-          <BasicForm />
+          <BasicInfoForm />
         </Card>
         <Form.Item name="members">
           <SkillForm />

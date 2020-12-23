@@ -1,4 +1,19 @@
 /**
+ * 基本信息
+ */
+export interface BaseInfoDataType {
+  key: string;
+  name?: string;
+  sex?: '男' | '女';
+  nativePlace?: string;//籍贯
+  ethnic?: string;//民族
+  email?: string;
+  phone?: string;
+  dateBirth?: string;//出生日期
+  education?: string;//学历
+  headerImgUrl?: string;//头像
+}
+/**
  * 项目经验
  */
 export interface ProjectExperiencesDataType {
