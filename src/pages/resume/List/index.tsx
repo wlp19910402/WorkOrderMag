@@ -4,11 +4,9 @@ import React, { Component } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import { connect, Dispatch } from 'umi';
 import { StateType } from './model';
-import { BaseInfoDataType } from '../API.d';
+import { ResumeDataType } from '../API.d';
 import styles from './style.less';
-
 const { Paragraph } = Typography;
-
 interface CardListProps {
   listAndcardList: StateType;
   dispatch: Dispatch;
@@ -17,11 +15,14 @@ interface CardListProps {
 interface CardListState {
   visible: boolean;
   done: boolean;
-  current?: Partial<BaseInfoDataType>;
+  current?: Partial<ResumeDataType>;
 }
-
 class CardList extends Component<CardListProps, CardListState> {
   componentDidMount () {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'listAndcardList/fetch'
+    });
   }
 
   render () {
@@ -57,11 +58,10 @@ class CardList extends Component<CardListProps, CardListState> {
         />
       </div>
     );
-    const nullData: Partial<BaseInfoDataType> = {};
     return (
       <PageContainer content={ content } extraContent={ extraContent }>
         <div className={ styles.cardList }>
-          <List<Partial<BaseInfoDataType>>
+          <List<Partial<ResumeDataType>>
             rowKey="id"
             loading={ loading }
             grid={ {
@@ -75,30 +75,35 @@ class CardList extends Component<CardListProps, CardListState> {
             } }
             dataSource={ [ ...list ] }
             renderItem={ (item, index) => {
-              return (
-                <List.Item>
-                  <Card
-                    hoverable
-                    className={ styles.card }
-                    actions={ [ <a key="option1">详情</a>, <a key="option2">编辑</a>, <a key="option2">打印</a>, <a key="option2">删除</a> ] }
-                  >
-                    <Card.Meta
-                      avatar={ <img alt="" className={ styles.cardAvatar } src={ require('@/assets/images/resumeHeader.jpg') } /> }
-                      description={
-                        <Paragraph className={ styles.item } ellipsis={ { rows: 3 } }>
-                          <Descriptions size="small" style={ { marginBottom: "20px" } } title={ item.name } bordered column={ 1 }>
-                            <Descriptions.Item label="求职意向" >{ item.jobIntention }</Descriptions.Item>
-                            <Descriptions.Item label="期望薪资" >{ item.salaryExpectation }</Descriptions.Item>
-                            <Descriptions.Item label="工作年限" >{ item.yearsWork }</Descriptions.Item>
-                            <Descriptions.Item label="学历" >{ item.education }</Descriptions.Item>
-                          </Descriptions>
-                        </Paragraph>
-                      }
-                    />
-                  </Card>
-                </List.Item>
-              );
-            } }
+              if (item) {
+                return (
+                  <List.Item>
+                    <Card
+                      hoverable
+                      className={ styles.card }
+                      actions={ [ <a key="option1">详情</a>, <a key="option2">编辑</a>, <a key="option2">打印</a>, <a key="option2">删除</a> ] }
+                    >
+                      <Card.Meta
+                        avatar={ <img alt="" className={ styles.cardAvatar } src={ require('@/assets/images/resumeHeader.jpg') } /> }
+                        description={
+                          <Paragraph className={ styles.item } ellipsis={ { rows: 3 } }>
+                            <Descriptions size="small" style={ { marginBottom: "20px" } } title={ item.baseInfo?.name } bordered column={ 1 }>
+                              <Descriptions.Item label="求职意向" >{ item.baseInfo?.jobIntention }</Descriptions.Item>
+                              <Descriptions.Item label="期望薪资" >{ item.baseInfo?.salaryExpectation }</Descriptions.Item>
+                              <Descriptions.Item label="工作年限" >{ item.baseInfo?.yearsWork }</Descriptions.Item>
+                              <Descriptions.Item label="学历" >{ item.baseInfo?.education }</Descriptions.Item>
+                            </Descriptions>
+                          </Paragraph>
+                        }
+                      />
+                    </Card>
+                  </List.Item>
+                );
+              } else {
+
+              }
+            }
+            }
           />
         </div>
       </PageContainer>
