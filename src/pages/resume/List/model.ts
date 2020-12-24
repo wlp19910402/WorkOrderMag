@@ -24,7 +24,6 @@ const Model: ModelType = {
   effects: {
     *fetch ({ }, { call, put }) {
       const response = yield call(queryFakeList);
-      console.log(2, response)
       yield put({
         type: 'queryList',
         payload: Array.isArray(response.data) ? response.data : [],
@@ -34,7 +33,6 @@ const Model: ModelType = {
 
   reducers: {
     queryList (state, action) {
-      console.log(action.payload)
       return {
         ...state,
         list: action.payload,

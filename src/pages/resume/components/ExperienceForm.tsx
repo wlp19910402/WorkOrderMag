@@ -6,7 +6,6 @@ import { WorkExperienceDataType, workExpDefault, ProjectExperiencesDataType, pro
 import ModalModifyWorkExp from './ModalModifyWorkExp'
 import ModalModifyProjectExp from './ModalModifyProjectExp'
 import ModalViewProjectExp from './ModalViewProjectExp'
-import styles from '../style.less';
 interface ExperienceFormFormProps {
   value?: WorkExperienceDataType[];
   onChange?: (value: WorkExperienceDataType[]) => void;

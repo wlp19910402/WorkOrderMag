@@ -92,6 +92,11 @@
                     authority: [ 'admin', 'user' ],
                   },
                   {
+                    path: '/resume/detail/:id',
+                    component: './resume/Detail/[id]',
+                    authority: [ 'admin', 'user' ],
+                  },
+                  {
                     component: './404',
                   },
                 ],

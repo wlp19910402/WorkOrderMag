@@ -1,8 +1,5 @@
 import { Effect, Subscription } from 'umi';
 import { queryResumeDetail } from './service';
-import { match } from 'react-router'
-
-import { ResumeDataType, resumeDataDefault } from '../API.d'
 export interface ModelType {
   namespace: string;
   state: string;

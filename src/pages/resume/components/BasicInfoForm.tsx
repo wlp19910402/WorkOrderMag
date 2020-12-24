@@ -47,7 +47,6 @@ const BasicInfoForm: FC<TableFormProps> = ({ value = BaseInfoDefault, onChange, 
       })
     }
   };
-  console.log(baseInfo.name)
   return (
     <Row gutter={ 10 } >
       <Col { ...colProps }>

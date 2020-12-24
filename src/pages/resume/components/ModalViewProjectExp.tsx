@@ -1,4 +1,4 @@
-import { Modal, Empty, Descriptions } from 'antd';
+import { Modal, Descriptions } from 'antd';
 import React, { FC } from 'react';
 import { ProjectExperiencesDataType } from '../API.d'
 interface ModalViewProjectExpProps {

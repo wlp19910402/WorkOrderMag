@@ -81,7 +81,7 @@ class CardList extends Component<CardListProps, CardListState> {
                     <Card
                       hoverable
                       className={ styles.card }
-                      actions={ [ <Link to={ `/resume/edit/${item.id}` } >详情</Link>, <Link to={ `/resume/edit/${item.id}` } >编辑</Link>, <Link to={ `/resume/edit/${item.id}` } >打印</Link>, <Link to={ `/resume/edit/${item.id}` } >删除</Link> ] }
+                      actions={ [ <Link to={ `/resume/detail/${item.id}` } >详情</Link>, <Link to={ `/resume/edit/${item.id}` } >编辑</Link>, <Link to={ `/resume/edit/${item.id}` } >打印</Link>, <Link to={ `/resume/edit/${item.id}` } >删除</Link> ] }
                     >
                       <Card.Meta
                         avatar={ <img alt="" className={ styles.cardAvatar } src={ require('@/assets/images/resumeHeader.jpg') } /> }
