@@ -91,3 +91,10 @@ export const projectExpDefault: ProjectExperiencesDataType = {
   projectUrl: "",
   projectStatus: "",
 }
+
+export const resumeDataDefault: ResumeDataType = {
+  id: "",
+  baseInfo: BaseInfoDefault,
+  skillMaster: [],
+  workExperience: [],
+}

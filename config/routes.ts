@@ -87,6 +87,11 @@
                     authority: [ 'admin', 'user' ],
                   },
                   {
+                    path: '/resume/edit/:id',
+                    component: './resume/Edit/[id]',
+                    authority: [ 'admin', 'user' ],
+                  },
+                  {
                     component: './404',
                   },
                 ],

@@ -237,7 +237,6 @@ const ExperienceForm: FC<ExperienceFormFormProps> = ({ value, onChange }) => {
   ];
   return (
     <Card title="工作经验"
-      className={ styles.card }
       extra={ <Button type="primary" key="primary" onClick={ (e: React.MouseEvent | React.KeyboardEvent) => { workCreateTable(e) } }><PlusOutlined />新建</Button> } bordered={ false }>
       <Table<WorkExperienceDataType>
         loading={ loading }
@@ -245,7 +244,7 @@ const ExperienceForm: FC<ExperienceFormFormProps> = ({ value, onChange }) => {
         dataSource={ data }
         pagination={ false }
         expandable={ {
-          expandedRowRender: record => (<div style={ { backgroundColor: "#d4eaff", padding: "20px" } }>
+          expandedRowRender: record => (<div style={ { backgroundColor: "#d4eaff", padding: "12px" } }>
             <Table<ProjectExperiencesDataType>
               loading={ loading }
               columns={ columns2 }

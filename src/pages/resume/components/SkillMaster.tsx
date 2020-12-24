@@ -214,7 +214,6 @@ const SkillMaster: FC<SkillMasterProps> = ({ value, onChange }) => {
 
   return (
     <Card title="技能掌握"
-      className={ styles.card }
       bordered={ false }
       extra={ <Button type="primary" key="primary" onClick={ newMember }><PlusOutlined />新建</Button> }
     >

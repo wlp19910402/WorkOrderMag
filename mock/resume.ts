@@ -24,24 +24,24 @@ const ResumeData: ResumeDataType[] = [
     skillMaster: [
       {
         key: '1',
-        skillName: "Java",
+        skillName: "Java1",
         skillProficiency: 40,
       },
       {
         key: '2',
-        skillName: "Javascript",
+        skillName: "Javascript1",
         skillProficiency: 40,
       },
       {
         key: '3',
-        skillName: "React",
+        skillName: "React1",
         skillProficiency: 40,
       }
     ],
     workExperience: [
       {
         key: "1",
-        companyName: "亚大通讯网络有限责任公司",
+        companyName: "亚大通讯网络有限责任公司1",
         workTime: "2008/09/08~2021/02/02",
         companyDetail: "公司描述，具体内容等待等。。。",
         jobName: "后台开发人员",
@@ -75,7 +75,7 @@ const ResumeData: ResumeDataType[] = [
       },
       {
         key: "2",
-        companyName: "亚大通讯网络有限责任公司222",
+        companyName: "亚大通讯网络有限责任公司1",
         workTime: "2008/09/08~2021/02/02",
         companyDetail: "公司描述，具体内容等待等。。。",
         jobName: "后台开发人员",
@@ -130,24 +130,24 @@ const ResumeData: ResumeDataType[] = [
     skillMaster: [
       {
         key: '1',
-        skillName: "Java",
+        skillName: "Java2",
         skillProficiency: 40,
       },
       {
         key: '2',
-        skillName: "Javascript",
+        skillName: "Javascript2",
         skillProficiency: 40,
       },
       {
         key: '3',
-        skillName: "React",
+        skillName: "React2",
         skillProficiency: 40,
       }
     ],
     workExperience: [
       {
         key: "1",
-        companyName: "亚大通讯网络有限责任公司",
+        companyName: "亚大通讯网络有限责任公司2",
         workTime: "2008/09/08~2021/02/02",
         companyDetail: "公司描述，具体内容等待等。。。",
         jobName: "后台开发人员",
@@ -181,7 +181,7 @@ const ResumeData: ResumeDataType[] = [
       },
       {
         key: "2",
-        companyName: "亚大通讯网络有限责任公司222",
+        companyName: "亚大通讯网络有限责任公司2",
         workTime: "2008/09/08~2021/02/02",
         companyDetail: "公司描述，具体内容等待等。。。",
         jobName: "后台开发人员",
@@ -236,24 +236,24 @@ const ResumeData: ResumeDataType[] = [
     skillMaster: [
       {
         key: '1',
-        skillName: "Java",
+        skillName: "Java3",
         skillProficiency: 40,
       },
       {
         key: '2',
-        skillName: "Javascript",
+        skillName: "Javascript3",
         skillProficiency: 40,
       },
       {
         key: '3',
-        skillName: "React",
+        skillName: "React3",
         skillProficiency: 40,
       }
     ],
     workExperience: [
       {
         key: "1",
-        companyName: "亚大通讯网络有限责任公司",
+        companyName: "亚大通讯网络有限责任公司3",
         workTime: "2008/09/08~2021/02/02",
         companyDetail: "公司描述，具体内容等待等。。。",
         jobName: "后台开发人员",
@@ -287,7 +287,7 @@ const ResumeData: ResumeDataType[] = [
       },
       {
         key: "2",
-        companyName: "亚大通讯网络有限责任公司222",
+        companyName: "亚大通讯网络有限责任公司3",
         workTime: "2008/09/08~2021/02/02",
         companyDetail: "公司描述，具体内容等待等。。。",
         jobName: "后台开发人员",
@@ -325,6 +325,10 @@ const ResumeData: ResumeDataType[] = [
 function getResumeData (_: Request, res: Response) {
   return res.json(geneResult(ResumeData));
 }
+function fetchResumeDetailData (req: Request, res: Response) {
+  const { id } = req.body;
+  return res.json(geneResult(ResumeData.filter(item => item.id === id)));
+}
 function geneResult (result: any) {
   return {
     data: result,
@@ -333,5 +337,6 @@ function geneResult (result: any) {
   };
 }
 export default {
-  'GET /resume/getResumeData': getResumeData
+  'GET /resume/getResumeData': getResumeData,
+  'POST /resume/fetchResumeDetail': fetchResumeDetailData,
 };

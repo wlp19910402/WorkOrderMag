@@ -1,8 +1,8 @@
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, Card, List, Typography, Descriptions } from 'antd';
+import { Card, List, Typography, Descriptions } from 'antd';
 import React, { Component } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
-import { connect, Dispatch } from 'umi';
+import { connect, Dispatch, Link } from 'umi';
 import { StateType } from './model';
 import { ResumeDataType } from '../API.d';
 import styles from './style.less';
@@ -81,7 +81,7 @@ class CardList extends Component<CardListProps, CardListState> {
                     <Card
                       hoverable
                       className={ styles.card }
-                      actions={ [ <a key="option1">详情</a>, <a key="option2">编辑</a>, <a key="option2">打印</a>, <a key="option2">删除</a> ] }
+                      actions={ [ <Link to={ `/resume/edit/${item.id}` } >详情</Link>, <Link to={ `/resume/edit/${item.id}` } >编辑</Link>, <Link to={ `/resume/edit/${item.id}` } >打印</Link>, <Link to={ `/resume/edit/${item.id}` } >删除</Link> ] }
                     >
                       <Card.Meta
                         avatar={ <img alt="" className={ styles.cardAvatar } src={ require('@/assets/images/resumeHeader.jpg') } /> }

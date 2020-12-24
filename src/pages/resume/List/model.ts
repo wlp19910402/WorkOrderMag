@@ -29,7 +29,6 @@ const Model: ModelType = {
         type: 'queryList',
         payload: Array.isArray(response.data) ? response.data : [],
       });
-
     },
   },
 

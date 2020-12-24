@@ -1,6 +1,7 @@
 import { CloseCircleOutlined } from '@ant-design/icons';
-import { Button, Card, Form, Popover } from 'antd';
-import React, { FC, useState } from 'react';
+import { Button, Card, Form, Popover, Spin } from 'antd';
+import React, { FC, useState, useEffect } from 'react';
+import { match } from 'react-router'
 import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
 import { connect, Dispatch } from 'umi';
 import SkillMaster from '../components/SkillMaster';
@@ -12,14 +13,19 @@ type InternalNamePath = (string | number)[];
 interface AdvancedFormProps {
   dispatch: Dispatch;
   submitting: boolean;
+  match: match;
+  loading: boolean;
 }
+
 interface ErrorField {
   name: InternalNamePath;
   errors: string[];
 }
-const AdvancedForm: FC<AdvancedFormProps> = ({ submitting, dispatch }) => {
+const AdvancedForm: FC<AdvancedFormProps> = ({ submitting, dispatch, match, loading }) => {
   const [ form ] = Form.useForm();
   const [ error, setError ] = useState<ErrorField[]>([]);
+  const [ resumeData, setResumeData ] = useState<ResumeDataType>(resumeDataDefault)
+  const [ dat, setDat ] = useState<boolean>(false)
   const getErrorInfo = (errors: ErrorField[]) => {
     const errorCount = errors.filter((item) => item.errors.length > 0).length;
     if (!errors || errorCount === 0) {
@@ -40,7 +46,6 @@ const AdvancedForm: FC<AdvancedFormProps> = ({ submitting, dispatch }) => {
         <li key={ key } className={ styles.errorListItem } onClick={ () => scrollToField(key) }>
           <CloseCircleOutlined className={ styles.errorIcon } />
           <div className={ styles.errorMessage }>{ err.errors[ 0 ] }</div>
-
         </li>
       );
     })
@@ -67,46 +72,58 @@ const AdvancedForm: FC<AdvancedFormProps> = ({ submitting, dispatch }) => {
   const onFinish = (values: { [ key: string ]: any }) => {
     setError([]);
     console.log(values);
-    dispatch({
-      type: 'formAndadvancedForm/submitAdvancedForm',
-      payload: values,
-    });
+    // dispatch({
+    //   type: 'formAndadvancedForm/submitAdvancedForm',
+    //   payload: values,
+    // });
   }
 
   const onFinishFailed = (errorInfo: any) => {
     setError(errorInfo.errorFields);
   }
-
+  useEffect(() => {
+    dispatch({
+      type: 'resumeDetail/fetch',
+      payload: match.params,
+      callback: async (res: ResumeDataType) => {
+        await setResumeData(res)
+        setDat(true)
+      }
+    });
+  }, [])
   return (
-    <Form
-      form={ form }
-      layout="vertical"
-      hideRequiredMark
-      initialValues={ { baseInfo: resumeDataDefault.baseInfo, skillMaster: resumeDataDefault.skillMaster, workExperience: resumeDataDefault.workExperience } }
-      onFinish={ onFinish }
-      onFinishFailed={ onFinishFailed }
-    >
-      <PageContainer content="制作resume。">
-        <Card title="基本信息" className={ styles.card } bordered={ false }>
-          <BasicInfoForm baseInfo={ resumeDataDefault.baseInfo } />
-        </Card>
-        <Form.Item name="skillMaster">
-          <SkillMaster />
-        </Form.Item>
-        <Form.Item name="workExperience" >
-          <ExperienceForm />
-        </Form.Item>
-      </PageContainer>
-      <FooterToolbar>
-        { getErrorInfo(error) }
-        <Button type="primary" onClick={ () => form?.submit() } loading={ submitting }>
-          提交
+    <Spin spinning={ loading }>
+      {dat ? <Form
+        form={ form }
+        layout="vertical"
+        hideRequiredMark
+        initialValues={ { baseInfo: resumeData.baseInfo, skillMaster: resumeData.skillMaster, workExperience: resumeData.workExperience } }
+        onFinish={ onFinish }
+        onFinishFailed={ onFinishFailed }
+      >
+        <PageContainer content="制作resume">
+          <Card title={ "基本信息" + dat } className={ styles.card } bordered={ false }>
+            <BasicInfoForm baseInfo={ resumeData.baseInfo } />
+          </Card>
+          <Form.Item name="skillMaster">
+            <SkillMaster />
+          </Form.Item>
+          <Form.Item name="workExperience" className={ styles.card }>
+            <ExperienceForm />
+          </Form.Item>
+        </PageContainer>
+        <FooterToolbar>
+          { getErrorInfo(error) }
+          <Button type="primary" onClick={ () => form?.submit() } loading={ submitting }>
+            提交
         </Button>
-      </FooterToolbar>
-    </Form>
+        </FooterToolbar>
+      </Form>
+        : <></> }
+    </Spin>
   );
 };
 
-export default connect(({ loading }: { loading: { effects: { [ key: string ]: boolean } } }) => ({
-  submitting: loading.effects[ 'formAndadvancedForm/submitAdvancedForm' ],
+export default connect(({ loading }: { loading: { models: { [ key: string ]: boolean } } }) => ({
+  loading: loading.models.resumeDetail ? true : false,
 }))(AdvancedForm);

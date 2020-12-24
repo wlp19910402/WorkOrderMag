@@ -5,6 +5,7 @@ import { BaseInfoDataType, BaseInfoDefault } from '../API.d'
 interface TableFormProps {
   value?: BaseInfoDataType;
   onChange?: (value: BaseInfoDataType[]) => void;
+  baseInfo: BaseInfoDataType;
 }
 function beforeUpload (file: any) {
   const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
@@ -23,8 +24,8 @@ function getBase64 (img: any, callback: any) {
   reader.addEventListener('load', () => callback(reader.result));
   reader.readAsDataURL(img);
 }
-const BasicInfoForm: FC<TableFormProps> = ({ value = BaseInfoDefault, onChange }) => {
-  const { name, sex, nativePlace, residencePlace, ethnic, email, phone, dateBirth, education, headerImgUrl, salaryExpectation, jobIntention, yearsWork } = value
+const BasicInfoForm: FC<TableFormProps> = ({ value = BaseInfoDefault, onChange, baseInfo = BaseInfoDefault }) => {
+  // const { name, sex, nativePlace, residencePlace, ethnic, email, phone, dateBirth, education, headerImgUrl, salaryExpectation, jobIntention, yearsWork } = value
   const [ loading, setLoading ] = useState<boolean>(false);
   const [ imageUrl, setImageUrl ] = useState('');
   const uploadButton = (
@@ -46,15 +47,17 @@ const BasicInfoForm: FC<TableFormProps> = ({ value = BaseInfoDefault, onChange }
       })
     }
   };
+  console.log(baseInfo.name)
   return (
-    <Row gutter={ 10 }>
+    <Row gutter={ 10 } >
       <Col { ...colProps }>
         <Form.Item
           label='名称'
           name="name"
           rules={ [ { required: true, message: '请输入名称' } ] }
+          initialValue={ baseInfo.name }
         >
-          <Input defaultValue={ name } placeholder="请输入名称" />
+          <Input defaultValue="2" placeholder="请输入名称" />
         </Form.Item>
       </Col>
       <Col { ...colProps }>
@@ -62,9 +65,9 @@ const BasicInfoForm: FC<TableFormProps> = ({ value = BaseInfoDefault, onChange }
           label='性别'
           name="sex"
           rules={ [ { required: true, message: '请选择性别' } ] }
-          initialValue={ sex }
+          initialValue={ baseInfo.sex }
         >
-          <Select defaultValue={ sex } placeholder="请选择管理员">
+          <Select defaultValue={ baseInfo.sex } placeholder="请选择管理员">
             <Select.Option value="男">男</Select.Option>
             <Select.Option value="女">女</Select.Option>
           </Select>
@@ -75,9 +78,9 @@ const BasicInfoForm: FC<TableFormProps> = ({ value = BaseInfoDefault, onChange }
           label='籍贯'
           name="nativePlace"
           rules={ [ { message: '请输入籍贯' } ] }
-          initialValue={ nativePlace }
+          initialValue={ baseInfo.nativePlace }
         >
-          <Input defaultValue={ nativePlace } placeholder="请输入籍贯" />
+          <Input defaultValue={ baseInfo.nativePlace } placeholder="请输入籍贯" />
         </Form.Item>
       </Col>
       <Col { ...colProps }>
@@ -85,9 +88,9 @@ const BasicInfoForm: FC<TableFormProps> = ({ value = BaseInfoDefault, onChange }
           label='求职意向'
           name="jobIntention"
           rules={ [ { message: '请输入求职意向' } ] }
-          initialValue={ jobIntention }
+          initialValue={ baseInfo.jobIntention }
         >
-          <Input defaultValue={ jobIntention } placeholder="请输入求职意向" />
+          <Input defaultValue={ baseInfo.jobIntention } placeholder="请输入求职意向" />
         </Form.Item>
       </Col>
       <Col { ...colProps }>
@@ -95,9 +98,9 @@ const BasicInfoForm: FC<TableFormProps> = ({ value = BaseInfoDefault, onChange }
           label='期望薪资'
           name="salaryExpectation"
           rules={ [ { message: '请输入期望薪资' } ] }
-          initialValue={ salaryExpectation }
+          initialValue={ baseInfo.salaryExpectation }
         >
-          <Input defaultValue={ salaryExpectation } placeholder="请输入期望薪资" />
+          <Input defaultValue={ baseInfo.salaryExpectation } placeholder="请输入期望薪资" />
         </Form.Item>
       </Col>
       <Col { ...colProps }>
@@ -105,9 +108,9 @@ const BasicInfoForm: FC<TableFormProps> = ({ value = BaseInfoDefault, onChange }
           label='工作年限'
           name="yearsWork"
           rules={ [ { message: '请输入工作年限' } ] }
-          initialValue={ yearsWork }
+          initialValue={ baseInfo.yearsWork }
         >
-          <Input defaultValue={ yearsWork } placeholder="请输入工作年限" />
+          <Input defaultValue={ baseInfo.yearsWork } placeholder="请输入工作年限" />
         </Form.Item>
       </Col>
       <Col { ...colProps }>
@@ -115,9 +118,9 @@ const BasicInfoForm: FC<TableFormProps> = ({ value = BaseInfoDefault, onChange }
           label='现居住地'
           name="residencePlace"
           rules={ [ { message: '请输入籍贯' } ] }
-          initialValue={ residencePlace }
+          initialValue={ baseInfo.residencePlace }
         >
-          <Input defaultValue={ residencePlace } placeholder="请输入籍贯" />
+          <Input defaultValue={ baseInfo.residencePlace } placeholder="请输入籍贯" />
         </Form.Item>
       </Col>
       <Col { ...colProps }>
@@ -125,8 +128,9 @@ const BasicInfoForm: FC<TableFormProps> = ({ value = BaseInfoDefault, onChange }
           label='民族'
           name="ethnic"
           rules={ [ { message: '请输入民族' } ] }
+          initialValue={ baseInfo.ethnic }
         >
-          <Input placeholder="请输入民族" />
+          <Input defaultValue={ baseInfo.ethnic } placeholder="请输入民族" />
         </Form.Item>
       </Col>
       <Col { ...colProps }>
@@ -134,9 +138,9 @@ const BasicInfoForm: FC<TableFormProps> = ({ value = BaseInfoDefault, onChange }
           label='电子邮箱'
           name="email"
           rules={ [ { message: '请输入电子邮箱' } ] }
-          initialValue={ email }
+          initialValue={ baseInfo.email }
         >
-          <Input defaultValue={ email } placeholder="请输入电子邮箱" />
+          <Input defaultValue={ baseInfo.email } placeholder="请输入电子邮箱" />
         </Form.Item>
       </Col>
       <Col { ...colProps }>
@@ -144,9 +148,9 @@ const BasicInfoForm: FC<TableFormProps> = ({ value = BaseInfoDefault, onChange }
           label='联系方式'
           name="phone"
           rules={ [ { message: '请输入联系方式' } ] }
-          initialValue={ phone }
+          initialValue={ baseInfo.phone }
         >
-          <Input defaultValue={ phone } placeholder="请输入联系方式" />
+          <Input defaultValue={ baseInfo.phone } placeholder="请输入联系方式" />
         </Form.Item>
       </Col>
       <Col { ...colProps }>
@@ -154,6 +158,7 @@ const BasicInfoForm: FC<TableFormProps> = ({ value = BaseInfoDefault, onChange }
           label='出生日期'
           name="dateBirth"
           rules={ [ { required: true, message: '请选择出生日期' } ] }
+        // initialValue={ baseInfo.dateBirth}
         >
           <DatePicker placeholder='请选择出生日期' style={ { width: '100%' } } />
         </Form.Item>
@@ -163,9 +168,9 @@ const BasicInfoForm: FC<TableFormProps> = ({ value = BaseInfoDefault, onChange }
           label='学历'
           name="education"
           rules={ [ { message: '请选择学历' } ] }
-          initialValue={ education }
+          initialValue={ baseInfo.education }
         >
-          <Select defaultValue={ education } placeholder="请选择学历">
+          <Select defaultValue={ baseInfo.education } placeholder="请选择学历">
             <Select.Option value="本科">本科</Select.Option>
             <Select.Option value="大专">大专</Select.Option>
           </Select>
