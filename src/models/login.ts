@@ -1,6 +1,5 @@
 import { stringify } from 'querystring';
 import { history, Reducer, Effect } from 'umi';
-
 import { fakeAccountLogin, fackAccountToken } from '@/services/login';
 import { setAuthority } from '@/utils/authority';
 import { getPageQuery } from '@/utils/utils';

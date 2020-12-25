@@ -166,6 +166,23 @@ const ResumeList: React.FC<{}> = () => {
       render: (val => { return (<Switch checkedChildren='发布' unCheckedChildren="关闭" defaultChecked={ val === '1' } />) })
     },
     {
+      title: "创建时间",
+      dataIndex: "updatedAt",
+      hideInForm: true,
+      hideInSearch: true,
+      hideInTable: true,
+      renderText: ((val) => `${val}`)
+    },
+    {
+      title: "更新时间",
+      dataIndex: "createdAt",
+      hideInForm: true,
+      hideInSearch: true,
+
+      hideInTable: true,
+      renderText: ((val) => `${val}`)
+    },
+    {
       title: "技能掌握",
       dataIndex: 'skillMaster',
       hideInSearch: true,

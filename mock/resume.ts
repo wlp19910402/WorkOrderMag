@@ -26,6 +26,8 @@ const genList = (current: number, pageSize: number) => {
     tableListDataSource.push({
       id: index.toString(),
       status: index % 6 === 0 ? '2' : (index % 2).toString(),
+      updatedAt: new Date(),
+      createdAt: new Date(),
       baseInfo: {
         key: "782",
         name: "wlp",
@@ -203,7 +205,7 @@ function getRule (req: Request, res: Response, u: string) {
     dataSource = dataSource.filter((data) => data.baseInfo.name.includes(params.name || ''));
   }
   const result = {
-    data: dataFilter,
+    data: dataSource,
     total: dataFilter.length,
     pageSize,
     current: 1,
