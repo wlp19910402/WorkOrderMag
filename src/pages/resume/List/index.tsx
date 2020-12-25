@@ -202,11 +202,11 @@ const ResumeList: React.FC<{}> = () => {
       valueType: 'option',
       render: (_, record) => [
         <Link
-          to={ `/resume/edit/1` }
+          to={ `/resume/edit/${record.id}` }
         >
           编辑
         </Link>,
-        <Link to={ `/resume/detail/1` }>
+        <Link to={ `/resume/detail/${record.id}` }>
           详情
         </Link>,
         <a onClick={ () => {
