@@ -7,7 +7,7 @@ interface ProjectExperienceDataTypeProps {
 const DetailProjectExp: React.FC<ProjectExperienceDataTypeProps> = ({ value = [] }) => {
   return (
     <Descriptions size="small" style={ { marginBottom: "20px", width: "100%" } } title="项目经验" bordered column={ 1 }>
-      <Descriptions.Item contentStyle={ { width: "100%" } }>
+      <Descriptions.Item contentStyle={ { width: "100%", display: "block" } }>
         { value.map(
           (ite: WorkExperienceDataType, idx: number) => (<div style={ value.length - 1 > idx ? { marginBottom: "20px" } : {} } >
             {ite.projectExpreience && ite.projectExpreience.map(

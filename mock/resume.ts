@@ -15,6 +15,7 @@ const headerImg = 'http://127.0.0.1:8000/resumeHeader.jpg'
 const ResumeData: ResumeDataType[] = [
   {
     id: "1",
+    status: "0",
     baseInfo: {
       key: "782",
       name: "wlp",
@@ -121,6 +122,7 @@ const ResumeData: ResumeDataType[] = [
   },
   {
     id: "2",
+    status: "0",
     baseInfo: {
       key: "782",
       name: "wlp",
@@ -227,6 +229,7 @@ const ResumeData: ResumeDataType[] = [
   },
   {
     id: "3",
+    status: "0",
     baseInfo: {
       key: "782",
       name: "wlp",
@@ -352,6 +355,7 @@ const genList = (current: number, pageSize: number) => {
     const index = (current - 1) * 10 + i;
     tableListDataSource.push({
       id: index.toString(),
+      status: (index % 2).toString(),
       baseInfo: {
         key: "782",
         name: "wlp",

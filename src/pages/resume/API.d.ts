@@ -50,6 +50,7 @@ export interface ResumeDataType {
   baseInfo: BaseInfoDataType;
   skillMaster: SkillMasterDateType[] | [];
   workExperience: WorkExperienceDataType[] | [];
+  status: string;//0:未发布|1:已发布|2:已删除
 }
 //工作经验的默认值
 export const workExpDefault: WorkExperienceDataType = {
@@ -97,4 +98,5 @@ export const resumeDataDefault: ResumeDataType = {
   baseInfo: BaseInfoDefault,
   skillMaster: [],
   workExperience: [],
+  status: "0"
 }

@@ -7,7 +7,7 @@ interface WorkExperienceDataTypeProps {
 const DetailWorkExp: React.FC<WorkExperienceDataTypeProps> = ({ value = [] }) => {
   return (
     <Descriptions size="small" style={ { marginBottom: "20px", width: "100%" } } title="工作经验" bordered column={ 1 }>
-      <Descriptions.Item contentStyle={ { width: "100%" } }>
+      <Descriptions.Item contentStyle={ { width: "100%", display: "block" } }>
         { value.map((item: WorkExperienceDataType, index: number): any => (
           <Descriptions size="small" style={ value.length - 1 > index ? { marginBottom: "20px", width: "100%" } : { width: "100%" } } key={ index } bordered column={ { xxl: 2, xl: 2, lg: 2, md: 1, sm: 1, xs: 1 } }>
             <Descriptions.Item labelStyle={ { whiteSpace: "nowrap", background: "rgb(212, 234, 255)" } } contentStyle={ { background: "rgb(212, 234, 255)" } } label="公司名称" >{ item.companyName }</Descriptions.Item>

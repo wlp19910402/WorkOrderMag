@@ -1,14 +1,15 @@
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, Drawer, Avatar } from 'antd';
+import { Button, Drawer, Avatar, Switch } from 'antd';
 import React, { useState, useRef } from 'react';
 import { Link, history } from 'umi';
 import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import ProDescriptions, { ProDescriptionsItemProps } from '@ant-design/pro-descriptions';
 import { queryRule } from './service';
-import { ResumeDataType, SkillMasterDateType } from '../API.d';
+import { ResumeDataType } from '../API.d';
 import DetailSkillMaster from '../components/detail/DetailSkillMaster'
 import DetailWorkExp from '../components/detail/DetailWorkExp'
+import DetailProjectExp from '../components/detail/DetailProjectExp'
 
 /**
  *  删除节点
@@ -42,8 +43,6 @@ const ResumeList: React.FC<{}> = () => {
   const actionRef = useRef<ActionType>();
   const [ currentRow, setCurrentRow ] = useState<ResumeDataType>();
   const [ selectedRowsState, setSelectedRows ] = useState<ResumeDataType[]>([]);
-
-
   const columns: ProColumns<ResumeDataType>[] = [
     {
       title: "头像",
@@ -146,24 +145,28 @@ const ResumeList: React.FC<{}> = () => {
       hideInForm: true,
       valueEnum: {
         0: {
-          text: "关闭",
+          text: "未发布",
           status: 'Default',
         },
         1: {
-          text: "运行中",
-          status: 'Processing',
-        },
-        2: {
-          text: "已上线",
+          text: "已发布",
           status: 'Success',
         },
-        3: {
-          text: "异常",
-          status: 'Error',
+        2: {
+          text: "已删除",
+          status: 'Cancel',
         },
       },
     },
     {
+      title: "状态",
+      dataIndex: 'status',
+      hideInForm: true,
+      hideInSearch: true,
+      render: (val => { return (<Switch checkedChildren='发布' unCheckedChildren="关闭" defaultChecked={ val === '1' } />) })
+    },
+    {
+      title: "技能掌握",
       dataIndex: 'skillMaster',
       hideInSearch: true,
       hideInTable: true,
@@ -173,6 +176,7 @@ const ResumeList: React.FC<{}> = () => {
       }
     },
     {
+      title: "工作经验",
       dataIndex: 'workExperience',
       hideInSearch: true,
       hideInTable: true,
@@ -181,6 +185,17 @@ const ResumeList: React.FC<{}> = () => {
         return <DetailWorkExp value={ dom } />
       }
     },
+    {
+      title: "项目经验",
+      dataIndex: 'workExperience',
+      hideInSearch: true,
+      hideInTable: true,
+      hideInForm: true,
+      render: (dom) => {
+        return <DetailProjectExp value={ dom } />
+      }
+    },
+
     {
       title: "操作",
       dataIndex: 'option',
@@ -193,7 +208,8 @@ const ResumeList: React.FC<{}> = () => {
         </Link>,
         <Link to={ `/resume/detail/1` }>
           详情
-        </Link>
+        </Link>,
+        <a onClick={ () => { console.log(record.id) } }>删除</a>
       ],
     },
   ];
@@ -203,16 +219,19 @@ const ResumeList: React.FC<{}> = () => {
       <ProTable<ResumeDataType>
         headerTitle="查询表格"
         actionRef={ actionRef }
-        rowKey="key"
+        rowKey="id"
         search={ {
-          labelWidth: 120,
+          labelWidth: 80,
+        } }
+        pagination={ {
+          pageSize: 10,
         } }
         toolBarRender={ () => [
           <Button type="primary" key="primary" onClick={ () => history.push('/resume/create') }>
             <PlusOutlined />新建
           </Button>,
         ] }
-        request={ (params, sorter, filter) => queryRule({ ...params, sorter, filter }) }
+        request={ (params, sorter, filter) => { console.log("params", params); return queryRule({ ...params, sorter, filter }) } }
         columns={ columns }
         rowSelection={ {
           onChange: (_, selectedRows) => setSelectedRows(selectedRows),
@@ -224,12 +243,6 @@ const ResumeList: React.FC<{}> = () => {
             <div>
               已选择{ ' ' }<a style={ { fontWeight: 600 } }>{ selectedRowsState.length }</a>{ ' ' }
               项
-              &nbsp;&nbsp;
-              <span>
-                服务调用次数总计{ ' ' }
-                { selectedRowsState.reduce((pre, item) => pre + item.id, 0) }{ ' ' }
-                万
-              </span>
             </div>
           }
         >
