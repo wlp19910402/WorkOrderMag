@@ -1,11 +1,11 @@
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, Drawer, Avatar, Switch } from 'antd';
+import { Button, Drawer, Avatar, Switch, message } from 'antd';
 import React, { useState, useRef } from 'react';
 import { Link, history } from 'umi';
 import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import ProDescriptions, { ProDescriptionsItemProps } from '@ant-design/pro-descriptions';
-import { queryRule } from './service';
+import { queryRule, removeRule } from './service';
 import { ResumeDataType } from '../API.d';
 import DetailSkillMaster from '../components/detail/DetailSkillMaster'
 import DetailWorkExp from '../components/detail/DetailWorkExp'
@@ -15,22 +15,22 @@ import DetailProjectExp from '../components/detail/DetailProjectExp'
  *  删除节点
  * @param selectedRows
  */
-// const handleRemove = async (selectedRows: ResumeDataType[]) => {
-//   const hide = message.loading('正在删除');
-//   if (!selectedRows) return true;
-//   try {
-//     await removeRule({
-//       key: selectedRows.map((row) => row.key),
-//     });
-//     hide;
-//     message.success('删除成功，即将刷新');
-//     return true;
-//   } catch (error) {
-//     hide;
-//     message.error('删除失败，请重试');
-//     return false;
-//   }
-// };
+const handleRemove = async (selectedRows: ResumeDataType[]) => {
+  const hide = message.loading('正在删除');
+  if (!selectedRows) return true;
+  try {
+    await removeRule({
+      id: selectedRows.map((row) => row.id),
+    });
+    hide;
+    message.success('删除成功，即将刷新');
+    return true;
+  } catch (error) {
+    hide;
+    message.error('删除失败，请重试');
+    return false;
+  }
+};
 
 const hideTable = {
   dataIndex: 'baseInfo',
@@ -209,7 +209,10 @@ const ResumeList: React.FC<{}> = () => {
         <Link to={ `/resume/detail/1` }>
           详情
         </Link>,
-        <a onClick={ () => { console.log(record.id) } }>删除</a>
+        <a onClick={ () => {
+          handleRemove([ record ]);
+          actionRef.current?.reloadAndRest?.();
+        } }>删除</a>
       ],
     },
   ];
@@ -231,7 +234,7 @@ const ResumeList: React.FC<{}> = () => {
             <PlusOutlined />新建
           </Button>,
         ] }
-        request={ (params, sorter, filter) => { console.log("params", params); return queryRule({ ...params, sorter, filter }) } }
+        request={ (params, sorter, filter) => queryRule({ ...params, sorter, filter }) }
         columns={ columns }
         rowSelection={ {
           onChange: (_, selectedRows) => setSelectedRows(selectedRows),
@@ -246,7 +249,7 @@ const ResumeList: React.FC<{}> = () => {
             </div>
           }
         >
-          {/* <Button
+          <Button
             onClick={ async () => {
               await handleRemove(selectedRowsState);
               setSelectedRows([]);
@@ -254,9 +257,9 @@ const ResumeList: React.FC<{}> = () => {
             } }
           >
             批量删除
-          </Button> */}
+          </Button>
           <Button type="primary">
-            批量审批
+            批量发布
           </Button>
         </FooterToolbar>
       ) }

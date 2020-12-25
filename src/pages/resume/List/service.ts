@@ -6,7 +6,17 @@ export async function queryFakeList (params: { count: number }) {
 }
 
 export async function queryRule (params?: ResumeDataType) {
-  return request('/resume/getResumeDataList', {
+  return request('/resume/getResume', {
     params,
+  });
+}
+
+export async function removeRule (params: { id: string[] }) {
+  return request('/resume/postResume', {
+    method: 'POST',
+    data: {
+      ...params,
+      method: 'delete',
+    },
   });
 }

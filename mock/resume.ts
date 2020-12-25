@@ -355,7 +355,7 @@ const genList = (current: number, pageSize: number) => {
     const index = (current - 1) * 10 + i;
     tableListDataSource.push({
       id: index.toString(),
-      status: (index % 2).toString(),
+      status: index % 6 === 0 ? '2' : (index % 2).toString(),
       baseInfo: {
         key: "782",
         name: "wlp",
@@ -474,8 +474,8 @@ function getRule (req: Request, res: Response, u: string) {
   }
   const { current = 1, pageSize = 10 } = req.query;
   const params = (parse(realUrl, true).query as unknown) as ResumeResponseDataType;
-  console.log(params)
-  let dataSource = [ ...tableListDataSource ].slice(
+  const dataFilter = [ ...tableListDataSource ].filter(item => item.status !== '2')//过滤掉已删除的简历
+  let dataSource = dataFilter.slice(
     ((current as number) - 1) * (pageSize as number),
     (current as number) * (pageSize as number),
   );
@@ -526,8 +526,8 @@ function getRule (req: Request, res: Response, u: string) {
     dataSource = dataSource.filter((data) => data.baseInfo.name.includes(params.name || ''));
   }
   const result = {
-    data: dataSource,
-    total: tableListDataSource.length,
+    data: dataFilter,
+    total: dataFilter.length,
     pageSize,
     current: 1,
     respCode: '000000',
@@ -536,8 +536,74 @@ function getRule (req: Request, res: Response, u: string) {
 
   return res.json(result);
 }
+function postRule (req: Request, res: Response, u: string, b: Request) {
+  let realUrl = u;
+  if (!realUrl || Object.prototype.toString.call(realUrl) !== '[object String]') {
+    realUrl = req.url;
+  }
+  const body = (b && b.body) || req.body;
+  const { method, name, desc, id } = body;
+  switch (method) {
+    case 'delete':
+      tableListDataSource.forEach(item => {
+        if (id.indexOf(item.id) !== -1) {
+          item.status = '2'//删除的状态2
+        }
+      });
+      // tableListDataSource = tableListDataSource.filter((item) => id.indexOf(item.id) === -1);
+      break;
+    case 'post':
+      (() => {
+        const i = Math.ceil(Math.random() * 10000);
+        const newRule = {
+          key: tableListDataSource.length,
+          href: 'https://ant.design',
+          avatar: [
+            'https://gw.alipayobjects.com/zos/rmsportal/eeHMaZBwmTvLdIwMfBpg.png',
+            'https://gw.alipayobjects.com/zos/rmsportal/udxAbMEhpwthVVcjLXik.png',
+          ][ i % 2 ],
+          name,
+          owner: '曲丽丽',
+          desc,
+          callNo: Math.floor(Math.random() * 1000),
+          status: Math.floor(Math.random() * 10) % 2,
+          updatedAt: new Date(),
+          createdAt: new Date(),
+          progress: Math.ceil(Math.random() * 100),
+        };
+        tableListDataSource.unshift(newRule);
+        return res.json(newRule);
+      })();
+      return;
+    case 'update':
+      (() => {
+        let newRule = {};
+        tableListDataSource = tableListDataSource.map((item) => {
+          if (item.id === id) {
+            newRule = { ...item, desc, name };
+            return { ...item, desc, name };
+          }
+          return item;
+        });
+        return res.json(newRule);
+      })();
+      return;
+    default:
+      break;
+  }
+
+  const result = {
+    list: tableListDataSource,
+    pagination: {
+      total: tableListDataSource.length,
+    },
+  };
+
+  res.json(result);
+}
 export default {
   'GET /resume/getResumeData': getResumeData,
   'POST /resume/fetchResumeDetail': fetchResumeDetailData,
-  'GET /resume/getResumeDataList': getRule,
+  'GET /resume/getResume': getRule,
+  'POST /resume/postresume': postRule
 };
