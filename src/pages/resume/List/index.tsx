@@ -1,5 +1,5 @@
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, Drawer, Avatar, Switch, message } from 'antd';
+import { Button, Drawer, Avatar, Switch, message, Popconfirm } from 'antd';
 import React, { useState, useRef } from 'react';
 import { Link, history } from 'umi';
 import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
@@ -226,10 +226,11 @@ const ResumeList: React.FC<{}> = () => {
         <Link to={ `/resume/detail/${record.id}` }>
           详情
         </Link>,
-        <a onClick={ () => {
-          handleRemove([ record ]);
-          actionRef.current?.reloadAndRest?.();
-        } }>删除</a>
+        <Popconfirm
+          title="是否要删除此行？"
+          onConfirm={ () => { handleRemove([ record ]); actionRef.current?.reloadAndRest?.(); } }>
+          <a>删除</a>
+        </Popconfirm>
       ],
     },
   ];
@@ -266,15 +267,19 @@ const ResumeList: React.FC<{}> = () => {
             </div>
           }
         >
-          <Button
-            onClick={ async () => {
+          <Popconfirm
+            title={ `是否要批量删除 ${selectedRowsState.length} 项` }
+            onConfirm={ async () => {
               await handleRemove(selectedRowsState);
               setSelectedRows([]);
               actionRef.current?.reloadAndRest?.();
-            } }
-          >
-            批量删除
+            } }>
+            <Button
+            >
+              批量删除
           </Button>
+          </Popconfirm>
+
           <Button type="primary">
             批量发布
           </Button>
