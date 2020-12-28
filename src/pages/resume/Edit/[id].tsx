@@ -1,5 +1,5 @@
 import { CloseCircleOutlined } from '@ant-design/icons';
-import { Button, Card, Form, Popover, Spin } from 'antd';
+import { Button, Card, Form, Popover, Spin, message } from 'antd';
 import React, { FC, useState, useEffect } from 'react';
 import { match } from 'react-router'
 import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
@@ -8,7 +8,8 @@ import SkillMaster from '../components/SkillMaster';
 import BasicInfoForm from '../components/BasicInfoForm';
 import ExperienceForm from '../components/ExperienceForm'
 import styles from '../style.less';
-import { ResumeDataType, resumeDataDefault } from '../API.d'
+import { ResumeDataType, resumeDataDefault, BaseInfoDataType, SkillMasterDateType, WorkExperienceDataType } from '../API.d'
+import { updateRule } from '../List/service';
 type InternalNamePath = (string | number)[];
 interface AdvancedFormProps {
   dispatch: Dispatch;
@@ -69,13 +70,50 @@ const AdvancedForm: FC<AdvancedFormProps> = ({ submitting, dispatch, match, load
       </span>
     );
   }
-  const onFinish = (values: { [ key: string ]: any }) => {
+  const onFinish = async (values: {
+    key: string,
+    name: string,
+    sex?: '男' | '女',
+    nativePlace?: string,
+    residencePlace?: string,
+    ethnic?: string,
+    email?: string,
+    phone?: string,
+    dateBirth?: string,
+    education?: string,
+    headerImgUrl?: string,
+    jobIntention?: string,
+    salaryExpectation?: string,
+    yearsWork?: string,
+    skillMaster: SkillMasterDateType[] | [],
+    workExperience: WorkExperienceDataType[] | []
+  }) => {
     setError([]);
-    console.log(values);
-    // dispatch({
-    //   type: 'formAndadvancedForm/submitAdvancedForm',
-    //   payload: values,
-    // });
+    const hide = message.loading('正在提交');
+    try {
+      await updateRule({
+        updateId: resumeData.id,
+        data: {
+          id: resumeData.id,
+          status: resumeData.status,
+          baseInfo: {
+            key: "1",
+            name: values.name
+          },
+          skillMaster: values.skillMaster,
+          workExperience: values.workExperience,
+          updatedAt: new Date(),
+          createdAt: resumeData.createdAt
+        }
+      });
+      hide;
+      message.success('删除成功，即将刷新');
+      return true;
+    } catch (error) {
+      hide;
+      message.error('删除失败，请重试');
+      return false;
+    }
   }
 
   const onFinishFailed = (errorInfo: any) => {

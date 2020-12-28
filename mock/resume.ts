@@ -221,55 +221,93 @@ function postRule (req: Request, res: Response, u: string, b: Request) {
     realUrl = req.url;
   }
   const body = (b && b.body) || req.body;
-  const { method, name, desc, id } = body;
+  const { method } = body;
   switch (method) {
     case 'delete':
+      const { deleteId } = body
       tableListDataSource.forEach(item => {
-        if (id.indexOf(item.id) !== -1) {
+        if (deleteId.indexOf(item.id) !== -1) {
           item.status = '2'//删除的状态2
         }
       });
       break;
     case 'create':
       (() => {
+        const { baseInfo, skillMaster, workExperience } = body
         const i = Math.ceil(Math.random() * 10000);
-        const newRule = {
-          id: tableListDataSource.length,
-          href: 'https://ant.design',
-          avatar: [
-            'https://gw.alipayobjects.com/zos/rmsportal/eeHMaZBwmTvLdIwMfBpg.png',
-            'https://gw.alipayobjects.com/zos/rmsportal/udxAbMEhpwthVVcjLXik.png',
-          ][ i % 2 ],
-          name,
-          owner: '曲丽丽',
-          desc,
-          callNo: Math.floor(Math.random() * 1000),
-          status: Math.floor(Math.random() * 10) % 2,
+        const createResumeData: ResumeDataType = {
+          id: tableListDataSource.length.toString(),
+          status: "1",
+          baseInfo: {
+            key: i.toString(),
+            name: baseInfo.name,
+            sex: baseInfo.sex,
+            nativePlace: baseInfo.nativePlace,
+            residencePlace: baseInfo.residencePlace,
+            ethnic: baseInfo.ethnic,
+            email: baseInfo.email,
+            phone: baseInfo.phone,
+            dateBirth: baseInfo.dateBirth,
+            education: baseInfo.education,
+            headerImgUrl: baseInfo.headerImgUrl,
+            jobIntention: baseInfo.jobIntention,
+            salaryExpectation: baseInfo.salaryExpectation,
+            yearsWork: baseInfo.yearsWork,
+          },
+          skillMaster,
+          workExperience,
           updatedAt: new Date(),
-          createdAt: new Date(),
-          progress: Math.ceil(Math.random() * 100),
+          createdAt: new Date()
         };
-        tableListDataSource.unshift(newRule);
-        return res.json(newRule);
+        tableListDataSource.unshift(createResumeData);
+        return res.json(createResumeData);
       })();
       return;
     case 'update':
       (() => {
-        let newRule = {};
+        const { date, updateId } = body
         tableListDataSource = tableListDataSource.map((item) => {
-          if (item.id === id) {
-            newRule = { ...item, desc, name };
-            return { ...item, desc, name };
+          if (item.id === updateId) {
+            const updateResumeData: ResumeDataType = {
+              ...item,
+              baseInfo: {
+                ...item.baseInfo,
+                name: date.baseInfo.name,
+                sex: date.baseInfo.sex,
+                nativePlace: date.baseInfo.nativePlace,
+                residencePlace: date.baseInfo.residencePlace,
+                ethnic: date.baseInfo.ethnic,
+                email: date.baseInfo.email,
+                phone: date.baseInfo.phone,
+                dateBirth: date.baseInfo.dateBirth,
+                education: date.baseInfo.education,
+                headerImgUrl: date.baseInfo.headerImgUrl,
+                jobIntention: date.baseInfo.jobIntention,
+                salaryExpectation: date.baseInfo.salaryExpectation,
+                yearsWork: date.baseInfo.yearsWork,
+              },
+              skillMaster: date.skillMaster,
+              workExperience: date.workExperience,
+              id: item.id,
+              updatedAt: new Date()
+            };
+            return updateResumeData
           }
           return item;
         });
-        return res.json(newRule);
+        return
       })();
       return;
     case 'publish'://设置发布或关闭
+      let { publishId, batch } = body
+      console.log(publishId, batch)
       tableListDataSource.forEach(item => {
-        if (id.indexOf(item.id) !== -1) {
-          item.status = item.status === '0' ? '1' : '0'//删除的状态2
+        if (publishId.indexOf(item.id) !== -1) {
+          if (!batch) {
+            item.status = item.status === '0' ? '1' : '0'//单个点击发布状态
+          } else {
+            item.status = '1' //批量设置发布
+          }
         }
       });
       return

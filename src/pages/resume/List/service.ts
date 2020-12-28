@@ -11,12 +11,31 @@ export async function queryRule (params?: ResumeDataType) {
   });
 }
 
-export async function removeRule (params: { id: string[] }) {
+export async function removeRule (params: { deleteId: string[] }) {
   return request('/resume/postResume', {
     method: 'POST',
     data: {
       ...params,
       method: 'delete',
+    },
+  });
+}
+
+export async function publishRule (params: { publishId: string[], batch: boolean }) {
+  return request('/resume/postResume', {
+    method: 'POST',
+    data: {
+      ...params,
+      method: 'publish',
+    },
+  });
+}
+export async function updateRule (params: { updateId: string, data: ResumeDataType }) {
+  return request('/resume/postResume', {
+    method: 'POST',
+    data: {
+      ...params,
+      method: 'update',
     },
   });
 }

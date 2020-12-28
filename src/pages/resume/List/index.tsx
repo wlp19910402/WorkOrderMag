@@ -5,7 +5,7 @@ import { Link, history } from 'umi';
 import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import ProDescriptions, { ProDescriptionsItemProps } from '@ant-design/pro-descriptions';
-import { queryRule, removeRule } from './service';
+import { queryRule, removeRule, publishRule } from './service';
 import { ResumeDataType } from '../API.d';
 import DetailSkillMaster from '../components/detail/DetailSkillMaster'
 import DetailWorkExp from '../components/detail/DetailWorkExp'
@@ -20,7 +20,7 @@ const handleRemove = async (selectedRows: ResumeDataType[]) => {
   if (!selectedRows) return true;
   try {
     await removeRule({
-      id: selectedRows.map((row) => row.id),
+      deleteId: selectedRows.map((row) => row.id),
     });
     hide;
     message.success('删除成功，即将刷新');
@@ -31,7 +31,26 @@ const handleRemove = async (selectedRows: ResumeDataType[]) => {
     return false;
   }
 };
-
+/**
+ *发布
+ */
+const handlePublish = async (selectedRows: ResumeDataType[], batch: boolean) => {
+  const hide = message.loading('正在设置');
+  if (!selectedRows) return true;
+  try {
+    await publishRule({
+      publishId: selectedRows.map((row) => row.id),
+      batch
+    });
+    hide;
+    message.success('正在设置，即将刷新');
+    return true;
+  } catch (error) {
+    hide;
+    message.error('发布失败，请重试');
+    return false;
+  }
+};
 const hideTable = {
   dataIndex: 'baseInfo',
   hideInSearch: true,
@@ -163,7 +182,11 @@ const ResumeList: React.FC<{}> = () => {
       dataIndex: 'status',
       hideInForm: true,
       hideInSearch: true,
-      render: (val => { return (<Switch checkedChildren='发布' unCheckedChildren="关闭" defaultChecked={ val === '1' } />) })
+      render: ((val, record) => {
+        return (<Switch loading={ false } onClick={ async (checked: boolean, event: Event) => {
+          handlePublish([ record ], false)
+        } } checkedChildren='发布' unCheckedChildren="关闭" defaultChecked={ val === '1' } />)
+      })
     },
     {
       title: "创建时间",
@@ -279,10 +302,17 @@ const ResumeList: React.FC<{}> = () => {
               批量删除
           </Button>
           </Popconfirm>
-
-          <Button type="primary">
-            批量发布
+          <Popconfirm
+            title={ `是否要批量发布 ${selectedRowsState.length} 项` }
+            onConfirm={ async () => {
+              await handlePublish(selectedRowsState, true);
+              setSelectedRows([]);
+              actionRef.current?.reloadAndRest?.();
+            } }>
+            <Button type="primary">
+              批量发布
           </Button>
+          </Popconfirm>
         </FooterToolbar>
       ) }
       <Drawer
