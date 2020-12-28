@@ -8,7 +8,7 @@ import SkillMaster from '../components/SkillMaster';
 import BasicInfoForm from '../components/BasicInfoForm';
 import ExperienceForm from '../components/ExperienceForm'
 import styles from '../style.less';
-import { ResumeDataType, resumeDataDefault, BaseInfoDataType, SkillMasterDateType, WorkExperienceDataType } from '../API.d'
+import { ResumeDataType, resumeDataDefault, BaseInfoDataType, BaseInfoDefault, SkillMasterDateType, WorkExperienceDataType } from '../API.d'
 import { updateRule } from '../List/service';
 type InternalNamePath = (string | number)[];
 interface AdvancedFormProps {
@@ -73,13 +73,13 @@ const AdvancedForm: FC<AdvancedFormProps> = ({ submitting, dispatch, match, load
   const onFinish = async (values: {
     key: string,
     name: string,
-    sex?: '男' | '女',
-    nativePlace?: string,
-    residencePlace?: string,
-    ethnic?: string,
-    email?: string,
-    phone?: string,
-    dateBirth?: string,
+    sex: '男' | '女',
+    nativePlace: string,
+    residencePlace: string,
+    ethnic: string,
+    email: string,
+    phone: string,
+    dateBirth: string,
     education?: string,
     headerImgUrl?: string,
     jobIntention?: string,
@@ -94,16 +94,16 @@ const AdvancedForm: FC<AdvancedFormProps> = ({ submitting, dispatch, match, load
       await updateRule({
         updateId: resumeData.id,
         data: {
-          id: resumeData.id,
-          status: resumeData.status,
+          ...resumeData,
           baseInfo: {
-            key: "1",
-            name: values.name
+            ...resumeData.baseInfo,
+            key: resumeData.baseInfo.key,
+            name: values.name,
+            sex: values.sex,
+            nativePlace: values.nativePlace
           },
           skillMaster: values.skillMaster,
-          workExperience: values.workExperience,
-          updatedAt: new Date(),
-          createdAt: resumeData.createdAt
+          workExperience: values.workExperience
         }
       });
       hide;
@@ -140,9 +140,11 @@ const AdvancedForm: FC<AdvancedFormProps> = ({ submitting, dispatch, match, load
         onFinishFailed={ onFinishFailed }
       >
         <PageContainer content="制作resume">
-          <Card title={ "基本信息" + dat } className={ styles.card } bordered={ false }>
-            <BasicInfoForm baseInfo={ resumeData.baseInfo } />
-          </Card>
+          <Form.Item name="baseInfo">
+            <Card title={ "基本信息" + dat } className={ styles.card } bordered={ false }>
+              <BasicInfoForm baseInfo={ resumeData.baseInfo } />
+            </Card>
+          </Form.Item>
           <Form.Item name="skillMaster">
             <SkillMaster />
           </Form.Item>

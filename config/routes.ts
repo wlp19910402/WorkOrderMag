@@ -73,15 +73,18 @@
                 authority: [ 'admin', 'user' ],
                 routes: [
                   {
+                    path: '/resume',
+                    redirect: '/resume/list',
+                  },
+                  {
                     path: '/resume/create',
-                    name: 'create',
+                    title: "新增",
                     icon: 'smile',
                     component: './resume/Create',
                     authority: [ 'admin', 'user' ],
                   },
                   {
                     path: '/resume/list',
-                    name: 'list',
                     icon: 'smile',
                     component: './resume/List',
                     authority: [ 'admin', 'user' ],

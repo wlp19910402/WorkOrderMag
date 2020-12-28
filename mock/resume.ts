@@ -265,29 +265,29 @@ function postRule (req: Request, res: Response, u: string, b: Request) {
       return;
     case 'update':
       (() => {
-        const { date, updateId } = body
+        const { data, updateId } = body
         tableListDataSource = tableListDataSource.map((item) => {
           if (item.id === updateId) {
             const updateResumeData: ResumeDataType = {
               ...item,
               baseInfo: {
                 ...item.baseInfo,
-                name: date.baseInfo.name,
-                sex: date.baseInfo.sex,
-                nativePlace: date.baseInfo.nativePlace,
-                residencePlace: date.baseInfo.residencePlace,
-                ethnic: date.baseInfo.ethnic,
-                email: date.baseInfo.email,
-                phone: date.baseInfo.phone,
-                dateBirth: date.baseInfo.dateBirth,
-                education: date.baseInfo.education,
-                headerImgUrl: date.baseInfo.headerImgUrl,
-                jobIntention: date.baseInfo.jobIntention,
-                salaryExpectation: date.baseInfo.salaryExpectation,
-                yearsWork: date.baseInfo.yearsWork,
+                name: data.baseInfo.name,
+                sex: data.baseInfo.sex,
+                nativePlace: data.baseInfo.nativePlace,
+                residencePlace: data.baseInfo.residencePlace,
+                ethnic: data.baseInfo.ethnic,
+                email: data.baseInfo.email,
+                phone: data.baseInfo.phone,
+                dateBirth: data.baseInfo.dateBirth,
+                education: data.baseInfo.education,
+                headerImgUrl: data.baseInfo.headerImgUrl,
+                jobIntention: data.baseInfo.jobIntention,
+                salaryExpectation: data.baseInfo.salaryExpectation,
+                yearsWork: data.baseInfo.yearsWork,
               },
-              skillMaster: date.skillMaster,
-              workExperience: date.workExperience,
+              skillMaster: data.skillMaster,
+              workExperience: data.workExperience,
               id: item.id,
               updatedAt: new Date()
             };
