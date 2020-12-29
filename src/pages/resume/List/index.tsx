@@ -43,11 +43,11 @@ const handlePublish = async (selectedRows: ResumeDataType[], batch: boolean) => 
       batch
     });
     hide;
-    message.success('正在设置，即将刷新');
+    message.success('成功设置，即将刷新');
     return true;
   } catch (error) {
     hide;
-    message.error('发布失败，请重试');
+    message.error('设置失败，请重试');
     return false;
   }
 };

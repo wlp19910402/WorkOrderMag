@@ -37,7 +37,7 @@ const UserLayout: React.FC<UserLayoutProps> = (props) => {
     <HelmetProvider>
       <Helmet>
         <title>{ title }</title>
-        <meta name="description" content={ title } />
+        {/* <meta name="description" content={ title } /> */ }
       </Helmet>
 
       <div className={ styles.container }>
@@ -61,8 +61,8 @@ const UserLayout: React.FC<UserLayoutProps> = (props) => {
           </div>
           { children }
         </div>
-        <DefaultFooter copyright={ `${new Date().getFullYear()} Home-D` }
-          links={ false } />
+        {/* <DefaultFooter copyright={ `${new Date().getFullYear()} Home-D` }
+          links={ false } /> */}
       </div>
     </HelmetProvider>
   );

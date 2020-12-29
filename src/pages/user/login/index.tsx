@@ -69,7 +69,7 @@ const Login: React.FC<LoginProps> = (props) => {
           handleSubmit(values);
         } }
       >
-        <Tabs activeKey={ type } onChange={ setType }>
+        <Tabs activeKey={ type } onChange={ setType } style={ { color: "white" } }>
           <Tabs.TabPane
             key="account"
             tab={ intl.formatMessage({
@@ -85,7 +85,6 @@ const Login: React.FC<LoginProps> = (props) => {
             }) }
           />
         </Tabs>
-
         { status === 'error' && loginType === 'account' && !submitting && (
           <LoginMessage
             content={ intl.formatMessage({

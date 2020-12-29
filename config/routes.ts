@@ -68,17 +68,20 @@
               },
               {
                 path: '/resume',
-                name: 'resume',
+                name: '简历管理',
                 icon: 'crown',
                 authority: [ 'admin', 'user' ],
                 routes: [
                   {
                     path: '/resume',
+                    name: "简历管理",
+                    hideInMenu: true,
                     redirect: '/resume/list',
                   },
                   {
                     path: '/resume/create',
-                    title: "新增",
+                    name: "新增",
+                    hideInMenu: true,
                     icon: 'smile',
                     component: './resume/Create',
                     authority: [ 'admin', 'user' ],
@@ -86,20 +89,28 @@
                   {
                     path: '/resume/list',
                     icon: 'smile',
+                    name: "列表",
+                    hideInMenu: true,
                     component: './resume/List',
                     authority: [ 'admin', 'user' ],
                   },
                   {
                     path: '/resume/edit/:id',
+                    name: "编辑",
+                    hideInMenu: true,
                     component: './resume/Edit/[id]',
                     authority: [ 'admin', 'user' ],
                   },
                   {
                     path: '/resume/detail/:id',
+                    name: "详情",
+                    hideInMenu: true,
                     component: './resume/Detail/[id]',
                     authority: [ 'admin', 'user' ],
                   },
                   {
+                    name: "404",
+                    hideInMenu: true,
                     component: './404',
                   },
                 ],
