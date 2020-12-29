@@ -1,6 +1,6 @@
 import { DefaultFooter, MenuDataItem, getMenuData, getPageTitle } from '@ant-design/pro-layout';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
-import { Link, SelectLang, useIntl, ConnectProps, connect, FormattedMessage } from 'umi';
+import { Link, SelectLang, useIntl, ConnectProps, connect } from 'umi';
 import React from 'react';
 import { ConnectState } from '@/models/connect';
 import logo from '../assets/logo.svg';
@@ -53,10 +53,7 @@ const UserLayout: React.FC<UserLayoutProps> = (props) => {
               </Link>
             </div>
             <div className={ styles.desc }>
-              <FormattedMessage
-                id="pages.layouts.userLayout.title"
-                defaultMessage="Home-D resume模板，优化，简洁，清晰。开始您的resume"
-              />
+              Home-D resume模板，优化，简洁，清晰。开始您的resume
             </div>
           </div>
           { children }

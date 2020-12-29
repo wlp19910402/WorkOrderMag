@@ -1,12 +1,4 @@
-import {
-  AlipayCircleOutlined,
-  LockTwoTone,
-  MailTwoTone,
-  MobileTwoTone,
-  TaobaoCircleOutlined,
-  UserOutlined,
-  WeiboCircleOutlined,
-} from '@ant-design/icons';
+import { LockTwoTone, MailTwoTone, MobileTwoTone, UserOutlined } from '@ant-design/icons';
 import { Alert, Space, message, Tabs } from 'antd';
 import React, { useState } from 'react';
 import ProForm, { ProFormCaptcha, ProFormCheckbox, ProFormText } from '@ant-design/pro-form';
@@ -14,9 +6,7 @@ import { connect, Dispatch, useIntl, FormattedMessage, Link } from 'umi';
 import { StateType } from '@/models/login';
 import { getFakeCaptcha, LoginParamsType } from '@/services/login';
 import { ConnectState } from '@/models/connect';
-
 import styles from './index.less';
-
 interface LoginProps {
   dispatch: Dispatch;
   userLogin: StateType;

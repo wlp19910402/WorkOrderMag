@@ -8,12 +8,12 @@
         component: '../layouts/UserLayout',
         routes: [
           {
-            name: 'login',
+            name: '登录',
             path: '/user/login',
             component: './user/login',
           },
           {
-            name: 'register',
+            name: '注册',
             path: '/user/register',
             component: './user/register',
           },
@@ -34,37 +34,57 @@
               },
               {
                 path: '/welcome',
-                name: 'welcome',
+                name: '欢迎页',
                 icon: 'smile',
                 component: './Welcome',
               },
               {
                 path: '/admin',
-                name: 'admin',
+                name: '管理',
                 icon: 'crown',
                 authority: [ 'admin' ],
                 routes: [
                   {
                     path: '/admin/sub-page',
-                    name: 'sub-page',
+                    name: '二级管理',
                     icon: 'smile',
                     component: './Admin',
                     authority: [ 'admin' ],
                   },
                   {
                     path: '/admin/user',
-                    name: 'user',
+                    name: '用户管理',
                     icon: 'smile',
                     component: './admin/UserList',
                     authority: [ 'admin' ],
-                  },
-                ],
+                  }
+                ]
               },
               {
-                name: 'list.table-list',
+                name: '查询表格',
                 icon: 'table',
                 path: '/list',
                 component: './ListTableList',
+              },
+              {
+                name: "系统管理",
+                icon: "table",
+                path: '/sys',
+                authority: [ 'admin', 'user' ],
+                routes: [
+                  {
+                    name: "菜单管理",
+                    path: "/sys/menuManager",
+                    component: './sys/Menu',
+                    authority: [ 'admin', 'user' ],
+                  },
+                  {
+                    name: "角色管理",
+                    path: "/sys/roleManager",
+                    component: './sys/Menu',
+                    authority: [ 'admin', 'user' ],
+                  }
+                ]
               },
               {
                 path: '/resume',

@@ -10,8 +10,7 @@ import ProLayout, {
   DefaultFooter,
 } from '@ant-design/pro-layout';
 import React, { useEffect, useMemo, useRef } from 'react';
-import { Link, useIntl, connect, Dispatch, history } from 'umi';
-import { GithubOutlined } from '@ant-design/icons';
+import { Link, connect, Dispatch, history } from 'umi';
 import { Result, Button } from 'antd';
 import Authorized from '@/utils/Authorized';
 import RightContent from '@/components/GlobalHeader/RightContent';
@@ -105,12 +104,10 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
     [ location.pathname ],
   );
 
-  const { formatMessage } = useIntl();
 
   return (
     <ProLayout
       logo={ logo }
-      formatMessage={ formatMessage }
       { ...props }
       { ...settings }
       onCollapse={ handleMenuCollapse }
@@ -124,7 +121,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
       breadcrumbRender={ (routers = []) => [
         {
           path: '/',
-          breadcrumbName: formatMessage({ id: 'menu.home' }),
+          breadcrumbName: '首页'
         },
         ...routers,
       ] }
