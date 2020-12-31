@@ -13,15 +13,11 @@ export interface PageDataType {
   pageSize: number;
 }
 
-export const userListDataDefault: UserListDataType = {
-  username: "",
-  mobile: ""
-}
 export interface EditUserDataType {
   email: string,
   mobile: string,
   password: string,
-  realName: string,
+  realname: string,
   roleIds: number[],
   username: string
 }

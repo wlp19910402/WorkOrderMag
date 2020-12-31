@@ -9,7 +9,7 @@
         routes: [
           {
             name: '登录',
-            path: '/login',
+            path: '/user/login',
             component: './Login',
           }
         ],

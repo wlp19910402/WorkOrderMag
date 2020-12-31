@@ -1,8 +1,8 @@
 import { LockTwoTone, SafetyCertificateTwoTone, UserOutlined } from '@ant-design/icons';
-import { Space, Image, Row, Col } from 'antd';
+import { Image, Row, Col } from 'antd';
 import React, { useState } from 'react';
 import ProForm, { ProFormCheckbox, ProFormText } from '@ant-design/pro-form';
-import { connect, Dispatch, Link } from 'umi';
+import { connect, Dispatch } from 'umi';
 import { ConnectState } from '@/models/connect';
 import styles from './index.less';
 interface LoginProps {

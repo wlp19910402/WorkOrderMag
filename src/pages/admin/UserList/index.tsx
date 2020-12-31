@@ -1,17 +1,17 @@
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, Drawer, Switch, message, Popconfirm } from 'antd';
+import { Button, Drawer, message, Popconfirm } from 'antd';
 import React, { useState, useRef } from 'react';
 import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
-import { ModalForm, ProFormText, ProFormCheckbox } from '@ant-design/pro-form';
 import ProDescriptions, { ProDescriptionsItemProps } from '@ant-design/pro-descriptions';
-import { queryUserList, addUser } from './service';
-import { PageDataType, UserListDataType, userListDataDefault, EditUserDataType } from '../data.d';
+import { queryUserList } from './service';
+import { UserListDataType } from '../data.d';
+import ModalModifyForm from './components/ModalModifyForm'
 /**
  *  删除节点
  * @param selectedRows
  */
-const handleRemove = async (selectedRows: PageDataType[]) => {
+const handleRemove = async (selectedRows: UserListDataType[]) => {
   const hide = message.loading('正在删除');
   if (!selectedRows) return true;
   try {
@@ -27,26 +27,6 @@ const handleRemove = async (selectedRows: PageDataType[]) => {
     return false;
   }
 };
-/**
- *发布
- */
-const handlePublish = async (selectedRows: UserListDataType[], batch: boolean) => {
-  const hide = message.loading('正在设置');
-  if (!selectedRows) return true;
-  try {
-    // await publishRule({
-    //   publishId: selectedRows.map((row) => row.id),
-    //   batch
-    // });
-    hide;
-    message.success('成功设置，即将刷新');
-    return true;
-  } catch (error) {
-    hide;
-    message.error('设置失败，请重试');
-    return false;
-  }
-};
 const ResumeList: React.FC<UserListDataType> = () => {
   const [ showDetail, setShowDetail ] = useState<boolean>(false);
   const actionRef = useRef<ActionType>();
@@ -57,13 +37,11 @@ const ResumeList: React.FC<UserListDataType> = () => {
     {
       title: "id",
       dataIndex: 'id',
-      sorter: true,
-      renderText: ((val) => `${val}`)
+      sorter: true
     },
     {
       title: "部门id",
-      dataIndex: 'deptId',
-      renderText: ((val) => `${val}`)
+      dataIndex: 'deptId'
     },
     {
       title: "姓名",
@@ -86,19 +64,16 @@ const ResumeList: React.FC<UserListDataType> = () => {
     {
       title: "用户名",
       dataIndex: 'username',
-      renderText: ((val) => `${val}`)
     },
     {
       title: "电子邮箱",
       dataIndex: 'email',
       valueType: 'textarea',
-      renderText: ((val) => `${val}`)
     },
     {
       title: "手机号",
       dataIndex: 'mobile',
       valueType: 'textarea',
-      renderText: ((val) => `${val}`)
     },
     {
       title: "创建时间",
@@ -106,7 +81,6 @@ const ResumeList: React.FC<UserListDataType> = () => {
       hideInSearch: true,
       hideInTable: true,
       valueType: 'textarea',
-      renderText: ((val) => `${val}`)
     },
     {
       title: "状态",
@@ -127,18 +101,6 @@ const ResumeList: React.FC<UserListDataType> = () => {
           status: 'Cancel',
         },
       },
-    },
-    {
-      title: "状态",
-      dataIndex: 'status',
-      hideInForm: true,
-      hideInSearch: true,
-      valueType: 'textarea',
-      render: ((val, record) => {
-        return (<Switch loading={ false } onClick={ async (checked: boolean, event: Event) => {
-          handlePublish([ record ], false)
-        } } checkedChildren='发布' unCheckedChildren="关闭" defaultChecked={ val === '1' } />)
-      })
     },
     {
       title: "操作",
@@ -170,7 +132,7 @@ const ResumeList: React.FC<UserListDataType> = () => {
           pageSize: 10,
         } }
         toolBarRender={ () => [
-          <Button type="primary" key="primary" onClick={ () => { handleModalVisible(true); setCurrentRow(userListDataDefault); } }>
+          <Button type="primary" key="primary" onClick={ () => { handleModalVisible(true); setCurrentRow(undefined); } }>
             <PlusOutlined />新建
           </Button>,
         ] }
@@ -180,106 +142,14 @@ const ResumeList: React.FC<UserListDataType> = () => {
           onChange: (_, selectedRows) => setSelectedRows(selectedRows),
         } }
       />
+
       {createModalVisible && (
-        <ModalForm
-          title='新建用户'
-          width="400px"
-          visible={ createModalVisible }
-          onVisibleChange={ handleModalVisible }
-          onFinish={ async (value) => {
-            console.log("新增", value)
-            let bodyVaule: EditUserDataType = {
-              username: value.username,
-              email: value.email,
-              mobile: value.mobile,
-              realName: value.realname,
-              roleIds: value.roleIds,
-              password: value.password
-            }
-            const res = await addUser(bodyVaule)
-            if (res.code === 0) {
-              handleModalVisible(false);
-              if (actionRef.current) {
-                actionRef.current.reload();
-              }
-            }
-          } }
-        >
-          <ProFormText
-            rules={ [
-              {
-                required: true,
-                message: "请输入用户名！"
-              },
-            ] }
-            label="用户名"
-            name="username"
-            placeholder="请输入用户名"
-            initialValue={ currentRow?.username }
-          />
-          <ProFormText
-            rules={ [
-              {
-                required: true,
-                message: "请输入姓名！"
-              },
-            ] }
-            label="姓名"
-            name="realName"
-            placeholder="请输入姓名"
-            initialValue={ currentRow?.realname }
-          />
-          <ProFormText.Password rules={ [
-            {
-              required: true,
-              message: "请输入密码！"
-            },
-          ] } label="密码" name="password" placeholder="请输入密码"
-          />
-          <ProFormText
-            rules={ [
-              {
-                required: true,
-                message: "请输入手机号！"
-              },
-            ] }
-            label="手机号"
-            name="mobile"
-            placeholder="请输入手机号"
-            initialValue={ currentRow?.mobile }
-          />
-          <ProFormText
-            rules={ [
-              {
-                required: true,
-                message: "请输入邮箱！"
-              },
-            ] }
-            label="邮箱"
-            name="email"
-            placeholder="请输入邮箱"
-            initialValue={ currentRow?.email }
-          />
-          <ProFormCheckbox.Group
-            name="roleIds"
-            layout="horizontal"
-            label="角色id"
-            options={ [
-              {
-                label: "管理员",
-                value: 0
-              },
-              {
-                label: "维修人员",
-                value: 1
-              },
-              {
-                label: "维修",
-                value: 2
-              }
-            ] }
-          />
-        </ModalForm>
+        <ModalModifyForm
+          createModalVisible={ createModalVisible }
+          handleModalVisible={ handleModalVisible }
+          actionRef={ actionRef }
+          currentRow={ currentRow }
+        />
       ) }
 
       {selectedRowsState?.length > 0 && (
