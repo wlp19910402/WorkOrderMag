@@ -1,25 +1,32 @@
 import request from '@/utils/request';
 
 export interface LoginParamsType {
-  userName: string;
+  username: string;
   password: string;
-  mobile: string;
-  captcha: string;
+  code: string;
 }
-
+//获取图片验证码
+export async function fetchImgCaptcha () {
+  return request('/api/sys/login-captcha.jpg', {
+    method: "GET"
+  })
+}
+//登录
 export async function fakeAccountLogin (params: LoginParamsType) {
-  return request('/api/login/account', {
+  return request('/api/sys/login', {
     method: 'POST',
     data: params,
   });
 }
-
-export async function getFakeCaptcha (mobile: string) {
-  return request(`/api/login/captcha?mobile=${mobile}`);
+//根据token刷新token值
+export async function fackAccountToken () {
+  return request('/api/user/current', {
+    method: "GET"
+  })
 }
-
-export async function fackAccountToken() {
-  return request('/api/validationToken', {
+//根据token刷新token值
+export async function fackLogout () {
+  return request('/api/sys/logout', {
     method: "GET"
   })
 }

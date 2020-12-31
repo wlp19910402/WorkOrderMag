@@ -9,7 +9,7 @@ import ProLayout, {
   Settings,
   DefaultFooter,
 } from '@ant-design/pro-layout';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useMemo, useRef, useEffect } from 'react';
 import { Link, connect, Dispatch, history } from 'umi';
 import { Result, Button } from 'antd';
 import Authorized from '@/utils/Authorized';
@@ -30,7 +30,7 @@ const noMatch = (
     subTitle="Sorry, you are not authorized to access this page."
     extra={
       <Button type="primary">
-        <Link to="/user/login">Go Login</Link>
+        <Link to="/user/login">登录</Link>
       </Button>
     }
   />
@@ -43,17 +43,13 @@ export interface BasicLayoutProps extends ProLayoutProps {
     authority: string[];
   };
   settings: Settings;
-  dispatch: Dispatch;
-  isLogin: Boolean;
+  dispatch: Dispatch
 }
 export type BasicLayoutContext = { [ K in 'location' ]: BasicLayoutProps[ K ] } & {
   breadcrumbNameMap: {
     [ path: string ]: MenuDataItem;
   };
 };
-/**
- * use Authorized check all menu item
- */
 const menuDataRender = (menuList: MenuDataItem[]): MenuDataItem[] => {
   return menuList.map((item) => {
     const localItem = {
@@ -80,21 +76,10 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
     settings,
     location = {
       pathname: '/',
-    },
-    isLogin
+    }
   } = props;
   const menuDataRef = useRef<MenuDataItem[]>([]);
 
-  useEffect(() => {
-    if (dispatch && isLogin) {
-      dispatch({
-        type: 'user/fetchCurrent',
-      });
-    }
-  }, []);
-  /**
-   * init variables
-   */
   const handleMenuCollapse = (payload: boolean): void => {
     if (dispatch) {
       dispatch({
@@ -103,7 +88,6 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
       });
     }
   };
-  // get children authority
   const authorized = useMemo(
     () =>
       getMatchMenu(location.pathname || '/', menuDataRef.current).pop() || {
@@ -111,6 +95,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
       },
     [ location.pathname ],
   );
+  
   return (
     <ProLayout
       menuDataRender={ () => menuData }
@@ -154,8 +139,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
   );
 };
 
-export default connect(({ global, settings, login }: ConnectState) => ({
+export default connect(({ global, settings, user }: ConnectState) => ({
   collapsed: global.collapsed,
   settings,
-  isLogin: login.currentAuthority === 'admin' || login.currentAuthority === 'user'
 }))(BasicLayout);

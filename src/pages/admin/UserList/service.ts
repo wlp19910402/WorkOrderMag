@@ -1,38 +1,53 @@
-import request from '@/utils/request';
-import { TableListParams, TableListItem } from './data';
+import request from 'umi-request';
+import { ResumeDataType } from '../API.d';
+import { PageDataType, UserListDataType } from '../data.d';
 
-export async function queryRule(params?: TableListParams) {
-  return request('/api/rule', {
-    params,
+export const queryUserList = async (params: PageDataType) => {
+  let response = await request('/api/user/list', {
+    method: 'Get',
+    params: {
+      pageSize: params.pageSize,
+      pageNo: params.current
+    }
   });
+  return { ...response.data, data: response.data.records }
 }
 
-export async function removeRule(params: { key: number[] }) {
-  return request('/api/rule', {
-    method: 'POST',
-    data: {
-      ...params,
-      method: 'delete',
-    },
-  });
-}
+// export async function queryFakeList (params: { count: number }) {
+//   return request('/resume/getResumeData');
+// }
 
-export async function addRule(params: TableListItem) {
-  return request('/api/rule', {
-    method: 'POST',
-    data: {
-      ...params,
-      method: 'post',
-    },
-  });
-}
+// export async function queryRule (params?: ResumeDataType) {
+//   return request('/resume/getResume', {
+//     params,
+//   });
+// }
 
-export async function updateRule(params: TableListParams) {
-  return request('/api/rule', {
-    method: 'POST',
-    data: {
-      ...params,
-      method: 'update',
-    },
-  });
-}
+// export async function removeRule (params: { deleteId: string[] }) {
+//   return request('/resume/postResume', {
+//     method: 'POST',
+//     data: {
+//       ...params,
+//       method: 'delete',
+//     },
+//   });
+// }
+
+// export async function publishRule (params: { publishId: string[], batch: boolean }) {
+//   return request('/resume/postResume', {
+//     method: 'POST',
+//     data: {
+//       ...params,
+//       method: 'publish',
+//     },
+//   });
+// }
+// export async function updateRule (params: { updateId: string, data: ResumeDataType }) {
+//   return request('/resume/postResume', {
+//     method: 'POST',
+//     data: {
+//       ...params,
+//       method: 'update',
+//     },
+//   });
+// }

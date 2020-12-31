@@ -1,7 +1,7 @@
 import { DefaultFooter, MenuDataItem, getMenuData, getPageTitle } from '@ant-design/pro-layout';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
-import { Link, SelectLang, useIntl, ConnectProps, connect } from 'umi';
-import React from 'react';
+import { Link, SelectLang, useIntl, ConnectProps, connect, Dispatch } from 'umi';
+import React, { useEffect } from 'react';
 import { ConnectState } from '@/models/connect';
 import logo from '../assets/logo.svg';
 import styles from './UserLayout.less';
@@ -10,6 +10,8 @@ export interface UserLayoutProps extends Partial<ConnectProps> {
   breadcrumbNameMap: {
     [ path: string ]: MenuDataItem;
   };
+  dispatch: Dispatch;
+  isLogin: boolean;
 }
 
 const UserLayout: React.FC<UserLayoutProps> = (props) => {
@@ -17,6 +19,8 @@ const UserLayout: React.FC<UserLayoutProps> = (props) => {
     route = {
       routes: [],
     },
+    isLogin,
+    dispatch
   } = props;
   const { routes = [] } = route;
   const {
@@ -33,6 +37,13 @@ const UserLayout: React.FC<UserLayoutProps> = (props) => {
     breadcrumb,
     ...props,
   });
+  // useEffect(() => {
+  //   if (dispatch && !isLogin) {
+  //     dispatch({
+  //       type: 'user/fetchCurrent'
+  //     })
+  //   }
+  // }, [])
   return (
     <HelmetProvider>
       <Helmet>
@@ -65,4 +76,8 @@ const UserLayout: React.FC<UserLayoutProps> = (props) => {
   );
 };
 
-export default connect(({ settings }: ConnectState) => ({ ...settings }))(UserLayout);
+export default connect(
+  (
+    { settings, user }: ConnectState,
+  ) => ({ ...settings, isLogin: !!user.currentUser?.token })
+)(UserLayout);

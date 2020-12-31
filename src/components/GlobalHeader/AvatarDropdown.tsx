@@ -3,12 +3,13 @@ import { Avatar, Menu, Spin } from 'antd';
 import React from 'react';
 import { history, ConnectProps, connect } from 'umi';
 import { ConnectState } from '@/models/connect';
-import { CurrentUser } from '@/models/user';
+import { UserStateType } from '@/models/user';
 import HeaderDropdown from '../HeaderDropdown';
 import styles from './index.less';
-import defaultAvatar from '@/assets/images/header-avatar.png'
+import notLoginAvatar from '@/assets/images/header-avatar.png'
+import inLoginAvatar from '@/assets/images/resumeHeader.jpg'
 export interface GlobalHeaderRightProps extends Partial<ConnectProps> {
-  currentUser?: CurrentUser;
+  currentUser?: UserStateType;
   isLogin?: boolean;
 }
 
@@ -24,21 +25,17 @@ class AvatarDropdown extends React.Component<GlobalHeaderRightProps> {
       const { dispatch } = this.props;
       if (dispatch) {
         dispatch({
-          type: 'login/logout',
+          type: 'user/logout',
         });
       }
       return;
     }
-
     history.push(`/account/${key}`);
   };
 
   render (): React.ReactNode {
     const {
-      currentUser = {
-        avatar: '',
-        name: '',
-      },
+      currentUser,
       isLogin = false
     } = this.props;
     const menuHeaderDropdown = (
@@ -70,11 +67,11 @@ class AvatarDropdown extends React.Component<GlobalHeaderRightProps> {
         ) }
       </Menu>
     );
-    return currentUser && currentUser.name ? (
+    return currentUser && currentUser.username ? (
       <HeaderDropdown overlay={ menuHeaderDropdown }>
         <span className={ `${styles.action} ${styles.account}` }>
-          <Avatar size="small" className={ styles.avatar } src={ isLogin ? currentUser.avatar : defaultAvatar } alt="avatar" />
-          <span className={ `${styles.name} anticon` }>{ isLogin ? currentUser.name : "游客" }</span>
+          <Avatar size="small" className={ styles.avatar } src={ isLogin ? inLoginAvatar : notLoginAvatar } alt="avatar" />
+          <span className={ `${styles.name} anticon` }>{ isLogin ? currentUser.username : "游客" }</span>
         </span>
       </HeaderDropdown>
     ) : (
@@ -91,7 +88,7 @@ class AvatarDropdown extends React.Component<GlobalHeaderRightProps> {
   }
 }
 
-export default connect(({ user, login }: ConnectState) => ({
+export default connect(({ user }: ConnectState) => ({
   currentUser: user.currentUser,
-  isLogin: login.currentAuthority === 'admin' || login.currentAuthority === 'user'
+  isLogin: !!user.currentUser?.token
 }))(AvatarDropdown);

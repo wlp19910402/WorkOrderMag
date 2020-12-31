@@ -1,67 +1,23 @@
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, message, Input, Drawer, Avatar } from 'antd';
+import { Button, Drawer, Switch, message, Popconfirm } from 'antd';
 import React, { useState, useRef } from 'react';
-import { useIntl, FormattedMessage } from 'umi';
 import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
-import { ModalForm, ProFormText, ProFormTextArea } from '@ant-design/pro-form';
+import { ModalForm, ProFormText, ProFormCheckbox } from '@ant-design/pro-form';
 import ProDescriptions, { ProDescriptionsItemProps } from '@ant-design/pro-descriptions';
-import UpdateForm, { FormValueType } from './components/UpdateForm';
-import { TableListItem } from './data';
-import { queryRule, updateRule, addRule, removeRule } from './service';
-
-/**
- * 添加节点
- * @param fields
- */
-const handleAdd = async (fields: TableListItem) => {
-  const hide = message.loading('正在添加');
-  try {
-    await addRule({ ...fields });
-    hide;
-    message.success('添加成功');
-    return true;
-  } catch (error) {
-    hide;
-    message.error('添加失败请重试！');
-    return false;
-  }
-};
-
-/**
- * 更新节点
- * @param fields
- */
-const handleUpdate = async (fields: FormValueType) => {
-  const hide = message.loading('正在配置');
-  try {
-    await updateRule({
-      name: fields.name,
-      desc: fields.desc,
-      key: fields.key,
-    });
-    hide;
-
-    message.success('配置成功');
-    return true;
-  } catch (error) {
-    hide;
-    message.error('配置失败请重试！');
-    return false;
-  }
-};
-
+import { queryUserList } from './service';
+import { PageDataType, UserListDataType, userListDataDefault } from '../data.d';
 /**
  *  删除节点
  * @param selectedRows
  */
-const handleRemove = async (selectedRows: TableListItem[]) => {
+const handleRemove = async (selectedRows: PageDataType[]) => {
   const hide = message.loading('正在删除');
   if (!selectedRows) return true;
   try {
-    await removeRule({
-      key: selectedRows.map((row) => row.key),
-    });
+    // await removeRule({
+    //   deleteId: selectedRows.map((row) => row.id),
+    // });
     hide;
     message.success('删除成功，即将刷新');
     return true;
@@ -71,48 +27,50 @@ const handleRemove = async (selectedRows: TableListItem[]) => {
     return false;
   }
 };
-
-const TableList: React.FC<{}> = () => {
-  /**
-   * 新建窗口的弹窗
-   */
-  const [ createModalVisible, handleModalVisible ] = useState<boolean>(false);
-  /**
-   * 分布更新窗口的弹窗
-   */
-  const [ updateModalVisible, handleUpdateModalVisible ] = useState<boolean>(false);
-
+/**
+ *发布
+ */
+const handlePublish = async (selectedRows: UserListDataType[], batch: boolean) => {
+  const hide = message.loading('正在设置');
+  if (!selectedRows) return true;
+  try {
+    // await publishRule({
+    //   publishId: selectedRows.map((row) => row.id),
+    //   batch
+    // });
+    hide;
+    message.success('成功设置，即将刷新');
+    return true;
+  } catch (error) {
+    hide;
+    message.error('设置失败，请重试');
+    return false;
+  }
+};
+const ResumeList: React.FC<UserListDataType> = () => {
   const [ showDetail, setShowDetail ] = useState<boolean>(false);
-
   const actionRef = useRef<ActionType>();
-  const [ currentRow, setCurrentRow ] = useState<TableListItem>();
-  const [ selectedRowsState, setSelectedRows ] = useState<TableListItem[]>([]);
-
-  /**
-   * 国际化配置
-   */
-  const intl = useIntl();
-
-  const columns: ProColumns<TableListItem>[] = [
+  const [ currentRow, setCurrentRow ] = useState<UserListDataType>();
+  const [ selectedRowsState, setSelectedRows ] = useState<UserListDataType[]>([]);
+  const [ createModalVisible, handleModalVisible ] = useState<boolean>(false);
+  const columns: ProColumns<UserListDataType>[] = [
     {
-      title: <FormattedMessage id="pages.userListTable.headImage" defaultMessage="头像" />,
-      dataIndex: 'avatar',
-      render: (dom) => {
-        return (
-          <Avatar shape="square" size="large" src={ dom } />
-        )
-      }
+      title: "id",
+      dataIndex: 'id',
+      sorter: true,
+      renderText: ((val) => `${val}`)
     },
     {
-      title: (
-        <FormattedMessage
-          id="pages.userListTable.userId"
-          defaultMessage="用户ID"
-        />
-      ),
-      dataIndex: 'name',
+      title: "部门id",
+      dataIndex: 'deptId',
+      renderText: ((val) => `${val}`)
+    },
+    {
+      title: "姓名",
+      dataIndex: 'realname',
       tip: '规则名称是唯一的 key',
-      render: (dom, entity) => {
+      key: 'realname',
+      render: (val, entity) => {
         return (
           <a
             onClick={ () => {
@@ -120,227 +78,205 @@ const TableList: React.FC<{}> = () => {
               setShowDetail(true);
             } }
           >
-            {dom }
+            {`${val}` }
           </a>
         );
       },
     },
     {
-      title: <FormattedMessage id="pages.userListTable.nickName" defaultMessage="别名" />,
-      dataIndex: 'desc',
+      title: "用户名",
+      dataIndex: 'username',
+      renderText: ((val) => `${val}`)
+    },
+    {
+      title: "电子邮箱",
+      dataIndex: 'email',
       valueType: 'textarea',
+      renderText: ((val) => `${val}`)
     },
     {
-      title: <FormattedMessage id="pages.userListTable.role" defaultMessage="角色" />,
-      dataIndex: 'role',
+      title: "手机号",
+      dataIndex: 'mobile',
       valueType: 'textarea',
+      renderText: ((val) => `${val}`)
     },
     {
-      title: <FormattedMessage id="pages.userListTable.sex" defaultMessage="性别" />,
-      dataIndex: 'sex',
+      title: "创建时间",
+      dataIndex: 'createTime',
+      hideInSearch: true,
+      hideInTable: true,
       valueType: 'textarea',
+      renderText: ((val) => `${val}`)
     },
     {
-      title: <FormattedMessage id="pages.userListTable.resumeNum" defaultMessage="简历数量" />,
-      dataIndex: 'callNo',
-      sorter: true,
-      hideInForm: true,
-      renderText: (val: string) =>
-        `${val}${intl.formatMessage({
-          id: 'pages.searchTable.tenThousand',
-          defaultMessage: ' 万 ',
-        })}`,
-    },
-    {
-      title: <FormattedMessage id="pages.searchTable.titleStatus" defaultMessage="状态" />,
+      title: "状态",
       dataIndex: 'status',
       hideInForm: true,
+      valueType: 'textarea',
       valueEnum: {
-        0: {
-          text: (
-            <FormattedMessage id="pages.searchTable.nameStatus.default" defaultMessage="关闭" />
-          ),
+        "0": {
+          text: "未发布",
           status: 'Default',
         },
-        1: {
-          text: (
-            <FormattedMessage id="pages.searchTable.nameStatus.running" defaultMessage="运行中" />
-          ),
-          status: 'Processing',
-        },
-        2: {
-          text: (
-            <FormattedMessage id="pages.searchTable.nameStatus.online" defaultMessage="已上线" />
-          ),
+        "1": {
+          text: "已发布",
           status: 'Success',
         },
-        3: {
-          text: (
-            <FormattedMessage id="pages.searchTable.nameStatus.abnormal" defaultMessage="异常" />
-          ),
-          status: 'Error',
+        "2": {
+          text: "已删除",
+          status: 'Cancel',
         },
       },
     },
     {
-      title: (
-        <FormattedMessage id="pages.userListTable.lastLoginDate" defaultMessage="上次登陆时间" />
-      ),
-      sorter: true,
-      dataIndex: 'updatedAt',
-      valueType: 'dateTime',
-      renderFormItem: (item, { defaultRender, ...rest }, form) => {
-        const status = form.getFieldValue('status');
-        if (`${status}` === '0') {
-          return false;
-        }
-        if (`${status}` === '3') {
-          return (
-            <Input
-              { ...rest }
-              placeholder={ intl.formatMessage({
-                id: 'pages.searchTable.exception',
-                defaultMessage: '请输入异常原因！',
-              }) }
-            />
-          );
-        }
-        return defaultRender(item);
-      },
+      title: "状态",
+      dataIndex: 'status',
+      hideInForm: true,
+      hideInSearch: true,
+      valueType: 'textarea',
+      render: ((val, record) => {
+        return (<Switch loading={ false } onClick={ async (checked: boolean, event: Event) => {
+          handlePublish([ record ], false)
+        } } checkedChildren='发布' unCheckedChildren="关闭" defaultChecked={ val === '1' } />)
+      })
     },
     {
-      title: <FormattedMessage id="pages.userListTable.operation" defaultMessage="操作" />,
-      dataIndex: 'option',
+      title: "操作",
       valueType: 'option',
       render: (_, record) => [
         <a
-          onClick={ () => {
-            handleUpdateModalVisible(true);
-            setCurrentRow(record);
-          } }
+          onClick={ () => { handleModalVisible(true); setCurrentRow(record); } }
         >
-          <FormattedMessage id="pages.userListTable.edit" defaultMessage="编辑" />
+          编辑
         </a>,
-        <a href="https://procomponents.ant.design/">
-          <FormattedMessage id="pages.userListTable.view" defaultMessage="查看" />
-        </a>,
-        <a href="https://procomponents.ant.design/">
-          <FormattedMessage id="pages.userListTable.resetPwd" defaultMessage="重置密码" />
-        </a>,
+        <Popconfirm
+          title="是否要删除此行？"
+          onConfirm={ () => { handleRemove([ record ]); actionRef.current?.reloadAndRest?.(); } }>
+          <a>删除</a>
+        </Popconfirm>
       ],
     },
   ];
-
   return (
     <PageContainer>
-      <ProTable<TableListItem>
-        headerTitle={ intl.formatMessage({
-          id: 'pages.searchTable.title',
-          defaultMessage: '查询表格',
-        }) }
+      <ProTable
+        headerTitle="查询表格"
         actionRef={ actionRef }
-        rowKey="key"
+        rowKey="id"
         search={ {
-          labelWidth: 120,
+          labelWidth: 80,
+        } }
+        pagination={ {
+          pageSize: 10,
         } }
         toolBarRender={ () => [
-          <Button type="primary" key="primary" onClick={ () => handleModalVisible(true) }>
-            <PlusOutlined /> <FormattedMessage id="pages.searchTable.new" defaultMessage="新建" />
+          <Button type="primary" key="primary" onClick={ () => { handleModalVisible(true); setCurrentRow(userListDataDefault); } }>
+            <PlusOutlined />新建
           </Button>,
         ] }
-        request={ (params, sorter, filter) => queryRule({ ...params, sorter, filter }) }
+        request={ async (params, sorter, filter) => await queryUserList({ ...params, sorter, filter }) }
         columns={ columns }
         rowSelection={ {
           onChange: (_, selectedRows) => setSelectedRows(selectedRows),
         } }
       />
+      {createModalVisible && (
+        <ModalForm
+          title='新建用户'
+          width="400px"
+          visible={ createModalVisible }
+          onVisibleChange={ handleModalVisible }
+          onFinish={ async (value) => {
+            console.log("新增", value)
+          } }
+        >
+          <ProFormText
+            rules={ [
+              {
+                required: true,
+                message: "请输入用户名！"
+              },
+            ] }
+            label="用户名"
+            name="username"
+            placeholder="请输入用户名"
+            initialValue={ currentRow?.username }
+          />
+          <ProFormText
+            rules={ [
+              {
+                required: true,
+                message: "请输入姓名！"
+              },
+            ] }
+            label="姓名"
+            name="realName"
+            placeholder="请输入姓名"
+            initialValue={ currentRow?.realname }
+          />
+          <ProFormText.Password rules={ [
+            {
+              required: true,
+              message: "请输入密码！"
+            },
+          ] } label="密码" name="password" placeholder="请输入密码"
+          />
+          <ProFormText
+            rules={ [
+              {
+                required: true,
+                message: "请输入手机号！"
+              },
+            ] }
+            label="手机号"
+            name="mobile"
+            placeholder="请输入手机号"
+            initialValue={ currentRow?.mobile }
+          />
+          <ProFormText
+            rules={ [
+              {
+                required: true,
+                message: "请输入邮箱！"
+              },
+            ] }
+            label="邮箱"
+            name="email"
+            placeholder="请输入邮箱"
+            initialValue={ currentRow?.email }
+          />
+          <ProFormCheckbox.Group
+            name="roleIds"
+            layout="horizontal"
+            label="角色id"
+            options={ [ '管理员', '维修人员', '维修' ] }
+          />
+        </ModalForm>
+      ) }
+
       {selectedRowsState?.length > 0 && (
         <FooterToolbar
           extra={
             <div>
-              <FormattedMessage id="pages.searchTable.chosen" defaultMessage="已选择" />{ ' ' }
-              <a style={ { fontWeight: 600 } }>{ selectedRowsState.length }</a>{ ' ' }
-              <FormattedMessage id="pages.searchTable.item" defaultMessage="项" />
-              &nbsp;&nbsp;
-              <span>
-                <FormattedMessage
-                  id="pages.searchTable.totalServiceCalls"
-                  defaultMessage="服务调用次数总计"
-                />{ ' ' }
-                { selectedRowsState.reduce((pre, item) => pre + item.callNo, 0) }{ ' ' }
-                <FormattedMessage id="pages.searchTable.tenThousand" defaultMessage="万" />
-              </span>
+              已选择{ ' ' }<a style={ { fontWeight: 600 } }>{ selectedRowsState.length }</a>{ ' ' }
+              项
             </div>
           }
         >
-          <Button
-            onClick={ async () => {
-              await handleRemove(selectedRowsState);
+          <Popconfirm
+            title={ `是否要批量删除 ${selectedRowsState.length} 项` }
+            onConfirm={ async () => {
+              // await handleRemove(selectedRowsState);
               setSelectedRows([]);
               actionRef.current?.reloadAndRest?.();
-            } }
-          >
-            <FormattedMessage id="pages.searchTable.batchDeletion" defaultMessage="批量删除" />
+            } }>
+            <Button
+            >
+              批量删除
           </Button>
-          <Button type="primary">
-            <FormattedMessage id="pages.searchTable.batchApproval" defaultMessage="批量审批" />
-          </Button>
+          </Popconfirm>
         </FooterToolbar>
       ) }
-      <ModalForm
-        title={ intl.formatMessage({
-          id: 'pages.searchTable.createForm.newRule',
-          defaultMessage: '新建规则',
-        }) }
-        width="400px"
-        visible={ createModalVisible }
-        onVisibleChange={ handleModalVisible }
-        onFinish={ async (value) => {
-          const success = await handleAdd(value as TableListItem);
-          if (success) {
-            handleModalVisible(false);
-            if (actionRef.current) {
-              actionRef.current.reload();
-            }
-          }
-        } }
-      >
-        <ProFormText
-          rules={ [
-            {
-              required: true,
-              message: (
-                <FormattedMessage
-                  id="pages.searchTable.ruleName"
-                  defaultMessage="规则名称为必填项"
-                />
-              ),
-            },
-          ] }
-          width="m"
-          name="name"
-        />
-        <ProFormTextArea width="m" name="desc" />
-      </ModalForm>
-      <UpdateForm
-        onSubmit={ async (value) => {
-          const success = await handleUpdate(value);
-          if (success) {
-            handleUpdateModalVisible(false);
-            setCurrentRow(undefined);
-            if (actionRef.current) {
-              actionRef.current.reload();
-            }
-          }
-        } }
-        onCancel={ () => {
-          handleUpdateModalVisible(false);
-          setCurrentRow(undefined);
-        } }
-        updateModalVisible={ updateModalVisible }
-        values={ currentRow || {} }
-      />
-
       <Drawer
         width={ 600 }
         visible={ showDetail }
@@ -350,17 +286,17 @@ const TableList: React.FC<{}> = () => {
         } }
         closable={ false }
       >
-        { currentRow?.name && (
-          <ProDescriptions<TableListItem>
-            column={ 2 }
-            title={ currentRow?.name }
+        { currentRow?.username && (
+          <ProDescriptions<UserListDataType>
+            column={ 1 }
+            title={ currentRow?.username }
             request={ async () => ({
               data: currentRow || {},
             }) }
             params={ {
-              id: currentRow?.name,
+              id: currentRow?.id,
             } }
-            columns={ columns as ProDescriptionsItemProps<TableListItem>[] }
+            columns={ columns as ProDescriptionsItemProps<UserListDataType>[] }
           />
         ) }
       </Drawer>
@@ -368,4 +304,4 @@ const TableList: React.FC<{}> = () => {
   );
 };
 
-export default TableList;
+export default ResumeList;
