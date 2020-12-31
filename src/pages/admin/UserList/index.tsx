@@ -5,8 +5,8 @@ import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import { ModalForm, ProFormText, ProFormCheckbox } from '@ant-design/pro-form';
 import ProDescriptions, { ProDescriptionsItemProps } from '@ant-design/pro-descriptions';
-import { queryUserList } from './service';
-import { PageDataType, UserListDataType, userListDataDefault } from '../data.d';
+import { queryUserList, addUser } from './service';
+import { PageDataType, UserListDataType, userListDataDefault, EditUserDataType } from '../data.d';
 /**
  *  删除节点
  * @param selectedRows
@@ -188,6 +188,21 @@ const ResumeList: React.FC<UserListDataType> = () => {
           onVisibleChange={ handleModalVisible }
           onFinish={ async (value) => {
             console.log("新增", value)
+            let bodyVaule: EditUserDataType = {
+              username: value.username,
+              email: value.email,
+              mobile: value.mobile,
+              realName: value.realname,
+              roleIds: value.roleIds,
+              password: value.password
+            }
+            const res = await addUser(bodyVaule)
+            if (res.code === 0) {
+              handleModalVisible(false);
+              if (actionRef.current) {
+                actionRef.current.reload();
+              }
+            }
           } }
         >
           <ProFormText
@@ -249,7 +264,20 @@ const ResumeList: React.FC<UserListDataType> = () => {
             name="roleIds"
             layout="horizontal"
             label="角色id"
-            options={ [ '管理员', '维修人员', '维修' ] }
+            options={ [
+              {
+                label: "管理员",
+                value: 0
+              },
+              {
+                label: "维修人员",
+                value: 1
+              },
+              {
+                label: "维修",
+                value: 2
+              }
+            ] }
           />
         </ModalForm>
       ) }

@@ -17,3 +17,11 @@ export const userListDataDefault: UserListDataType = {
   username: "",
   mobile: ""
 }
+export interface EditUserDataType {
+  email: string,
+  mobile: string,
+  password: string,
+  realName: string,
+  roleIds: number[],
+  username: string
+}

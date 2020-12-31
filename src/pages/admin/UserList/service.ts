@@ -1,6 +1,5 @@
 import request from 'umi-request';
-import { ResumeDataType } from '../API.d';
-import { PageDataType, UserListDataType } from '../data.d';
+import { PageDataType, EditUserDataType } from '../data.d';
 
 export const queryUserList = async (params: PageDataType) => {
   let response = await request('/api/user/list', {
@@ -13,41 +12,11 @@ export const queryUserList = async (params: PageDataType) => {
   return { ...response.data, data: response.data.records }
 }
 
-// export async function queryFakeList (params: { count: number }) {
-//   return request('/resume/getResumeData');
-// }
-
-// export async function queryRule (params?: ResumeDataType) {
-//   return request('/resume/getResume', {
-//     params,
-//   });
-// }
-
-// export async function removeRule (params: { deleteId: string[] }) {
-//   return request('/resume/postResume', {
-//     method: 'POST',
-//     data: {
-//       ...params,
-//       method: 'delete',
-//     },
-//   });
-// }
-
-// export async function publishRule (params: { publishId: string[], batch: boolean }) {
-//   return request('/resume/postResume', {
-//     method: 'POST',
-//     data: {
-//       ...params,
-//       method: 'publish',
-//     },
-//   });
-// }
-// export async function updateRule (params: { updateId: string, data: ResumeDataType }) {
-//   return request('/resume/postResume', {
-//     method: 'POST',
-//     data: {
-//       ...params,
-//       method: 'update',
-//     },
-//   });
-// }
+export const addUser = async (params: EditUserDataType) => {
+  return request('/api/user/add', {
+    method: 'POST',
+    data: {
+      ...params
+    },
+  });
+}
