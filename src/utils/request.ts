@@ -58,7 +58,6 @@ const request = extend({
 })
 request.interceptors.request.use(async (url, options) => {
   let token = await localforage.getItem('token')
-  console.log("request", token ? token : '')
   return (
     {
       url,

@@ -5,6 +5,9 @@ export interface LoginParamsType {
   password: string;
   code: string;
 }
+
+// req.post(url, params, callback);
+// req.get();
 //获取图片验证码
 export async function fetchImgCaptcha () {
   return request('/api/sys/login-captcha.jpg', {
@@ -27,6 +30,6 @@ export async function fackAccountToken () {
 //根据token刷新token值
 export async function fackLogout () {
   return request('/api/sys/logout', {
-    method: "GET"
+    method: "POST"
   })
 }
