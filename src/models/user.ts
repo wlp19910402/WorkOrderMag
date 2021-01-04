@@ -1,6 +1,6 @@
 import { stringify } from 'querystring';
 import { history, Reducer, Effect } from 'umi';
-import { fakeAccountLogin, fackAccountToken, fetchImgCaptcha, fackLogout } from '@/services/login';
+import { fakeAccountLogin, fackAccountToken, fackLogout } from '@/services/login';
 import { getPageQuery } from '@/utils/utils';
 import { message } from 'antd';
 import localforage from 'localforage'
