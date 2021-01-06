@@ -35,13 +35,23 @@
               },
               {
                 path: '/admin',
-                name: '用户管理',
+                name: '系统管理',
                 icon: 'smile',
                 routes: [
                   {
                     path: '/admin/list',
                     name: "用户列表",
                     component: './admin/UserList'
+                  },
+                  {
+                    path: '/admin/menu',
+                    name: '菜单管理',
+                    component: "./admin/Menu"
+                  },
+                  {
+                    path: '/admin/role',
+                    name: '角色管理',
+                    component: "./admin/Role"
                   }
                 ]
               },
