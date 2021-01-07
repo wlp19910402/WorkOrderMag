@@ -5,7 +5,7 @@ import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import ProDescriptions, { ProDescriptionsItemProps } from '@ant-design/pro-descriptions';
 import { queryRoleList } from './service';
-import { RoleDataType } from '../data.d';
+import { RoleDataType } from './data.d';
 import ModalModifyForm from './components/ModalModifyForm'
 /**
  *  删除节点
@@ -94,7 +94,7 @@ const RoleList: React.FC<RoleDataType> = () => {
           labelWidth: 80,
         } }
         pagination={ {
-          pageSize: 1,
+          pageSize: 10,
         } }
         toolBarRender={ () => [
           <Button type="primary" key="primary" onClick={ () => { handleModalVisible(true); setCurrentRow(undefined); } }>
