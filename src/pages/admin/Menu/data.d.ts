@@ -10,3 +10,13 @@ export interface MenuDataType {
   children?: MenuDataType[]
 }
 export type TypeFormType = 0 | 1 | 2 | undefined
+
+export const menuDefault: MenuDataType = {
+  parentId: 0,
+  name: "",
+  url: "#",
+  orderNum: 0,
+  icon: "",
+  perms: "",
+  type: 1,
+}

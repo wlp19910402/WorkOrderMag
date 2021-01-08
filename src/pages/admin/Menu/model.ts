@@ -13,10 +13,10 @@ const defaulState = {
   flatMenuData: []
 }
 const fetchFaltMenuData: MenuDataType[] | [] = (menuData: MenuDataType[] | []) => {
-  let tmpArr = [];
+  let tmpArr: MenuDataType[] | [] = [];
   const fn = (data: MenuDataType[]) => {
     if (data.length > 0) {
-      data.forEach(item => {
+      data?.forEach(item => {
         tmpArr.push(item)
         if (item.children?.length > 0) {
           fn(item.children)
@@ -46,19 +46,28 @@ const Model: MenuModelType = {
   state: defaulState,
   effects: {
     //获取菜单列表
-    *fetchMenuTree (_, { call, put }) {
+    *fetchMenuTree ({ callback }, { call, put }) {
       const response = yield call(queryMenuTree);
-      console.log(response)
-      const menuData = response.data
+      const menuData = [
+        {
+          "icon": "icon-FolderOpen",
+          "name": "一级菜单",
+          "id": 0,
+          "url": "#",
+          "type": 0,
+          "perms": "",
+          "orderNum": 0,
+          "parentId": 0,
+          "children": response.data
+        }
+      ]
       const flatMenuData = fetchFaltMenuData(menuData)
-      yield put({
-        type: 'changeMenuTree',
-        payload: { menuTree: menuData, faltData: flatMenuData },
-      });
+      if (callback) callback(menuData, flatMenuData)
     },
     //保存菜单
-    *saveMenu ({ payload }, { call, put }) {
-      const response = yield call(saveMenu, payload);
+    *saveMenu ({ payload, callback }, { call, put }) {
+      const response = yield call(saveMenu, payload)
+      if (callback) callback(response)
     },
     //当前用户菜单
     *fetctCurrentMenu (_, { put, call }) {

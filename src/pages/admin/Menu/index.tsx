@@ -6,23 +6,15 @@ import { MenuDataType } from './data.d';
 import { DataNode } from 'rc-tree/lib/interface.d'
 import { Loading, connect, Dispatch, } from 'umi'
 import { MenuModelState } from './model';
-import { createFromIconfontCN } from '@ant-design/icons';
-import { TypeFormType } from './data.d'
+import { TypeFormType, menuDefault } from './data.d'
 import ModifyForm from './components/ModifyForm'
-
-const IconFont = createFromIconfontCN({
-  scriptUrl: [
-    '//at.alicdn.com/t/font_2316393_wa0uc2scrz8.js'
-  ],
-});
+import { IconFont } from '@/components/common/IconFont'
 /**
  *  删除节点
  * @param selectedRows
  */
 interface MenuTreeTypeProps {
   currentMenu: MenuDataType | undefined;
-  menuTreeList: MenuDataType[] | [];
-  flatMenuData: MenuDataType[] | [];
   dispatch: Dispatch;
 }
 const handleRemove = async (selectedRows: MenuDataType[]) => {
@@ -41,39 +33,88 @@ const handleRemove = async (selectedRows: MenuDataType[]) => {
     return false;
   }
 };
-const treeData: (DataNode[] | []) = (data: MenuDataType[] | []) => data.filter(ite => ite.id).map(item => ({
+const treeData: (DataNode[] | []) = (data: MenuDataType[] | []) => data.filter(ite => ite.id !== undefined).map(item => ({
   key: item.id?.toString(),
   title: item.name,
   children: treeData(item.children),
-  icon: item.icon ? <IconFont type="icon-fire" /> : <IconFont type="icon-fire" />
+  icon: item.icon ? <IconFont type={ item.icon } /> : true
 }))
 const MenuTree: React.FC<MenuTreeTypeProps> = (props) => {
-  const { dispatch, menuTreeList, flatMenuData } = props;
-  const [ currentRow, setCurrentRow ] = useState<MenuDataType>();
+  const { dispatch } = props;
+  const [ currentRow, setCurrentRow ] = useState<MenuDataType>(menuDefault);
   const [ typeFormType, setTypeFormType ] = useState<TypeFormType>(0);
+  const [ editDisable, setEditDisable ] = useState<boolean | undefined>(true);
+  const [ menuData, setMenuData ] = useState<DataNode[] | []>([])
+  const [ defaultMenuData, setDefatultMenuData ] = useState<DataNode[] | []>([])
+  const [ flatMenuData, setFlatMenuData ] = useState<MenuDataType[] | []>([]);
+  const [ parentRow, setParentRow ] = useState<MenuDataType>();
   const onSelect = async (keys: string) => {
+    await formDefault(keys[ 0 ]);
+    setEditDisable(true);
+  };
+  const formDefault = async (keys: string) => {
     let current = flatMenuData.find(item => item.id === parseInt(keys))
     await setCurrentRow(undefined)
-    await setCurrentRow(current)
-    setTypeFormType(current?.type)
-  };
+    if (keys === 'new') {
+      await setCurrentRow({ ...menuDefault, parentId: parentRow?.id })
+      setTypeFormType(1)
+    } else {
+      await setCurrentRow(current)
+      setTypeFormType(current?.type)
+    }
+  }
   useEffect(() => {
     dispatch({
-      type: "menu/fetchMenuTree"
+      type: "menu/fetchMenuTree",
+      callback: (data: MenuDataType[], faltData: MenuDataType[]) => {
+        setMenuData(treeData(data));
+        setDefatultMenuData(treeData(data))
+        setFlatMenuData(faltData)
+      }
     })
   }, [])
+  const editMenu = async (e: any, keys: string) => {
+    e.stopPropagation();
+    formDefault(keys);
+    setEditDisable(false);
+    if (keys === 'new') setCurrentRow({ ...menuDefault, parentId: parentRow?.id })
+  }
+  const addMenu = async (e: any, Render: DataNode | []) => {
+    e.stopPropagation();
+    await setCurrentRow(undefined)
+    await setCurrentRow({ ...menuDefault, parentId: parseInt(Render?.key) })
+    await setParentRow(flatMenuData.find(item => item.id === parseInt(Render?.key)))
+    setEditDisable(false);
+    Render?.children.push({
+      key: "new",
+      title: "未命名",
+      icon: true,
+      children: []
+    })
+    let tmp = menuData;
+    setMenuData([])
+    setMenuData(tmp)
+  }
+  const cancelMenu = async (e: any, render: DataNode) => {
+    e.stopPropagation();
+    if (render.key === 'new') {
+      setMenuData([]);
+      setMenuData(defaultMenuData);
+      setParentRow(undefined);
+    }
+  }
   return (
     <PageContainer>
-      <div>
-        {/* { JSON.stringify(currentRow) } */ }
-      </div>
       <Card title="基本信息" bordered={ false }>
         <Row>
           <Col flex={ 2 }>
             <Tree
+              autoExpandParent={ true }
+              defaultExpandedKeys={ [ "0" ] }
+              showLine={ true }
               defaultExpandAll={ true }
               onSelect={ onSelect }
-              treeData={ treeData(menuTreeList) }
+              treeData={ menuData }
               showIcon={ true }
               blockNode={ true }
               titleRender={ (nodeData) => {
@@ -83,28 +124,16 @@ const MenuTree: React.FC<MenuTreeTypeProps> = (props) => {
                     <div style={ { position: "absolute", right: "0", top: "0", height: "40px", width: "100px", background: "#ffffff" } }>
                       <Row justify="center">
                         <Col span={ 8 }>
-                          <Button type="primary" size="small" onClick={
-                            (e) => {
-                              e.stopPropagation();
-                              alert(88);
-                            }
-                          }><PlusOutlined style={ { fontSize: '14px' } } /></Button>
+                          <Button
+                            disabled={ parentRow?.id != undefined }
+                            type="primary" size="small" onClick={ (e) => { addMenu(e, nodeData) } }><PlusOutlined style={ { fontSize: '14px' } }
+                            /></Button>
                         </Col>
                         <Col span={ 8 } style={ { textAlign: "center" } }>
-                          <Button type="default" danger size="small" onClick={
-                            (e) => {
-                              e.stopPropagation();
-                              alert(88);
-                            }
-                          }><MinusOutlined style={ { fontSize: '14px' } } /></Button>
+                          <Button disabled={ nodeData.key === '0' || (parentRow?.id != undefined && nodeData.key !== 'new') } type="default" danger size="small" onClick={ (e) => { cancelMenu(e, nodeData) } }><MinusOutlined style={ { fontSize: '14px' } } /></Button>
                         </Col>
                         <Col span={ 8 } >
-                          <Button style={ { float: "right" } } type="default" size="small" onClick={
-                            (e) => {
-                              e.stopPropagation();
-                              console.log(nodeData);
-                            }
-                          }><EditOutlined style={ { fontSize: '14px' } } /></Button>
+                          <Button disabled={ nodeData.key === '0' || (parentRow?.id != undefined && nodeData.key !== 'new') } style={ { float: "right" } } type="default" size="small" onClick={ (e) => { editMenu(e, nodeData.key) } }><EditOutlined style={ { fontSize: '14px' } } /></Button>
                         </Col>
                       </Row>
                     </div>
@@ -124,6 +153,8 @@ const MenuTree: React.FC<MenuTreeTypeProps> = (props) => {
                 flatMenuData={ flatMenuData }
                 setTypeFormType={ setTypeFormType }
                 dispatch={ dispatch }
+                editDisable={ editDisable }
+                setParentRow={ setParentRow }
               />
             }
           </Col>
@@ -140,7 +171,5 @@ export default connect(
   ) => ({
     loadingMenuTree: loading.effects[ 'menu/fetchMenuTree' ],
     loadingSaveMenu: loading.effects[ 'menu/saveMenu' ],
-    menuTreeList: menu.menuTree,
     currentMenu: menu.currentMenu,
-    flatMenuData: menu.flatMenuData
   }))(MenuTree);
