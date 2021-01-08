@@ -15,7 +15,6 @@ export interface UserStateType {
 }
 export interface UserModelState {
   currentUser?: UserStateType;
-  menu?: boolean;
 }
 export interface LoginModelType {
   namespace: string;
@@ -35,7 +34,6 @@ const Model: LoginModelType = {
   namespace: 'user',
   state: {
     currentUser: {},
-    menu: true
   },
   effects: {
     //登录
@@ -126,8 +124,7 @@ const Model: LoginModelType = {
     },
     clearUser () {
       return {
-        currentUser: {},
-        menu: true
+        currentUser: {}
       }
     }
   },

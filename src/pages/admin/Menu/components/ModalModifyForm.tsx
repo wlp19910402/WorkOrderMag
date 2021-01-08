@@ -4,34 +4,34 @@
 import React from 'react';
 import { ActionType } from '@ant-design/pro-table';
 import { ModalForm, ProFormText, ProFormCheckbox } from '@ant-design/pro-form';
-import { addUser } from '../service';
-import { UserListDataType, EditUserDataType } from '../../data.d';
+import { saveMenu } from '../service';
+import { MenuDataType } from '../data.d';
 
 interface ModalModifyFormDataProps {
-  createModalVisible: boolean;
+  modalVisible: boolean;
   handleModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
-  actionRef: React.MutableRefObject<ActionType | undefined>;
-  currentRow: UserListDataType | undefined;
+  // actionRef: React.MutableRefObject<ActionType | undefined>;
+  currentRow: MenuDataType | undefined;
 }
 const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
-  const { createModalVisible, handleModalVisible, actionRef, currentRow } = props
-  const submitForm = async (value: EditUserDataType) => {
-    const res = await addUser(value)
+  const { modalVisible, handleModalVisible, currentRow } = props
+  const submitForm = async (value: MenuDataType) => {
+    const res = await saveMenu(value)
     if (res.code === 0) {
       handleModalVisible(false);
-      if (actionRef.current) {
-        actionRef.current.reload();
-      }
+      // if (actionRef.current) {
+      //   actionRef.current.reload();
+      // }
     }
   }
   return (
     <ModalForm
       title='新建用户'
       width="400px"
-      visible={ createModalVisible }
+      visible={ modalVisible }
       onVisibleChange={ handleModalVisible }
       onFinish={ async (value) => {
-        let bodyVaule: EditUserDataType = {
+        let bodyVaule: MenuDataType = {
           username: value.username,
           email: value.email,
           mobile: value.mobile,
