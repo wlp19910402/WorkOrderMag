@@ -9,4 +9,4 @@ export interface MenuDataType {
   orderNum: number;//排序
   children?: MenuDataType[]
 }
-export type TypeFormType = 0 | 1 | 2
+export type TypeFormType = 0 | 1 | 2 | undefined

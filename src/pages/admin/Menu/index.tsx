@@ -1,14 +1,14 @@
-import { PlusOutlined, MinusOutlined, EditOutlined, InfoCircleOutlined } from '@ant-design/icons';
-import { Button, message, Card, Tree, Row, Col, Divider, Form, Input, Radio } from 'antd';
+import { PlusOutlined, MinusOutlined, EditOutlined } from '@ant-design/icons';
+import { Button, message, Card, Tree, Row, Col, Divider, Form, } from 'antd';
 import React, { useState, useEffect, } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import { MenuDataType } from './data.d';
 import { DataNode } from 'rc-tree/lib/interface.d'
 import { Loading, connect, Dispatch, } from 'umi'
 import { MenuModelState } from './model';
-import ModalModifyForm from './components/ModalModifyForm'
 import { createFromIconfontCN } from '@ant-design/icons';
 import { TypeFormType } from './data.d'
+import ModifyForm from './components/ModifyForm'
 
 const IconFont = createFromIconfontCN({
   scriptUrl: [
@@ -41,40 +41,22 @@ const handleRemove = async (selectedRows: MenuDataType[]) => {
     return false;
   }
 };
-const clusterOutlined = "ClusterOutlined"
 const treeData: (DataNode[] | []) = (data: MenuDataType[] | []) => data.filter(ite => ite.id).map(item => ({
   key: item.id?.toString(),
   title: item.name,
   children: treeData(item.children),
   icon: item.icon ? <IconFont type="icon-fire" /> : <IconFont type="icon-fire" />
-  // isLeaf: !(item.children && item.children?.length > 0)
 }))
-const formItemLayout = {
-  labelCol: {
-    xs: { span: 8 },
-    sm: { span: 6 },
-  },
-  wrapperCol: {
-    xs: { span: 16 },
-    sm: { span: 16 },
-  },
-};
 const MenuTree: React.FC<MenuTreeTypeProps> = (props) => {
   const { dispatch, menuTreeList, flatMenuData } = props;
   const [ currentRow, setCurrentRow ] = useState<MenuDataType>();
-  const [ modalVisible, handleModalVisible ] = useState<boolean>(false);
-
-  const [ form ] = Form.useForm();
-  const [ TypeFormType, setTypeFormType ] = useState<TypeFormType>(0);
-  const onSelect = (keys: string) => {
+  const [ typeFormType, setTypeFormType ] = useState<TypeFormType>(0);
+  const onSelect = async (keys: string) => {
     let current = flatMenuData.find(item => item.id === parseInt(keys))
-    setCurrentRow(current)
+    await setCurrentRow(undefined)
+    await setCurrentRow(current)
     setTypeFormType(current?.type)
   };
-  const onExpand = (e) => {
-    console.log('Trigger Expand', e);
-  };
-
   useEffect(() => {
     dispatch({
       type: "menu/fetchMenuTree"
@@ -91,7 +73,6 @@ const MenuTree: React.FC<MenuTreeTypeProps> = (props) => {
             <Tree
               defaultExpandAll={ true }
               onSelect={ onSelect }
-              onExpand={ onExpand }
               treeData={ treeData(menuTreeList) }
               showIcon={ true }
               blockNode={ true }
@@ -121,7 +102,6 @@ const MenuTree: React.FC<MenuTreeTypeProps> = (props) => {
                           <Button style={ { float: "right" } } type="default" size="small" onClick={
                             (e) => {
                               e.stopPropagation();
-                              handleModalVisible(true);
                               console.log(nodeData);
                             }
                           }><EditOutlined style={ { fontSize: '14px' } } /></Button>
@@ -138,73 +118,20 @@ const MenuTree: React.FC<MenuTreeTypeProps> = (props) => {
           </Col>
           <Col flex={ 3 } >
             { currentRow &&
-              <Form
-                { ...formItemLayout }
-                form={ form }
-                layout="vertical"
-                initialValues={ { TypeFormType } }
-              >
-                <Form.Item style={ { flexDirection: "unset" } } label="类型：" name="TypeFormType" initialValue={ currentRow.type }>
-                  <Radio.Group onChange={ (e) => { setTypeFormType(e.target.value) } }>
-                    <Radio.Button value={ 0 }>目录</Radio.Button>
-                    <Radio.Button value={ 1 }>菜单</Radio.Button>
-                    <Radio.Button value={ 2 }>按钮</Radio.Button>
-                  </Radio.Group>
-                </Form.Item>
-                <Form.Item style={ { flexDirection: "unset" } } label="名称：" initialValue={ currentRow.name } name="name" required>
-                  <Input placeholder="请输入名称" />
-                </Form.Item>
-                <Form.Item style={ { flexDirection: "unset" } } label="上级菜单："   >
-                  <Input disabled value={ flatMenuData?.find(item => item.id === currentRow.parentId)?.name } />
-                </Form.Item>
-                { TypeFormType === 1 && <>
-                  <Form.Item style={ { flexDirection: "unset" } } labelAlign="left" initialValue={ currentRow.url } label="菜单地址：" name="url" >
-                    <Input placeholder="请输入菜单地址" />
-                  </Form.Item>
-                  <Form.Item style={ { flexDirection: "unset" } } label="授权标识：" initialValue={ currentRow.perms } name="perms" >
-                    <Input placeholder="请输入授权标识" />
-                  </Form.Item>
-                </> }
-                { (TypeFormType === 1 || TypeFormType === 0) && <>
-                  <Form.Item style={ { flexDirection: "unset" } } label="排序号：" initialValue={ currentRow.orderNum || 1 } name="orderNum" >
-                    <Input type="number" />
-                  </Form.Item>
-                  <Form.Item style={ { flexDirection: "unset" } } label="图标：" initialValue={ currentRow.icon } name="icon">
-                    <Input placeholder="请输入图标" />
-                  </Form.Item>
-                </>
-                }
-                { TypeFormType === 2 && <>
-                  <Form.Item style={ { flexDirection: "unset" } } label="授权标识：" name="perms" >
-                    <Input placeholder="请输入授权标识" />
-                  </Form.Item>
-                </> }
-                <Form.Item style={ { flexDirection: "unset" } } label=" " >
-                  <Row>
-                    <Col span={ 6 }><Button type="default">取消</Button></Col>
-                    <Col span={ 6 } offset={ 1 }><Button type="primary">提交</Button>
-                    </Col>
-                  </Row>
-
-
-                </Form.Item>
-              </Form>
+              <ModifyForm
+                typeFormType={ typeFormType }
+                currentRow={ currentRow }
+                flatMenuData={ flatMenuData }
+                setTypeFormType={ setTypeFormType }
+                dispatch={ dispatch }
+              />
             }
           </Col>
         </Row>
       </Card>
-      {/* {modalVisible && (
-        <ModalModifyForm
-          modalVisible={ modalVisible }
-          handleModalVisible={ handleModalVisible }
-          currentRow={ currentRow }
-        />
-      ) } */}
     </PageContainer >
   );
 };
-
-// export default MenuTree;
 export default connect(
   ({ menu, loading }:
     {
