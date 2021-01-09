@@ -77,15 +77,18 @@ const Model: MenuModelType = {
       } else {
         message.error(response.msg);
       }
-
     },
     //当前用户菜单
     *fetctCurrentMenu (_, { put, call }) {
       let response = yield call(queryCurrentMenu);
-      yield put({
-        type: 'changeCurrentMenu',
-        payload: response.data
-      });
+      if (response.code === 0) {
+        yield put({
+          type: 'changeCurrentMenu',
+          payload: response.data
+        });
+      } else {
+        message.error(response.msg);
+      }
     },
   },
   reducers: {

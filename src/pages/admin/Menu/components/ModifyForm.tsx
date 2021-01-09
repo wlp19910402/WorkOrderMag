@@ -24,17 +24,18 @@ interface ModifyFormDataProps {
   dispatch: Dispatch;
   editDisable: boolean | undefined;
   setParentRow: React.Dispatch<React.SetStateAction<MenuDataType | undefined>>;
+  fetchMenu: () => void;
 }
 const ModifyForm: React.FC<ModifyFormDataProps> = (props) => {
-  const { typeFormType, currentRow = menuDefault, flatMenuData, setTypeFormType, dispatch, editDisable = true, setParentRow } = props
+  const { typeFormType, currentRow = menuDefault, flatMenuData, setTypeFormType, dispatch, editDisable = true, setParentRow, fetchMenu } = props
   const [ form ] = Form.useForm();
   const onFinish = async (value: any) => {
     await dispatch({
       type: 'menu/saveMenu',
       payload: value,
-      callback: (res) => {
-        console.log(res)
+      callback: async () => {
         setParentRow(undefined)
+        await fetchMenu();
       }
     })
   }
@@ -61,7 +62,7 @@ const ModifyForm: React.FC<ModifyFormDataProps> = (props) => {
       <Form.Item style={ { flexDirection: "unset" } } label="上级菜单：">
         <Input disabled value={ flatMenuData?.find(item => item.id === currentRow.parentId)?.name } />
       </Form.Item>
-      {typeFormType === 0 && <Form.Item hidden initialValue={ currentRow.url } name="url" /> }
+      { typeFormType === 0 && <Form.Item hidden initialValue={ currentRow.url } name="url" /> }
       {
         typeFormType === 1 && <>
           <Form.Item style={ { flexDirection: "unset" } } initialValue={ currentRow.url } label="菜单地址：" name="url" >
@@ -89,7 +90,8 @@ const ModifyForm: React.FC<ModifyFormDataProps> = (props) => {
           </Form.Item>
         </>
       }
-      {!editDisable && currentRow.id !== 0 &&
+      {
+        !editDisable && currentRow.id !== 0 &&
         <Form.Item style={ { flexDirection: "unset" } } label=" ">
           <Row>
             <Col span={ 6 }><Button type="default" onClick={ () => form.resetFields() }>取消</Button></Col>

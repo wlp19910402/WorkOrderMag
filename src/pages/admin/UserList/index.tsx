@@ -115,7 +115,12 @@ const ResumeList: React.FC<UserListDataType> = () => {
           title="是否要删除此行？"
           onConfirm={ () => { handleRemove([ record ]); actionRef.current?.reloadAndRest?.(); } }>
           <a>删除</a>
-        </Popconfirm>
+        </Popconfirm>,
+        <a
+          onClick={ () => { handleModalVisible(true); setCurrentRow(record); } }
+        >
+          授权
+        </a>,
       ],
     },
   ];
@@ -132,7 +137,7 @@ const ResumeList: React.FC<UserListDataType> = () => {
           pageSize: 10,
         } }
         toolBarRender={ () => [
-          <Button type="primary" key="primary" onClick={ () => { handleModalVisible(true); setCurrentRow(undefined); } }>
+          <Button type="primary" onClick={ () => { handleModalVisible(true); setCurrentRow(undefined); } }>
             <PlusOutlined />新建
           </Button>,
         ] }

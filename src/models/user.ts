@@ -1,6 +1,6 @@
 import { stringify } from 'querystring';
 import { history, Reducer, Effect } from 'umi';
-import { fakeAccountLogin, fackAccountToken, fackLogout } from '@/services/login';
+import { fakeAccountLogin, fackAccountToken, fackLogout, saveUserAuthority } from '@/services/user';
 import { getPageQuery } from '@/utils/utils';
 import { message } from 'antd';
 import localforage from 'localforage'
@@ -23,6 +23,7 @@ export interface LoginModelType {
     login: Effect;
     logout: Effect;
     fetchCurrent: Effect;
+    authority: Effect;
   };
   reducers: {
     changeCurrentUser: Reducer<UserModelState>;
@@ -39,11 +40,11 @@ const Model: LoginModelType = {
     //登录
     *login ({ payload }, { call, put }) {
       const response = yield call(fakeAccountLogin, payload);
-      yield put({
-        type: 'changeCurrentUser',
-        payload: response.data,
-      });
       if (response.code === 0) {
+        yield put({
+          type: 'changeCurrentUser',
+          payload: response.data,
+        });
         localforage.setItem('token', response.data.token)
         const urlParams = new URL(window.location.href);
         const params = getPageQuery();
@@ -114,6 +115,14 @@ const Model: LoginModelType = {
         }
       })
     },
+    *authority ({ payload, callback }, { put, call }) {
+      const response = yield call(saveUserAuthority, payload)
+      if (response.code === 0) {
+        if (callback) callback(response)
+      } else {
+        message.error(response.msg);
+      }
+    }
   },
   reducers: {
     changeCurrentUser (state, { payload }) {

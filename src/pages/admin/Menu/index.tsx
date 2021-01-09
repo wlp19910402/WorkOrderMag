@@ -8,6 +8,7 @@ import { connect, Dispatch, } from 'umi'
 import { TypeFormType, menuDefault } from './data.d'
 import ModifyForm from './components/ModifyForm'
 import { IconFont } from '@/components/common/IconFont'
+import './style.less'
 /**
  *  删除节点
  * @param selectedRows
@@ -41,7 +42,7 @@ const treeData: (DataNode[] | undefined) = (data: MenuDataType[] | []) => treeDa
 })) : undefined
 const MenuTree: React.FC<MenuTreeTypeProps> = (props) => {
   const { dispatch, loading } = props;
-  const [ currentRow, setCurrentRow ] = useState<MenuDataType>(menuDefault);
+  const [ currentRow, setCurrentRow ] = useState<MenuDataType | undefined>(menuDefault);
   const [ typeFormType, setTypeFormType ] = useState<TypeFormType>(0);
   const [ editDisable, setEditDisable ] = useState<boolean | undefined>(true);
   const [ menuData, setMenuData ] = useState<DataNode[] | []>([])
@@ -54,7 +55,7 @@ const MenuTree: React.FC<MenuTreeTypeProps> = (props) => {
   };
   const formDefault = async (keys: string) => {
     let current = flatMenuData.find(item => item.id === parseInt(keys))
-    await setCurrentRow(menuDefault)
+    await setCurrentRow(undefined)
     if (keys === 'new' || !current) {
       await setCurrentRow({ ...menuDefault, parentId: parentRow?.id })
       setTypeFormType(1)
@@ -63,8 +64,8 @@ const MenuTree: React.FC<MenuTreeTypeProps> = (props) => {
       setTypeFormType(current?.type)
     }
   }
-  useEffect(() => {
-    dispatch({
+  const fetchMenu = async () => {
+    await dispatch({
       type: "menu/fetchMenuTree",
       callback: (data: MenuDataType[], faltData: MenuDataType[]) => {
         setMenuData(treeData(data));
@@ -72,6 +73,9 @@ const MenuTree: React.FC<MenuTreeTypeProps> = (props) => {
         setFlatMenuData(faltData)
       }
     })
+  }
+  useEffect(() => {
+    fetchMenu()
   }, [])
   const editMenu = async (e: any, keys: string) => {
     e.stopPropagation();
@@ -81,7 +85,7 @@ const MenuTree: React.FC<MenuTreeTypeProps> = (props) => {
   }
   const addMenu = async (e: any, Render: DataNode | []) => {
     e.stopPropagation();
-    await setCurrentRow(menuDefault)
+    await setCurrentRow(undefined)
     await setCurrentRow({ ...menuDefault, parentId: parseInt(Render?.key) })
     await setParentRow(flatMenuData.find(item => item.id === parseInt(Render?.key)))
     setEditDisable(false);
@@ -156,6 +160,7 @@ const MenuTree: React.FC<MenuTreeTypeProps> = (props) => {
                   dispatch={ dispatch }
                   editDisable={ editDisable }
                   setParentRow={ setParentRow }
+                  fetchMenu={ fetchMenu }
                 />
               }
             </Col>
@@ -168,5 +173,5 @@ const MenuTree: React.FC<MenuTreeTypeProps> = (props) => {
 export default connect(
   ({ loading }: { loading: { models: { [ key: string ]: boolean } }, }
   ) => ({
-    loading: loading.models.menu,
+    loading: loading.models.menu ? true : false
   }))(MenuTree);

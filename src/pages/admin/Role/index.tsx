@@ -43,7 +43,7 @@ const RoleList: React.FC<RoleDataType> = () => {
       title: "角色名称",
       dataIndex: 'roleName',
       tip: '规则名称是唯一的 key',
-      key: 'roleName',
+      key: 'id',
       render: (val, entity) => {
         return (
           <a
@@ -97,7 +97,7 @@ const RoleList: React.FC<RoleDataType> = () => {
           pageSize: 10,
         } }
         toolBarRender={ () => [
-          <Button type="primary" key="primary" onClick={ () => { handleModalVisible(true); setCurrentRow(undefined); } }>
+          <Button type="primary" onClick={ () => { handleModalVisible(true); setCurrentRow(undefined); } }>
             <PlusOutlined />新建
           </Button>,
         ] }

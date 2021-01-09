@@ -1,12 +1,27 @@
 import request from '@/utils/request';
-
-export async function query (): Promise<any> {
-  return request('/api/users');
+import API from '@/services/API.d'
+export interface LoginParamsType {
+  username: string;
+  password: string;
+  code: string;
 }
-
-export async function queryCurrent (): Promise<any> {
-  return request('/api/currentUser');
+export interface UserAuthorityType {
+  "roleIds": string[],
+  "userId": number
 }
-export async function queryNotices (): Promise<any> {
-  return request('/api/notices');
+//登录
+export async function fakeAccountLogin (params: LoginParamsType) {
+  return request.post(API.USER_LOGIN, { data: params })
+}
+//根据token刷新token值
+export async function fackAccountToken () {
+  return request.get(API.USER_CURRENT)
+}
+//根据token刷新token值
+export async function fackLogout () {
+  return request.post(API.USER_LOGOUT)
+}
+//
+export async function saveUserAuthority (params: UserAuthorityType) {
+  return request.post(API.USER_AUTHORITY, { data: params })
 }
