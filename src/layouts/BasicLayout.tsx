@@ -17,12 +17,8 @@ import RightContent from '@/components/GlobalHeader/RightContent';
 import { ConnectState } from '@/models/connect';
 import { getMatchMenu } from '@umijs/route-utils';
 import logo from '../assets/logo.svg';
-import routerData from './dataRoutes'
-import { createFromIconfontCN } from '@ant-design/icons';
-
-const IconFont = createFromIconfontCN({
-  scriptUrl: '//at.alicdn.com/t/font_8d5l8fzk5b87iudi.js',
-});
+import { MenuDataType } from '@/pages/admin/Menu/data.d'
+import { IconFont } from '@/components/common/IconFont'
 const noMatch = (
   <Result
     status={ 403 }
@@ -43,25 +39,25 @@ export interface BasicLayoutProps extends ProLayoutProps {
     authority: string[];
   };
   settings: Settings;
-  dispatch: Dispatch
+  dispatch: Dispatch;
+  currentMenu: MenuDataType[] | [];
 }
 export type BasicLayoutContext = { [ K in 'location' ]: BasicLayoutProps[ K ] } & {
   breadcrumbNameMap: {
     [ path: string ]: MenuDataItem;
   };
 };
-const menuDataRender = (menuList: MenuDataItem[]): MenuDataItem[] => {
-  return menuList.map((item) => {
-    const localItem = {
-      ...item,
-      icon: item.icon ? <IconFont type={ `icon-${item.icon}` } /> : undefined,
-      children: item.children ? menuDataRender(item.children) : undefined,
-    };
-    return Authorized.check(item.authority, localItem, null) as MenuDataItem;
-  });
-}
-
-const menuData = menuDataRender(routerData)
+const menuDataRender = (menuList: MenuDataItem[]): MenuDataItem[] => menuList.map((item) => {
+  let parentPath = item.children ? item.children[ 0 ] ? '/' + item.children[ 0 ].url.split('/')[ 1 ] : "#" : '#'
+  const localItem = {
+    icon: item.icon ? <IconFont type={ item.icon.toString() } /> : undefined,
+    name: item.name,
+    path: item.url !== '#' || !parentPath ? item.url : parentPath,
+    routes: item.children && item.children?.length ? menuDataRender(item.children) : undefined,
+    children: item.children && item.children?.length ? menuDataRender(item.children) : undefined,
+  };
+  return Authorized.check(item.perms, localItem, null) as MenuDataItem;
+});
 
 const defaultFooterDom = (
   <DefaultFooter
@@ -76,10 +72,10 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
     settings,
     location = {
       pathname: '/',
-    }
+    },
+    currentMenu
   } = props;
   const menuDataRef = useRef<MenuDataItem[]>([]);
-
   const handleMenuCollapse = (payload: boolean): void => {
     if (dispatch) {
       dispatch({
@@ -95,10 +91,9 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
       },
     [ location.pathname ],
   );
-
   return (
     <ProLayout
-      menuDataRender={ () => menuData }
+      menuDataRender={ () => menuDataRender(currentMenu) }
       logo={ logo }
       { ...props }
       { ...settings }
@@ -139,7 +134,8 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
   );
 };
 
-export default connect(({ global, settings, user }: ConnectState) => ({
+export default connect(({ global, settings, menu }: ConnectState) => ({
   collapsed: global.collapsed,
   settings,
+  currentMenu: menu.currentMenu
 }))(BasicLayout);

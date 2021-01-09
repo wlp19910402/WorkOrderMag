@@ -4,8 +4,7 @@ import React, { useState, useEffect, } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import { MenuDataType } from './data.d';
 import { DataNode } from 'rc-tree/lib/interface.d'
-import { Loading, connect, Dispatch, } from 'umi'
-import { MenuModelState } from './model';
+import { connect, Dispatch, } from 'umi'
 import { TypeFormType, menuDefault } from './data.d'
 import ModifyForm from './components/ModifyForm'
 import { IconFont } from '@/components/common/IconFont'

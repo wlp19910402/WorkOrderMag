@@ -3,12 +3,12 @@ import { queryMenuTree, saveMenu, queryCurrentMenu } from '@/services/menu';
 import { message } from 'antd';
 import { MenuDataType } from '@/pages/admin/Menu/data.d'
 export interface MenuModelState {
-  currentMenu: MenuDataType | undefined;
+  currentMenu: MenuDataType[] | [];
   menuTree: MenuDataType[] | [];
   flatMenuData: MenuDataType[] | [];
 }
 const defaulState = {
-  currentMenu: undefined,
+  currentMenu: [],
   menuTree: [],
   flatMenuData: []
 }
@@ -81,9 +81,10 @@ const Model: MenuModelType = {
     },
     //当前用户菜单
     *fetctCurrentMenu (_, { put, call }) {
-      yield call(queryCurrentMenu);
+      let response = yield call(queryCurrentMenu);
       yield put({
-        type: 'changeCurrentMenu'
+        type: 'changeCurrentMenu',
+        payload: response.data
       });
     },
   },

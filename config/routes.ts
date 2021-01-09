@@ -39,7 +39,7 @@
                 icon: 'smile',
                 routes: [
                   {
-                    path: '/admin/list',
+                    path: '/admin/user',
                     name: "用户列表",
                     component: './admin/UserList'
                   },

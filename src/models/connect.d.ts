@@ -1,6 +1,7 @@
 import { MenuDataItem, Settings as ProSettings } from '@ant-design/pro-layout';
 import { GlobalModelState } from './global';
 import { UserModelState } from './user';
+import { MenuModelState } from './menu'
 
 export { GlobalModelState, UserModelState };
 
@@ -20,6 +21,7 @@ export interface ConnectState {
   loading: Loading;
   settings: ProSettings;
   user: UserModelState;
+  menu: MenuModelState;
 }
 
 export interface Route extends MenuDataItem {

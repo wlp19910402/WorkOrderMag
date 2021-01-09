@@ -14,6 +14,9 @@ const Layout: React.FC<BlankLayout> = ({ children, isLogin, dispatch }) => {
       dispatch({
         type: 'user/fetchCurrent',
       });
+      dispatch({
+        type: 'menu/fetctCurrentMenu'
+      })
     }
   }, []);
   return <InspectorWrapper>{ children }</InspectorWrapper>;
