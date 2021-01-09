@@ -23,7 +23,6 @@ export interface LoginModelType {
     login: Effect;
     logout: Effect;
     fetchCurrent: Effect;
-    authority: Effect;
   };
   reducers: {
     changeCurrentUser: Reducer<UserModelState>;
@@ -114,14 +113,6 @@ const Model: LoginModelType = {
           });
         }
       })
-    },
-    *authority ({ payload, callback }, { put, call }) {
-      const response = yield call(saveUserAuthority, payload)
-      if (response.code === 0) {
-        if (callback) callback(response)
-      } else {
-        message.error(response.msg);
-      }
     }
   },
   reducers: {

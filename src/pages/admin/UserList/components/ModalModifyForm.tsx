@@ -6,23 +6,25 @@ import { ActionType } from '@ant-design/pro-table';
 import { ModalForm, ProFormText, ProFormCheckbox } from '@ant-design/pro-form';
 import { addUser } from '../service';
 import { UserListDataType, EditUserDataType } from '../../data.d';
+import { RoleCheckBoxDataType } from '../index'
 
 interface ModalModifyFormDataProps {
   createModalVisible: boolean;
   handleModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
   actionRef: React.MutableRefObject<ActionType | undefined>;
   currentRow: UserListDataType | undefined;
+  roleData: RoleCheckBoxDataType[] | undefined;
 }
 const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
-  const { createModalVisible, handleModalVisible, actionRef, currentRow } = props
+  const { createModalVisible, handleModalVisible, actionRef, currentRow, roleData } = props
   const submitForm = async (value: EditUserDataType) => {
     const res = await addUser(value)
     if (res.code === 0) {
-      handleModalVisible(false);
       if (actionRef.current) {
         actionRef.current.reload();
       }
     }
+    handleModalVisible(false);
   }
   return (
     <ModalForm
@@ -97,25 +99,13 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
         placeholder="请输入邮箱"
         initialValue={ currentRow?.email }
       />
-      <ProFormCheckbox.Group
+      {roleData ? <ProFormCheckbox.Group
         name="roleIds"
         layout="horizontal"
-        label="角色id"
-        options={ [
-          {
-            label: "管理员",
-            value: 0
-          },
-          {
-            label: "维修人员",
-            value: 1
-          },
-          {
-            label: "维修",
-            value: 2
-          }
-        ] }
-      />
+        label="角色ID"
+        options={ roleData }
+      /> : <></>
+      }
     </ModalForm>
   )
 }

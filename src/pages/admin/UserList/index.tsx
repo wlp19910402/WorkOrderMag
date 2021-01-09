@@ -7,6 +7,8 @@ import ProDescriptions, { ProDescriptionsItemProps } from '@ant-design/pro-descr
 import { queryUserList } from './service';
 import { UserListDataType } from '../data.d';
 import ModalModifyForm from './components/ModalModifyForm'
+import { queryRoleList } from '@/pages/admin/Role/service'
+import ModalAuthifyForm from './components/ModalAuthifyForm'
 /**
  *  删除节点
  * @param selectedRows
@@ -27,12 +29,18 @@ const handleRemove = async (selectedRows: UserListDataType[]) => {
     return false;
   }
 };
+export interface RoleCheckBoxDataType {
+  label: string;
+  value: number;
+}
 const ResumeList: React.FC<UserListDataType> = () => {
   const [ showDetail, setShowDetail ] = useState<boolean>(false);
   const actionRef = useRef<ActionType>();
   const [ currentRow, setCurrentRow ] = useState<UserListDataType>();
   const [ selectedRowsState, setSelectedRows ] = useState<UserListDataType[]>([]);
   const [ createModalVisible, handleModalVisible ] = useState<boolean>(false);
+  const [ modalAuthifyVisible, handleModalAuthifyVisible ] = useState<boolean>(false);
+  const [ roleData, setRoleData ] = useState<RoleCheckBoxDataType[] | undefined>()
   const columns: ProColumns<UserListDataType>[] = [
     {
       title: "id",
@@ -107,7 +115,7 @@ const ResumeList: React.FC<UserListDataType> = () => {
       valueType: 'option',
       render: (_, record) => [
         <a
-          onClick={ () => { handleModalVisible(true); setCurrentRow(record); } }
+          onClick={ async () => { setCurrentRow(record); await fetchRoleListData(); handleModalVisible(true); } }
         >
           编辑
         </a>,
@@ -117,13 +125,26 @@ const ResumeList: React.FC<UserListDataType> = () => {
           <a>删除</a>
         </Popconfirm>,
         <a
-          onClick={ () => { handleModalVisible(true); setCurrentRow(record); } }
+          onClick={ async () => { setCurrentRow(record); await fetchRoleListData(); handleModalAuthifyVisible(true); } }
         >
           授权
         </a>,
       ],
     },
   ];
+  const fetchRoleListData = async () => {
+    if (roleData === undefined) {
+      let response = await queryRoleList()
+      if (response.code === 0) {
+        await setRoleData(response.data.map((item: any) => ({
+          label: item.roleName,
+          value: item.id
+        })))
+      } else {
+        console.log("没有获取到角色列表数据")
+      }
+    }
+  }
   return (
     <PageContainer>
       <ProTable
@@ -137,7 +158,7 @@ const ResumeList: React.FC<UserListDataType> = () => {
           pageSize: 10,
         } }
         toolBarRender={ () => [
-          <Button type="primary" onClick={ () => { handleModalVisible(true); setCurrentRow(undefined); } }>
+          <Button type="primary" onClick={ async () => { await fetchRoleListData(); handleModalVisible(true); setCurrentRow(undefined); } }>
             <PlusOutlined />新建
           </Button>,
         ] }
@@ -154,9 +175,18 @@ const ResumeList: React.FC<UserListDataType> = () => {
           handleModalVisible={ handleModalVisible }
           actionRef={ actionRef }
           currentRow={ currentRow }
+          roleData={ roleData }
         />
       ) }
-
+      {modalAuthifyVisible && (
+        <ModalAuthifyForm
+          modalAuthifyVisible={ modalAuthifyVisible }
+          handleModalAuthifyVisible={ handleModalAuthifyVisible }
+          actionRef={ actionRef }
+          currentRow={ currentRow }
+          roleData={ roleData }
+        />
+      ) }
       {selectedRowsState?.length > 0 && (
         <FooterToolbar
           extra={

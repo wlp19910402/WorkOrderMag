@@ -5,10 +5,7 @@ export interface LoginParamsType {
   password: string;
   code: string;
 }
-export interface UserAuthorityType {
-  "roleIds": string[],
-  "userId": number
-}
+
 //登录
 export async function fakeAccountLogin (params: LoginParamsType) {
   return request.post(API.USER_LOGIN, { data: params })
@@ -20,8 +17,4 @@ export async function fackAccountToken () {
 //根据token刷新token值
 export async function fackLogout () {
   return request.post(API.USER_LOGOUT)
-}
-//
-export async function saveUserAuthority (params: UserAuthorityType) {
-  return request.post(API.USER_AUTHORITY, { data: params })
 }
