@@ -1,7 +1,7 @@
 import { Reducer, Effect } from 'umi';
-import { queryMenuTree, saveMenu, queryCurrentMenu } from './service';
+import { queryMenuTree, saveMenu, queryCurrentMenu } from '@/services/menu';
 import { message } from 'antd';
-import { MenuDataType } from './data.d'
+import { MenuDataType } from '@/pages/admin/Menu/data.d'
 export interface MenuModelState {
   currentMenu: MenuDataType | undefined;
   menuTree: MenuDataType[] | [];
@@ -36,7 +36,6 @@ export interface MenuModelType {
     fetctCurrentMenu: Effect;
   };
   reducers: {
-    changeMenuTree: Reducer<MenuModelState>;
     changeCurrentMenu: Reducer<MenuModelState>;
   };
 }
@@ -48,26 +47,37 @@ const Model: MenuModelType = {
     //获取菜单列表
     *fetchMenuTree ({ callback }, { call, put }) {
       const response = yield call(queryMenuTree);
-      const menuData = [
-        {
-          "icon": "icon-FolderOpen",
-          "name": "一级菜单",
-          "id": 0,
-          "url": "#",
-          "type": 0,
-          "perms": "",
-          "orderNum": 0,
-          "parentId": 0,
-          "children": response.data
-        }
-      ]
-      const flatMenuData = fetchFaltMenuData(menuData)
-      if (callback) callback(menuData, flatMenuData)
+      if (response.code === 0) {
+        const menuData = [
+          {
+            "icon": "icon-FolderOpen",
+            "name": "一级菜单",
+            "id": 0,
+            "url": "#",
+            "type": 0,
+            "perms": "",
+            "orderNum": 0,
+            "parentId": 0,
+            "children": response.data
+          }
+        ]
+        const flatMenuData = fetchFaltMenuData(menuData)
+        if (callback) callback(menuData, flatMenuData)
+      } else {
+        message.error(response.msg);
+      }
+
     },
     //保存菜单
     *saveMenu ({ payload, callback }, { call, put }) {
       const response = yield call(saveMenu, payload)
-      if (callback) callback(response)
+      if (response.code === 0) {
+        if (callback) callback(response)
+        message.success("保存成功！");
+      } else {
+        message.error(response.msg);
+      }
+
     },
     //当前用户菜单
     *fetctCurrentMenu (_, { put, call }) {
@@ -83,14 +93,7 @@ const Model: MenuModelType = {
         ...state,
         currentMenu: payload
       };
-    },
-    changeMenuTree (state = defaulState, { payload }) {
-      return ({
-        ...state,
-        menuTree: payload.menuTree,
-        flatMenuData: payload.faltData
-      })
-    },
+    }
   },
 };
 

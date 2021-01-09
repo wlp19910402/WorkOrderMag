@@ -1,5 +1,5 @@
 import request from 'umi-request';
-import { MenuDataType } from './data.d';
+import { MenuDataType } from '@/pages/admin/Menu/data.d';
 import API from '@/services/API.d'
 
 export const queryMenuTree = async () => {
