@@ -48,11 +48,12 @@ export type BasicLayoutContext = { [ K in 'location' ]: BasicLayoutProps[ K ] } 
   };
 };
 const menuDataRender = (menuList: MenuDataItem[]): MenuDataItem[] => menuList.map((item) => {
-  let parentPath = item.children ? item.children[ 0 ] ? '/' + item.children[ 0 ].url.split('/')[ 1 ] : "#" : '#'
   const localItem = {
     icon: item.icon ? <IconFont type={ item.icon.toString() } /> : undefined,
     name: item.name,
-    path: item.url !== '#' || !parentPath ? item.url : parentPath,
+    path: item.url,
+    parentKeys: [ item.parentId.toString() ],
+    key: item.id.toString(),
     routes: item.children && item.children?.length ? menuDataRender(item.children) : undefined,
     children: item.children && item.children?.length ? menuDataRender(item.children) : undefined,
   };
