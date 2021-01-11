@@ -11,3 +11,7 @@ export const saveMenu = async (params: MenuDataType) => {
 export const queryCurrentMenu = async () => {
   return await request.post(API.MENU_CURRENT_TREE);
 }
+
+export const fetchDelMenu = async (id: string) => {
+  return await request.post(API.MENU_DEL_ID + '/' + id);
+}

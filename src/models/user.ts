@@ -64,7 +64,7 @@ const Model: LoginModelType = {
         }
         history.replace(redirect || '/welcome');
       } else {
-        message.error(response.msg);
+        message.error(response.message);
       }
     },
     //使用token获取用户信息

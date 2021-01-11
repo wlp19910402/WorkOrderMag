@@ -1,5 +1,5 @@
 import { PlusOutlined, MinusOutlined, EditOutlined } from '@ant-design/icons';
-import { Button, message, Card, Tree, Row, Col, Divider, Spin } from 'antd';
+import { Button, message, Card, Tree, Row, Col, Divider, Spin, Popconfirm } from 'antd';
 import React, { useState, useEffect, } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import { MenuDataType } from './data.d';
@@ -105,6 +105,14 @@ const MenuTree: React.FC<MenuTreeTypeProps> = (props) => {
       setMenuData([]);
       setMenuData(defaultMenuData);
       setParentRow(undefined);
+    } else {
+      await dispatch({
+        type: "menu/delMenu",
+        payload: render.key,
+        callback: async () => {
+          await fetchMenu()
+        }
+      })
     }
   }
   return (
@@ -135,7 +143,11 @@ const MenuTree: React.FC<MenuTreeTypeProps> = (props) => {
                               /></Button>
                           </Col>
                           <Col span={ 8 } style={ { textAlign: "center" } }>
-                            <Button disabled={ nodeData.key === '0' || (parentRow?.id != undefined && nodeData.key !== 'new') } type="default" danger size="small" onClick={ (e) => { cancelMenu(e, nodeData) } }><MinusOutlined style={ { fontSize: '14px' } } /></Button>
+                            <Popconfirm
+                              title="是否要删除此项？"
+                              onConfirm={ (e) => { cancelMenu(e, nodeData) } }>
+                              <Button disabled={ nodeData.key === '0' || (parentRow?.id != undefined && nodeData.key !== 'new') } type="default" danger size="small" ><MinusOutlined style={ { fontSize: '14px' } } /></Button>
+                            </Popconfirm>,
                           </Col>
                           <Col span={ 8 } >
                             <Button disabled={ nodeData.key === '0' || (parentRow?.id != undefined && nodeData.key !== 'new') } style={ { float: "right" } } type="default" size="small" onClick={ (e) => { editMenu(e, nodeData.key) } }><EditOutlined style={ { fontSize: '14px' } } /></Button>

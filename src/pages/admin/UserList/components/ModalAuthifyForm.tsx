@@ -26,7 +26,7 @@ const ModalAuthifyForm: React.FC<ModalAuthifyFormDataProps> = (props) => {
         actionRef.current.reload();
       }
     } else {
-      message.error(res.msg);
+      message.error(res.message);
     }
     handleModalAuthifyVisible(false);
   }

@@ -1,5 +1,5 @@
 import { Reducer, Effect } from 'umi';
-import { queryMenuTree, saveMenu, queryCurrentMenu } from '@/services/menu';
+import { queryMenuTree, saveMenu, queryCurrentMenu, fetchDelMenu } from '@/services/menu';
 import { message } from 'antd';
 import { MenuDataType } from '@/pages/admin/Menu/data.d'
 export interface MenuModelState {
@@ -34,6 +34,7 @@ export interface MenuModelType {
     fetchMenuTree: Effect;
     saveMenu: Effect;
     fetctCurrentMenu: Effect;
+    delMenu: Effect;
   };
   reducers: {
     changeCurrentMenu: Reducer<MenuModelState>;
@@ -64,7 +65,7 @@ const Model: MenuModelType = {
         const flatMenuData = fetchFaltMenuData(menuData)
         if (callback) callback(menuData, flatMenuData)
       } else {
-        message.error(response.msg);
+        message.error(response.message);
       }
 
     },
@@ -75,7 +76,16 @@ const Model: MenuModelType = {
         if (callback) callback(response)
         message.success("保存成功！");
       } else {
-        message.error(response.msg);
+        message.error(response.message);
+      }
+    },
+    *delMenu ({ payload, callback }, { call }) {
+      const response = yield call(fetchDelMenu, payload);
+      if (response.code === 0) {
+        if (callback) callback(response)
+        message.success("删除成功！");
+      } else {
+        message.error(response.message);
       }
     },
     //当前用户菜单
@@ -87,7 +97,7 @@ const Model: MenuModelType = {
           payload: response.data
         });
       } else {
-        message.error(response.msg);
+        message.error(response.message);
       }
     },
   },
