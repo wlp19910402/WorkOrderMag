@@ -99,7 +99,7 @@ const MenuTree: React.FC<MenuTreeTypeProps> = (props) => {
     setMenuData([])
     setMenuData(tmp)
   }
-  const cancelMenu = async (e: any, render: DataNode) => {
+  const tiggerDeleteMenu = async (e: any, render: DataNode) => {
     e.stopPropagation();
     if (render.key === 'new') {
       setMenuData([]);
@@ -145,7 +145,7 @@ const MenuTree: React.FC<MenuTreeTypeProps> = (props) => {
                           <Col span={ 8 } style={ { textAlign: "center" } }>
                             <Popconfirm
                               title="是否要删除此项？"
-                              onConfirm={ (e) => { cancelMenu(e, nodeData) } }>
+                              onConfirm={ (e) => { tiggerDeleteMenu(e, nodeData) } }>
                               <Button disabled={ nodeData.key === '0' || (parentRow?.id != undefined && nodeData.key !== 'new') } type="default" danger size="small" ><MinusOutlined style={ { fontSize: '14px' } } /></Button>
                             </Popconfirm>,
                           </Col>

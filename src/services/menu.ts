@@ -13,5 +13,5 @@ export const queryCurrentMenu = async () => {
 }
 
 export const fetchDelMenu = async (id: string) => {
-  return await request.post(API.MENU_DEL_ID + '/' + id);
+  return await request.post(API.MENU_DELETE + '/' + id);
 }

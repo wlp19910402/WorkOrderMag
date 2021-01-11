@@ -1,10 +1,10 @@
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, Drawer, message, Popconfirm } from 'antd';
+import { Button, Drawer, message, Popconfirm, Switch } from 'antd';
 import React, { useState, useRef } from 'react';
 import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import ProDescriptions, { ProDescriptionsItemProps } from '@ant-design/pro-descriptions';
-import { queryUserList } from './service';
+import { queryUserList, deleteUser, statusUser } from './service';
 import { UserListDataType } from '../data.d';
 import ModalModifyForm from './components/ModalModifyForm'
 import { queryRoleList } from '@/pages/admin/Role/service'
@@ -33,6 +33,7 @@ export interface RoleCheckBoxDataType {
   label: string;
   value: number;
 }
+
 const ResumeList: React.FC<UserListDataType> = () => {
   const [ showDetail, setShowDetail ] = useState<boolean>(false);
   const actionRef = useRef<ActionType>();
@@ -40,7 +41,8 @@ const ResumeList: React.FC<UserListDataType> = () => {
   const [ selectedRowsState, setSelectedRows ] = useState<UserListDataType[]>([]);
   const [ createModalVisible, handleModalVisible ] = useState<boolean>(false);
   const [ modalAuthifyVisible, handleModalAuthifyVisible ] = useState<boolean>(false);
-  const [ roleData, setRoleData ] = useState<RoleCheckBoxDataType[] | undefined>()
+  const [ roleData, setRoleData ] = useState<RoleCheckBoxDataType[] | undefined>();
+  const [ switchLoading, setSwitchLoading ] = useState<boolean>(false)
   const columns: ProColumns<UserListDataType>[] = [
     {
       title: "id",
@@ -94,44 +96,64 @@ const ResumeList: React.FC<UserListDataType> = () => {
       title: "状态",
       dataIndex: 'status',
       hideInForm: true,
-      valueType: 'textarea',
-      valueEnum: {
-        "0": {
-          text: "未发布",
-          status: 'Default',
-        },
-        "1": {
-          text: "已发布",
-          status: 'Success',
-        },
-        "2": {
-          text: "已删除",
-          status: 'Cancel',
-        },
-      },
+      render: ((val, record) => {
+        return (<Switch disabled={ record.id === 1 } loading={ false } onClick={ async (checked: boolean, event: Event) => {
+          record.id != undefined && switchUserStatus(record.id?.toString(), val === 1 ? true : false)
+        } } checkedChildren='启用' unCheckedChildren='禁用' defaultChecked={ val === 1 } />)
+      })
     },
     {
       title: "操作",
       valueType: 'option',
       render: (_, record) => [
-        <a
+        <Button
+          type="text"
+          size="small"
+          disabled={ record.id === 1 }
           onClick={ async () => { setCurrentRow(record); await fetchRoleListData(); handleModalVisible(true); } }
         >
           编辑
-        </a>,
+        </Button>,
         <Popconfirm
+          disabled={ record.id === 1 }
           title="是否要删除此行？"
-          onConfirm={ () => { handleRemove([ record ]); actionRef.current?.reloadAndRest?.(); } }>
-          <a>删除</a>
+          onConfirm={ () => { record.id != undefined && tiggerDeleteUser(record.id?.toString()); } }>
+          <Button disabled={ record.id === 1 } size="small" type="text" >删除</Button>
         </Popconfirm>,
-        <a
+        <Button
+          type="text"
+          size="small"
+          disabled={ record.id === 1 }
           onClick={ async () => { setCurrentRow(record); await fetchRoleListData(); handleModalAuthifyVisible(true); } }
         >
           授权
-        </a>,
+        </Button>,
       ],
     },
   ];
+  const switchUserStatus = async (id: string, batch: boolean) => {
+    let response = await statusUser(id);
+    if (response.code === 0) {
+      if (actionRef.current) {
+        actionRef.current.reloadAndRest?.();
+      }
+      message.success(`${batch ? '禁用' : '启用'}成功`)
+    } else {
+      message.error(response.message)
+    }
+
+  };
+  const tiggerDeleteUser = async (id: string) => {
+    let response = await deleteUser(id)
+    if (response.code === 0) {
+      if (actionRef.current) {
+        actionRef.current.reloadAndRest?.();
+      }
+      message.success("删除成功")
+    } else {
+      message.error(response.message)
+    }
+  }
   const fetchRoleListData = async () => {
     if (roleData === undefined) {
       let response = await queryRoleList()
@@ -141,7 +163,7 @@ const ResumeList: React.FC<UserListDataType> = () => {
           value: item.id
         })))
       } else {
-        console.log("没有获取到角色列表数据")
+        message.error(response.message);
       }
     }
   }

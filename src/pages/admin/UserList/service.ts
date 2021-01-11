@@ -6,8 +6,7 @@ export interface UserAuthorityType {
   "userId": number
 }
 export const queryUserList = async (params: PageDataType) => {
-  let response = await request('/api/user/list', {
-    method: 'Get',
+  let response = await request.get(API.USER_LIST, {
     params: {
       pageSize: params.pageSize,
       pageNo: params.current
@@ -17,15 +16,18 @@ export const queryUserList = async (params: PageDataType) => {
 }
 
 export const addUser = async (params: EditUserDataType) => {
-  return request('/api/user/add', {
-    method: 'POST',
-    data: {
-      ...params
-    },
-  });
+  return request.post(API.USER_ADD, { data: params });
 }
 
 //授权信息添加
 export async function saveUserAuthority (params: UserAuthorityType) {
   return request.post(API.USER_AUTHORITY, { data: params })
+}
+
+export const deleteUser = async (id: string) => {
+  return request.post(`${API.USER_DELETE}/${id}`)
+}
+//设置用户状态
+export const statusUser = async (id: string) => {
+  return request.post(`${API.USER_STATUS}/${id}`)
 }

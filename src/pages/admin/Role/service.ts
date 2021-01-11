@@ -14,3 +14,7 @@ export const saveRole = async (params: RoleDataType) => {
 export const BindRole = async (params: RoleDataType) => {
   return await request.post(API.ROLE_SAVE, { data: params })
 }
+//删除用户
+export const deleteRole = async (id: string) => {
+  return await request.post(API.ROLE_DELETE + "/" + id)
+}

@@ -6,6 +6,7 @@ import { ActionType } from '@ant-design/pro-table';
 import { ModalForm, ProFormText, ProFormTextArea } from '@ant-design/pro-form';
 import { saveRole } from '../service';
 import { RoleDataType } from '../data.d';
+import { message } from 'antd'
 
 interface ModalModifyFormDataProps {
   createModalVisible: boolean;
@@ -22,6 +23,9 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
       if (actionRef.current) {
         actionRef.current.reload();
       }
+      message.success(`${value.id != undefined ? '修改' : '添加'}成功`);
+    } else {
+      message.error(`${value.id != undefined ? '修改' : '添加'}失败`);
     }
   }
   return (

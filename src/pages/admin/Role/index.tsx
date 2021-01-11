@@ -4,7 +4,7 @@ import React, { useState, useRef } from 'react';
 import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import ProDescriptions, { ProDescriptionsItemProps } from '@ant-design/pro-descriptions';
-import { queryRoleList } from './service';
+import { queryRoleList, deleteRole } from './service';
 import { RoleDataType } from './data.d';
 import ModalModifyForm from './components/ModalModifyForm'
 /**
@@ -78,12 +78,23 @@ const RoleList: React.FC<RoleDataType> = () => {
         </a>,
         <Popconfirm
           title="是否要删除此行？"
-          onConfirm={ () => { handleRemove([ record ]); actionRef.current?.reloadAndRest?.(); } }>
+          onConfirm={ () => { record.id != undefined && tiggerDeleteRole(record.id?.toString()); } }>
           <a>删除</a>
         </Popconfirm>
       ],
     },
   ];
+  const tiggerDeleteRole = async (id: string) => {
+    let response = await deleteRole(id)
+    if (response.code === 0) {
+      if (actionRef.current) {
+        actionRef.current.reloadAndRest?.();
+      }
+      message.success("删除成功")
+    } else {
+      message.error(response.message)
+    }
+  }
   return (
     <PageContainer>
       <ProTable
