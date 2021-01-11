@@ -16,6 +16,11 @@ const Login: React.FC<LoginProps> = (props) => {
     dispatch({
       type: 'user/login',
       payload: { ...values },
+      callback: async () => {
+        await dispatch({
+          type: 'menu/fetctCurrentMenu'
+        })
+      }
     });
   };
   const fetchTimestamp = () => {
@@ -87,7 +92,7 @@ const Login: React.FC<LoginProps> = (props) => {
               <Image
                 style={ { width: "100%" } }
                 preview={ false }
-                src={ `http://localhost:8000/api/sys/login-captcha.jpg?${timestamp}` }
+                src={ `${window.location.protocol}//${window.location.host}/api/sys/login-captcha.jpg?${timestamp}` }
                 height={ 40 }
               />
             </Col>

@@ -37,7 +37,7 @@ const Model: LoginModelType = {
   },
   effects: {
     //登录
-    *login ({ payload }, { call, put }) {
+    *login ({ payload, callback }, { call, put }) {
       const response = yield call(fakeAccountLogin, payload);
       if (response.code === 0) {
         yield put({
@@ -49,6 +49,7 @@ const Model: LoginModelType = {
         const params = getPageQuery();
         message.success('🎉 🎉 🎉  登录成功！');
         let { redirect } = params as { redirect: string };
+        callback()
         if (redirect) {
           const redirectUrlParams = new URL(redirect);
           if (redirectUrlParams.origin === urlParams.origin) {
@@ -57,11 +58,11 @@ const Model: LoginModelType = {
               redirect = redirect.substr(redirect.indexOf('#') + 1);
             }
           } else {
-            window.location.href = '/';
+            history.replace('/welcome');
             return;
           }
         }
-        history.replace(redirect || '/');
+        history.replace(redirect || '/welcome');
       } else {
         message.error(response.msg);
       }
@@ -76,7 +77,6 @@ const Model: LoginModelType = {
       const { redirect } = getPageQuery();
       if (response.code === 0) {
         localforage.setItem('token', response.data.token)
-        message.success('🎉 🎉 🎉  登录成功！token');
         if (window.location.pathname === '/user/login') {
           if (redirect) {
             window.location.href = redirect.toString()

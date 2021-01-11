@@ -40,8 +40,10 @@ export default defineConfig({
   title: false,
   ignoreMomentLocale: true,
   proxy: proxy[ REACT_APP_ENV || 'dev' ],
+  publicPath: "/workOrderMag/",
   manifest: {
-    basePath: '/',
+    basePath: '/workOrderMag',
+    publicPath: '/workOrderMag/',
   },
   esbuild: {},
   // https://github.com/zthxxx/react-dev-inspector

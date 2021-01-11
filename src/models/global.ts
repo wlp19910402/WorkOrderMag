@@ -1,7 +1,5 @@
 import { Reducer, Effect } from 'umi';
-
 import { NoticeIconData } from '@/components/NoticeIcon';
-import { queryNotices } from '@/services/user';
 import { ConnectState } from './connect.d';
 
 export interface NoticeItem extends NoticeIconData {
@@ -32,31 +30,29 @@ export interface GlobalModelType {
 
 const GlobalModel: GlobalModelType = {
   namespace: 'global',
-
   state: {
     collapsed: false,
     notices: [],
   },
-
   effects: {
-    *fetchNotices(_, { call, put, select }) {
-      const data = yield call(queryNotices);
-      yield put({
-        type: 'saveNotices',
-        payload: data,
-      });
-      const unreadCount: number = yield select(
-        (state: ConnectState) => state.global.notices.filter((item) => !item.read).length,
-      );
-      yield put({
-        type: 'user/changeNotifyCount',
-        payload: {
-          totalCount: data.length,
-          unreadCount,
-        },
-      });
+    *fetchNotices (_, { call, put, select }) {
+      // const data = yield call(queryNotices);
+      // yield put({
+      //   type: 'saveNotices',
+      //   payload: data,
+      // });
+      // const unreadCount: number = yield select(
+      //   (state: ConnectState) => state.global.notices.filter((item) => !item.read).length,
+      // );
+      // yield put({
+      //   type: 'user/changeNotifyCount',
+      //   payload: {
+      //     totalCount: data.length,
+      //     unreadCount,
+      //   },
+      // });
     },
-    *clearNotices({ payload }, { put, select }) {
+    *clearNotices ({ payload }, { put, select }) {
       yield put({
         type: 'saveClearedNotices',
         payload,
@@ -73,7 +69,7 @@ const GlobalModel: GlobalModelType = {
         },
       });
     },
-    *changeNoticeReadState({ payload }, { put, select }) {
+    *changeNoticeReadState ({ payload }, { put, select }) {
       const notices: NoticeItem[] = yield select((state: ConnectState) =>
         state.global.notices.map((item) => {
           const notice = { ...item };
@@ -100,20 +96,20 @@ const GlobalModel: GlobalModelType = {
   },
 
   reducers: {
-    changeLayoutCollapsed(state = { notices: [], collapsed: true }, { payload }): GlobalModelState {
+    changeLayoutCollapsed (state = { notices: [], collapsed: true }, { payload }): GlobalModelState {
       return {
         ...state,
         collapsed: payload,
       };
     },
-    saveNotices(state, { payload }): GlobalModelState {
+    saveNotices (state, { payload }): GlobalModelState {
       return {
         collapsed: false,
         ...state,
         notices: payload,
       };
     },
-    saveClearedNotices(state = { notices: [], collapsed: true }, { payload }): GlobalModelState {
+    saveClearedNotices (state = { notices: [], collapsed: true }, { payload }): GlobalModelState {
       return {
         ...state,
         collapsed: false,
