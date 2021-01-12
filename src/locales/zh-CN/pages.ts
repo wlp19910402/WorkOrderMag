@@ -1,5 +1,5 @@
 export default {
-  'pages.layouts.userLayout.title': 'Home-D resume模板，优化，简洁，清晰。开始您的resume。',
+  'pages.layouts.userLayout.title': '凌云博际 ',
   'pages.login.accountLogin.tab': '账户密码登录',
   'pages.login.accountLogin.errorMessage': '错误的用户名和密码（admin/ant.design)',
   'pages.login.username.placeholder': '用户名: admin or user',

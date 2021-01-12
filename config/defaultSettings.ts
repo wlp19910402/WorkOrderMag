@@ -13,7 +13,7 @@ const proSettings: DefaultSettings = {
   fixedHeader: false,
   fixSiderbar: true,
   colorWeak: false,
-  title: 'Home-D',
+  title: '凌云博际',
   pwa: false,
   iconfontUrl: '',
 };

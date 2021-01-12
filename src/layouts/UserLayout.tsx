@@ -3,7 +3,7 @@ import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { Link, SelectLang, useIntl, ConnectProps, connect, Dispatch } from 'umi';
 import React, { useEffect } from 'react';
 import { ConnectState } from '@/models/connect';
-import logo from '../assets/logo.svg';
+import logo from '../assets/images/logo-white.png';
 import styles from './UserLayout.less';
 
 export interface UserLayoutProps extends Partial<ConnectProps> {
@@ -60,16 +60,15 @@ const UserLayout: React.FC<UserLayoutProps> = (props) => {
             <div className={ styles.header }>
               <Link to="/">
                 <img alt="logo" className={ styles.logo } src={ logo } />
-                <span className={ styles.title }>Home-D</span>
               </Link>
             </div>
             <div className={ styles.desc }>
-              Home-D resume模板，优化，简洁，清晰。开始您的resume
+              设备管理管理端
             </div>
           </div>
           { children }
         </div>
-        {/* <DefaultFooter copyright={ `${new Date().getFullYear()} Home-D` }
+        {/* <DefaultFooter copyright={ `${new Date().getFullYear()} 凌云博际` }
           links={ false } /> */}
       </div>
     </HelmetProvider>

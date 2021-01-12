@@ -16,7 +16,7 @@ import Authorized from '@/utils/Authorized';
 import RightContent from '@/components/GlobalHeader/RightContent';
 import { ConnectState } from '@/models/connect';
 import { getMatchMenu } from '@umijs/route-utils';
-import logo from '../assets/logo.svg';
+import logo from '@/assets/images/logo2-white.png';
 import { MenuDataType } from '@/pages/admin/Menu/data.d'
 import { IconFont } from '@/components/common/IconFont'
 const noMatch = (
@@ -62,7 +62,7 @@ const menuDataRender = (menuList: MenuDataItem[]): MenuDataItem[] => menuList.ma
 
 const defaultFooterDom = (
   <DefaultFooter
-    copyright={ `${new Date().getFullYear()} Home-D` }
+    copyright={ `${new Date().getFullYear()}凌云博际` }
     links={ false }
   />
 );
