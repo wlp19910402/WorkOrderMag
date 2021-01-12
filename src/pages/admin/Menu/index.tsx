@@ -147,7 +147,7 @@ const MenuTree: React.FC<MenuTreeTypeProps> = (props) => {
                               title="是否要删除此项？"
                               onConfirm={ (e) => { tiggerDeleteMenu(e, nodeData) } }>
                               <Button disabled={ nodeData.key === '0' || (parentRow?.id != undefined && nodeData.key !== 'new') } type="default" danger size="small" ><MinusOutlined style={ { fontSize: '14px' } } /></Button>
-                            </Popconfirm>,
+                            </Popconfirm>
                           </Col>
                           <Col span={ 8 } >
                             <Button disabled={ nodeData.key === '0' || (parentRow?.id != undefined && nodeData.key !== 'new') } style={ { float: "right" } } type="default" size="small" onClick={ (e) => { editMenu(e, nodeData.key) } }><EditOutlined style={ { fontSize: '14px' } } /></Button>

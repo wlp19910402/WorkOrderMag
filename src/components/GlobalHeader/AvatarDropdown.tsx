@@ -27,6 +27,9 @@ class AvatarDropdown extends React.Component<GlobalHeaderRightProps> {
         dispatch({
           type: 'user/logout',
         });
+        dispatch({
+          type: 'menu/clearCurrentMenu'
+        })
       }
       return;
     }

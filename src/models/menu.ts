@@ -7,6 +7,17 @@ export interface MenuModelState {
   menuTree: MenuDataType[] | [];
   flatMenuData: MenuDataType[] | [];
 }
+const welcome = {
+  children: [],
+  icon: "icon-gift2",
+  id: 118,
+  name: "欢迎页",
+  orderNum: 1,
+  parentId: 0,
+  perms: "",
+  type: 1,
+  url: "/welcome",
+}
 const defaulState = {
   currentMenu: [],
   menuTree: [],
@@ -35,6 +46,7 @@ export interface MenuModelType {
     saveMenu: Effect;
     fetctCurrentMenu: Effect;
     delMenu: Effect;
+    clearCurrentMenu: Effect;
   };
   reducers: {
     changeCurrentMenu: Reducer<MenuModelState>;
@@ -91,15 +103,22 @@ const Model: MenuModelType = {
     //当前用户菜单
     *fetctCurrentMenu (_, { put, call }) {
       let response = yield call(queryCurrentMenu);
+      let menuData = response.data
       if (response.code === 0) {
         yield put({
           type: 'changeCurrentMenu',
-          payload: response.data
+          payload: [ welcome, ...menuData ]
         });
       } else {
-        message.error(response.message);
+        // message.error(response.message);
       }
     },
+    *clearCurrentMenu (_, { put }) {
+      yield put({
+        type: 'changeCurrentMenu',
+        payload: []
+      });
+    }
   },
   reducers: {
     changeCurrentMenu (state = defaulState, { payload }) {

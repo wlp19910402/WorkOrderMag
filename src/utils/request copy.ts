@@ -2,7 +2,7 @@
  * request 网络请求工具
  * 更详细的 api 文档: https://github.com/umijs/umi-request
  */
-import { extend, Context, RequestInterceptor, OnionOptions } from 'umi-request';
+import { extend, RequestInterceptor, OnionOptions, RequestOptionsWithResponse } from 'umi-request';
 import { notification } from 'antd';
 import localforage from 'localforage'
 import { history } from 'umi'
@@ -29,6 +29,7 @@ const codeMessage = {
  * 异常处理程序
  */
 const errorHandler = (error: { response: Response }): Response => {
+  console.log(error)
   const { response } = error;
   if (response && response.status) {
     const errorText = codeMessage[ response.status ] || response.statusText;
@@ -45,6 +46,7 @@ const errorHandler = (error: { response: Response }): Response => {
   }
   return response;
 };
+// const DEFAULT_ERROR_PAGE = '/exception';
 /**
  * 配置request请求时的默认参数
  */
@@ -66,31 +68,38 @@ request.interceptors.request.use(async (url: RequestInterceptor, options: OnionO
     }
   )
 })
-// request.interceptors.response.use(response => {
-//   console.log(response, "res")
-//   // console.log("8989")
-//   // console.log(options)
-//   // if(response.status)
-//   return response
+request.interceptors.response.use(response => {
+  console.log(response)
+  // console.log("8989")
+  // console.log(options)
+  // if(response.status)
+  return response
+})
+
+request.get((url: string, option) => {
+  console.log(option)
+  console.log("33333")
+  return option
+})
+// request.middlewares((ctx, next) => { next() })
+request.use(async (ctx, next) => {
+  // console.log('A before', ctx);
+  try {
+    await next();
+  } catch (e) {
+    switch (e.status) {
+      case 403: history.replace("/exception/403");
+      case 404: history.replace("/exception/404");
+      case 500: history.replace("/exception/500");
+    }
+    // console.log(e)
+    // console.log("---------")
+  }
+  // } catch ((err: any) => {
+  //   console.log(err)
+})
+// console.log('A after', ctx);
 // })
-// // request.middlewares((ctx, next) => { next() })
-// request.use(async (ctx, next) => {
-//   console.log(ctx, ctx.res)
-//   if (ctx.res) {
-//     switch (ctx.res.code) {
-//       case 403: history.replace("/exception/403");
-//       case 404: history.replace("/exception/404");
-//       case 500: history.replace("/exception/500");
-//     }
-//   }
-//   try {
-//     await next();
-//   } catch (e) {
-//     switch (e.status) {
-//       case 403: history.replace("/exception/403");
-//       case 404: history.replace("/exception/404");
-//       case 500: history.replace("/exception/500");
-//     }
-//   }
-// })
+// request
+// request
 export default request;
