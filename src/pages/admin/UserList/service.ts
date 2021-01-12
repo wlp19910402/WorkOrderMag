@@ -6,15 +6,13 @@ export interface UserAuthorityType {
   "userId": number
 }
 export const queryUserList = async (params: PageDataType) => {
-  let response = await request.get(API.USER_LIST, {
+  return await request.get(API.USER_LIST, {
     params: {
       pageSize: params.pageSize,
       pageNo: params.current
     }
   });
-  return { ...response.data, data: response.data.records }
 }
-
 export const addUser = async (params: EditUserDataType) => {
   return request.post(API.USER_ADD, { data: params });
 }
@@ -25,7 +23,6 @@ export const editUser = async (params: EditUserDataType) => {
 export async function saveUserAuthority (params: UserAuthorityType) {
   return request.post(API.USER_AUTHORITY, { data: params })
 }
-
 export const deleteUser = async (id: string) => {
   return request.post(`${API.USER_DELETE}/${id}`)
 }

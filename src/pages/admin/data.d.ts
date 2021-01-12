@@ -22,3 +22,12 @@ export interface EditUserDataType {
   username?: string,
   id?: number
 }
+
+export interface DictionaryDataType {
+  id?: number,
+  code: string,
+  name: string,
+  remark: string,
+  type: string,
+  value: string
+}

@@ -20,4 +20,7 @@ export default {
   MENU_SAVE: '/api/sys/menu/save',//添加或编辑菜单
   MENU_CURRENT_TREE: '/api/sys/menu/current/tree',//当前用户菜单【用于用户登录后菜单加载】
   MENU_DELETE: '/api/sys/menu/del',///sys/menu/del/{id}
+  DICTIONARY_LIST: '/api/sys/dic/list',
+  DICTIONARY_SAVE: '/api/sys/dic/save',
+  DICTIONARY_DELETE: '/api/sys/dic/del',///sys/dic/del/{id}
 }

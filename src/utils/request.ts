@@ -66,13 +66,13 @@ request.interceptors.request.use(async (url: RequestInterceptor, options: OnionO
     }
   )
 })
-// request.interceptors.response.use(response => {
-//   console.log(response, "res")
-//   // console.log("8989")
-//   // console.log(options)
-//   // if(response.status)
-//   return response
-// })
+request.interceptors.response.use(response => {
+  console.log(response, "res")
+  // console.log("8989")
+  // console.log(options)
+  // if(response.status)
+  return response
+})
 // // request.middlewares((ctx, next) => { next() })
 // request.use(async (ctx, next) => {
 //   console.log(ctx, ctx.res)

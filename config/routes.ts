@@ -51,6 +51,11 @@
                     path: '/admin/role',
                     name: '角色管理',
                     component: "./admin/Role"
+                  },
+                  {
+                    path: '/admin/dictionary',
+                    name: '系统字典',
+                    component: "./admin/Dictionary"
                   }
                 ]
               },
@@ -87,6 +92,9 @@
                     "exact": true
                   }
                 ]
+              },
+              {
+                component: './404',
               },
             ],
           },

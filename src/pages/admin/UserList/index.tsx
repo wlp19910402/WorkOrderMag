@@ -42,8 +42,7 @@ const ResumeList: React.FC<UserListDataType> = () => {
   const [ createModalVisible, handleModalVisible ] = useState<boolean>(false);
   const [ modalAuthifyVisible, handleModalAuthifyVisible ] = useState<boolean>(false);
   const [ roleData, setRoleData ] = useState<RoleCheckBoxDataType[] | undefined>();
-  const [ initialRoleIds, setInitialRoleIds ] = useState<number[] | []>([])
-  const [ switchLoading, setSwitchLoading ] = useState<boolean>(false)
+  const [ initialRoleIds, setInitialRoleIds ] = useState<number[] | undefined>(undefined)
   const columns: ProColumns<UserListDataType>[] = [
     {
       title: "id",
@@ -193,6 +192,16 @@ const ResumeList: React.FC<UserListDataType> = () => {
       }
     }
   }
+  const fetchQueryUserList = async (params) => {
+    let response = await queryUserList(params)
+    if (response.code === 0) {
+      let data = response.data;
+      return ({ ...data, data: data.records })
+    } else {
+      message.error(response.message)
+    }
+  }
+
   return (
     <PageContainer>
       <ProTable
@@ -206,11 +215,11 @@ const ResumeList: React.FC<UserListDataType> = () => {
           pageSize: 10,
         } }
         toolBarRender={ () => [
-          <Button type="primary" onClick={ async () => { await fetchRoleListData(); handleModalVisible(true); setCurrentRow(undefined); } }>
+          <Button type="primary" onClick={ async () => { await fetchRoleListData(); await setInitialRoleIds([]); handleModalVisible(true); setCurrentRow(undefined); } }>
             <PlusOutlined />新建
           </Button>,
         ] }
-        request={ async (params, sorter, filter) => await queryUserList({ ...params, sorter, filter }) }
+        request={ async (params, sorter, filter) => await fetchQueryUserList({ ...params, sorter, filter }) }
         columns={ columns }
         rowSelection={ {
           onChange: (_, selectedRows) => setSelectedRows(selectedRows),
@@ -273,6 +282,7 @@ const ResumeList: React.FC<UserListDataType> = () => {
           <ProDescriptions<UserListDataType>
             column={ 1 }
             title={ currentRow?.username }
+            key={ currentRow?.id }
             request={ async () => ({
               data: currentRow || {},
             }) }

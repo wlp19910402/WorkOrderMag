@@ -8,17 +8,16 @@ import { addUser, editUser } from '../service';
 import { UserListDataType, EditUserDataType } from '../../data.d';
 import { RoleCheckBoxDataType } from '../index'
 import { message } from 'antd'
-
 interface ModalModifyFormDataProps {
   createModalVisible: boolean;
   handleModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
   actionRef: React.MutableRefObject<ActionType | undefined>;
   currentRow: UserListDataType | undefined;
   roleData: RoleCheckBoxDataType[] | undefined;
-  initialRoleIds: number[] | [];
+  initialRoleIds: number[] | undefined;
 }
 const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
-  const { createModalVisible, handleModalVisible, actionRef, currentRow, roleData, initialRoleIds = [] } = props
+  const { createModalVisible, handleModalVisible, actionRef, currentRow, roleData, initialRoleIds = undefined } = props
   const submitForm = async (value: EditUserDataType) => {
     let res;
     if (currentRow?.id !== undefined) {
@@ -62,7 +61,7 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
           },
         ] }
         label="用户名"
-        name={ currentRow?.id !== undefined ? "" : "username" }
+        name={ currentRow?.id !== undefined ? "oldUsername" : "username" }
         placeholder="请输入用户名"
         disabled={ currentRow?.id !== undefined }
         initialValue={ currentRow?.username }
@@ -117,7 +116,7 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
         initialValue={ currentRow?.email }
       />
       {roleData && roleData.length > 0 && <ProFormCheckbox.Group
-        name={ currentRow?.id !== undefined ? "" : "roleIds" }
+        name={ currentRow?.id !== undefined ? "oldRoleIds" : "roleIds" }
         layout="horizontal"
         label="角色ID"
         options={ roleData }
