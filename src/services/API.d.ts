@@ -7,7 +7,9 @@ export default {
   USER_ADD: '/api/user/add',
   USER_DELETE: '/api/user/del',///user/del/{id}
   USER_STATUS: '/api/user/status',///user/status/{id}
+  USER_ROLE_ID: '/api/user/role',///user/role/{id}
   ROLE_LIST: '/api/sys/role/list',
+  ROLE_USERID_CHECKID: '/api/sys/role/list',//角色列表标记指定用户拥有的权限/sys/role/list/{userId}
   ROLE_SAVE: '/api/sys/role/save',
   ROLE_BIND: '/api/sys/role/bind',
   ROLE_GET_MENU: '/api/sys/role/menu',//绑定权限回显/sys/role/menu/{id}

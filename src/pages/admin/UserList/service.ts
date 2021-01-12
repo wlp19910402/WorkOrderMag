@@ -31,3 +31,7 @@ export const deleteUser = async (id: string) => {
 export const statusUser = async (id: string) => {
   return request.post(`${API.USER_STATUS}/${id}`)
 }
+//获取用户角色
+export const getUserRoleId = async (id: string) => {
+  return await request.get(API.USER_ROLE_ID + '/' + id)
+}

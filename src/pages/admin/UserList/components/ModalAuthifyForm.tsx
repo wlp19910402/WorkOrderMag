@@ -4,9 +4,8 @@
 import React from 'react';
 import { ActionType } from '@ant-design/pro-table';
 import { ModalForm, ProFormText, ProFormCheckbox } from '@ant-design/pro-form';
-import { saveUserAuthority } from '../service';
+import { saveUserAuthority, UserAuthorityType } from '../service';
 import { UserListDataType } from '../../data.d';
-import { UserAuthorityType } from '../service'
 import { RoleCheckBoxDataType } from '../index'
 import { message, Mentions } from 'antd'
 interface ModalAuthifyFormDataProps {
@@ -15,9 +14,10 @@ interface ModalAuthifyFormDataProps {
   actionRef: React.MutableRefObject<ActionType | undefined>;
   currentRow: UserListDataType | undefined;
   roleData: RoleCheckBoxDataType[] | undefined;
+  initialRoleIds: number[] | [];
 }
 const ModalAuthifyForm: React.FC<ModalAuthifyFormDataProps> = (props) => {
-  const { modalAuthifyVisible, handleModalAuthifyVisible, actionRef, currentRow, roleData } = props
+  const { modalAuthifyVisible, handleModalAuthifyVisible, actionRef, currentRow, roleData, initialRoleIds } = props
   const submitForm = async (value: UserAuthorityType) => {
     const res = await saveUserAuthority(value)
     if (res.code === 0) {
@@ -59,6 +59,7 @@ const ModalAuthifyForm: React.FC<ModalAuthifyFormDataProps> = (props) => {
         name="roleIds"
         layout="horizontal"
         label="角色ID"
+        initialValue={ initialRoleIds }
         options={ roleData }
       /> : <></> }
     </ModalForm>

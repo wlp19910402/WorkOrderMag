@@ -4,7 +4,7 @@ import React, { useState, useRef } from 'react';
 import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import ProDescriptions, { ProDescriptionsItemProps } from '@ant-design/pro-descriptions';
-import { queryUserList, deleteUser, statusUser } from './service';
+import { queryUserList, deleteUser, statusUser, getUserRoleId } from './service';
 import { UserListDataType } from '../data.d';
 import ModalModifyForm from './components/ModalModifyForm'
 import { queryRoleList } from '@/pages/admin/Role/service'
@@ -42,6 +42,7 @@ const ResumeList: React.FC<UserListDataType> = () => {
   const [ createModalVisible, handleModalVisible ] = useState<boolean>(false);
   const [ modalAuthifyVisible, handleModalAuthifyVisible ] = useState<boolean>(false);
   const [ roleData, setRoleData ] = useState<RoleCheckBoxDataType[] | undefined>();
+  const [ initialRoleIds, setInitialRoleIds ] = useState<number[] | []>([])
   const [ switchLoading, setSwitchLoading ] = useState<boolean>(false)
   const columns: ProColumns<UserListDataType>[] = [
     {
@@ -124,7 +125,7 @@ const ResumeList: React.FC<UserListDataType> = () => {
           type="text"
           size="small"
           disabled={ record.id === 1 }
-          onClick={ async () => { setCurrentRow(record); await fetchRoleListData(); handleModalAuthifyVisible(true); } }
+          onClick={ async () => { fetchUserRoleId(record) } }
         >
           授权
         </Button>,
@@ -141,7 +142,6 @@ const ResumeList: React.FC<UserListDataType> = () => {
     } else {
       message.error(response.message)
     }
-
   };
   const tiggerDeleteUser = async (id: string) => {
     let response = await deleteUser(id)
@@ -153,6 +153,19 @@ const ResumeList: React.FC<UserListDataType> = () => {
     } else {
       message.error(response.message)
     }
+  }
+  const fetchUserRoleId = async (record: UserListDataType) => {
+    setCurrentRow(record);
+    record.id !== undefined && getUserRoleId(record.id?.toString()).then(
+      async (res) => {
+        if (res.code === 0) {
+          setInitialRoleIds(res.data);
+          await fetchRoleListData();
+          handleModalAuthifyVisible(true);
+        } else {
+          message.error(res.message);
+        }
+      })
   }
   const fetchRoleListData = async () => {
     if (roleData === undefined) {
@@ -207,6 +220,7 @@ const ResumeList: React.FC<UserListDataType> = () => {
           actionRef={ actionRef }
           currentRow={ currentRow }
           roleData={ roleData }
+          initialRoleIds={ initialRoleIds }
         />
       ) }
       {selectedRowsState?.length > 0 && (
