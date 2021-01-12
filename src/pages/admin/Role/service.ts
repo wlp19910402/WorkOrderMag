@@ -5,7 +5,7 @@ import { SaveRoleParamsType } from './components/ModalMenuTree'
 
 //角色列表
 export const queryRoleList = async () => {
-  return await request.post(API.ROLE_LIST);
+  return await request.get(API.ROLE_LIST);
 }
 //角色保存
 export const saveRole = async (params: RoleDataType) => {
@@ -20,6 +20,6 @@ export const BindRole = async (params: SaveRoleParamsType) => {
   return await request.post(API.ROLE_BIND, { data: params })
 }
 //绑定权限回显
-export const getRoleBindMenu = async (id: string) => {
-  return await request.get(API.ROLE_GET_MENU + '/' + id)
+export const getRoleDetail = async (id: string) => {
+  return await request.get(API.ROLE_DETAIL + '/' + id)
 }

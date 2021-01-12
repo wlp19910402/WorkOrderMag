@@ -120,7 +120,14 @@ const RoleList: React.FC<RoleDataType> = () => {
             <PlusOutlined />新建
           </Button>,
         ] }
-        request={ async (params, sorter, filter) => await queryRoleList() }
+        request={ async (params, sorter, filter) => {
+          let response = await queryRoleList()
+          if (response.code === 0) {
+            return response
+          }
+          message.error(response.message)
+          return undefined
+        } }
         columns={ columns }
         rowSelection={ {
           onChange: (_, selectedRows) => setSelectedRows(selectedRows),

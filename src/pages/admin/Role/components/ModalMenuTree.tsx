@@ -8,7 +8,7 @@ import { message, Modal, Tree } from 'antd'
 import { connect, Dispatch, } from 'umi'
 import { MenuModelState } from '@/models/menu'
 import { treeData } from '@/pages/admin/Menu/index'
-import { getRoleBindMenu, BindRole } from '../service'
+import { getRoleDetail, BindRole } from '../service'
 import { MenuDataType } from '@/pages/admin/Menu/data.d'
 
 interface ModalTreeDataProps {
@@ -61,8 +61,13 @@ const ModalTreeForm: React.FC<ModalTreeDataProps> = (props) => {
       })
     }
     if (currentRow?.id) {
-      let response = getRoleBindMenu(currentRow.id?.toString())
-      console.log(response)
+      getRoleDetail(currentRow.id?.toString()).then(res => {
+        if (res.code === 0) {
+          setCheckedKeys(res.data.menuIds.map((item: any) => item.toString()))
+        } else {
+          message.error(res.message)
+        }
+      })
     }
   }, [])
   return (
