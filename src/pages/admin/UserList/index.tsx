@@ -192,7 +192,7 @@ const ResumeList: React.FC<UserListDataType> = () => {
       }
     }
   }
-  const fetchQueryUserList = async (params) => {
+  const fetchQueryUserList = async (params: any) => {
     let response = await queryUserList(params)
     if (response.code === 0) {
       let data = response.data;

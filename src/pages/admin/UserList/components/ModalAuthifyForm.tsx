@@ -7,14 +7,14 @@ import { ModalForm, ProFormText, ProFormCheckbox } from '@ant-design/pro-form';
 import { saveUserAuthority, UserAuthorityType } from '../service';
 import { UserListDataType } from '../../data.d';
 import { RoleCheckBoxDataType } from '../index'
-import { message, Mentions } from 'antd'
+import { message } from 'antd'
 interface ModalAuthifyFormDataProps {
   modalAuthifyVisible: boolean;
   handleModalAuthifyVisible: React.Dispatch<React.SetStateAction<boolean>>;
   actionRef: React.MutableRefObject<ActionType | undefined>;
   currentRow: UserListDataType | undefined;
   roleData: RoleCheckBoxDataType[] | undefined;
-  initialRoleIds: number[] | [];
+  initialRoleIds: number[] | undefined;
 }
 const ModalAuthifyForm: React.FC<ModalAuthifyFormDataProps> = (props) => {
   const { modalAuthifyVisible, handleModalAuthifyVisible, actionRef, currentRow, roleData, initialRoleIds } = props

@@ -37,7 +37,7 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
       width="400px"
       visible={ createModalVisible }
       onVisibleChange={ handleModalVisible }
-      onFinish={ async (value) => {
+      onFinish={ async (value: any) => {
         await submitForm(value)
       } }
     >
