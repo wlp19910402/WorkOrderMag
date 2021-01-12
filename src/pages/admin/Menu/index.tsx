@@ -34,7 +34,7 @@ const handleRemove = async (selectedRows: MenuDataType[]) => {
     return false;
   }
 };
-const treeData: (DataNode[] | undefined) = (data: MenuDataType[] | []) => treeData ? data.filter(ite => ite.id !== undefined).map(item => ({
+export const treeData: (DataNode[] | undefined) = (data: MenuDataType[] | []) => treeData ? data.filter(ite => ite.id !== undefined).map(item => ({
   key: item.id?.toString(),
   title: item.name,
   children: treeData(item.children),

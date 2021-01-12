@@ -10,6 +10,7 @@ export default {
   ROLE_LIST: '/api/sys/role/list',
   ROLE_SAVE: '/api/sys/role/save',
   ROLE_BIND: '/api/sys/role/bind',
+  ROLE_GET_MENU: '/api/sys/role/menu',//绑定权限回显/sys/role/menu/{id}
   ROLE_DELETE: '/api/sys/role/del',//角色删除/sys/role/del/{id}
   MENU_TREE: '/api/sys/menu/tree',//当前用户菜单【用于用户登录后菜单加载】
   MENU_SAVE: '/api/sys/menu/save',//添加或编辑菜单

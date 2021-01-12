@@ -7,6 +7,7 @@ import ProDescriptions, { ProDescriptionsItemProps } from '@ant-design/pro-descr
 import { queryRoleList, deleteRole } from './service';
 import { RoleDataType } from './data.d';
 import ModalModifyForm from './components/ModalModifyForm'
+import ModalMenuTree from './components/ModalMenuTree'
 /**
  *  删除节点
  * @param selectedRows
@@ -33,6 +34,7 @@ const RoleList: React.FC<RoleDataType> = () => {
   const [ currentRow, setCurrentRow ] = useState<RoleDataType>();
   const [ selectedRowsState, setSelectedRows ] = useState<RoleDataType[]>([]);
   const [ createModalVisible, handleModalVisible ] = useState<boolean>(false);
+  const [ modalTreeVisible, handleModalTreeVisible ] = useState<boolean>(false);
   const columns: ProColumns<RoleDataType>[] = [
     {
       title: "id",
@@ -69,6 +71,7 @@ const RoleList: React.FC<RoleDataType> = () => {
     },
     {
       title: "操作",
+      width: 200,
       valueType: 'option',
       render: (_, record) => [
         <a
@@ -80,7 +83,12 @@ const RoleList: React.FC<RoleDataType> = () => {
           title="是否要删除此行？"
           onConfirm={ () => { record.id != undefined && tiggerDeleteRole(record.id?.toString()); } }>
           <a>删除</a>
-        </Popconfirm>
+        </Popconfirm>,
+        <a
+          onClick={ () => { handleModalTreeVisible(true); setCurrentRow(record); } }
+        >
+          绑定权限
+        </a>
       ],
     },
   ];
@@ -123,6 +131,14 @@ const RoleList: React.FC<RoleDataType> = () => {
         <ModalModifyForm
           createModalVisible={ createModalVisible }
           handleModalVisible={ handleModalVisible }
+          actionRef={ actionRef }
+          currentRow={ currentRow }
+        />
+      ) }
+      {modalTreeVisible && currentRow != undefined && (
+        <ModalMenuTree
+          modalTreeVisible={ modalTreeVisible }
+          handleModalTreeVisible={ handleModalTreeVisible }
           actionRef={ actionRef }
           currentRow={ currentRow }
         />

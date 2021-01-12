@@ -46,10 +46,11 @@ export interface MenuModelType {
     saveMenu: Effect;
     fetctCurrentMenu: Effect;
     delMenu: Effect;
-    clearCurrentMenu: Effect;
+    clearMenu: Effect;
   };
   reducers: {
     changeCurrentMenu: Reducer<MenuModelState>;
+    changeMenuTree: Reducer<MenuModelState>;
   };
 }
 
@@ -61,6 +62,10 @@ const Model: MenuModelType = {
     *fetchMenuTree ({ callback }, { call, put }) {
       const response = yield call(queryMenuTree);
       if (response.code === 0) {
+        yield put({
+          type: 'changeMenuTree',
+          payload: response.data
+        })
         const menuData = [
           {
             "icon": "icon-FolderOpen",
@@ -79,7 +84,6 @@ const Model: MenuModelType = {
       } else {
         message.error(response.message);
       }
-
     },
     //保存菜单
     *saveMenu ({ payload, callback }, { call, put }) {
@@ -113,11 +117,15 @@ const Model: MenuModelType = {
         // message.error(response.message);
       }
     },
-    *clearCurrentMenu (_, { put }) {
+    *clearMenu (_, { put }) {
       yield put({
         type: 'changeCurrentMenu',
         payload: []
       });
+      yield put({
+        type: 'changeMenuTree',
+        payload: []
+      })
     }
   },
   reducers: {
@@ -126,6 +134,12 @@ const Model: MenuModelType = {
         ...state,
         currentMenu: payload
       };
+    },
+    changeMenuTree (state = defaulState, { payload }) {
+      return {
+        ...state,
+        menuTree: payload
+      }
     }
   },
 };
