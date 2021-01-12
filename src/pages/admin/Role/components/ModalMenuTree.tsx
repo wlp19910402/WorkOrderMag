@@ -10,7 +10,6 @@ import { MenuModelState } from '@/models/menu'
 import { treeData } from '@/pages/admin/Menu/index'
 import { getRoleDetail, BindRole } from '../service'
 import { MenuDataType } from '@/pages/admin/Menu/data.d'
-
 interface ModalTreeDataProps {
   modalTreeVisible: boolean;
   handleModalTreeVisible: React.Dispatch<React.SetStateAction<boolean>>;
@@ -29,9 +28,12 @@ const ModalTreeForm: React.FC<ModalTreeDataProps> = (props) => {
   const [ checkedKeys, setCheckedKeys ] = useState<React.Key[]>([]);
   const [ selectedKeys, setSelectedKeys ] = useState<React.Key[]>([]);
   const [ autoExpandParent, setAutoExpandParent ] = useState<boolean>(true);
+  const [ checkedParentKeys, setCheckedParentKeys ] = useState<React.Key[]>([])
   const submitForm = async (id: number) => {
+    let arrSet = new Set(checkedKeys.concat(checkedParentKeys));
+    let arr = Array.from(arrSet);
     const res = await BindRole({
-      menuIds: checkedKeys.map(item => parseInt(item)),
+      menuIds: arr.map(item => parseInt(item)),
       roleId: id
     })
     if (res.code === 0) {
@@ -48,9 +50,10 @@ const ModalTreeForm: React.FC<ModalTreeDataProps> = (props) => {
     setExpandedKeys(expandedKeys);
     setAutoExpandParent(false);
   };
-  const onCheck = (checkedKeys: React.Key[]) => {
+  const onCheck = (checkedKeys: React.Key[], info: any) => {
+    setCheckedParentKeys(info.halfCheckedKeys)
     setCheckedKeys(checkedKeys);
-  };
+  }
   const onSelect = (selectedKeys: React.Key[], info: any) => {
     setSelectedKeys(selectedKeys);
   };
