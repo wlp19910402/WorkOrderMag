@@ -4,9 +4,10 @@
 import React from 'react';
 import { ActionType } from '@ant-design/pro-table';
 import { ModalForm, ProFormText, ProFormCheckbox } from '@ant-design/pro-form';
-import { addUser } from '../service';
+import { addUser, editUser } from '../service';
 import { UserListDataType, EditUserDataType } from '../../data.d';
 import { RoleCheckBoxDataType } from '../index'
+import { message } from 'antd'
 
 interface ModalModifyFormDataProps {
   createModalVisible: boolean;
@@ -14,21 +15,30 @@ interface ModalModifyFormDataProps {
   actionRef: React.MutableRefObject<ActionType | undefined>;
   currentRow: UserListDataType | undefined;
   roleData: RoleCheckBoxDataType[] | undefined;
+  initialRoleIds: number[] | [];
 }
 const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
-  const { createModalVisible, handleModalVisible, actionRef, currentRow, roleData } = props
+  const { createModalVisible, handleModalVisible, actionRef, currentRow, roleData, initialRoleIds = [] } = props
   const submitForm = async (value: EditUserDataType) => {
-    const res = await addUser(value)
+    let res;
+    if (currentRow?.id !== undefined) {
+      res = await editUser({ ...value, id: currentRow?.id })
+    } else {
+      res = await addUser(value)
+    }
     if (res.code === 0) {
       if (actionRef.current) {
         actionRef.current.reload();
       }
+      message.success(`${currentRow?.id != undefined ? '修改' : '添加'}成功`);
+    } else {
+      message.error(res.message)
     }
     handleModalVisible(false);
   }
   return (
     <ModalForm
-      title='新建用户'
+      title={ currentRow?.id !== undefined ? "用户编辑" : "用户新增" }
       width="400px"
       visible={ createModalVisible }
       onVisibleChange={ handleModalVisible }
@@ -52,8 +62,9 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
           },
         ] }
         label="用户名"
-        name="username"
+        name={ currentRow?.id !== undefined ? "" : "username" }
         placeholder="请输入用户名"
+        disabled={ currentRow?.id !== undefined }
         initialValue={ currentRow?.username }
       />
       <ProFormText
@@ -64,17 +75,23 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
           },
         ] }
         label="姓名"
-        name="realName"
+        name="realname"
         placeholder="请输入姓名"
         initialValue={ currentRow?.realname }
       />
-      <ProFormText.Password rules={ [
-        {
-          required: true,
-          message: "请输入密码！"
-        },
-      ] } label="密码" name="password" placeholder="请输入密码"
-      />
+      {currentRow?.id === undefined &&
+        <ProFormText.Password
+          rules={ [
+            {
+              required: true,
+              message: "请输入密码！"
+            }
+          ] }
+          label="密码"
+          name="password"
+          placeholder="请输入密码"
+        />
+      }
       <ProFormText
         rules={ [
           {
@@ -99,13 +116,14 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
         placeholder="请输入邮箱"
         initialValue={ currentRow?.email }
       />
-      {roleData ? <ProFormCheckbox.Group
-        name="roleIds"
+      {roleData && roleData.length > 0 && <ProFormCheckbox.Group
+        name={ currentRow?.id !== undefined ? "" : "roleIds" }
         layout="horizontal"
         label="角色ID"
         options={ roleData }
-      /> : <></>
-      }
+        disabled={ currentRow?.id !== undefined }
+        initialValue={ initialRoleIds }
+      /> }
     </ModalForm>
   )
 }

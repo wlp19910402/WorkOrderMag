@@ -16,8 +16,9 @@ export interface PageDataType {
 export interface EditUserDataType {
   email: string,
   mobile: string,
-  password: string,
+  password?: string,
   realname: string,
-  roleIds: number[],
-  username: string
+  roleIds?: number[],
+  username?: string,
+  id?: number
 }

@@ -111,7 +111,7 @@ const ResumeList: React.FC<UserListDataType> = () => {
           type="text"
           size="small"
           disabled={ record.id === 1 }
-          onClick={ async () => { setCurrentRow(record); await fetchRoleListData(); handleModalVisible(true); } }
+          onClick={ async () => { fetchUserEdit(record) } }
         >
           编辑
         </Button>,
@@ -167,6 +167,19 @@ const ResumeList: React.FC<UserListDataType> = () => {
         }
       })
   }
+  const fetchUserEdit = async (record: UserListDataType) => {
+    setCurrentRow(record);
+    record.id !== undefined && getUserRoleId(record.id?.toString()).then(
+      async (res) => {
+        if (res.code === 0) {
+          setInitialRoleIds(res.data);
+          await fetchRoleListData();
+          handleModalVisible(true);
+        } else {
+          message.error(res.message);
+        }
+      })
+  }
   const fetchRoleListData = async () => {
     if (roleData === undefined) {
       let response = await queryRoleList()
@@ -211,6 +224,7 @@ const ResumeList: React.FC<UserListDataType> = () => {
           actionRef={ actionRef }
           currentRow={ currentRow }
           roleData={ roleData }
+          initialRoleIds={ initialRoleIds }
         />
       ) }
       {modalAuthifyVisible && (

@@ -8,6 +8,7 @@ export default {
   USER_DELETE: '/api/user/del',///user/del/{id}
   USER_STATUS: '/api/user/status',///user/status/{id}
   USER_ROLE_ID: '/api/user/role',///user/role/{id}
+  USER_EDIT: '/api/user/edit',//用户编辑
   ROLE_LIST: '/api/sys/role/list',
   ROLE_USERID_CHECKID: '/api/sys/role/list',//角色列表标记指定用户拥有的权限/sys/role/list/{userId}
   ROLE_SAVE: '/api/sys/role/save',

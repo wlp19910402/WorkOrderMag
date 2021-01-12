@@ -18,7 +18,9 @@ export const queryUserList = async (params: PageDataType) => {
 export const addUser = async (params: EditUserDataType) => {
   return request.post(API.USER_ADD, { data: params });
 }
-
+export const editUser = async (params: EditUserDataType) => {
+  return request.post(API.USER_EDIT, { data: params });
+}
 //授权信息添加
 export async function saveUserAuthority (params: UserAuthorityType) {
   return request.post(API.USER_AUTHORITY, { data: params })
