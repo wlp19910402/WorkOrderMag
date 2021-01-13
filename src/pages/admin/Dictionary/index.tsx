@@ -90,7 +90,7 @@ const DictionaryList: React.FC<DictionaryDataType> = () => {
           disabled={ record.id === 1 }
           title="是否要删除此行？"
           onConfirm={ () => { record.id != undefined && tiggerDeleteDictionary(record.id?.toString()); } }>
-          <Button disabled={ record.id === 1 } size="small" type="text" >删除</Button>
+          <Button disabled={ record.id === 1 } size="small" type="text">删除</Button>
         </Popconfirm>
       ],
     },

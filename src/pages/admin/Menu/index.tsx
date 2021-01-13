@@ -8,7 +8,6 @@ import { connect, Dispatch, } from 'umi'
 import { TypeFormType, menuDefault } from './data.d'
 import ModifyForm from './components/ModifyForm'
 import { IconFont } from '@/components/common/IconFont'
-import './style.less'
 /**
  *  删除节点
  * @param selectedRows

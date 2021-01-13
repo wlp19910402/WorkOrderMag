@@ -167,8 +167,7 @@ const RoleList: React.FC<RoleDataType> = () => {
               setSelectedRows([]);
               actionRef.current?.reloadAndRest?.();
             } }>
-            <Button
-            >
+            <Button>
               批量删除
           </Button>
           </Popconfirm>

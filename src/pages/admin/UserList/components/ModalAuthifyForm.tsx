@@ -43,6 +43,8 @@ const ModalAuthifyForm: React.FC<ModalAuthifyFormDataProps> = (props) => {
         }
         await submitForm(bodyVaule)
       } }
+      labelCol={ { span: 5 } }
+      layout="horizontal"
     >
       <ProFormText
         hidden

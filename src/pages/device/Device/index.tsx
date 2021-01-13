@@ -40,6 +40,10 @@ const DictionaryList: React.FC<DeviceListDataType> = () => {
       title: "品牌",
       dataIndex: 'brand',
       hideInSearch: true,
+    },
+    {
+      title: "设备名称",
+      dataIndex: 'name',
       render: (val, entity) => {
         return (
           <a
@@ -52,10 +56,6 @@ const DictionaryList: React.FC<DeviceListDataType> = () => {
           </a>
         );
       },
-    },
-    {
-      title: "设备名称",
-      dataIndex: 'name',
     },
     {
       title: "图片",

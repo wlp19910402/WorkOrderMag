@@ -52,6 +52,8 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
         }
         await submitForm(bodyVaule)
       } }
+      labelCol={ { span: 5 } }
+      layout="horizontal"
     >
       <ProFormText
         rules={ [

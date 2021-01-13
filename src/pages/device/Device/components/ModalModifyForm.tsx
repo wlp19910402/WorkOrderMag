@@ -40,6 +40,8 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
       onFinish={ async (value: any) => {
         await submitForm(value)
       } }
+      labelCol={ { span: 6 } }
+      layout="horizontal"
     >
       <ProFormText
         rules={ [
