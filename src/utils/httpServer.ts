@@ -6,6 +6,7 @@ const codeMatch = (res: any) => {
     case 0:
       return res;
     case 301:
+      if (window.location.pathname.includes('/user/login')) return
       history.replace("/user/login");
       break;
     case 403:

@@ -6,7 +6,8 @@ import { ActionType } from '@ant-design/pro-table';
 import { ModalForm, ProFormText, ProFormTextArea } from '@ant-design/pro-form';
 import { saveDevice } from '../service';
 import { DeviceSaveDataType } from '../../data.d';
-import { message } from 'antd'
+import { message, Form } from 'antd'
+import UploadImage from './UploadImage'
 interface ModalModifyFormDataProps {
   createModalVisible: boolean;
   handleModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
@@ -29,7 +30,7 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
   return (
     <ModalForm
       title={ currentRow?.id !== undefined ? "设备编辑" : "设备新增" }
-      width="400px"
+      width="600px"
       visible={ createModalVisible }
       onVisibleChange={ handleModalVisible }
       onFinish={ async (value: any) => {
@@ -117,6 +118,9 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
         initialValue={ currentRow?.description }
       />
       {/* //图片 */ }
+      <Form.Item extra="外观图片（最多上传六张）带“删除”按钮" name="imgUrls" label="图片上传" valuePropName="checked">
+        <UploadImage name="image" />
+      </Form.Item>
     </ModalForm>
   )
 }
