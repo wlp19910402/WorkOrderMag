@@ -14,13 +14,15 @@ interface ModalAuthifyFormDataProps {
   currentRow: UserListDataType | undefined;
   roleData: RoleCheckBoxDataType[] | undefined;
   initialRoleIds: number[] | undefined;
+  setShowDetail: React.Dispatch<React.SetStateAction<boolean>>;
 }
 const ModalAuthifyForm: React.FC<ModalAuthifyFormDataProps> = (props) => {
-  const { modalAuthifyVisible, handleModalAuthifyVisible, actionRef, currentRow, roleData, initialRoleIds } = props
+  const { modalAuthifyVisible, handleModalAuthifyVisible, actionRef, currentRow, roleData, initialRoleIds, setShowDetail } = props
   const submitForm = async (value: UserAuthorityType) => {
     const response = await saveUserAuthority(value)
     handleModalAuthifyVisible(false);
     if (!response) return
+    setShowDetail(false);
     actionRef.current && actionRef.current.reload();
   }
   return (

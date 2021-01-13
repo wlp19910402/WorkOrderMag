@@ -134,13 +134,14 @@ const ResumeList: React.FC<UserListDataType> = () => {
   const switchUserStatus = async (id: string, batch: boolean) => {
     let response = await statusUser(id);
     if (!response) return
+    setShowDetail(false)
     actionRef.current && actionRef.current.reloadAndRest?.();
     message.success(`${batch ? '禁用' : '启用'}成功`)
-
   };
   const tiggerDeleteUser = async (id: string) => {
     let response = await deleteUser(id)
     if (!response) return
+    setShowDetail(false)
     actionRef.current && actionRef.current.reloadAndRest?.();
     message.success("删除成功")
   }
@@ -203,7 +204,6 @@ const ResumeList: React.FC<UserListDataType> = () => {
           onChange: (_, selectedRows: any) => setSelectedRows(selectedRows),
         } }
       />
-
       {createModalVisible && (
         <ModalModifyForm
           createModalVisible={ createModalVisible }
@@ -212,6 +212,7 @@ const ResumeList: React.FC<UserListDataType> = () => {
           currentRow={ currentRow }
           roleData={ roleData }
           initialRoleIds={ initialRoleIds }
+          setShowDetail={ setShowDetail }
         />
       ) }
       {modalAuthifyVisible && (
@@ -222,6 +223,7 @@ const ResumeList: React.FC<UserListDataType> = () => {
           currentRow={ currentRow }
           roleData={ roleData }
           initialRoleIds={ initialRoleIds }
+          setShowDetail={ setShowDetail }
         />
       ) }
       {selectedRowsState?.length > 0 && (
@@ -256,6 +258,7 @@ const ResumeList: React.FC<UserListDataType> = () => {
         } }
         closable={ false }
       >
+        { JSON.stringify(columns as ProDescriptionsItemProps<UserListDataType>[]) }
         { currentRow?.username && (
           <ProDescriptions<UserListDataType>
             column={ 1 }

@@ -15,9 +15,10 @@ interface ModalModifyFormDataProps {
   currentRow: UserListDataType | undefined;
   roleData: RoleCheckBoxDataType[] | undefined;
   initialRoleIds: number[] | undefined;
+  setShowDetail: React.Dispatch<React.SetStateAction<boolean>>;
 }
 const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
-  const { createModalVisible, handleModalVisible, actionRef, currentRow, roleData, initialRoleIds = undefined } = props
+  const { createModalVisible, handleModalVisible, actionRef, currentRow, roleData, initialRoleIds = undefined, setShowDetail } = props
   const submitForm = async (value: EditUserDataType) => {
     let response;
     if (currentRow?.id !== undefined) {
@@ -26,6 +27,7 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
       response = await addUser(value)
     }
     if (!response) return
+    setShowDetail(false)
     actionRef.current && actionRef.current.reload();
     message.success(`${currentRow?.id != undefined ? '修改' : '添加'}成功`);
     handleModalVisible(false);
