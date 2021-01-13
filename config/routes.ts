@@ -60,6 +60,28 @@
                 ]
               },
               {
+                path: '/device',
+                name: '设备管理',
+                icon: 'smile',
+                routes: [
+                  {
+                    path: '/device/list',
+                    name: "设备管理",
+                    component: './device/Device'
+                  },
+                  // {
+                  //   path: '/device/consumable',
+                  //   name: "耗材管理",
+                  //   component: './device/Consumable'
+                  // },
+                  // {
+                  //   path: '/device/accessorie',
+                  //   name: "配件管理",
+                  //   component: './device/Accessorie'
+                  // },
+                ]
+              },
+              {
                 name: "exception",
                 path: "/exception",
                 routes: [

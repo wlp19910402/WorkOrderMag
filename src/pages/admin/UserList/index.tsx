@@ -127,7 +127,7 @@ const ResumeList: React.FC<UserListDataType> = () => {
           onClick={ async () => { fetchUserRoleId(record) } }
         >
           授权
-        </Button>,
+        </Button>
       ],
     },
   ];
