@@ -9,7 +9,7 @@ import ProLayout, {
   Settings,
   DefaultFooter,
 } from '@ant-design/pro-layout';
-import React, { useMemo, useRef, useEffect } from 'react';
+import React, { useMemo, useRef } from 'react';
 import { Link, connect, Dispatch, history } from 'umi';
 import { Result, Button } from 'antd';
 import Authorized from '@/utils/Authorized';

@@ -11,29 +11,29 @@ export interface RoleCheckBoxDataType {
   label: string;
   value: number;
 }
-const handleRemove = async (selectedRows: DictionaryDataType[]) => {
-  const hide = message.loading('正在删除');
-  if (!selectedRows) return true;
-  try {
-    // await removeRule({
-    //   deleteId: selectedRows.map((row) => row.id),
-    // });
-    hide;
-    message.success('删除成功，即将刷新');
-    return true;
-  } catch (error) {
-    hide;
-    message.error('删除失败，请重试');
-    return false;
-  }
-};
+// const handleRemove = async (selectedRows: DictionaryDataType[]) => {
+//   const hide = message.loading('正在删除');
+//   if (!selectedRows) return true;
+//   try {
+//     // await removeRule({
+//     //   deleteId: selectedRows.map((row) => row.id),
+//     // });
+//     hide;
+//     message.success('删除成功，即将刷新');
+//     return true;
+//   } catch (error) {
+//     hide;
+//     message.error('删除失败，请重试');
+//     return false;
+//   }
+// };
 const DictionaryList: React.FC<DictionaryDataType> = () => {
   const [ showDetail, setShowDetail ] = useState<boolean>(false);
   const actionRef = useRef<ActionType>();
   const [ currentRow, setCurrentRow ] = useState<DictionaryDataType>();
   const [ selectedRowsState, setSelectedRows ] = useState<DictionaryDataType[]>([]);
   const [ createModalVisible, handleModalVisible ] = useState<boolean>(false);
-  const columns: ProColumns<DictionaryDataType>[] = [
+  const columns: ProColumns<any>[] = [
     {
       title: "id",
       dataIndex: 'id',
@@ -133,10 +133,9 @@ const DictionaryList: React.FC<DictionaryDataType> = () => {
         request={ async (params, sorter, filter) => await fetchQueryList({ ...params, sorter, filter }) }
         columns={ columns }
         rowSelection={ {
-          onChange: (_, selectedRows) => setSelectedRows(selectedRows),
+          onChange: (_, selectedRows: any) => setSelectedRows(selectedRows),
         } }
       />
-
       {createModalVisible && (
         <ModalModifyForm
           createModalVisible={ createModalVisible }

@@ -20,13 +20,16 @@ const BlankLayoutCmp: React.FC<BlankLayout> = ({ children, isLogin, dispatch, lo
           res && dispatch({
             type: 'menu/fetctCurrentMenu'
           })
+          !res && dispatch({
+            type: 'user/logout'
+          })
         }
       });
     }
   }, []);
   return <Spin spinning={ loading }><InspectorWrapper>{ children }</InspectorWrapper></Spin>
 };
-// export default Layout
+
 export default connect(({ user, loading }: ConnectState) => ({
   token: user.currentUser?.token,
   loading: loading.models.user || loading.effects[ 'menu/fetctCurrentMenu' ] ? true : false

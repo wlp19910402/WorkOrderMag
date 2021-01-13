@@ -11,26 +11,26 @@ export interface RoleCheckBoxDataType {
   label: string;
   value: number;
 }
-const handleRemove = async (selectedRows: DeviceListDataType[]) => {
-  const hide = message.loading('正在删除');
-  if (!selectedRows) return true;
-  try {
-    hide;
-    message.success('删除成功，即将刷新');
-    return true;
-  } catch (error) {
-    hide;
-    message.error('删除失败，请重试');
-    return false;
-  }
-};
+// const handleRemove = async (selectedRows: DeviceListDataType[]) => {
+//   const hide = message.loading('正在删除');
+//   if (!selectedRows) return true;
+//   try {
+//     hide;
+//     message.success('删除成功，即将刷新');
+//     return true;
+//   } catch (error) {
+//     hide;
+//     message.error('删除失败，请重试');
+//     return false;
+//   }
+// };
 const DictionaryList: React.FC<DeviceListDataType> = () => {
   const [ showDetail, setShowDetail ] = useState<boolean>(false);
   const actionRef = useRef<ActionType>();
   const [ currentRow, setCurrentRow ] = useState<DeviceListDataType>();
   const [ selectedRowsState, setSelectedRows ] = useState<DeviceListDataType[]>([]);
   const [ createModalVisible, handleModalVisible ] = useState<boolean>(false);
-  const columns: ProColumns<DeviceListDataType>[] = [
+  const columns: ProColumns<any>[] = [
     {
       title: "id",
       dataIndex: 'id',
@@ -170,7 +170,7 @@ const DictionaryList: React.FC<DeviceListDataType> = () => {
         request={ async (params, sorter, filter) => await fetchQueryList({ ...params, ...filter }) }
         columns={ columns }
         rowSelection={ {
-          onChange: (_, selectedRows) => setSelectedRows(selectedRows),
+          onChange: (_, selectedRows: any) => setSelectedRows(selectedRows),
         } }
       />
 

@@ -12,22 +12,22 @@ import ModalMenuTree from './components/ModalMenuTree'
  *  删除节点
  * @param selectedRows
  */
-const handleRemove = async (selectedRows: RoleDataType[]) => {
-  const hide = message.loading('正在删除');
-  if (!selectedRows) return true;
-  try {
-    // await removeRule({
-    //   deleteId: selectedRows.map((row) => row.id),
-    // });
-    hide;
-    message.success('删除成功，即将刷新');
-    return true;
-  } catch (error) {
-    hide;
-    message.error('删除失败，请重试');
-    return false;
-  }
-};
+// const handleRemove = async (selectedRows: RoleDataType[]) => {
+//   const hide = message.loading('正在删除');
+//   if (!selectedRows) return true;
+//   try {
+//     // await removeRule({
+//     //   deleteId: selectedRows.map((row) => row.id),
+//     // });
+//     hide;
+//     message.success('删除成功，即将刷新');
+//     return true;
+//   } catch (error) {
+//     hide;
+//     message.error('删除失败，请重试');
+//     return false;
+//   }
+// };
 const RoleList: React.FC<RoleDataType> = () => {
   const [ showDetail, setShowDetail ] = useState<boolean>(false);
   const actionRef = useRef<ActionType>();
@@ -35,7 +35,7 @@ const RoleList: React.FC<RoleDataType> = () => {
   const [ selectedRowsState, setSelectedRows ] = useState<RoleDataType[]>([]);
   const [ createModalVisible, handleModalVisible ] = useState<boolean>(false);
   const [ modalTreeVisible, handleModalTreeVisible ] = useState<boolean>(false);
-  const columns: ProColumns<RoleDataType>[] = [
+  const columns: ProColumns<any>[] | undefined = [
     {
       title: "id",
       dataIndex: 'id',
@@ -122,7 +122,7 @@ const RoleList: React.FC<RoleDataType> = () => {
         } }
         columns={ columns }
         rowSelection={ {
-          onChange: (_, selectedRows) => setSelectedRows(selectedRows),
+          onChange: (_, selectedRows: any) => setSelectedRows(selectedRows),
         } }
       />
 

@@ -1,7 +1,7 @@
-import { DefaultFooter, MenuDataItem, getMenuData, getPageTitle } from '@ant-design/pro-layout';
+import { MenuDataItem, getMenuData, getPageTitle } from '@ant-design/pro-layout';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
-import { Link, SelectLang, useIntl, ConnectProps, connect, Dispatch } from 'umi';
-import React, { useEffect } from 'react';
+import { SelectLang, useIntl, ConnectProps, connect, Dispatch } from 'umi';
+import React from 'react';
 import { ConnectState } from '@/models/connect';
 import logo from '../assets/images/logo-white.png';
 import styles from './UserLayout.less';
@@ -13,14 +13,11 @@ export interface UserLayoutProps extends Partial<ConnectProps> {
   dispatch: Dispatch;
   isLogin: boolean;
 }
-
 const UserLayout: React.FC<UserLayoutProps> = (props) => {
   const {
     route = {
       routes: [],
-    },
-    isLogin,
-    dispatch
+    }
   } = props;
   const { routes = [] } = route;
   const {
@@ -41,7 +38,6 @@ const UserLayout: React.FC<UserLayoutProps> = (props) => {
     <HelmetProvider>
       <Helmet>
         <title>{ title }</title>
-        {/* <meta name="description" content={ title } /> */ }
       </Helmet>
 
       <div className={ styles.container }>
@@ -51,9 +47,7 @@ const UserLayout: React.FC<UserLayoutProps> = (props) => {
         <div className={ styles.content }>
           <div className={ styles.top }>
             <div className={ styles.header }>
-              <Link to="/">
-                <img alt="logo" className={ styles.logo } src={ logo } />
-              </Link>
+              <img alt="logo" className={ styles.logo } src={ logo } />
             </div>
             <div className={ styles.desc }>
               设备管理管理端
@@ -61,8 +55,6 @@ const UserLayout: React.FC<UserLayoutProps> = (props) => {
           </div>
           { children }
         </div>
-        {/* <DefaultFooter copyright={ `${new Date().getFullYear()} 凌云博际` }
-          links={ false } /> */}
       </div>
     </HelmetProvider>
   );

@@ -1,5 +1,5 @@
 /**
- * 用户列表 编辑 和 新增
+ * 角色 编辑 和 新增
  */
 import React from 'react';
 import { ActionType } from '@ant-design/pro-table';
@@ -55,7 +55,6 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
         placeholder="请输入角色名称"
         initialValue={ currentRow?.roleName }
       />
-
       <ProFormText
         rules={ [
           {

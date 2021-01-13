@@ -1,6 +1,6 @@
 import { stringify } from 'querystring';
 import { history, Reducer, Effect } from 'umi';
-import { fakeAccountLogin, fackAccountToken, fackLogout, saveUserAuthority } from '@/services/user';
+import { fakeAccountLogin, fackAccountToken, fackLogout } from '@/services/user';
 import { getPageQuery } from '@/utils/utils';
 import { message } from 'antd';
 import localforage from 'localforage';
@@ -67,24 +67,15 @@ const Model: LoginModelType = {
     //使用token获取用户信息
     *fetchCurrent ({ callback }, { call, put }) {
       const response = yield call(fackAccountToken);
+      const { redirect } = getPageQuery();
       if (!response) {
         callback(false)
-        if (window.location.pathname !== '/user/login' && !redirect) {
-          history.replace({
-            pathname: '/user/login',
-            search: stringify({
-              redirect: window.location.href,
-            }),
-          });
-        }
-        history.replace('/user/login');
         return
       }
       yield put({
         type: 'changeCurrentUser',
         payload: response.data,
       });
-      const { redirect } = getPageQuery();
       localforage.setItem('token', response.data.token)
       if (window.location.pathname === '/user/login') {
         if (redirect) {

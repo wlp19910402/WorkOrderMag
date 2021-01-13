@@ -1,5 +1,5 @@
 /**
- * 用户列表 编辑 和 新增
+ * 角色授权
  */
 import React, { useState, useEffect } from 'react';
 import { ActionType } from '@ant-design/pro-table';
@@ -45,7 +45,7 @@ const ModalTreeForm: React.FC<ModalTreeDataProps> = (props) => {
     setExpandedKeys(expandedKeys);
     setAutoExpandParent(false);
   };
-  const onCheck = (checkedKeys: React.Key[], info: any) => {
+  const onCheck = (checkedKeys: any, info: any) => {
     setCheckedParentKeys(info.halfCheckedKeys)
     setCheckedKeys(checkedKeys);
   }

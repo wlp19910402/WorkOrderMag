@@ -1,5 +1,5 @@
 import { PlusOutlined, MinusOutlined, EditOutlined } from '@ant-design/icons';
-import { Button, message, Card, Tree, Row, Col, Divider, Spin, Popconfirm } from 'antd';
+import { Button, Card, Tree, Row, Col, Divider, Spin, Popconfirm } from 'antd';
 import React, { useState, useEffect, } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import { MenuDataType } from './data.d';
@@ -17,23 +17,23 @@ interface MenuTreeTypeProps {
   dispatch: Dispatch;
   loading: boolean;
 }
-const handleRemove = async (selectedRows: MenuDataType[]) => {
-  const hide = message.loading('正在删除');
-  if (!selectedRows) return true;
-  try {
-    // await removeRule({
-    //   deleteId: selectedRows.map((row) => row.id),
-    // });
-    hide;
-    message.success('删除成功，即将刷新');
-    return true;
-  } catch (error) {
-    hide;
-    message.error('删除失败，请重试');
-    return false;
-  }
-};
-export const treeData: (DataNode[] | undefined) = (data: MenuDataType[] | []) => treeData ? data.filter(ite => ite.id !== undefined).map(item => ({
+// const handleRemove = async (selectedRows: MenuDataType[]) => {
+//   const hide = message.loading('正在删除');
+//   if (!selectedRows) return true;
+//   try {
+//     // await removeRule({
+//     //   deleteId: selectedRows.map((row) => row.id),
+//     // });
+//     hide;
+//     message.success('删除成功，即将刷新');
+//     return true;
+//   } catch (error) {
+//     hide;
+//     message.error('删除失败，请重试');
+//     return false;
+//   }
+// };
+export const treeData: any = (data: MenuDataType[] | []) => treeData ? data.filter(ite => ite.id !== undefined).map(item => ({
   key: item.id?.toString(),
   title: item.name,
   children: treeData(item.children),
@@ -48,9 +48,10 @@ const MenuTree: React.FC<MenuTreeTypeProps> = (props) => {
   const [ defaultMenuData, setDefatultMenuData ] = useState<DataNode[] | []>([])
   const [ flatMenuData, setFlatMenuData ] = useState<MenuDataType[] | []>([]);
   const [ parentRow, setParentRow ] = useState<MenuDataType>();
-  const onSelect = async (keys: string) => {
+  const onSelect = async (keys: any) => {
     await formDefault(keys[ 0 ]);
     setEditDisable(true);
+    return
   };
   const formDefault = async (keys: string) => {
     let current = flatMenuData.find(item => item.id === parseInt(keys))
@@ -76,13 +77,13 @@ const MenuTree: React.FC<MenuTreeTypeProps> = (props) => {
   useEffect(() => {
     fetchMenu()
   }, [])
-  const editMenu = async (e: any, keys: string) => {
+  const editMenu = async (e: any, keys: any) => {
     e.stopPropagation();
     formDefault(keys);
     setEditDisable(false);
     if (keys === 'new') setCurrentRow({ ...menuDefault, parentId: parentRow?.id })
   }
-  const addMenu = async (e: any, Render: DataNode | []) => {
+  const addMenu = async (e: any, Render: any) => {
     e.stopPropagation();
     await setCurrentRow(undefined)
     await setCurrentRow({ ...menuDefault, parentId: parseInt(Render?.key) })
@@ -149,7 +150,14 @@ const MenuTree: React.FC<MenuTreeTypeProps> = (props) => {
                             </Popconfirm>
                           </Col>
                           <Col span={ 8 } >
-                            <Button disabled={ nodeData.key === '0' || (parentRow?.id != undefined && nodeData.key !== 'new') } style={ { float: "right" } } type="default" size="small" onClick={ (e) => { editMenu(e, nodeData.key) } }><EditOutlined style={ { fontSize: '14px' } } /></Button>
+                            <Button
+                              disabled={ nodeData.key === '0' || (parentRow?.id != undefined && nodeData.key !== 'new') }
+                              style={ { float: "right" } }
+                              type="default"
+                              size="small"
+                              onClick={ (e) => { editMenu(e, nodeData.key) } }>
+                              <EditOutlined style={ { fontSize: '14px' } } />
+                            </Button>
                           </Col>
                         </Row>
                       </div>

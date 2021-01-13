@@ -43,7 +43,7 @@ const ResumeList: React.FC<UserListDataType> = () => {
   const [ modalAuthifyVisible, handleModalAuthifyVisible ] = useState<boolean>(false);
   const [ roleData, setRoleData ] = useState<RoleCheckBoxDataType[] | undefined>();
   const [ initialRoleIds, setInitialRoleIds ] = useState<number[] | undefined>(undefined)
-  const columns: ProColumns<UserListDataType>[] = [
+  const columns: ProColumns<any>[] = [
     {
       title: "id",
       dataIndex: 'id',
@@ -200,7 +200,7 @@ const ResumeList: React.FC<UserListDataType> = () => {
         request={ async (params, sorter, filter) => await fetchQueryUserList({ ...params, sorter, filter }) }
         columns={ columns }
         rowSelection={ {
-          onChange: (_, selectedRows) => setSelectedRows(selectedRows),
+          onChange: (_, selectedRows: any) => setSelectedRows(selectedRows),
         } }
       />
 
