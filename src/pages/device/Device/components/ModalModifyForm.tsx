@@ -20,16 +20,11 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
     if (currentRow?.id !== undefined) {
       params = { id: currentRow.id, ...params };
     }
-    let res = await saveDevice({ ...value, id: currentRow?.id })
-    if (res.code === 0) {
-      if (actionRef.current) {
-        actionRef.current.reload();
-      }
-      message.success(`${currentRow?.id != undefined ? '修改' : '添加'}成功`);
-    } else {
-      message.error(res.message)
-    }
+    let response = await saveDevice({ ...value, id: currentRow?.id })
     handleModalVisible(false);
+    if (!response) return
+    actionRef.current && actionRef.current.reload();
+    message.success(`${currentRow?.id != undefined ? '修改' : '添加'}成功`);
   }
   return (
     <ModalForm

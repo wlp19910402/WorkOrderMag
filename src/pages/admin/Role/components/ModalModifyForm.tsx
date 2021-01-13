@@ -17,16 +17,11 @@ interface ModalModifyFormDataProps {
 const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
   const { createModalVisible, handleModalVisible, actionRef, currentRow } = props
   const submitForm = async (value: RoleDataType) => {
-    const res = await saveRole(value)
-    if (res.code === 0) {
-      handleModalVisible(false);
-      if (actionRef.current) {
-        actionRef.current.reload();
-      }
-      message.success(`${value.id != undefined ? '修改' : '添加'}成功`);
-    } else {
-      message.error(`${value.id != undefined ? '修改' : '添加'}失败`);
-    }
+    const response = await saveRole(value)
+    if (!response) return
+    handleModalVisible(false);
+    actionRef.current && actionRef.current.reload();
+    message.success(`${value.id != undefined ? '修改' : '添加'}成功`);
   }
   return (
     <ModalForm

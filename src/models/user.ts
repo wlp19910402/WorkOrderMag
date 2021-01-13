@@ -3,7 +3,7 @@ import { history, Reducer, Effect } from 'umi';
 import { fakeAccountLogin, fackAccountToken, fackLogout, saveUserAuthority } from '@/services/user';
 import { getPageQuery } from '@/utils/utils';
 import { message } from 'antd';
-import localforage from 'localforage'
+import localforage from 'localforage';
 export interface UserStateType {
   id?: number;
   email?: string;
@@ -39,52 +39,36 @@ const Model: LoginModelType = {
     //登录
     *login ({ payload, callback }, { call, put }) {
       const response = yield call(fakeAccountLogin, payload);
-      if (response.code === 0) {
-        yield put({
-          type: 'changeCurrentUser',
-          payload: response.data,
-        });
-        localforage.setItem('token', response.data.token)
-        const urlParams = new URL(window.location.href);
-        const params = getPageQuery();
-        message.success('🎉 🎉 🎉  登录成功！');
-        let { redirect } = params as { redirect: string };
-        callback()
-        if (redirect) {
-          const redirectUrlParams = new URL(redirect);
-          if (redirectUrlParams.origin === urlParams.origin) {
-            redirect = redirect.substr(urlParams.origin.length);
-            if (redirect.match(/^\/.*#/)) {
-              redirect = redirect.substr(redirect.indexOf('#') + 1);
-            }
-          } else {
-            history.replace('/welcome');
-            return;
-          }
-        }
-        history.replace(redirect || '/welcome');
-      } else {
-        message.error(response.message);
-      }
-    },
-    //使用token获取用户信息
-    *fetchCurrent (_, { call, put }) {
-      const response = yield call(fackAccountToken);
+      if (!response) return
       yield put({
         type: 'changeCurrentUser',
         payload: response.data,
       });
-      const { redirect } = getPageQuery();
-      if (response.code === 0) {
-        localforage.setItem('token', response.data.token)
-        if (window.location.pathname === '/user/login') {
-          if (redirect) {
-            window.location.href = redirect.toString()
-          } else {
-            history.replace('/')
+      localforage.setItem('token', response.data.token)
+      const urlParams = new URL(window.location.href);
+      const params = getPageQuery();
+      message.success('🎉 🎉 🎉  登录成功！');
+      let { redirect } = params as { redirect: string };
+      callback()
+      if (redirect) {
+        const redirectUrlParams = new URL(redirect);
+        if (redirectUrlParams.origin === urlParams.origin) {
+          redirect = redirect.substr(urlParams.origin.length);
+          if (redirect.match(/^\/.*#/)) {
+            redirect = redirect.substr(redirect.indexOf('#') + 1);
           }
+        } else {
+          history.replace('/welcome');
+          return;
         }
-      } else {
+      }
+      history.replace(redirect || '/welcome');
+    },
+    //使用token获取用户信息
+    *fetchCurrent ({ callback }, { call, put }) {
+      const response = yield call(fackAccountToken);
+      if (!response) {
+        callback(false)
         if (window.location.pathname !== '/user/login' && !redirect) {
           history.replace({
             pathname: '/user/login',
@@ -94,7 +78,22 @@ const Model: LoginModelType = {
           });
         }
         history.replace('/user/login');
+        return
       }
+      yield put({
+        type: 'changeCurrentUser',
+        payload: response.data,
+      });
+      const { redirect } = getPageQuery();
+      localforage.setItem('token', response.data.token)
+      if (window.location.pathname === '/user/login') {
+        if (redirect) {
+          window.location.href = redirect.toString()
+        } else {
+          history.replace('/')
+        }
+      }
+      callback(true)
     },
     //退出
     *logout (_, { put, call }) {

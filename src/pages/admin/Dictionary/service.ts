@@ -1,12 +1,12 @@
-import request from 'umi-request';
 import { PageDataType, DictionaryDataType } from '../data.d';
 import API from '@/services/API.d'
+import httpServer from '@/utils/httpServer'
 export interface UserAuthorityType {
   "roleIds": string[],
   "userId": number
 }
 export const queryDictionaryList = async (params: PageDataType) => {
-  return await request.get(API.DICTIONARY_LIST, {
+  return await httpServer.get(API.DICTIONARY_LIST, {
     params: {
       pageSize: params.pageSize,
       pageNo: params.current
@@ -14,9 +14,9 @@ export const queryDictionaryList = async (params: PageDataType) => {
   });
 }
 export const saveDictionary = async (params: DictionaryDataType) => {
-  return request.post(API.DICTIONARY_SAVE, { data: params });
+  return httpServer.post(API.DICTIONARY_SAVE, { data: params });
 }
 
 export const deleteDictionary = async (id: string) => {
-  return request.get(`${API.DICTIONARY_DELETE}/${id}`)
+  return httpServer.get(`${API.DICTIONARY_DELETE}/${id}`)
 }

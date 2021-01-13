@@ -37,13 +37,6 @@ const UserLayout: React.FC<UserLayoutProps> = (props) => {
     breadcrumb,
     ...props,
   });
-  // useEffect(() => {
-  //   if (dispatch && !isLogin) {
-  //     dispatch({
-  //       type: 'user/fetchCurrent'
-  //     })
-  //   }
-  // }, [])
   return (
     <HelmetProvider>
       <Helmet>

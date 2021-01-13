@@ -133,75 +133,53 @@ const ResumeList: React.FC<UserListDataType> = () => {
   ];
   const switchUserStatus = async (id: string, batch: boolean) => {
     let response = await statusUser(id);
-    if (response.code === 0) {
-      if (actionRef.current) {
-        actionRef.current.reloadAndRest?.();
-      }
-      message.success(`${batch ? '禁用' : '启用'}成功`)
-    } else {
-      message.error(response.message)
-    }
+    if (!response) return
+    actionRef.current && actionRef.current.reloadAndRest?.();
+    message.success(`${batch ? '禁用' : '启用'}成功`)
+
   };
   const tiggerDeleteUser = async (id: string) => {
     let response = await deleteUser(id)
-    if (response.code === 0) {
-      if (actionRef.current) {
-        actionRef.current.reloadAndRest?.();
-      }
-      message.success("删除成功")
-    } else {
-      message.error(response.message)
-    }
+    if (!response) return
+    actionRef.current && actionRef.current.reloadAndRest?.();
+    message.success("删除成功")
   }
   const fetchUserRoleId = async (record: UserListDataType) => {
     setCurrentRow(record);
     record.id !== undefined && getUserRoleId(record.id?.toString()).then(
-      async (res) => {
-        if (res.code === 0) {
-          setInitialRoleIds(res.data);
-          await fetchRoleListData();
-          handleModalAuthifyVisible(true);
-        } else {
-          message.error(res.message);
-        }
+      async (response) => {
+        if (!response) return
+        setInitialRoleIds(response.data);
+        await fetchRoleListData();
+        handleModalAuthifyVisible(true);
       })
   }
   const fetchUserEdit = async (record: UserListDataType) => {
     setCurrentRow(record);
     record.id !== undefined && getUserRoleId(record.id?.toString()).then(
-      async (res) => {
-        if (res.code === 0) {
-          setInitialRoleIds(res.data);
-          await fetchRoleListData();
-          handleModalVisible(true);
-        } else {
-          message.error(res.message);
-        }
+      async (response: any) => {
+        if (!response) return
+        setInitialRoleIds(response.data);
+        await fetchRoleListData();
+        handleModalVisible(true);
       })
   }
   const fetchRoleListData = async () => {
     if (roleData === undefined) {
       let response = await queryRoleList()
-      if (response.code === 0) {
-        await setRoleData(response.data.map((item: any) => ({
-          label: item.roleName,
-          value: item.id
-        })))
-      } else {
-        message.error(response.message);
-      }
+      if (!response) return
+      await setRoleData(response.data.map((item: any) => ({
+        label: item.roleName,
+        value: item.id
+      })))
     }
   }
   const fetchQueryUserList = async (params: any) => {
     let response = await queryUserList(params)
-    if (response.code === 0) {
-      let data = response.data;
-      return ({ ...data, data: data.records })
-    } else {
-      message.error(response.message)
-    }
+    if (!response) return
+    let data = response.data;
+    return ({ ...data, data: data.records })
   }
-
   return (
     <PageContainer>
       <ProTable

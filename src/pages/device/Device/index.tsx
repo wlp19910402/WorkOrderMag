@@ -134,14 +134,11 @@ const DictionaryList: React.FC<DeviceListDataType> = () => {
   ];
   const tiggerDelete = async (id: string) => {
     let response = await deleteDevice(id)
-    if (response.code === 0) {
-      if (actionRef.current) {
-        actionRef.current.reloadAndRest?.();
-      }
-      message.success("删除成功")
-    } else {
-      message.error(response.message)
+    if (!response) return
+    if (actionRef.current) {
+      actionRef.current.reloadAndRest?.();
     }
+    message.success("删除成功")
   }
   const fetchUserEdit = async (record: DeviceListDataType) => {
     await setCurrentRow(record);
@@ -149,12 +146,9 @@ const DictionaryList: React.FC<DeviceListDataType> = () => {
   }
   const fetchQueryList = async (params: any) => {
     let response = await queryDeviceList(params)
-    if (response.code === 0) {
-      let data = response.data;
-      return ({ ...data, data: data.records })
-    } else {
-      message.error(response.message);
-    }
+    if (!response) return
+    let data = response.data;
+    return ({ ...data, data: data.records })
   }
   return (
     <PageContainer>

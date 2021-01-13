@@ -97,14 +97,11 @@ const DictionaryList: React.FC<DictionaryDataType> = () => {
   ];
   const tiggerDeleteDictionary = async (id: string) => {
     let response = await deleteDictionary(id)
-    if (response.code === 0) {
-      if (actionRef.current) {
-        actionRef.current.reloadAndRest?.();
-      }
-      message.success("删除成功")
-    } else {
-      message.error(response.message)
+    if (!response) return
+    if (actionRef.current) {
+      actionRef.current.reloadAndRest?.();
     }
+    message.success("删除成功")
   }
   const fetchUserEdit = async (record: DictionaryDataType) => {
     await setCurrentRow(record);
@@ -112,10 +109,9 @@ const DictionaryList: React.FC<DictionaryDataType> = () => {
   }
   const fetchQueryList = async (params: any) => {
     let response = await queryDictionaryList(params)
-    if (response.code === 0) {
-      let data = response.data;
-      return ({ ...data, data: data.records })
-    }
+    if (!response) return
+    let data = response.data;
+    return ({ ...data, data: data.records })
   }
   return (
     <PageContainer>

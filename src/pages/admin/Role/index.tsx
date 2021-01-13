@@ -94,14 +94,9 @@ const RoleList: React.FC<RoleDataType> = () => {
   ];
   const tiggerDeleteRole = async (id: string) => {
     let response = await deleteRole(id)
-    if (response.code === 0) {
-      if (actionRef.current) {
-        actionRef.current.reloadAndRest?.();
-      }
-      message.success("删除成功")
-    } else {
-      message.error(response.message)
-    }
+    if (!response) return
+    actionRef.current && actionRef.current.reloadAndRest?.();
+    message.success("删除成功")
   }
   return (
     <PageContainer>
@@ -122,11 +117,8 @@ const RoleList: React.FC<RoleDataType> = () => {
         ] }
         request={ async (params, sorter, filter) => {
           let response = await queryRoleList()
-          if (response.code === 0) {
-            return response
-          }
-          message.error(response.message)
-          return undefined
+          if (!response) return
+          return response
         } }
         columns={ columns }
         rowSelection={ {

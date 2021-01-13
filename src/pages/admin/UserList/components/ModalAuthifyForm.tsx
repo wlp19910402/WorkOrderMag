@@ -7,7 +7,6 @@ import { ModalForm, ProFormText, ProFormCheckbox } from '@ant-design/pro-form';
 import { saveUserAuthority, UserAuthorityType } from '../service';
 import { UserListDataType } from '../../data.d';
 import { RoleCheckBoxDataType } from '../index'
-import { message } from 'antd'
 interface ModalAuthifyFormDataProps {
   modalAuthifyVisible: boolean;
   handleModalAuthifyVisible: React.Dispatch<React.SetStateAction<boolean>>;
@@ -19,16 +18,10 @@ interface ModalAuthifyFormDataProps {
 const ModalAuthifyForm: React.FC<ModalAuthifyFormDataProps> = (props) => {
   const { modalAuthifyVisible, handleModalAuthifyVisible, actionRef, currentRow, roleData, initialRoleIds } = props
   const submitForm = async (value: UserAuthorityType) => {
-    const res = await saveUserAuthority(value)
-    if (res.code === 0) {
-      handleModalAuthifyVisible(false);
-      if (actionRef.current) {
-        actionRef.current.reload();
-      }
-    } else {
-      message.error(res.message);
-    }
+    const response = await saveUserAuthority(value)
     handleModalAuthifyVisible(false);
+    if (!response) return
+    actionRef.current && actionRef.current.reload();
   }
   return (
     <ModalForm

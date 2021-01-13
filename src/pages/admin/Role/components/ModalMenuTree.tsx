@@ -32,19 +32,14 @@ const ModalTreeForm: React.FC<ModalTreeDataProps> = (props) => {
   const submitForm = async (id: number) => {
     let arrSet = new Set(checkedKeys.concat(checkedParentKeys));
     let arr = Array.from(arrSet);
-    const res = await BindRole({
-      menuIds: arr.map(item => parseInt(item)),
+    const response = await BindRole({
+      menuIds: arr.map((item: any) => parseInt(item)),
       roleId: id
     })
-    if (res.code === 0) {
-      handleModalTreeVisible(false);
-      if (actionRef.current) {
-        actionRef.current.reload();
-      }
-      message.success("保存成功");
-    } else {
-      message.error(res.message);
-    }
+    handleModalTreeVisible(false);
+    if (!response) return
+    actionRef.current && actionRef.current.reload();
+    message.success("保存成功");
   }
   const onExpand = (expandedKeys: React.Key[]) => {
     setExpandedKeys(expandedKeys);
@@ -64,12 +59,9 @@ const ModalTreeForm: React.FC<ModalTreeDataProps> = (props) => {
       })
     }
     if (currentRow?.id) {
-      getRoleDetail(currentRow.id?.toString()).then(res => {
-        if (res.code === 0) {
-          setCheckedKeys(res.data.menuIds.map((item: any) => item.toString()))
-        } else {
-          message.error(res.message)
-        }
+      getRoleDetail(currentRow.id?.toString()).then(response => {
+        if (!response) return
+        setCheckedKeys(response.data.menuIds.map((item: any) => item.toString()))
       })
     }
   }, [])

@@ -9,22 +9,25 @@ interface BlankLayout extends ConnectProps {
   isLogin: boolean;
   dispatch: Dispatch;
   loading: boolean;
+  token: string | undefined;
 }
-const BlankLayoutCmp: React.FC<BlankLayout> = ({ children, isLogin, dispatch, loading }) => {
+const BlankLayoutCmp: React.FC<BlankLayout> = ({ children, isLogin, dispatch, loading, token }) => {
   useEffect(() => {
-    if (dispatch && !isLogin) {
+    if (!token && dispatch) {
       dispatch({
         type: 'user/fetchCurrent',
+        callback: (res: boolean) => {
+          res && dispatch({
+            type: 'menu/fetctCurrentMenu'
+          })
+        }
       });
-      dispatch({
-        type: 'menu/fetctCurrentMenu'
-      })
     }
   }, []);
-  return <Spin spinning={ loading }> <InspectorWrapper>{ children }</InspectorWrapper></Spin>
+  return <Spin spinning={ loading }><InspectorWrapper>{ children }</InspectorWrapper></Spin>
 };
 // export default Layout
 export default connect(({ user, loading }: ConnectState) => ({
-  isLogin: !!user.currentUser?.token,
+  token: user.currentUser?.token,
   loading: loading.models.user || loading.effects[ 'menu/fetctCurrentMenu' ] ? true : false
-}))(BlankLayoutCmp);
+}))(BlankLayoutCmp)

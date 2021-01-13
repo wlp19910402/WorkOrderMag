@@ -23,11 +23,11 @@ const defaulState = {
   menuTree: [],
   flatMenuData: []
 }
-const fetchFaltMenuData: MenuDataType[] | [] = (menuData: MenuDataType[] | []) => {
-  let tmpArr: MenuDataType[] | [] = [];
+const fetchFaltMenuData: any = (menuData: MenuDataType[] | []) => {
+  let tmpArr: any = [];
   const fn = (data: MenuDataType[]) => {
     if (data.length > 0) {
-      data?.forEach(item => {
+      data?.forEach((item: any) => {
         tmpArr.push(item)
         if (item.children?.length > 0) {
           fn(item.children)
@@ -61,61 +61,59 @@ const Model: MenuModelType = {
     //获取菜单列表
     *fetchMenuTree ({ callback }, { call, put }) {
       const response = yield call(queryMenuTree);
-      if (response.code === 0) {
-        yield put({
-          type: 'changeMenuTree',
-          payload: response.data
-        })
-        const menuData = [
-          {
-            "icon": "icon-FolderOpen",
-            "name": "一级菜单",
-            "id": 0,
-            "url": "#",
-            "type": 0,
-            "perms": "",
-            "orderNum": 0,
-            "parentId": 0,
-            "children": response.data
-          }
-        ]
-        const flatMenuData = fetchFaltMenuData(menuData)
-        if (callback) callback(menuData, flatMenuData)
-      } else {
-        message.error(response.message);
-      }
+      if (!response) return
+      yield put({
+        type: 'changeMenuTree',
+        payload: response.data
+      })
+      const menuData = [
+        {
+          "icon": "icon-FolderOpen",
+          "name": "一级菜单",
+          "id": 0,
+          "url": "#",
+          "type": 0,
+          "perms": "",
+          "orderNum": 0,
+          "parentId": 0,
+          "children": response.data
+        }
+      ]
+      const flatMenuData = fetchFaltMenuData(menuData)
+      if (callback) callback(menuData, flatMenuData)
     },
     //保存菜单
     *saveMenu ({ payload, callback }, { call, put }) {
       const response = yield call(saveMenu, payload)
-      if (response.code === 0) {
-        if (callback) callback(response)
-        message.success("保存成功！");
-      } else {
-        message.error(response.message);
-      }
+      if (!response) return
+      if (callback) callback(response)
+      message.success("保存成功！");
     },
     *delMenu ({ payload, callback }, { call }) {
       const response = yield call(fetchDelMenu, payload);
-      if (response.code === 0) {
-        if (callback) callback(response)
-        message.success("删除成功！");
-      } else {
-        message.error(response.message);
-      }
+      if (!response) return
+      if (callback) callback(response)
+      message.success("删除成功！");
     },
     //当前用户菜单
     *fetctCurrentMenu (_, { put, call }) {
+      yield put({
+        type: 'changeCurrentMenu',
+        payload: []
+      });
       let response = yield call(queryCurrentMenu);
-      let menuData = response.data
-      if (response.code === 0) {
+      if (!response) {
         yield put({
           type: 'changeCurrentMenu',
-          payload: [ welcome, ...menuData ]
+          payload: [ welcome ]
         });
-      } else {
-        // message.error(response.message);
-      }
+        return
+      };
+      let menuData = response.data
+      yield put({
+        type: 'changeCurrentMenu',
+        payload: [ welcome, ...menuData ]
+      });
     },
     *clearMenu (_, { put }) {
       yield put({
