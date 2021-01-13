@@ -20,9 +20,9 @@ const ModalAuthifyForm: React.FC<ModalAuthifyFormDataProps> = (props) => {
   const { modalAuthifyVisible, handleModalAuthifyVisible, actionRef, currentRow, roleData, initialRoleIds, setShowDetail } = props
   const submitForm = async (value: UserAuthorityType) => {
     const response = await saveUserAuthority(value)
-    handleModalAuthifyVisible(false);
     if (!response) return
     setShowDetail(false);
+    handleModalAuthifyVisible(false);
     actionRef.current && actionRef.current.reload();
   }
   return (

@@ -9,12 +9,12 @@ const codeMatch = (res: any) => {
       if (window.location.pathname.includes('/user/login')) return
       history.replace("/user/login");
       break;
-    case 403:
-      history.replace("/exception/403");
-      break;
-    case 404:
-      history.replace("/exception/404");
-      break;
+    // case 403:
+    //   history.replace("/exception/403");
+    //   break;
+    // case 404:
+    //   history.replace("/exception/404");
+    //   break;
     // case 500:
     //   history.replace("/exception/500");
     //   break;

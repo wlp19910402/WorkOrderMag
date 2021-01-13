@@ -36,10 +36,10 @@ const ModalTreeForm: React.FC<ModalTreeDataProps> = (props) => {
       menuIds: arr.map((item: any) => parseInt(item)),
       roleId: id
     })
-    handleModalTreeVisible(false);
     if (!response) return
     actionRef.current && actionRef.current.reload();
     message.success("保存成功");
+    handleModalTreeVisible(false);
   }
   const onExpand = (expandedKeys: React.Key[]) => {
     setExpandedKeys(expandedKeys);

@@ -21,11 +21,11 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
       params = { id: currentRow.id, ...params };
     }
     let response = await saveDictionary({ ...value, id: currentRow?.id })
-    handleModalVisible(false);
     if (!response) return
     if (actionRef.current) {
       actionRef.current.reload();
     }
+    handleModalVisible(false);
     message.success(`${currentRow?.id != undefined ? '修改' : '添加'}成功`);
   }
   return (
