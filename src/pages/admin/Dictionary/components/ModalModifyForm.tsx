@@ -44,6 +44,18 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
         rules={ [
           {
             required: true,
+            message: "请输入字典类型！"
+          },
+        ] }
+        label="字典类型"
+        name="type"
+        placeholder="请输入字典类型"
+        initialValue={ currentRow?.type }
+      />
+      <ProFormText
+        rules={ [
+          {
+            required: true,
             message: "请输入字典名称！"
           },
         ] }
@@ -63,18 +75,6 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
         name="code"
         placeholder="请输入字典码"
         initialValue={ currentRow?.code }
-      />
-      <ProFormText
-        rules={ [
-          {
-            required: true,
-            message: "请输入字典类型！"
-          },
-        ] }
-        label="字典类型"
-        name="type"
-        placeholder="请输入字典类型"
-        initialValue={ currentRow?.type }
       />
       <ProFormText
         rules={ [

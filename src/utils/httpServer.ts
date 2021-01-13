@@ -15,9 +15,9 @@ const codeMatch = (res: any) => {
     case 404:
       history.replace("/exception/404");
       break;
-    case 500:
-      history.replace("/exception/500");
-      break;
+    // case 500:
+    //   history.replace("/exception/500");
+    //   break;
     default:
       break;
   }

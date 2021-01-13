@@ -27,6 +27,7 @@ export default {
   DICTIONARY_LIST: '/api/sys/dic/list',
   DICTIONARY_SAVE: '/api/sys/dic/save',
   DICTIONARY_DELETE: '/api/sys/dic/del',///sys/dic/del/{id}
+  DICTIONARY_TYPE: '/api/sys/dic/list',///sys/dic/list/{type}字典类型查询该字典的数据
   //设备管理-设备管理接口
   DEVICE_LIST: '/api/device/list',
   DEVICE_DETAIL: '/api/device/info',///device/info/{id}

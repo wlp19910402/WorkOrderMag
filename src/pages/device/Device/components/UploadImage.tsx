@@ -1,6 +1,6 @@
 import React from 'react';
-import {  Upload, Modal } from 'antd';
-import { PlusOutlined  } from '@ant-design/icons';
+import { Upload, Modal } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
 interface UploadProps {
   name: string;
   value?: string;
@@ -28,31 +28,31 @@ const UploadView: React.FC<UploadProps> = props => {
     status: 'done',
     url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
   },
-  {
-    uid: '-2',
-    name: 'image.png',
-    status: 'done',
-    url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-  },
-  {
-    uid: '-3',
-    name: 'image.png',
-    status: 'done',
-    url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-  },
-  {
-    uid: '-4',
-    name: 'image.png',
-    status: 'done',
-    url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-  },
-  {
-    uid: '-xxx',
-    percent: 50,
-    name: 'image.png',
-    status: 'uploading',
-    url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-  },
+  // {
+  //   uid: '-2',
+  //   name: 'image.png',
+  //   status: 'done',
+  //   url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+  // },
+  // {
+  //   uid: '-3',
+  //   name: 'image.png',
+  //   status: 'done',
+  //   url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+  // },
+  // {
+  //   uid: '-4',
+  //   name: 'image.png',
+  //   status: 'done',
+  //   url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+  // },
+  // {
+  //   uid: '-xxx',
+  //   percent: 50,
+  //   name: 'image.png',
+  //   status: 'uploading',
+  //   url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+  // },
   {
     uid: '-5',
     name: 'image.png',
@@ -78,7 +78,6 @@ const UploadView: React.FC<UploadProps> = props => {
 
   return (
     <>
-      {fileList?.toString() + "   " + typeof fileList }
       <Upload
         action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
         listType="picture-card"
@@ -97,7 +96,7 @@ const UploadView: React.FC<UploadProps> = props => {
       >
         <img alt="example" style={ { width: '100%' } } src={ previewImage } />
       </Modal>
-      {fileList?.length }
+      {/* {fileList?.length } */ }
     </>
   );
 };
