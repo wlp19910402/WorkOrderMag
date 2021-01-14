@@ -27,6 +27,9 @@ const ModalAuthifyForm: React.FC<ModalAuthifyFormDataProps> = (props) => {
   }
   return (
     <ModalForm
+      modalProps={ {
+        maskClosable: false
+      } }
       title='用户授权'
       width="400px"
       visible={ modalAuthifyVisible }

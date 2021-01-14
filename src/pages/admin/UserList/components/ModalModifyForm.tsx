@@ -34,6 +34,9 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
   }
   return (
     <ModalForm
+      modalProps={ {
+        maskClosable: false
+      } }
       title={ currentRow?.id !== undefined ? "用户编辑" : "用户新增" }
       width="400px"
       visible={ createModalVisible }

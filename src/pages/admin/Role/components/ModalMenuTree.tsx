@@ -72,6 +72,7 @@ const ModalTreeForm: React.FC<ModalTreeDataProps> = (props) => {
       okText="保存"
       onCancel={ () => { handleModalTreeVisible(false) } }
       bodyStyle={ { maxHeight: "560px", overflow: "auto" } }
+      maskClosable={ false }
     >
       <Tree
         checkable

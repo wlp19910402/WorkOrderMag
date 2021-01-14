@@ -33,4 +33,7 @@ export default {
   DEVICE_DETAIL: '/api/device/info',///device/info/{id}
   DEVICE_DELETE: '/api/device/del',///device/del/{id}
   DEVICE_SAVE: '/api/device/save',
+  //上传文件的接口
+  UPLOAD_OSS_SIGN: '/api/oss/upload-sign',//获取上传签名信息
+  UPLOAD_FILE: '/api/oss/upload-file',//文件直传服务
 }

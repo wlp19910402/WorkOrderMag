@@ -27,7 +27,7 @@ const BlankLayoutCmp: React.FC<BlankLayout> = ({ children, isLogin, dispatch, lo
       });
     }
   }, []);
-  return <Spin spinning={ loading }><InspectorWrapper>{ children }</InspectorWrapper></Spin>
+  return <Spin spinning={ false }><InspectorWrapper>{ children }</InspectorWrapper></Spin>
 };
 
 export default connect(({ user, loading }: ConnectState) => ({
