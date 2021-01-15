@@ -2,13 +2,13 @@
  * 角色 编辑 和 新增
  */
 import React from 'react';
-import { ActionType } from '@ant-design/pro-table';
+import type { ActionType } from '@ant-design/pro-table';
 import { ModalForm, ProFormText, ProFormTextArea } from '@ant-design/pro-form';
 import { saveRole } from '../service';
-import { RoleDataType } from '../data.d';
+import type { RoleDataType } from '../data.d';
 import { message } from 'antd'
 
-interface ModalModifyFormDataProps {
+type ModalModifyFormDataProps = {
   createModalVisible: boolean;
   handleModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
   actionRef: React.MutableRefObject<ActionType | undefined>;
@@ -21,7 +21,7 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
     if (!response) return
     handleModalVisible(false);
     actionRef.current && actionRef.current.reload();
-    message.success(`${value.id != undefined ? '修改' : '添加'}成功`);
+    message.success(`${value.id !== undefined ? '修改' : '添加'}成功`);
   }
   return (
     <ModalForm
@@ -35,7 +35,7 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
       visible={ createModalVisible }
       onVisibleChange={ handleModalVisible }
       onFinish={ async (value) => {
-        let bodyVaule: RoleDataType = {
+        const bodyVaule: RoleDataType = {
           roleName: value.roleName,
           deptId: value.deptId,
           remark: value.remark

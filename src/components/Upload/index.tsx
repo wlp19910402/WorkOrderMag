@@ -6,7 +6,8 @@ import OSS from 'ali-oss';
 import ImgNull from '@/assets/images/images-null.png';
 import styles from './Upload.less';
 import { uploadStsSign } from './service'
-interface UploadProps {
+
+type UploadProps = {
   uploadId: string;
   value: string;
   onChange: (url: string) => void;
@@ -16,9 +17,9 @@ const UploadView: React.FC<UploadProps> = props => {
   const [ status, setStatus ] = React.useState<'' | 'done' | 'uploading' | 'error'>(value === '' ? '' : 'done');
   // const fileMaxSize = "500KB"
   const uploadImage = async () => {
-    let file = document.getElementById(uploadId)?.files[ 0 ];
-    console.log(file)
-    if (file == undefined) {
+    const fileInput: any = document.getElementById(uploadId)
+    const file = fileInput?.files[ 0 ]
+    if (file === undefined) {
       return
     }
     setStatus("uploading");
@@ -27,12 +28,12 @@ const UploadView: React.FC<UploadProps> = props => {
     //   setStatus("");
     //   return
     // }
-    let response = await uploadStsSign({ originalName: file.name })
+    const response = await uploadStsSign({ originalName: file.name })
     if (!response) {
       setStatus("error");
       return
     }
-    let stsRes = response.data
+    const stsRes = response.data
     const ossToken: OSS.Options = {
       accessKeyId: stsRes.AccessKeyId,
       accessKeySecret: stsRes.AccessKeySecret,
@@ -41,8 +42,8 @@ const UploadView: React.FC<UploadProps> = props => {
       region: stsRes.region
     }
     const client = new OSS(ossToken)
-    let back = JSON.parse(stsRes.callback)
-    let callback: OSS.ObjectCallback = {
+    const back = JSON.parse(stsRes.callback)
+    const callback: OSS.ObjectCallback = {
       url: back.callbackUrl,
       body: back.callbackBody,
       contentType: back.callbackBodyType
@@ -86,7 +87,7 @@ const UploadView: React.FC<UploadProps> = props => {
                 width="100%"
                 height="100%"
                 src={ `${value}?x-oss-process=image/resize,h_100,w_100,m_lfit` }
-                preview={ {src: value} }
+                preview={ { src: value } }
               ></Image>
             </>
           ) : (

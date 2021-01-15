@@ -2,10 +2,12 @@ import { PlusOutlined } from '@ant-design/icons';
 import { Button, Drawer, message, Popconfirm } from 'antd';
 import React, { useState, useRef } from 'react';
 import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
-import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
-import ProDescriptions, { ProDescriptionsItemProps } from '@ant-design/pro-descriptions';
+import type { ProColumns, ActionType } from '@ant-design/pro-table';
+import ProTable from '@ant-design/pro-table';
+import type { ProDescriptionsItemProps } from '@ant-design/pro-descriptions';
+import ProDescriptions from '@ant-design/pro-descriptions';
 import { queryRoleList, deleteRole } from './service';
-import { RoleDataType } from './data.d';
+import type { RoleDataType } from './data.d';
 import ModalModifyForm from './components/ModalModifyForm'
 import ModalMenuTree from './components/ModalMenuTree'
 /**
@@ -81,7 +83,7 @@ const RoleList: React.FC<RoleDataType> = () => {
         </a>,
         <Popconfirm
           title="是否要删除此行？"
-          onConfirm={ () => { record.id != undefined && tiggerDeleteRole(record.id?.toString()); } }>
+          onConfirm={ () => { record.id !== undefined && tiggerDeleteRole(record.id?.toString()); } }>
           <a>删除</a>
         </Popconfirm>,
         <a
@@ -93,7 +95,7 @@ const RoleList: React.FC<RoleDataType> = () => {
     },
   ];
   const tiggerDeleteRole = async (id: string) => {
-    let response = await deleteRole(id)
+    const response = await deleteRole(id)
     if (!response) return
     actionRef.current && actionRef.current.reloadAndRest?.();
     message.success("删除成功")
@@ -116,7 +118,7 @@ const RoleList: React.FC<RoleDataType> = () => {
           </Button>,
         ] }
         request={ async (params, sorter, filter) => {
-          let response = await queryRoleList()
+          const response = await queryRoleList()
           if (!response) return
           return response
         } }
@@ -134,7 +136,7 @@ const RoleList: React.FC<RoleDataType> = () => {
           currentRow={ currentRow }
         />
       ) }
-      {modalTreeVisible && currentRow != undefined && (
+      {modalTreeVisible && currentRow !== undefined && (
         <ModalMenuTree
           modalTreeVisible={ modalTreeVisible }
           handleModalTreeVisible={ handleModalTreeVisible }

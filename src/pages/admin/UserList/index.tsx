@@ -2,10 +2,12 @@ import { PlusOutlined } from '@ant-design/icons';
 import { Button, Drawer, message, Popconfirm, Switch } from 'antd';
 import React, { useState, useRef } from 'react';
 import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
-import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
-import ProDescriptions, { ProDescriptionsItemProps } from '@ant-design/pro-descriptions';
+import type { ProColumns, ActionType } from '@ant-design/pro-table';
+import ProTable from '@ant-design/pro-table';
+import type { ProDescriptionsItemProps } from '@ant-design/pro-descriptions';
+import ProDescriptions from '@ant-design/pro-descriptions';
 import { queryUserList, deleteUser, statusUser, getUserRoleId } from './service';
-import { UserListDataType } from '../data.d';
+import type { UserListDataType } from '../data.d';
 import ModalModifyForm from './components/ModalModifyForm'
 import { queryRoleList } from '@/pages/admin/Role/service'
 import ModalAuthifyForm from './components/ModalAuthifyForm'
@@ -29,7 +31,7 @@ const handleRemove = async (selectedRows: UserListDataType[]) => {
     return false;
   }
 };
-export interface RoleCheckBoxDataType {
+export type RoleCheckBoxDataType = {
   label: string;
   value: number;
 }
@@ -98,7 +100,7 @@ const ResumeList: React.FC<UserListDataType> = () => {
       hideInForm: true,
       render: ((val, record) => {
         return (<Switch disabled={ record.id === 1 } loading={ false } onClick={ async (checked: boolean, event: Event) => {
-          record.id != undefined && switchUserStatus(record.id?.toString(), val === 1 ? true : false)
+          record.id !== undefined && switchUserStatus(record.id?.toString(), val === 1)
         } } checkedChildren='启用' unCheckedChildren='禁用' defaultChecked={ val === 1 } />)
       })
     },
@@ -117,7 +119,7 @@ const ResumeList: React.FC<UserListDataType> = () => {
         <Popconfirm
           disabled={ record.id === 1 }
           title="是否要删除此行？"
-          onConfirm={ () => { record.id != undefined && tiggerDeleteUser(record.id?.toString()); } }>
+          onConfirm={ () => { record.id !== undefined && tiggerDeleteUser(record.id?.toString()); } }>
           <Button disabled={ record.id === 1 } size="small" type="text" >删除</Button>
         </Popconfirm>,
         <Button
@@ -132,14 +134,14 @@ const ResumeList: React.FC<UserListDataType> = () => {
     },
   ];
   const switchUserStatus = async (id: string, batch: boolean) => {
-    let response = await statusUser(id);
+    const response = await statusUser(id);
     if (!response) return
     setShowDetail(false)
     actionRef.current && actionRef.current.reloadAndRest?.();
     message.success(`${batch ? '禁用' : '启用'}成功`)
   };
   const tiggerDeleteUser = async (id: string) => {
-    let response = await deleteUser(id)
+    const response = await deleteUser(id)
     if (!response) return
     setShowDetail(false)
     actionRef.current && actionRef.current.reloadAndRest?.();
@@ -167,7 +169,7 @@ const ResumeList: React.FC<UserListDataType> = () => {
   }
   const fetchRoleListData = async () => {
     if (roleData === undefined) {
-      let response = await queryRoleList()
+      const response = await queryRoleList()
       if (!response) return
       await setRoleData(response.data.map((item: any) => ({
         label: item.roleName,
@@ -176,9 +178,9 @@ const ResumeList: React.FC<UserListDataType> = () => {
     }
   }
   const fetchQueryUserList = async (params: any) => {
-    let response = await queryUserList(params)
+    const response = await queryUserList(params)
     if (!response) return
-    let data = response.data;
+    const {data} = response;
     return ({ ...data, data: data.records })
   }
   return (

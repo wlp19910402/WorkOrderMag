@@ -2,15 +2,17 @@
  * 角色授权
  */
 import React, { useState, useEffect } from 'react';
-import { ActionType } from '@ant-design/pro-table';
-import { RoleDataType } from '../data.d';
+import type { ActionType } from '@ant-design/pro-table';
+import type { RoleDataType } from '../data.d';
 import { message, Modal, Tree } from 'antd'
-import { connect, Dispatch, } from 'umi'
-import { MenuModelState } from '@/models/menu'
+import type { Dispatch} from 'umi';
+import { connect } from 'umi'
+import type { MenuModelState } from '@/models/menu'
 import { treeData } from '@/pages/admin/Menu/index'
 import { getRoleDetail, BindRole } from '../service'
-import { MenuDataType } from '@/pages/admin/Menu/data.d'
-interface ModalTreeDataProps {
+import type { MenuDataType } from '@/pages/admin/Menu/data.d'
+
+type ModalTreeDataProps = {
   modalTreeVisible: boolean;
   handleModalTreeVisible: React.Dispatch<React.SetStateAction<boolean>>;
   actionRef: React.MutableRefObject<ActionType | undefined>;
@@ -18,7 +20,7 @@ interface ModalTreeDataProps {
   menuTree: MenuDataType[] | [];
   dispatch: Dispatch;
 }
-export interface SaveRoleParamsType {
+export type SaveRoleParamsType = {
   menuIds: number[];
   roleId: number;
 }
@@ -30,8 +32,8 @@ const ModalTreeForm: React.FC<ModalTreeDataProps> = (props) => {
   const [ autoExpandParent, setAutoExpandParent ] = useState<boolean>(true);
   const [ checkedParentKeys, setCheckedParentKeys ] = useState<React.Key[]>([])
   const submitForm = async (id: number) => {
-    let arrSet = new Set(checkedKeys.concat(checkedParentKeys));
-    let arr = Array.from(arrSet);
+    const arrSet = new Set(checkedKeys.concat(checkedParentKeys));
+    const arr = Array.from(arrSet);
     const response = await BindRole({
       menuIds: arr.map((item: any) => parseInt(item)),
       roleId: id
@@ -91,8 +93,8 @@ const ModalTreeForm: React.FC<ModalTreeDataProps> = (props) => {
 
 
 export default connect(
-  ({ loading, menu }: { loading: { models: { [ key: string ]: boolean } }, menu: MenuModelState }
+  ({ loading, menu }: { loading: { models: Record<string, boolean> }, menu: MenuModelState }
   ) => ({
-    loading: loading.models.menu ? true : false,
+    loading: !!loading.models.menu,
     menuTree: menu.menuTree
   }))(ModalTreeForm);

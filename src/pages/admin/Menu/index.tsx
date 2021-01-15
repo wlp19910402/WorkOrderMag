@@ -2,17 +2,19 @@ import { PlusOutlined, MinusOutlined, EditOutlined } from '@ant-design/icons';
 import { Button, Card, Tree, Row, Col, Divider, Spin, Popconfirm } from 'antd';
 import React, { useState, useEffect, } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
-import { MenuDataType } from './data.d';
-import { DataNode } from 'rc-tree/lib/interface.d'
-import { connect, Dispatch, } from 'umi'
-import { TypeFormType, menuDefault } from './data.d'
+import type { MenuDataType } from './data.d';
+import type { DataNode } from 'rc-tree/lib/interface.d'
+import type { Dispatch} from 'umi';
+import { connect } from 'umi'
+import type { TypeFormType} from './data.d';
+import { menuDefault } from './data.d'
 import ModifyForm from './components/ModifyForm'
 import { IconFont } from '@/components/common/IconFont'
 /**
  *  删除节点
  * @param selectedRows
  */
-interface MenuTreeTypeProps {
+type MenuTreeTypeProps = {
   currentMenu: MenuDataType | undefined;
   dispatch: Dispatch;
   loading: boolean;
@@ -51,10 +53,10 @@ const MenuTree: React.FC<MenuTreeTypeProps> = (props) => {
   const onSelect = async (keys: any) => {
     await formDefault(keys[ 0 ]);
     setEditDisable(true);
-    return
+
   };
   const formDefault = async (keys: string) => {
-    let current = flatMenuData.find(item => item.id === parseInt(keys))
+    const current = flatMenuData.find(item => item.id === parseInt(keys))
     await setCurrentRow(undefined)
     if (keys === 'new' || !current) {
       await setCurrentRow({ ...menuDefault, parentId: parentRow?.id })
@@ -95,7 +97,7 @@ const MenuTree: React.FC<MenuTreeTypeProps> = (props) => {
       icon: true,
       children: []
     })
-    let tmp = menuData;
+    const tmp = menuData;
     setMenuData([])
     setMenuData(tmp)
   }
@@ -138,7 +140,7 @@ const MenuTree: React.FC<MenuTreeTypeProps> = (props) => {
                         <Row justify="center">
                           <Col span={ 8 }>
                             <Button
-                              disabled={ parentRow?.id != undefined }
+                              disabled={ parentRow?.id !== undefined }
                               type="primary" size="small" onClick={ (e) => { addMenu(e, nodeData) } }><PlusOutlined style={ { fontSize: '14px' } }
                               /></Button>
                           </Col>
@@ -146,12 +148,12 @@ const MenuTree: React.FC<MenuTreeTypeProps> = (props) => {
                             <Popconfirm
                               title="是否要删除此项？"
                               onConfirm={ (e) => { tiggerDeleteMenu(e, nodeData) } }>
-                              <Button disabled={ nodeData.key === '0' || (parentRow?.id != undefined && nodeData.key !== 'new') } type="default" danger size="small" ><MinusOutlined style={ { fontSize: '14px' } } /></Button>
+                              <Button disabled={ nodeData.key === '0' || (parentRow?.id !== undefined && nodeData.key !== 'new') } type="default" danger size="small" ><MinusOutlined style={ { fontSize: '14px' } } /></Button>
                             </Popconfirm>
                           </Col>
                           <Col span={ 8 } >
                             <Button
-                              disabled={ nodeData.key === '0' || (parentRow?.id != undefined && nodeData.key !== 'new') }
+                              disabled={ nodeData.key === '0' || (parentRow?.id !== undefined && nodeData.key !== 'new') }
                               style={ { float: "right" } }
                               type="default"
                               size="small"
@@ -190,7 +192,7 @@ const MenuTree: React.FC<MenuTreeTypeProps> = (props) => {
   );
 };
 export default connect(
-  ({ loading }: { loading: { models: { [ key: string ]: boolean } }, }
+  ({ loading }: { loading: { models: Record<string, boolean> }, }
   ) => ({
-    loading: loading.models.menu ? true : false
+    loading: !!loading.models.menu
   }))(MenuTree);

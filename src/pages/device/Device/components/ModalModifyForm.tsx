@@ -2,16 +2,17 @@
  * 设备列表 编辑 和 新增
  */
 import React, { useState, useEffect } from 'react';
-import { ActionType } from '@ant-design/pro-table';
+import type { ActionType } from '@ant-design/pro-table';
 import { ModalForm, ProFormText, ProFormTextArea, ProFormSelect } from '@ant-design/pro-form';
 import { saveDevice } from '../service';
-import { DeviceSaveDataType } from '../../data.d';
+import type { DeviceSaveDataType } from '../../data.d';
 import { message, Form, Row, Col } from 'antd'
 
 import UploadImage from '@/components/Upload/index'
 import { fetchDicTypeSelect } from '@/pages/admin/Dictionary/service'
 import CODE from '@/utils/DicCode.d'
-interface ModalModifyFormDataProps {
+
+type ModalModifyFormDataProps = {
   createModalVisible: boolean;
   handleModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
   actionRef: React.MutableRefObject<ActionType | undefined>;
@@ -23,14 +24,14 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
   const submitForm = async (value: DeviceSaveDataType) => {
     let params = value;
     if (currentRow?.id !== undefined) params = { id: currentRow?.id, ...params }
-    let response = await saveDevice({
+    const response = await saveDevice({
       ...params,
       imgUrls: uploadImages.filter((item: any) => item !== '')
     })
     if (!response) return
     actionRef.current && actionRef.current.reload();
     handleModalVisible(false);
-    message.success(`${currentRow?.id != undefined ? '修改' : '添加'}成功`);
+    message.success(`${currentRow?.id !== undefined ? '修改' : '添加'}成功`);
   }
   const setUploadUrlImage = async (url?: string, index?: number) => {
     let tmp = uploadImages

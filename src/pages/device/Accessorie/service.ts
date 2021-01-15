@@ -1,7 +1,8 @@
-import { DeviceSearchType, DeviceSaveDataType } from '../data.d';
+import type { DeviceSearchType, DeviceSaveDataType } from '../data.d';
 import API from '@/services/API.d'
 import httpServer from '@/utils/httpServer'
-export interface UserAuthorityType {
+
+export type UserAuthorityType = {
   "roleIds": string[],
   "userId": number
 }

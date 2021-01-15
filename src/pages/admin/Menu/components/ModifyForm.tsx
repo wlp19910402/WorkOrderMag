@@ -3,8 +3,9 @@
  */
 import React from 'react';
 import { Button, Row, Col, Form, Input, Radio } from 'antd'
-import { MenuDataType, TypeFormType, menuDefault } from '../data.d';
-import { Dispatch } from 'umi'
+import type { MenuDataType, TypeFormType} from '../data.d';
+import { menuDefault } from '../data.d';
+import type { Dispatch } from 'umi'
 
 const formItemLayout = {
   labelCol: {
@@ -16,7 +17,7 @@ const formItemLayout = {
     sm: { span: 16 },
   },
 };
-interface ModifyFormDataProps {
+type ModifyFormDataProps = {
   typeFormType: TypeFormType;
   currentRow: MenuDataType;
   flatMenuData: MenuDataType[];

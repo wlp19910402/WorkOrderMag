@@ -1,6 +1,7 @@
 import API from '@/services/API.d'
 import httpServer from '@/utils/httpServer'
-interface UploadOssSignParamsType {
+
+type UploadOssSignParamsType = {
   fileMd5?: string;
   originalName: string;
   share?: boolean;
@@ -12,7 +13,7 @@ const defaultUploadOssSign: UploadOssSignParamsType = {
   share: true,
   target: ""
 }
-export interface OssToken {
+export type OssToken = {
   accessKeyId: string;
   accessKeySecret: string;
   stsToken: string;
@@ -23,7 +24,7 @@ export interface OssToken {
 export const uploadOssSign = async (params: UploadOssSignParamsType) => {
   return httpServer.post(`${API.UPLOAD_OSS_SIGN}`, { data: { ...defaultUploadOssSign, ...params } });
 }
-//获取sts签名
+// 获取sts签名
 export const uploadStsSign = async (params: UploadOssSignParamsType) => {
   return httpServer.post(API.UPLOAD_STS_SIGN, { data: { ...defaultUploadOssSign, ...params } });
 }

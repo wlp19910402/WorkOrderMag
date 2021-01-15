@@ -13,7 +13,8 @@ import request from '@/utils/request';
 import ImgNull from '@/assets/images/images-null.png';
 import styles from './Upload.less';
 import { uploadOssSign } from './service'
-interface UploadProps {
+
+type UploadProps = {
   // token: API.OssToken;
   title: string;
   name: string;
@@ -27,7 +28,7 @@ const UploadView: React.FC<UploadProps> = props => {
   const uploadId = "upload1"
   const fileMaxSize = "500KB"
   const uploadImage = async () => {
-    let file = document.getElementById(uploadId)?.files[ 0 ];
+    const file = document.getElementById(uploadId)?.files[ 0 ];
     console.log(file)
     if (file == undefined) {
       return
@@ -37,7 +38,7 @@ const UploadView: React.FC<UploadProps> = props => {
       message.error('上传的图片不能大于5M哦')
       setStatus("");
     } else {
-      let response = await uploadOssSign({ originalName: file.name })
+      const response = await uploadOssSign({ originalName: file.name })
       setStatus("error");
       if (!response) {
         setStatus("error");
@@ -53,9 +54,9 @@ const UploadView: React.FC<UploadProps> = props => {
         timeout: 0
       }
       const mergeConfig = Object.assign(defaultConfig, {})
-      const fileName = response.data.fileName;
-      const signInfo = response.data.signInfo;
-      let formData = new FormData();
+      const {fileName} = response.data;
+      const {signInfo} = response.data;
+      const formData = new FormData();
       formData.append("key", signInfo.dir + fileName);
       formData.append("OSSAccessKeyId", signInfo.accessid);
       formData.append("policy", signInfo.policy);

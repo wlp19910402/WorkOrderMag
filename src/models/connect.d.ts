@@ -1,13 +1,13 @@
-import { MenuDataItem, Settings as ProSettings } from '@ant-design/pro-layout';
+import type { MenuDataItem, Settings as ProSettings } from '@ant-design/pro-layout';
 import { GlobalModelState } from './global';
 import { UserModelState } from './user';
-import { MenuModelState } from './menu'
+import type { MenuModelState } from './menu'
 
 export { GlobalModelState, UserModelState };
 
-export interface Loading {
+export type Loading = {
   global: boolean;
-  effects: { [ key: string ]: boolean | undefined };
+  effects: Record<string, boolean | undefined>;
   models: {
     global?: boolean;
     menu?: boolean;
@@ -16,7 +16,7 @@ export interface Loading {
   };
 }
 
-export interface ConnectState {
+export type ConnectState = {
   global: GlobalModelState;
   loading: Loading;
   settings: ProSettings;
@@ -24,6 +24,6 @@ export interface ConnectState {
   menu: MenuModelState;
 }
 
-export interface Route extends MenuDataItem {
+export type Route = {
   routes?: Route[];
-}
+} & MenuDataItem

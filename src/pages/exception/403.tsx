@@ -1,6 +1,6 @@
 import { Button, Result } from 'antd';
 import React from 'react';
-import { history, Link } from 'umi';
+import {  Link } from 'umi';
 
 const NoFoundPage: React.FC<{}> = () => (
   <Result

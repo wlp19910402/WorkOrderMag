@@ -2,13 +2,16 @@ import { PlusOutlined } from '@ant-design/icons';
 import { Button, Drawer, message, Popconfirm, Image, Row, Col } from 'antd';
 import React, { useState, useRef } from 'react';
 import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
-import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
-import ProDescriptions, { ProDescriptionsItemProps } from '@ant-design/pro-descriptions';
+import type { ProColumns, ActionType } from '@ant-design/pro-table';
+import ProTable from '@ant-design/pro-table';
+import type { ProDescriptionsItemProps } from '@ant-design/pro-descriptions';
+import ProDescriptions from '@ant-design/pro-descriptions';
 import { queryDeviceList, deleteDevice } from './service';
-import { DeviceListDataType } from '../data.d';
+import type { DeviceListDataType } from '../data.d';
 import ModalModifyForm from './components/ModalModifyForm'
 import ImgNull from '@/assets/images/images-null.png';
-export interface RoleCheckBoxDataType {
+
+export type RoleCheckBoxDataType = {
   label: string;
   value: number;
 }
@@ -144,13 +147,13 @@ const DictionaryList: React.FC<DeviceListDataType> = () => {
         </Button>,
         <Popconfirm
           title="是否要删除此行？"
-          onConfirm={ () => { record.id != undefined && tiggerDelete(record.id?.toString()); } }>
+          onConfirm={ () => { record.id !== undefined && tiggerDelete(record.id?.toString()); } }>
           <Button size="small" type="text" >删除</Button>
         </Popconfirm>
       ],
     },
   ];
-  let columnsDrawer = columns.map(item => {
+  const columnsDrawer = columns.map(item => {
     if (item.dataIndex === 'imgUrls') {
       return ({
         title: "图片",
@@ -176,7 +179,7 @@ const DictionaryList: React.FC<DeviceListDataType> = () => {
     return item
   })
   const tiggerDelete = async (id: string) => {
-    let response = await deleteDevice(id)
+    const response = await deleteDevice(id)
     if (!response) return
     if (actionRef.current) {
       actionRef.current.reloadAndRest?.();
@@ -188,9 +191,9 @@ const DictionaryList: React.FC<DeviceListDataType> = () => {
     handleModalVisible(true);
   }
   const fetchQueryList = async (params: any) => {
-    let response = await queryDeviceList(params)
+    const response = await queryDeviceList(params)
     if (!response) return
-    let data = response.data;
+    const {data} = response;
     return ({ ...data, data: data.records })
   }
   return (

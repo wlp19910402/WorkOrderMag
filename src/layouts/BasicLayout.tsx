@@ -3,22 +3,25 @@
  * You can view component api by:
  * https://github.com/ant-design/ant-design-pro-layout
  */
-import ProLayout, {
+import type {
   MenuDataItem,
   BasicLayoutProps as ProLayoutProps,
-  Settings,
+  Settings} from '@ant-design/pro-layout';
+import ProLayout, {
   DefaultFooter,
 } from '@ant-design/pro-layout';
 import React, { useMemo, useRef } from 'react';
-import { Link, connect, Dispatch, history } from 'umi';
+import type { Dispatch} from 'umi';
+import { Link, connect, history } from 'umi';
 import { Result, Button } from 'antd';
 import Authorized from '@/utils/Authorized';
 import RightContent from '@/components/GlobalHeader/RightContent';
-import { ConnectState } from '@/models/connect';
+import type { ConnectState } from '@/models/connect';
 import { getMatchMenu } from '@umijs/route-utils';
 import logo from '@/assets/images/logo2-white.png';
-import { MenuDataType } from '@/pages/admin/Menu/data.d'
+import type { MenuDataType } from '@/pages/admin/Menu/data.d'
 import { IconFont } from '@/components/common/IconFont'
+
 const noMatch = (
   <Result
     status={ 403 }
@@ -31,21 +34,17 @@ const noMatch = (
     }
   />
 );
-export interface BasicLayoutProps extends ProLayoutProps {
-  breadcrumbNameMap: {
-    [ path: string ]: MenuDataItem;
-  };
+export type BasicLayoutProps = {
+  breadcrumbNameMap: Record<string, MenuDataItem>;
   route: ProLayoutProps[ 'route' ] & {
     authority: string[];
   };
   settings: Settings;
   dispatch: Dispatch;
   currentMenu: MenuDataType[] | [];
-}
+} & ProLayoutProps
 export type BasicLayoutContext = { [ K in 'location' ]: BasicLayoutProps[ K ] } & {
-  breadcrumbNameMap: {
-    [ path: string ]: MenuDataItem;
-  };
+  breadcrumbNameMap: Record<string, MenuDataItem>;
 };
 const menuDataRender = (menuList: MenuDataItem[]): MenuDataItem[] => menuList.map((item) => {
   const localItem = {

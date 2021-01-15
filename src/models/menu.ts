@@ -1,8 +1,9 @@
-import { Reducer, Effect } from 'umi';
+import type { Reducer, Effect } from 'umi';
 import { queryMenuTree, saveMenu, queryCurrentMenu, fetchDelMenu } from '@/services/menu';
 import { message } from 'antd';
-import { MenuDataType } from '@/pages/admin/Menu/data.d'
-export interface MenuModelState {
+import type { MenuDataType } from '@/pages/admin/Menu/data.d'
+
+export type MenuModelState = {
   currentMenu: MenuDataType[] | [];
   menuTree: MenuDataType[] | [];
   flatMenuData: MenuDataType[] | [];
@@ -24,7 +25,7 @@ const defaulState = {
   flatMenuData: []
 }
 const fetchFaltMenuData: any = (menuData: MenuDataType[] | []) => {
-  let tmpArr: any = [];
+  const tmpArr: any = [];
   const fn = (data: MenuDataType[]) => {
     if (data.length > 0) {
       data?.forEach((item: any) => {
@@ -38,7 +39,7 @@ const fetchFaltMenuData: any = (menuData: MenuDataType[] | []) => {
   fn(menuData)
   return tmpArr;
 }
-export interface MenuModelType {
+export type MenuModelType = {
   namespace: string;
   state: MenuModelState;
   effects: {
@@ -58,7 +59,7 @@ const Model: MenuModelType = {
   namespace: 'menu',
   state: defaulState,
   effects: {
-    //获取菜单列表
+    // 获取菜单列表
     *fetchMenuTree ({ callback }, { call, put }) {
       const response = yield call(queryMenuTree);
       if (!response) return
@@ -82,7 +83,7 @@ const Model: MenuModelType = {
       const flatMenuData = fetchFaltMenuData(menuData)
       if (callback) callback(menuData, flatMenuData)
     },
-    //保存菜单
+    // 保存菜单
     *saveMenu ({ payload, callback }, { call, put }) {
       const response = yield call(saveMenu, payload)
       if (!response) return
@@ -95,13 +96,13 @@ const Model: MenuModelType = {
       if (callback) callback(response)
       message.success("删除成功！");
     },
-    //当前用户菜单
+    // 当前用户菜单
     *fetctCurrentMenu (_, { put, call }) {
       yield put({
         type: 'changeCurrentMenu',
         payload: []
       });
-      let response = yield call(queryCurrentMenu);
+      const response = yield call(queryCurrentMenu);
       if (!response) {
         yield put({
           type: 'changeCurrentMenu',
@@ -109,7 +110,7 @@ const Model: MenuModelType = {
         });
         return
       };
-      let menuData = response.data
+      const menuData = response.data
       yield put({
         type: 'changeCurrentMenu',
         payload: [ welcome, ...menuData ]

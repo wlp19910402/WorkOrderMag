@@ -1,17 +1,18 @@
 import React from 'react';
 import { PageLoading } from '@ant-design/pro-layout';
-import { Redirect, connect, ConnectProps } from 'umi';
+import type { ConnectProps } from 'umi';
+import { Redirect, connect } from 'umi';
 import { stringify } from 'querystring';
-import { ConnectState } from '@/models/connect';
-import { UserStateType } from '@/models/user';
+import type { ConnectState } from '@/models/connect';
+import type { UserStateType } from '@/models/user';
 
-interface SecurityLayoutProps extends ConnectProps {
+type SecurityLayoutProps = {
   loading?: boolean;
   currentUser?: UserStateType;
   isLogin?: boolean
-}
+} & ConnectProps
 
-interface SecurityLayoutState {
+type SecurityLayoutState = {
   isReady: boolean;
 }
 class SecurityLayout extends React.Component<SecurityLayoutProps, SecurityLayoutState> {

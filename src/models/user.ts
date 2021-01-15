@@ -1,10 +1,12 @@
 import { stringify } from 'querystring';
-import { history, Reducer, Effect } from 'umi';
+import type { Reducer, Effect } from 'umi';
+import { history } from 'umi';
 import { fakeAccountLogin, fackAccountToken, fackLogout } from '@/services/user';
 import { getPageQuery } from '@/utils/utils';
 import { message } from 'antd';
 import localforage from 'localforage';
-export interface UserStateType {
+
+export type UserStateType = {
   id?: number;
   email?: string;
   username?: string;
@@ -13,10 +15,10 @@ export interface UserStateType {
   realname?: string;
   token?: string;
 }
-export interface UserModelState {
+export type UserModelState = {
   currentUser?: UserStateType;
 }
-export interface LoginModelType {
+export type LoginModelType = {
   namespace: string;
   state: UserModelState;
   effects: {
@@ -36,7 +38,7 @@ const Model: LoginModelType = {
     currentUser: {},
   },
   effects: {
-    //登录
+    // 登录
     *login ({ payload, callback }, { call, put }) {
       const response = yield call(fakeAccountLogin, payload);
       if (!response) return
@@ -64,7 +66,7 @@ const Model: LoginModelType = {
       }
       history.replace(redirect || '/welcome');
     },
-    //使用token获取用户信息
+    // 使用token获取用户信息
     *fetchCurrent ({ callback }, { call, put }) {
       const response = yield call(fackAccountToken);
       const { redirect } = getPageQuery();
@@ -86,7 +88,7 @@ const Model: LoginModelType = {
       }
       callback(true)
     },
-    //退出
+    // 退出
     *logout (_, { put, call }) {
       const { redirect } = getPageQuery();
       yield call(fackLogout);

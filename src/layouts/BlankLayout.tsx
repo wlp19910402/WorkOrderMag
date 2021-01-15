@@ -1,16 +1,18 @@
 import React, { useEffect } from 'react';
 import { Inspector } from 'react-dev-inspector';
-import { ConnectState } from '@/models/connect';
+import type { ConnectState } from '@/models/connect';
 import { Spin } from 'antd';
-import { connect, Dispatch, ConnectProps } from 'umi';
+import type { Dispatch, ConnectProps } from 'umi';
+import { connect } from 'umi';
+
 const InspectorWrapper = process.env.NODE_ENV === 'development' ? Inspector : React.Fragment;
-interface BlankLayout extends ConnectProps {
+type BlankLayout = {
   children: React.ReactNode;
   isLogin: boolean;
   dispatch: Dispatch;
   loading: boolean;
   token: string | undefined;
-}
+} & ConnectProps
 const BlankLayoutCmp: React.FC<BlankLayout> = ({ children, isLogin, dispatch, loading, token }) => {
   useEffect(() => {
     if (!token && dispatch) {
@@ -32,5 +34,5 @@ const BlankLayoutCmp: React.FC<BlankLayout> = ({ children, isLogin, dispatch, lo
 
 export default connect(({ user, loading }: ConnectState) => ({
   token: user.currentUser?.token,
-  loading: loading.models.user || loading.effects[ 'menu/fetctCurrentMenu' ] ? true : false
+  loading: !!(loading.models.user || loading.effects[ 'menu/fetctCurrentMenu' ])
 }))(BlankLayoutCmp)

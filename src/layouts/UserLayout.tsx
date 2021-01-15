@@ -1,18 +1,18 @@
-import { MenuDataItem, getMenuData, getPageTitle } from '@ant-design/pro-layout';
+import type { MenuDataItem} from '@ant-design/pro-layout';
+import { getMenuData, getPageTitle } from '@ant-design/pro-layout';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
-import { SelectLang, useIntl, ConnectProps, connect, Dispatch } from 'umi';
+import type { ConnectProps, Dispatch } from 'umi';
+import { SelectLang, useIntl, connect } from 'umi';
 import React from 'react';
-import { ConnectState } from '@/models/connect';
+import type { ConnectState } from '@/models/connect';
 import logo from '../assets/images/logo-white.png';
 import styles from './UserLayout.less';
 
-export interface UserLayoutProps extends Partial<ConnectProps> {
-  breadcrumbNameMap: {
-    [ path: string ]: MenuDataItem;
-  };
+export type UserLayoutProps = {
+  breadcrumbNameMap: Record<string, MenuDataItem>;
   dispatch: Dispatch;
   isLogin: boolean;
-}
+} & Partial<ConnectProps>
 const UserLayout: React.FC<UserLayoutProps> = (props) => {
   const {
     route = {

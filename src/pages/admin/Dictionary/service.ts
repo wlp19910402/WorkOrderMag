@@ -1,7 +1,8 @@
-import { PageDataType, DictionaryDataType } from '../data.d';
+import type { PageDataType, DictionaryDataType } from '../data.d';
 import API from '@/services/API.d'
 import httpServer from '@/utils/httpServer'
-export interface UserAuthorityType {
+
+export type UserAuthorityType = {
   "roleIds": string[],
   "userId": number
 }
@@ -21,11 +22,11 @@ export const deleteDictionary = async (id: string) => {
 }
 
 export const queryDictionaryType = async (type: string) => {
-  return await httpServer.get(API.DICTIONARY_TYPE + '/' + type);
+  return await httpServer.get(`${API.DICTIONARY_TYPE  }/${  type}`);
 }
 
 export const fetchDicTypeSelect = async (type: string) => {
-  let response = await queryDictionaryType(type)
+  const response = await queryDictionaryType(type)
   if (!response) return []
   return response.data.map((item: any) => ({ label: item.value, value: item.code }))
 }

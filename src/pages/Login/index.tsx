@@ -2,10 +2,12 @@ import { LockTwoTone, SafetyCertificateTwoTone, UserOutlined } from '@ant-design
 import { Image, Row, Col } from 'antd';
 import React, { useState } from 'react';
 import ProForm, { ProFormCheckbox, ProFormText } from '@ant-design/pro-form';
-import { connect, Dispatch } from 'umi';
-import { ConnectState } from '@/models/connect';
+import type { Dispatch } from 'umi';
+import { connect } from 'umi';
+import type { ConnectState } from '@/models/connect';
 import styles from './index.less';
-interface LoginProps {
+
+type LoginProps = {
   dispatch: Dispatch;
   submitting?: boolean;
 }

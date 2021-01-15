@@ -2,13 +2,14 @@
  * 用户列表 编辑 和 新增
  */
 import React from 'react';
-import { ActionType } from '@ant-design/pro-table';
+import type { ActionType } from '@ant-design/pro-table';
 import { ModalForm, ProFormText, ProFormCheckbox } from '@ant-design/pro-form';
 import { addUser, editUser } from '../service';
-import { UserListDataType, EditUserDataType } from '../../data.d';
-import { RoleCheckBoxDataType } from '../index'
+import type { UserListDataType, EditUserDataType } from '../../data.d';
+import type { RoleCheckBoxDataType } from '../index'
 import { message } from 'antd'
-interface ModalModifyFormDataProps {
+
+type ModalModifyFormDataProps = {
   createModalVisible: boolean;
   handleModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
   actionRef: React.MutableRefObject<ActionType | undefined>;
@@ -29,7 +30,7 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
     if (!response) return
     setShowDetail(false)
     actionRef.current && actionRef.current.reload();
-    message.success(`${currentRow?.id != undefined ? '修改' : '添加'}成功`);
+    message.success(`${currentRow?.id !== undefined ? '修改' : '添加'}成功`);
     handleModalVisible(false);
   }
   return (
@@ -42,7 +43,7 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
       visible={ createModalVisible }
       onVisibleChange={ handleModalVisible }
       onFinish={ async (value) => {
-        let bodyVaule: EditUserDataType = {
+        const bodyVaule: EditUserDataType = {
           username: value.username,
           email: value.email,
           mobile: value.mobile,

@@ -1,17 +1,19 @@
 import { LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
 import { Avatar, Menu, Spin } from 'antd';
 import React from 'react';
-import { history, ConnectProps, connect } from 'umi';
-import { ConnectState } from '@/models/connect';
-import { UserStateType } from '@/models/user';
+import type { ConnectProps} from 'umi';
+import { history, connect } from 'umi';
+import type { ConnectState } from '@/models/connect';
+import type { UserStateType } from '@/models/user';
 import HeaderDropdown from '../HeaderDropdown';
 import styles from './index.less';
 import notLoginAvatar from '@/assets/images/header-avatar.png'
 import inLoginAvatar from '@/assets/images/resumeHeader.jpg'
-export interface GlobalHeaderRightProps extends Partial<ConnectProps> {
+
+export type GlobalHeaderRightProps = {
   currentUser?: UserStateType;
   isLogin?: boolean;
-}
+} & Partial<ConnectProps>
 
 class AvatarDropdown extends React.Component<GlobalHeaderRightProps> {
   onMenuClick = (event: {

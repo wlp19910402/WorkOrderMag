@@ -2,10 +2,10 @@
  * request 网络请求工具
  * 更详细的 api 文档: https://github.com/umijs/umi-request
  */
-import { extend, Context, RequestInterceptor, OnionOptions } from 'umi-request';
+import type { RequestInterceptor, OnionOptions } from 'umi-request';
+import { extend } from 'umi-request';
 import { notification } from 'antd';
 import localforage from 'localforage'
-import { history } from 'umi'
 
 const codeMessage = {
   200: '服务器成功返回请求的数据。',
@@ -49,11 +49,11 @@ const errorHandler = (error: { response: Response }): Response => {
  * 配置request请求时的默认参数
  */
 const request = extend({
-  errorHandler: errorHandler, // 默认错误处理
+  errorHandler, // 默认错误处理
   credentials: 'include', // 默认请求是否带上cookie
 })
 request.interceptors.request.use(async (url: RequestInterceptor, options: OnionOptions | undefined) => {
-  let token = await localforage.getItem('token');
+  const token = await localforage.getItem('token');
   return (
     {
       url,
@@ -61,7 +61,7 @@ request.interceptors.request.use(async (url: RequestInterceptor, options: OnionO
         ...options,
         headers: {
           ...options?.headers,
-          token: token ? token : ''
+          token: token || ''
         }
       }
     }

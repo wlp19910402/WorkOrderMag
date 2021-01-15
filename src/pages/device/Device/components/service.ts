@@ -1,6 +1,7 @@
 import API from '@/services/API.d'
 import httpServer from '@/utils/httpServer'
-interface UploadOssSignParamsType {
+
+type UploadOssSignParamsType = {
   fileMd5?: string;
   originalName: string;
   share?: boolean;

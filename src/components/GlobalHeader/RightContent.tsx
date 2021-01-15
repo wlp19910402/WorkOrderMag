@@ -1,15 +1,16 @@
 import { Tooltip, Tag } from 'antd';
-import { Settings as ProSettings } from '@ant-design/pro-layout';
+import type { Settings as ProSettings } from '@ant-design/pro-layout';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import React from 'react';
-import { connect, ConnectProps } from 'umi';
-import { ConnectState } from '@/models/connect';
+import type { ConnectProps } from 'umi';
+import { connect } from 'umi';
+import type { ConnectState } from '@/models/connect';
 import Avatar from './AvatarDropdown';
 import styles from './index.less';
 
-export interface GlobalHeaderRightProps extends Partial<ConnectProps>, Partial<ProSettings> {
+export type GlobalHeaderRightProps = {
   theme?: ProSettings[ 'navTheme' ] | 'realDark';
-}
+} & Partial<ConnectProps> & Partial<ProSettings>
 
 const ENVTagColor = {
   dev: 'orange',

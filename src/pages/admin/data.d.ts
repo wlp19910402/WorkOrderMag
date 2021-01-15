@@ -1,4 +1,4 @@
-export interface UserListDataType {
+export type UserListDataType = {
   createTime?: string;
   deptId?: number;
   email: string;
@@ -8,12 +8,12 @@ export interface UserListDataType {
   status?: string;
   username: string;
 }
-export interface PageDataType {
+export type PageDataType = {
   current: number;
   pageSize: number;
 }
 
-export interface EditUserDataType {
+export type EditUserDataType = {
   email: string,
   mobile: string,
   password?: string,
@@ -23,7 +23,7 @@ export interface EditUserDataType {
   id?: number
 }
 
-export interface DictionaryDataType {
+export type DictionaryDataType = {
   id?: number,
   code: string,
   name: string,

@@ -2,12 +2,14 @@
  * 用户列表 编辑 和 新增
  */
 import React from 'react';
-import { ActionType } from '@ant-design/pro-table';
+import type { ActionType } from '@ant-design/pro-table';
 import { ModalForm, ProFormText, ProFormCheckbox } from '@ant-design/pro-form';
-import { saveUserAuthority, UserAuthorityType } from '../service';
-import { UserListDataType } from '../../data.d';
-import { RoleCheckBoxDataType } from '../index'
-interface ModalAuthifyFormDataProps {
+import type { UserAuthorityType } from '../service';
+import { saveUserAuthority } from '../service';
+import type { UserListDataType } from '../../data.d';
+import type { RoleCheckBoxDataType } from '../index'
+
+type ModalAuthifyFormDataProps = {
   modalAuthifyVisible: boolean;
   handleModalAuthifyVisible: React.Dispatch<React.SetStateAction<boolean>>;
   actionRef: React.MutableRefObject<ActionType | undefined>;
@@ -35,7 +37,7 @@ const ModalAuthifyForm: React.FC<ModalAuthifyFormDataProps> = (props) => {
       visible={ modalAuthifyVisible }
       onVisibleChange={ handleModalAuthifyVisible }
       onFinish={ async (value) => {
-        let bodyVaule: UserAuthorityType = {
+        const bodyVaule: UserAuthorityType = {
           roleIds: value.roleIds.map((item: any) => item.toString()),
           userId: value.id
         }
