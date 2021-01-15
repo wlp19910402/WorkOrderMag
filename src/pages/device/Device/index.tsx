@@ -134,7 +134,7 @@ const DictionaryList: React.FC<DeviceListDataType> = () => {
     },
     {
       title: "创建人",
-      dataIndex: 'createUser',
+      dataIndex: 'createUsername',
       hideInForm: true,
       hideInSearch: true
     },
@@ -147,7 +147,7 @@ const DictionaryList: React.FC<DeviceListDataType> = () => {
     },
     {
       title: "修改人",
-      dataIndex: 'updateUser',
+      dataIndex: 'updateUsername',
       hideInForm: true,
       hideInSearch: true
     },

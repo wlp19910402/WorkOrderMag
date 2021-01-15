@@ -4,29 +4,27 @@
 import React, { useState, useEffect } from 'react';
 import type { ActionType } from '@ant-design/pro-table';
 import { ModalForm, ProFormText, ProFormTextArea, ProFormSelect } from '@ant-design/pro-form';
-import { saveDevice } from '../service';
-import type { DeviceSaveDataType } from '../data.d';
+import { saveConsumable } from '../service';
+import type { ConsumableSaveDataType } from '../data.d';
 import { message, Form, Row, Col } from 'antd'
 import UploadImage from '@/components/Upload/index'
-
+import { fetchDicTypeSelect, fetchDicTypeSelectObj } from '@/pages/admin/Dictionary/service'
 type ModalModifyFormDataProps = {
   createModalVisible: boolean;
   handleModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
   actionRef: React.MutableRefObject<ActionType | undefined>;
-  currentRow: DeviceSaveDataType | undefined;
+  currentRow: ConsumableSaveDataType | undefined;
   dicCodeData: {
-    searchType: any,
-    searchBrand: any,
-    searchSpecification: any,
-    searchWarrantyPeriod: any
+    searchType: any
   };
 }
 const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
   const { createModalVisible, handleModalVisible, actionRef, currentRow, dicCodeData } = props
   const [ uploadImages, setUploadImages ] = useState<string[]>(currentRow?.imgUrls ? currentRow?.imgUrls : [])
-  const submitForm = async (value: DeviceSaveDataType) => {
+  const [ searchModel, setSearchModel ] = useState<any>({});
+  const submitForm = async (value: ConsumableSaveDataType) => {
     let params = currentRow?.id !== undefined ? { ...value, id: currentRow.id } : value;
-    const response = await saveDevice({
+    const response = await saveConsumable({
       ...params,
       imgUrls: uploadImages.filter((item: any) => item !== '')
     })
@@ -75,82 +73,50 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
         rules={ [
           {
             required: true,
-            message: "请输入设备名称！"
+            message: "请输入耗材名称！"
           },
         ] }
-        label="设备名称"
+        label="耗材名称"
         name="name"
-        placeholder="请输入设备名称"
+        placeholder="请输入耗材名称"
         initialValue={ currentRow?.name }
-      />
-      <ProFormText
-        rules={ [
-          {
-            required: true,
-            message: "请输入设备编号！"
-          },
-        ] }
-        label="设备编号"
-        name="no"
-        placeholder="请输入设备编号"
-        initialValue={ currentRow?.no }
       />
       <ProFormSelect
         name="type"
         rules={ [
           {
             required: true,
-            message: "请选择设备类型！"
+            message: "请选择耗材类型！"
           },
         ] }
-        label="设备类型"
+        label="耗材类型"
         valueEnum={ { ...dicCodeData.searchType } }
-        placeholder="请选择设备类型"
+        placeholder="请选择耗材类型"
         initialValue={ currentRow?.type }
+        getValueFromEvent={ (arg) => {
+          fetchDicTypeSelectObj(arg).then(res => {
+            setSearchModel(res);
+          });
+          return arg
+        } }
       />
       <ProFormSelect
-        name="brand"
-        label="品牌"
+        name="model"
+        label="耗材型号"
         rules={ [
           {
             required: true,
-            message: "请选择品牌！"
+            message: "请选择耗材型号！"
           },
         ] }
-        valueEnum={ { ...dicCodeData.searchBrand } }
-        placeholder="请选择品牌"
-        initialValue={ currentRow?.brand }
-      />
-      <ProFormSelect
-        name="specification"
-        label="规格"
-        rules={ [
-          {
-            required: true,
-            message: "请选择设备规格！"
-          },
-        ] }
-        valueEnum={ { ...dicCodeData.searchSpecification } }
-        placeholder="请选择规格"
-        initialValue={ currentRow?.specification }
-      />
-      <ProFormSelect
-        name="warrantyPeriod"
-        label="保修周期"
-        rules={ [
-          {
-            required: true,
-            message: "请选择保修周期！"
-          },
-        ] }
-        valueEnum={ { ...dicCodeData.searchWarrantyPeriod } }
-        placeholder="请选择保修周期"
-        initialValue={ currentRow?.warrantyPeriod }
+        valueEnum={ { ...searchModel } }
+        placeholder="请选择耗材型号"
+        initialValue={ currentRow?.model }
       />
       <ProFormTextArea
         name="description"
-        label="设备描述"
-        placeholder="请输入设备描述"
+        label="耗材描述"
+        placeholder="请输入耗材描述"
         initialValue={ currentRow?.description }
       />
       {/* //图片 */ }

@@ -6,8 +6,8 @@ import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
 import type { ProDescriptionsItemProps } from '@ant-design/pro-descriptions';
 import ProDescriptions from '@ant-design/pro-descriptions';
-import { queryDeviceList, deleteDevice } from './service';
-import type { DeviceListDataType } from './data.d';
+import { queryConsumableList, deleteConsumable } from './service';
+import type { ConsumableListDataType } from './data.d';
 import ModalModifyForm from './components/ModalModifyForm'
 import ImgNull from '@/assets/images/images-null.png';
 import { fetchDicTypeSelectObj } from '@/pages/admin/Dictionary/service'
@@ -25,21 +25,17 @@ import CODE from '@/utils/DicCode.d'
 //     return false;
 //   }
 // };
-const DictionaryList: React.FC<DeviceListDataType> = () => {
+const DictionaryList: React.FC<ConsumableListDataType> = () => {
   const [ showDetail, setShowDetail ] = useState<boolean>(false);
   const actionRef = useRef<ActionType>();
-  const [ currentRow, setCurrentRow ] = useState<DeviceListDataType>();
-  const [ selectedRowsState, setSelectedRows ] = useState<DeviceListDataType[]>([]);
+  const [ currentRow, setCurrentRow ] = useState<ConsumableListDataType>();
+  const [ selectedRowsState, setSelectedRows ] = useState<ConsumableListDataType[]>([]);
   const [ createModalVisible, handleModalVisible ] = useState<boolean>(false);
   const [ searchType, setSearchType ] = useState<any>({})//设备类型
-  const [ searchBrand, setSearchBrand ] = useState<any>({})//品牌
-  const [ searchSpecification, setSearchSpecification ] = useState<any>({})//规格
-  const [ searchWarrantyPeriod, setSearchWarrantyPeriod ] = useState<any>({})//周期
+  const [ searchModel, setSearchModel ] = useState<any>({})//品牌
   let dicCode = async () => {
-    setSearchType(await fetchDicTypeSelectObj(CODE.DEVICE_TYPE))
-    setSearchBrand(await fetchDicTypeSelectObj(CODE.DEVICE_BRAND))
-    setSearchSpecification(await fetchDicTypeSelectObj(CODE.DEVICE_SPECIFICATION))
-    setSearchWarrantyPeriod(await fetchDicTypeSelectObj(CODE.DEVICE_WARRANTY_PERIOD))
+    setSearchType(await fetchDicTypeSelectObj(CODE.CONSUMABLE_TYPE))
+    setSearchModel(await fetchDicTypeSelectObj(CODE.CONSUMABLE_MODEL))
   }
   useEffect(() => {
     dicCode()
@@ -51,12 +47,7 @@ const DictionaryList: React.FC<DeviceListDataType> = () => {
       hideInSearch: true
     },
     {
-      title: "品牌",
-      dataIndex: 'brandName',
-      hideInSearch: true,
-    },
-    {
-      title: "设备名称",
+      title: "耗材名称",
       dataIndex: 'name',
       render: (val, entity) => {
         return (
@@ -94,31 +85,38 @@ const DictionaryList: React.FC<DeviceListDataType> = () => {
       }
     },
     {
-      title: "设备编号",
-      dataIndex: 'no'
-    },
-    {
-      title: "规格",
-      dataIndex: 'specificationName',
+      title: "耗材编号",
+      dataIndex: 'no',
       hideInSearch: true
     },
     {
-      title: "设备类型",
-      dataIndex: 'specification',
+      title: "耗材型号",
+      dataIndex: 'modelName',
+      hideInSearch: true
+    },
+    {
+      title: "耗材型号",
+      dataIndex: 'model',
       hideInDescriptions: true,
       hideInTable: true,
       valueType: 'select',
       valueEnum: {
-        ...searchSpecification
-      }
+        ...searchModel
+      },
+      // getValueFromEvent={ (arg) => {
+      //     fetchDicTypeSelectObj(arg).then(res => {
+      //       setSearchModel(res);
+      //     });
+      //     return arg
+      //   } }
     },
     {
-      title: "设备类型",
+      title: "耗材类型",
       dataIndex: 'typeName',
       hideInSearch: true
     },
     {
-      title: "设备类型",
+      title: "耗材类型",
       dataIndex: 'type',
       hideInDescriptions: true,
       hideInTable: true,
@@ -128,13 +126,8 @@ const DictionaryList: React.FC<DeviceListDataType> = () => {
       },
     },
     {
-      title: "保修周期",
-      dataIndex: 'warrantyPeriodName',
-      hideInSearch: true
-    },
-    {
       title: "创建人",
-      dataIndex: 'createUser',
+      dataIndex: 'createUsername',
       hideInForm: true,
       hideInSearch: true
     },
@@ -147,7 +140,7 @@ const DictionaryList: React.FC<DeviceListDataType> = () => {
     },
     {
       title: "修改人",
-      dataIndex: 'updateUser',
+      dataIndex: 'updateUsername',
       hideInForm: true,
       hideInSearch: true
     },
@@ -159,7 +152,7 @@ const DictionaryList: React.FC<DeviceListDataType> = () => {
       hideInSearch: true
     },
     {
-      title: "设备描述",
+      title: "耗材描述",
       dataIndex: 'description',
       hideInForm: true,
       hideInTable: true,
@@ -211,19 +204,19 @@ const DictionaryList: React.FC<DeviceListDataType> = () => {
     return item
   })
   const tiggerDelete = async (id: string) => {
-    const response = await deleteDevice(id)
+    const response = await deleteConsumable(id)
     if (!response) return
     if (actionRef.current) {
       actionRef.current.reloadAndRest?.();
     }
     message.success("删除成功")
   }
-  const fetchUserEdit = async (record: DeviceListDataType) => {
+  const fetchUserEdit = async (record: ConsumableListDataType) => {
     await setCurrentRow(record);
     handleModalVisible(true);
   }
   const fetchQueryList = async (params: any) => {
-    const response = await queryDeviceList(params)
+    const response = await queryConsumableList(params)
     if (!response) return
     const { data } = response;
     return ({ ...data, data: data.records })
@@ -259,10 +252,7 @@ const DictionaryList: React.FC<DeviceListDataType> = () => {
           actionRef={ actionRef }
           currentRow={ currentRow }
           dicCodeData={ {
-            searchType,
-            searchBrand,
-            searchSpecification,
-            searchWarrantyPeriod
+            searchType
           } }
         />
       ) }
@@ -300,7 +290,7 @@ const DictionaryList: React.FC<DeviceListDataType> = () => {
         closable={ false }
       >
         { currentRow?.id && (
-          <ProDescriptions<DeviceListDataType>
+          <ProDescriptions<ConsumableListDataType>
             column={ 1 }
             title={ currentRow?.name }
             key={ currentRow?.id }
@@ -310,7 +300,7 @@ const DictionaryList: React.FC<DeviceListDataType> = () => {
             params={ {
               id: currentRow?.id,
             } }
-            columns={ columnsDrawer as ProDescriptionsItemProps<DeviceListDataType>[] }
+            columns={ columnsDrawer as ProDescriptionsItemProps<ConsumableListDataType>[] }
           />
         ) }
       </Drawer>

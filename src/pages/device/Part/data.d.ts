@@ -1,4 +1,10 @@
 import { PageDataType } from '../data.d'
+// 配件管理查询搜索的
+export type ConsumableSearchType = {
+  name?: string;//备件名称
+  no?: string;//编号
+  type?: string;//备件类型
+} & PageDataType
 // 设备管理查询搜索的
 export type DeviceSearchType = {
   name?: string;
@@ -24,4 +30,10 @@ export type DeviceListDataType = {
   createUser: number;// 创建人
   updateTime: string;// 修改时间
   updateUser: number;// 修改人
+  createUsername: string;
+  updateUsername: string;
+  brandName: string;
+  specificationName: string;
+  warrantyPeriodName: string;
+  typeName: string;// 设备类型
 } & DeviceSaveDataType

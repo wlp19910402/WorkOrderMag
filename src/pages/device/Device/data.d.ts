@@ -24,4 +24,10 @@ export type DeviceListDataType = {
   createUser: number;// 创建人
   updateTime: string;// 修改时间
   updateUser: number;// 修改人
+  createUsername: string;
+  updateUsername: string;
+  brandName: string;
+  specificationName: string;
+  warrantyPeriodName: string;
+  typeName: string;// 设备类型
 } & DeviceSaveDataType

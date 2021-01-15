@@ -1,27 +1,30 @@
 import { PageDataType } from '../data.d'
-// 设备管理查询搜索的
-export type DeviceSearchType = {
-  name?: string;
-  no?: string;
-  specification?: string;
-  type?: string;
+
+// 耗材管理查询搜索的
+export type ConsumableSearchType = {
+  model?: string;//耗材型号
+  name?: string;//耗材名称
+  type?: string;//备件类型
 } & PageDataType
-// 设备保存
-export type DeviceSaveDataType = {
-  brand: string;// 品牌
-  description: string;// 设备描述
-  id?: number;// 主键
+// 耗材保存
+export type ConsumableSaveDataType = {
+  description: string;
+  id?: number;
   imgUrls: string[];// 图片
-  name: string[];// 设备名称
-  no: string;// 设备编号
-  specification: string;// 规格
-  type: string;// 设备类型
-  warrantyPeriod: string;// 保修周期
+  model: string;
+  name: string[];// 名称
+  type: string[];
 }
-// 设备详情
-export type DeviceListDataType = {
+// 耗材详情
+export type ConsumableListDataType = {
   createTime: string;// 创建日期
   createUser: number;// 创建人
   updateTime: string;// 修改时间
   updateUser: number;// 修改人
-} & DeviceSaveDataType
+  createUsername: string;
+  updateUsername: string;
+  no: string;
+  modelName: string;
+  typeName: string;
+} & ConsumableSaveDataType
+
