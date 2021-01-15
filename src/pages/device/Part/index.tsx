@@ -1,19 +1,17 @@
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, Drawer, message, Popconfirm } from 'antd';
-import React, { useState, useRef } from 'react';
+import { Button, Drawer, message, Popconfirm, Image, Row, Col, } from 'antd';
+import React, { useState, useRef, useEffect } from 'react';
 import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
 import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
 import type { ProDescriptionsItemProps } from '@ant-design/pro-descriptions';
 import ProDescriptions from '@ant-design/pro-descriptions';
 import { queryDeviceList, deleteDevice } from './service';
-import type { DeviceListDataType } from '../data.d';
+import type { DeviceListDataType } from './data.d';
 import ModalModifyForm from './components/ModalModifyForm'
-
-export type RoleCheckBoxDataType = {
-  label: string;
-  value: number;
-}
+import ImgNull from '@/assets/images/images-null.png';
+import { fetchDicTypeSelectObj } from '@/pages/admin/Dictionary/service'
+import CODE from '@/utils/DicCode.d'
 // const handleRemove = async (selectedRows: DeviceListDataType[]) => {
 //   const hide = message.loading('正在删除');
 //   if (!selectedRows) return true;
@@ -33,6 +31,19 @@ const DictionaryList: React.FC<DeviceListDataType> = () => {
   const [ currentRow, setCurrentRow ] = useState<DeviceListDataType>();
   const [ selectedRowsState, setSelectedRows ] = useState<DeviceListDataType[]>([]);
   const [ createModalVisible, handleModalVisible ] = useState<boolean>(false);
+  const [ searchType, setSearchType ] = useState<any>({})//设备类型
+  const [ searchBrand, setSearchBrand ] = useState<any>({})//品牌
+  const [ searchSpecification, setSearchSpecification ] = useState<any>({})//规格
+  const [ searchWarrantyPeriod, setSearchWarrantyPeriod ] = useState<any>({})//周期
+  let dicCode = async () => {
+    setSearchType(await fetchDicTypeSelectObj(CODE.DEVICE_TYPE))
+    setSearchBrand(await fetchDicTypeSelectObj(CODE.DEVICE_BRAND))
+    setSearchSpecification(await fetchDicTypeSelectObj(CODE.DEVICE_SPECIFICATION))
+    setSearchWarrantyPeriod(await fetchDicTypeSelectObj(CODE.DEVICE_WARRANTY_PERIOD))
+  }
+  useEffect(() => {
+    dicCode()
+  }, [])
   const columns: ProColumns<any>[] = [
     {
       title: "id",
@@ -41,7 +52,7 @@ const DictionaryList: React.FC<DeviceListDataType> = () => {
     },
     {
       title: "品牌",
-      dataIndex: 'brand',
+      dataIndex: 'brandName',
       hideInSearch: true,
     },
     {
@@ -58,12 +69,29 @@ const DictionaryList: React.FC<DeviceListDataType> = () => {
             {`${val}` }
           </a>
         );
-      },
+      }
     },
     {
       title: "图片",
       dataIndex: 'imgUrls',
-      hideInSearch: true
+      hideInSearch: true,
+      render: (val: any) => {
+        return val && val.length > 0 ?
+          (
+            <Image
+              width="60px" height="60px"
+              src={ `${val[ 0 ]}?x-oss-process=image/resize,h_100,w_100,m_lfit` }
+              preview={ { src: val[ 0 ] } }
+            />
+          ) : (
+            <Image
+              width="60px"
+              height="60px"
+              src={ ImgNull }
+              preview={ false }
+            ></Image >
+          )
+      }
     },
     {
       title: "设备编号",
@@ -71,15 +99,37 @@ const DictionaryList: React.FC<DeviceListDataType> = () => {
     },
     {
       title: "规格",
-      dataIndex: 'specification'
+      dataIndex: 'specificationName',
+      hideInSearch: true
     },
     {
       title: "设备类型",
-      dataIndex: 'type'
+      dataIndex: 'specification',
+      hideInDescriptions: true,
+      hideInTable: true,
+      valueType: 'select',
+      valueEnum: {
+        ...searchSpecification
+      }
+    },
+    {
+      title: "设备类型",
+      dataIndex: 'typeName',
+      hideInSearch: true
+    },
+    {
+      title: "设备类型",
+      dataIndex: 'type',
+      hideInDescriptions: true,
+      hideInTable: true,
+      valueType: 'select',
+      valueEnum: {
+        ...searchType
+      },
     },
     {
       title: "保修周期",
-      dataIndex: 'warrantyPeriod',
+      dataIndex: 'warrantyPeriodName',
       hideInSearch: true
     },
     {
@@ -135,6 +185,31 @@ const DictionaryList: React.FC<DeviceListDataType> = () => {
       ],
     },
   ];
+  const columnsDrawer = columns.map(item => {
+    if (item.dataIndex === 'imgUrls') {
+      return ({
+        title: "图片",
+        dataIndex: 'imgUrls',
+        hideInSearch: true,
+        render: (val: any) => {
+          return val && val.length > 0 ?
+            (
+              <Row gutter={ [ 16, 16 ] } >
+                { val.map((url: string) =>
+                  <Col>
+                    <Image
+                      width="60px" height="60px"
+                      src={ `${url}?x-oss-process=image/resize,h_100,w_100,m_lfit` }
+                      preview={ { src: url } }
+                    />
+                  </Col>
+                ) }</Row>
+            ) : "暂无图片"
+        }
+      })
+    }
+    return item
+  })
   const tiggerDelete = async (id: string) => {
     const response = await deleteDevice(id)
     if (!response) return
@@ -150,7 +225,7 @@ const DictionaryList: React.FC<DeviceListDataType> = () => {
   const fetchQueryList = async (params: any) => {
     const response = await queryDeviceList(params)
     if (!response) return
-    const {data} = response;
+    const { data } = response;
     return ({ ...data, data: data.records })
   }
   return (
@@ -183,6 +258,12 @@ const DictionaryList: React.FC<DeviceListDataType> = () => {
           handleModalVisible={ handleModalVisible }
           actionRef={ actionRef }
           currentRow={ currentRow }
+          dicCodeData={ {
+            searchType,
+            searchBrand,
+            searchSpecification,
+            searchWarrantyPeriod
+          } }
         />
       ) }
 
@@ -229,7 +310,7 @@ const DictionaryList: React.FC<DeviceListDataType> = () => {
             params={ {
               id: currentRow?.id,
             } }
-            columns={ columns as ProDescriptionsItemProps<DeviceListDataType>[] }
+            columns={ columnsDrawer as ProDescriptionsItemProps<DeviceListDataType>[] }
           />
         ) }
       </Drawer>

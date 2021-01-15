@@ -28,13 +28,23 @@ export default {
   DICTIONARY_SAVE: '/api/sys/dic/save',
   DICTIONARY_DELETE: '/api/sys/dic/del',/// sys/dic/del/{id}
   DICTIONARY_TYPE: '/api/sys/dic/list',/// sys/dic/list/{type}字典类型查询该字典的数据
-  // 设备管理-设备管理接口
-  DEVICE_LIST: '/api/device/list',
-  DEVICE_DETAIL: '/api/device/info',/// device/info/{id}
-  DEVICE_DELETE: '/api/device/del',/// device/del/{id}
-  DEVICE_SAVE: '/api/device/save',
   // 上传文件的接口
   UPLOAD_OSS_SIGN: '/api/oss/upload-sign',// 获取上传签名信息
   UPLOAD_FILE: '/api/oss/upload-file',// 文件直传服务
   UPLOAD_STS_SIGN: '/api/oss/sts-sign',// 获取STS签名
+  //设备管理-设备管理接口
+  DEVICE_LIST: '/api/device/list',
+  DEVICE_DETAIL: '/api/device/info',/// device/info/{id}
+  DEVICE_DELETE: '/api/device/del',/// device/del/{id}
+  DEVICE_SAVE: '/api/device/save',
+  // 耗材管理-设备管理接口
+  COMSUMABLE_LIST: '/api/consumable/list',
+  COMSUMABLE_DETAIL: '/api/consumable/info',/// consumable/info/{id}
+  COMSUMABLE_DELETE: '/api/consumable/del',/// consumable/del/{id}
+  COMSUMABLE_SAVE: '/api/consumable/save',
+  // 备件管理-设备管理接口
+  PART_LIST: '/api/part/list',
+  PART_DETAIL: '/api/part/info',/// part/info/{id}
+  PART_DELETE: '/api/part/del',/// part/del/{id}
+  PART_SAVE: '/api/part/save',
 }

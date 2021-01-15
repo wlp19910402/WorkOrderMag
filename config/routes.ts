@@ -69,16 +69,16 @@
                     name: "设备管理",
                     component: './device/Device'
                   },
-                  // {
-                  //   path: '/device/consumable',
-                  //   name: "耗材管理",
-                  //   component: './device/Consumable'
-                  // },
-                  // {
-                  //   path: '/device/accessorie',
-                  //   name: "配件管理",
-                  //   component: './device/Accessorie'
-                  // },
+                  {
+                    path: '/device/consumable',
+                    name: "耗材管理",
+                    component: './device/Consumable'
+                  },
+                  {
+                    path: '/device/part',
+                    name: "备件管理",
+                    component: './device/Part'
+                  },
                 ]
               },
               {

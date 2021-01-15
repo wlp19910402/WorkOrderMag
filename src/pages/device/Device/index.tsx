@@ -1,20 +1,17 @@
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, Drawer, message, Popconfirm, Image, Row, Col } from 'antd';
-import React, { useState, useRef } from 'react';
+import { Button, Drawer, message, Popconfirm, Image, Row, Col, } from 'antd';
+import React, { useState, useRef, useEffect } from 'react';
 import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
 import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
 import type { ProDescriptionsItemProps } from '@ant-design/pro-descriptions';
 import ProDescriptions from '@ant-design/pro-descriptions';
 import { queryDeviceList, deleteDevice } from './service';
-import type { DeviceListDataType } from '../data.d';
+import type { DeviceListDataType } from './data.d';
 import ModalModifyForm from './components/ModalModifyForm'
 import ImgNull from '@/assets/images/images-null.png';
-
-export type RoleCheckBoxDataType = {
-  label: string;
-  value: number;
-}
+import { fetchDicTypeSelectObj } from '@/pages/admin/Dictionary/service'
+import CODE from '@/utils/DicCode.d'
 // const handleRemove = async (selectedRows: DeviceListDataType[]) => {
 //   const hide = message.loading('正在删除');
 //   if (!selectedRows) return true;
@@ -34,6 +31,19 @@ const DictionaryList: React.FC<DeviceListDataType> = () => {
   const [ currentRow, setCurrentRow ] = useState<DeviceListDataType>();
   const [ selectedRowsState, setSelectedRows ] = useState<DeviceListDataType[]>([]);
   const [ createModalVisible, handleModalVisible ] = useState<boolean>(false);
+  const [ searchType, setSearchType ] = useState<any>({})//设备类型
+  const [ searchBrand, setSearchBrand ] = useState<any>({})//品牌
+  const [ searchSpecification, setSearchSpecification ] = useState<any>({})//规格
+  const [ searchWarrantyPeriod, setSearchWarrantyPeriod ] = useState<any>({})//周期
+  let dicCode = async () => {
+    setSearchType(await fetchDicTypeSelectObj(CODE.DEVICE_TYPE))
+    setSearchBrand(await fetchDicTypeSelectObj(CODE.DEVICE_BRAND))
+    setSearchSpecification(await fetchDicTypeSelectObj(CODE.DEVICE_SPECIFICATION))
+    setSearchWarrantyPeriod(await fetchDicTypeSelectObj(CODE.DEVICE_WARRANTY_PERIOD))
+  }
+  useEffect(() => {
+    dicCode()
+  }, [])
   const columns: ProColumns<any>[] = [
     {
       title: "id",
@@ -89,11 +99,33 @@ const DictionaryList: React.FC<DeviceListDataType> = () => {
     },
     {
       title: "规格",
-      dataIndex: 'specificationName'
+      dataIndex: 'specificationName',
+      hideInSearch: true
     },
     {
       title: "设备类型",
-      dataIndex: 'typeName'
+      dataIndex: 'specification',
+      hideInDescriptions: true,
+      hideInTable: true,
+      valueType: 'select',
+      valueEnum: {
+        ...searchSpecification
+      }
+    },
+    {
+      title: "设备类型",
+      dataIndex: 'typeName',
+      hideInSearch: true
+    },
+    {
+      title: "设备类型",
+      dataIndex: 'type',
+      hideInDescriptions: true,
+      hideInTable: true,
+      valueType: 'select',
+      valueEnum: {
+        ...searchType
+      },
     },
     {
       title: "保修周期",
@@ -193,7 +225,7 @@ const DictionaryList: React.FC<DeviceListDataType> = () => {
   const fetchQueryList = async (params: any) => {
     const response = await queryDeviceList(params)
     if (!response) return
-    const {data} = response;
+    const { data } = response;
     return ({ ...data, data: data.records })
   }
   return (
@@ -226,6 +258,12 @@ const DictionaryList: React.FC<DeviceListDataType> = () => {
           handleModalVisible={ handleModalVisible }
           actionRef={ actionRef }
           currentRow={ currentRow }
+          dicCodeData={ {
+            searchType,
+            searchBrand,
+            searchSpecification,
+            searchWarrantyPeriod
+          } }
         />
       ) }
 

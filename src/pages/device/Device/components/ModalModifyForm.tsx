@@ -5,21 +5,24 @@ import React, { useState, useEffect } from 'react';
 import type { ActionType } from '@ant-design/pro-table';
 import { ModalForm, ProFormText, ProFormTextArea, ProFormSelect } from '@ant-design/pro-form';
 import { saveDevice } from '../service';
-import type { DeviceSaveDataType } from '../../data.d';
+import type { DeviceSaveDataType } from '../data.d';
 import { message, Form, Row, Col } from 'antd'
-
 import UploadImage from '@/components/Upload/index'
-import { fetchDicTypeSelect } from '@/pages/admin/Dictionary/service'
-import CODE from '@/utils/DicCode.d'
 
 type ModalModifyFormDataProps = {
   createModalVisible: boolean;
   handleModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
   actionRef: React.MutableRefObject<ActionType | undefined>;
   currentRow: DeviceSaveDataType | undefined;
+  dicCodeData: {
+    searchType: any,
+    searchBrand: any,
+    searchSpecification: any,
+    searchWarrantyPeriod: any
+  };
 }
 const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
-  const { createModalVisible, handleModalVisible, actionRef, currentRow } = props
+  const { createModalVisible, handleModalVisible, actionRef, currentRow, dicCodeData } = props
   const [ uploadImages, setUploadImages ] = useState<string[]>(currentRow?.imgUrls ? currentRow?.imgUrls : [])
   const submitForm = async (value: DeviceSaveDataType) => {
     let params = currentRow?.id !== undefined ? { ...value, id: currentRow.id } : value;
@@ -101,7 +104,7 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
           },
         ] }
         label="设备类型"
-        request={ async () => await fetchDicTypeSelect(CODE.DEVICE_TYPE) }
+        valueEnum={ { ...dicCodeData.searchType } }
         placeholder="请选择设备类型"
         initialValue={ currentRow?.type }
       />
@@ -114,7 +117,7 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
             message: "请选择品牌！"
           },
         ] }
-        request={ async () => await fetchDicTypeSelect(CODE.DEVICE_BRAND) }
+        valueEnum={ { ...dicCodeData.searchBrand } }
         placeholder="请选择品牌"
         initialValue={ currentRow?.brand }
       />
@@ -127,7 +130,7 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
             message: "请选择设备规格！"
           },
         ] }
-        request={ async () => await fetchDicTypeSelect(CODE.DEVICE_SPECIFICATION) }
+        valueEnum={ { ...dicCodeData.searchSpecification } }
         placeholder="请选择规格"
         initialValue={ currentRow?.specification }
       />
@@ -140,7 +143,7 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
             message: "请选择保修周期！"
           },
         ] }
-        request={ async () => await fetchDicTypeSelect(CODE.DEVICE_WARRANTY_PERIOD) }
+        valueEnum={ { ...dicCodeData.searchWarrantyPeriod } }
         placeholder="请选择保修周期"
         initialValue={ currentRow?.warrantyPeriod }
       />

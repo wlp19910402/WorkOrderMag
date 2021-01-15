@@ -22,11 +22,21 @@ export const deleteDictionary = async (id: string) => {
 }
 
 export const queryDictionaryType = async (type: string) => {
-  return await httpServer.get(`${API.DICTIONARY_TYPE  }/${  type}`);
+  return await httpServer.get(`${API.DICTIONARY_TYPE}/${type}`);
 }
 
 export const fetchDicTypeSelect = async (type: string) => {
   const response = await queryDictionaryType(type)
   if (!response) return []
   return response.data.map((item: any) => ({ label: item.value, value: item.code }))
+}
+
+export const fetchDicTypeSelectObj = async (type: string) => {
+  const response = await queryDictionaryType(type)
+  if (!response) return []
+  let obj = {}
+  response.data.map((item: any) => ({ label: item.value, value: item.code })).forEach((item: any) => {
+    obj[ item.value ] = item.label
+  })
+  return obj
 }

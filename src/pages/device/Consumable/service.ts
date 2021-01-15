@@ -1,11 +1,7 @@
-import type { DeviceSearchType, DeviceSaveDataType } from '../data.d';
+import type { DeviceSearchType, DeviceSaveDataType } from './data.d';
 import API from '@/services/API.d'
 import httpServer from '@/utils/httpServer'
 
-export type UserAuthorityType = {
-  "roleIds": string[],
-  "userId": number
-}
 export const queryDeviceList = async (params: DeviceSearchType) => {
   return await httpServer.get(API.DEVICE_LIST, {
     params: {
