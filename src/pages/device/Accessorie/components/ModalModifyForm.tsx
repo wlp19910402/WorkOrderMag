@@ -17,10 +17,7 @@ type ModalModifyFormDataProps = {
 const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
   const { createModalVisible, handleModalVisible, actionRef, currentRow } = props
   const submitForm = async (value: DeviceSaveDataType) => {
-    let params = value;
-    if (currentRow?.id !== undefined) {
-      params = { id: currentRow.id, ...params };
-    }
+    let params = currentRow?.id !== undefined ? { ...value, id: currentRow.id } : value;
     const response = await saveDevice({ ...params })
     if (!response) return
     actionRef.current && actionRef.current.reload();

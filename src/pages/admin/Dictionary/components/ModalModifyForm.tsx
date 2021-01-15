@@ -17,12 +17,8 @@ type ModalModifyFormDataProps = {
 const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
   const { createModalVisible, handleModalVisible, actionRef, currentRow } = props
   const submitForm = async (value: DictionaryDataType) => {
-    let params = value;
-    if (currentRow?.id !== undefined) {
-      params = { id: currentRow.id, ...params };
-    }
-    // let params = currentRow?.id !== undefined ? { id: currentRow.id, ...value } : value;
-    const response = await saveDictionary({ ...params, id: currentRow?.id })
+    let params = currentRow?.id !== undefined ? { ...value, id: currentRow.id } : value;
+    const response = await saveDictionary({ ...params })
     if (!response) return
     if (actionRef.current) {
       actionRef.current.reload();
