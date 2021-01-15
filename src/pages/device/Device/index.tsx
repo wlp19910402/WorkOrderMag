@@ -1,5 +1,5 @@
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, Drawer, message, Popconfirm } from 'antd';
+import { Button, Drawer, message, Popconfirm, Image, Row, Col } from 'antd';
 import React, { useState, useRef } from 'react';
 import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
@@ -7,6 +7,7 @@ import ProDescriptions, { ProDescriptionsItemProps } from '@ant-design/pro-descr
 import { queryDeviceList, deleteDevice } from './service';
 import { DeviceListDataType } from '../data.d';
 import ModalModifyForm from './components/ModalModifyForm'
+import ImgNull from '@/assets/images/images-null.png';
 export interface RoleCheckBoxDataType {
   label: string;
   value: number;
@@ -38,7 +39,7 @@ const DictionaryList: React.FC<DeviceListDataType> = () => {
     },
     {
       title: "品牌",
-      dataIndex: 'brand',
+      dataIndex: 'brandName',
       hideInSearch: true,
     },
     {
@@ -55,12 +56,29 @@ const DictionaryList: React.FC<DeviceListDataType> = () => {
             {`${val}` }
           </a>
         );
-      },
+      }
     },
     {
       title: "图片",
       dataIndex: 'imgUrls',
-      hideInSearch: true
+      hideInSearch: true,
+      render: (val: any) => {
+        return val && val.length > 0 ?
+          (
+            <Image
+              width="60px" height="60px"
+              src={ `${val[ 0 ]}?x-oss-process=image/resize,h_100,w_100,m_lfit` }
+              preview={ { src: val[ 0 ] } }
+            />
+          ) : (
+            <Image
+              width="60px"
+              height="60px"
+              src={ ImgNull }
+              preview={ false }
+            ></Image >
+          )
+      }
     },
     {
       title: "设备编号",
@@ -68,15 +86,15 @@ const DictionaryList: React.FC<DeviceListDataType> = () => {
     },
     {
       title: "规格",
-      dataIndex: 'specification'
+      dataIndex: 'specificationName'
     },
     {
       title: "设备类型",
-      dataIndex: 'type'
+      dataIndex: 'typeName'
     },
     {
       title: "保修周期",
-      dataIndex: 'warrantyPeriod',
+      dataIndex: 'warrantyPeriodName',
       hideInSearch: true
     },
     {
@@ -132,6 +150,31 @@ const DictionaryList: React.FC<DeviceListDataType> = () => {
       ],
     },
   ];
+  let columnsDrawer = columns.map(item => {
+    if (item.dataIndex === 'imgUrls') {
+      return ({
+        title: "图片",
+        dataIndex: 'imgUrls',
+        hideInSearch: true,
+        render: (val: any) => {
+          return val && val.length > 0 ?
+            (
+              <Row gutter={ [ 16, 16 ] } >
+                { val.map((url: string) =>
+                  <Col>
+                    <Image
+                      width="60px" height="60px"
+                      src={ `${url}?x-oss-process=image/resize,h_100,w_100,m_lfit` }
+                      preview={ { src: url } }
+                    />
+                  </Col>
+                ) }</Row>
+            ) : "暂无图片"
+        }
+      })
+    }
+    return item
+  })
   const tiggerDelete = async (id: string) => {
     let response = await deleteDevice(id)
     if (!response) return
@@ -226,7 +269,7 @@ const DictionaryList: React.FC<DeviceListDataType> = () => {
             params={ {
               id: currentRow?.id,
             } }
-            columns={ columns as ProDescriptionsItemProps<DeviceListDataType>[] }
+            columns={ columnsDrawer as ProDescriptionsItemProps<DeviceListDataType>[] }
           />
         ) }
       </Drawer>

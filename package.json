@@ -51,7 +51,8 @@
     "@ant-design/pro-layout": "^6.5.0",
     "@ant-design/pro-table": "^2.9.16",
     "@umijs/route-utils": "^1.0.33",
-    "antd": "^4.8.6",
+    "ali-oss": "^6.13.1",
+    "antd": "^4.10.2",
     "classnames": "^2.2.6",
     "localforage": "^1.9.0",
     "lodash": "^4.17.11",
@@ -64,8 +65,7 @@
     "react-helmet-async": "^1.0.4",
     "umi": "^3.2.14",
     "umi-request": "^1.0.8",
-    "use-merge-value": "^1.0.1",
-    "ali-oss": "^6.13.1"
+    "use-merge-value": "^1.0.1"
   },
   "devDependencies": {
     "@ant-design/pro-cli": "^1.0.18",

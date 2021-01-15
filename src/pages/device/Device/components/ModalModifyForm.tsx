@@ -19,7 +19,7 @@ interface ModalModifyFormDataProps {
 }
 const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
   const { createModalVisible, handleModalVisible, actionRef, currentRow } = props
-  const [ uploadImages, setUploadImages ] = useState<string[]>([ "" ])
+  const [ uploadImages, setUploadImages ] = useState<string[]>(currentRow?.imgUrls ? currentRow?.imgUrls : [])
   const submitForm = async (value: DeviceSaveDataType) => {
     let params = value;
     if (currentRow?.id !== undefined) params = { id: currentRow?.id, ...params }
@@ -34,8 +34,8 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
   }
   const setUploadUrlImage = async (url?: string, index?: number) => {
     let tmp = uploadImages
-    if (!url) {
-      tmp.filter((item: any) => item !== '');
+    if (url !== '' && !url) {
+      tmp = tmp.filter((item: any) => item !== '');
       if (tmp.length < 6) {
         tmp.push("")
       }

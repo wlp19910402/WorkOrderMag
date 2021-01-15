@@ -85,12 +85,8 @@ const UploadView: React.FC<UploadProps> = props => {
               <Image
                 width="100%"
                 height="100%"
-                src={ `${value}?x-oss-process=image/resize,h_100,m_lfit` }
-                previewPrefixCls={ value }
-              // preview={ {
-              //   src: value,
-              //   visible: true
-              // } }
+                src={ `${value}?x-oss-process=image/resize,h_100,w_100,m_lfit` }
+                preview={ {src: value} }
               ></Image>
             </>
           ) : (
