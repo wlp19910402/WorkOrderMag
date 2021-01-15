@@ -12,8 +12,8 @@ export type ConsumableSaveDataType = {
   id?: number;
   imgUrls: string[];// 图片
   model: string;
-  name: string[];// 名称
-  type: string[];
+  name: string;// 名称
+  type: string;
 }
 // 耗材详情
 export type ConsumableListDataType = {

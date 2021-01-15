@@ -1,5 +1,5 @@
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, Drawer, message, Popconfirm, Image, Row, Col, } from 'antd';
+import { Button, Drawer, message, Popconfirm, Image, Row, Col, Select } from 'antd';
 import React, { useState, useRef, useEffect } from 'react';
 import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
 import type { ProColumns, ActionType } from '@ant-design/pro-table';
@@ -12,6 +12,7 @@ import ModalModifyForm from './components/ModalModifyForm'
 import ImgNull from '@/assets/images/images-null.png';
 import { fetchDicTypeSelectObj } from '@/pages/admin/Dictionary/service'
 import CODE from '@/utils/DicCode.d'
+import SearchSelect from '@/components/common/SerchSelect'
 // const handleRemove = async (selectedRows: DeviceListDataType[]) => {
 //   const hide = message.loading('正在删除');
 //   if (!selectedRows) return true;
@@ -32,10 +33,8 @@ const DictionaryList: React.FC<ConsumableListDataType> = () => {
   const [ selectedRowsState, setSelectedRows ] = useState<ConsumableListDataType[]>([]);
   const [ createModalVisible, handleModalVisible ] = useState<boolean>(false);
   const [ searchType, setSearchType ] = useState<any>({})//设备类型
-  const [ searchModel, setSearchModel ] = useState<any>({})//品牌
   let dicCode = async () => {
     setSearchType(await fetchDicTypeSelectObj(CODE.CONSUMABLE_TYPE))
-    setSearchModel(await fetchDicTypeSelectObj(CODE.CONSUMABLE_MODEL))
   }
   useEffect(() => {
     dicCode()
@@ -90,6 +89,22 @@ const DictionaryList: React.FC<ConsumableListDataType> = () => {
       hideInSearch: true
     },
     {
+      title: "耗材类型",
+      dataIndex: 'typeName',
+      hideInSearch: true
+    },
+    {
+      title: "耗材类型",
+      dataIndex: 'type',
+      hideInDescriptions: true,
+      hideInTable: true,
+      filters: true,
+      onFilter: true,
+      valueEnum: {
+        ...searchType
+      },
+    },
+    {
       title: "耗材型号",
       dataIndex: 'modelName',
       hideInSearch: true
@@ -100,29 +115,19 @@ const DictionaryList: React.FC<ConsumableListDataType> = () => {
       hideInDescriptions: true,
       hideInTable: true,
       valueType: 'select',
-      valueEnum: {
-        ...searchModel
-      },
-      // getValueFromEvent={ (arg) => {
-      //     fetchDicTypeSelectObj(arg).then(res => {
-      //       setSearchModel(res);
-      //     });
-      //     return arg
-      //   } }
-    },
-    {
-      title: "耗材类型",
-      dataIndex: 'typeName',
-      hideInSearch: true
-    },
-    {
-      title: "耗材类型",
-      dataIndex: 'type',
-      hideInDescriptions: true,
-      hideInTable: true,
-      valueType: 'select',
-      valueEnum: {
-        ...searchType
+      renderFormItem: (item, { type, defaultRender, ...rest }, form) => {
+        if (type === 'form') {
+          return null;
+        }
+        const stateType = form.getFieldValue('type');
+        return (
+          < SearchSelect
+            { ...rest }
+            state={ {
+              type: stateType,
+            } }
+          />
+        );
       },
     },
     {

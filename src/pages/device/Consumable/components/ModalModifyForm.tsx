@@ -1,14 +1,14 @@
 /**
  * 设备列表 编辑 和 新增
  */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import type { ActionType } from '@ant-design/pro-table';
 import { ModalForm, ProFormText, ProFormTextArea, ProFormSelect } from '@ant-design/pro-form';
 import { saveConsumable } from '../service';
 import type { ConsumableSaveDataType } from '../data.d';
-import { message, Form, Row, Col } from 'antd'
+import { message, Form, Row, Col, Spin } from 'antd'
 import UploadImage from '@/components/Upload/index'
-import { fetchDicTypeSelect, fetchDicTypeSelectObj } from '@/pages/admin/Dictionary/service'
+import { fetchDicTypeSelectObj } from '@/pages/admin/Dictionary/service'
 type ModalModifyFormDataProps = {
   createModalVisible: boolean;
   handleModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
@@ -22,6 +22,7 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
   const { createModalVisible, handleModalVisible, actionRef, currentRow, dicCodeData } = props
   const [ uploadImages, setUploadImages ] = useState<string[]>(currentRow?.imgUrls ? currentRow?.imgUrls : [])
   const [ searchModel, setSearchModel ] = useState<any>({});
+  const [ loading, setLoading ] = useState<boolean>(false)
   const submitForm = async (value: ConsumableSaveDataType) => {
     let params = currentRow?.id !== undefined ? { ...value, id: currentRow.id } : value;
     const response = await saveConsumable({
@@ -53,7 +54,11 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
   }
   useEffect(() => {
     setUploadUrlImage()
+    currentRow?.type && fetchDicTypeSelectObj(currentRow?.type).then(res => {
+      setSearchModel(res);
+    });
   }, [])
+  const formRef = useRef<any | null>(null);
   return (
     <ModalForm
       modalProps={ {
@@ -68,6 +73,7 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
       } }
       labelCol={ { span: 4 } }
       layout="horizontal"
+      formRef={ formRef }
     >
       <ProFormText
         rules={ [
@@ -94,25 +100,30 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
         placeholder="请选择耗材类型"
         initialValue={ currentRow?.type }
         getValueFromEvent={ (arg) => {
-          fetchDicTypeSelectObj(arg).then(res => {
-            setSearchModel(res);
+          fetchDicTypeSelectObj(arg).then(async (res) => {
+            await setLoading(true);
+            await setSearchModel(res);
+            setLoading(false);
+            formRef.current.setFieldsValue({ "model": undefined })
           });
           return arg
         } }
       />
-      <ProFormSelect
-        name="model"
-        label="耗材型号"
-        rules={ [
-          {
-            required: true,
-            message: "请选择耗材型号！"
-          },
-        ] }
-        valueEnum={ { ...searchModel } }
-        placeholder="请选择耗材型号"
-        initialValue={ currentRow?.model }
-      />
+      <Spin spinning={ loading }>
+        <ProFormSelect
+          name="model"
+          label="耗材型号"
+          rules={ [
+            {
+              required: true,
+              message: "请选择耗材型号！"
+            },
+          ] }
+          valueEnum={ { ...searchModel } }
+          placeholder="请选择耗材型号"
+          initialValue={ currentRow?.model }
+        />
+      </Spin>
       <ProFormTextArea
         name="description"
         label="耗材描述"
