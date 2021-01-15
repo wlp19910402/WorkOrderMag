@@ -9,7 +9,7 @@ export const queryDeviceList = async (params: DeviceSearchType) => {
       pageNo: params.current,
       name: params.name,
       no: params.no,
-      specification: params.specification,
+      model: params.model,
       type: params.type
     }
   });

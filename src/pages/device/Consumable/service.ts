@@ -1,4 +1,4 @@
-import type { DeviceSearchType, DeviceSaveDataType, ConsumableSearchType, ConsumableSaveDataType } from './data.d';
+import type { ConsumableSearchType, ConsumableSaveDataType } from './data.d';
 import API from '@/services/API.d'
 import httpServer from '@/utils/httpServer'
 

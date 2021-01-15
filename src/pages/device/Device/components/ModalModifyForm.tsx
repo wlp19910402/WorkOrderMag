@@ -16,9 +16,7 @@ type ModalModifyFormDataProps = {
   currentRow: DeviceSaveDataType | undefined;
   dicCodeData: {
     searchType: any,
-    searchBrand: any,
-    searchSpecification: any,
-    searchWarrantyPeriod: any
+    searchBrand: any
   };
 }
 const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
@@ -83,18 +81,6 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
         placeholder="请输入设备名称"
         initialValue={ currentRow?.name }
       />
-      <ProFormText
-        rules={ [
-          {
-            required: true,
-            message: "请输入设备编号！"
-          },
-        ] }
-        label="设备编号"
-        name="no"
-        placeholder="请输入设备编号"
-        initialValue={ currentRow?.no }
-      />
       <ProFormSelect
         name="type"
         rules={ [
@@ -122,30 +108,19 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
         initialValue={ currentRow?.brand }
       />
       <ProFormSelect
-        name="specification"
-        label="规格"
+        name="model"
+        label="设备型号"
         rules={ [
           {
             required: true,
-            message: "请选择设备规格！"
+            message: "请选择设备型号！"
           },
         ] }
-        valueEnum={ { ...dicCodeData.searchSpecification } }
-        placeholder="请选择规格"
-        initialValue={ currentRow?.specification }
-      />
-      <ProFormSelect
-        name="warrantyPeriod"
-        label="保修周期"
-        rules={ [
-          {
-            required: true,
-            message: "请选择保修周期！"
-          },
-        ] }
-        valueEnum={ { ...dicCodeData.searchWarrantyPeriod } }
-        placeholder="请选择保修周期"
-        initialValue={ currentRow?.warrantyPeriod }
+        valueEnum={ {
+          // ...dicCodeData.searchSpecification
+        } }
+        placeholder="请选择设备型号"
+        initialValue={ currentRow?.model }
       />
       <ProFormTextArea
         name="description"

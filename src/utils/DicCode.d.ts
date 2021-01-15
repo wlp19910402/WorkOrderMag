@@ -4,7 +4,6 @@
 export default {
   //设备字典
   DEVICE_TYPE: "dev_type",// 设备类型
-  DEVICE_SPECIFICATION: "dev_spec",// 设备规格
   DEVICE_BRAND: "dev_brand",// 设备品牌
   DEVICE_WARRANTY_PERIOD: "dev_period",// 设备保修周期
   //耗材管理的字典

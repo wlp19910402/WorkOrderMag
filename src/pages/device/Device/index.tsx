@@ -33,13 +33,9 @@ const DictionaryList: React.FC<DeviceListDataType> = () => {
   const [ createModalVisible, handleModalVisible ] = useState<boolean>(false);
   const [ searchType, setSearchType ] = useState<any>({})//设备类型
   const [ searchBrand, setSearchBrand ] = useState<any>({})//品牌
-  const [ searchSpecification, setSearchSpecification ] = useState<any>({})//规格
-  const [ searchWarrantyPeriod, setSearchWarrantyPeriod ] = useState<any>({})//周期
   let dicCode = async () => {
     setSearchType(await fetchDicTypeSelectObj(CODE.DEVICE_TYPE))
     setSearchBrand(await fetchDicTypeSelectObj(CODE.DEVICE_BRAND))
-    setSearchSpecification(await fetchDicTypeSelectObj(CODE.DEVICE_SPECIFICATION))
-    setSearchWarrantyPeriod(await fetchDicTypeSelectObj(CODE.DEVICE_WARRANTY_PERIOD))
   }
   useEffect(() => {
     dicCode()
@@ -98,18 +94,18 @@ const DictionaryList: React.FC<DeviceListDataType> = () => {
       dataIndex: 'no'
     },
     {
-      title: "规格",
-      dataIndex: 'specificationName',
+      title: "设备型号",
+      dataIndex: 'moduleName',
       hideInSearch: true
     },
     {
-      title: "设备类型",
-      dataIndex: 'specification',
+      title: "设备型号",
+      dataIndex: 'module',
       hideInDescriptions: true,
       hideInTable: true,
       valueType: 'select',
       valueEnum: {
-        ...searchSpecification
+        // ...searchSpecification
       }
     },
     {
@@ -126,11 +122,6 @@ const DictionaryList: React.FC<DeviceListDataType> = () => {
       valueEnum: {
         ...searchType
       },
-    },
-    {
-      title: "保修周期",
-      dataIndex: 'warrantyPeriodName',
-      hideInSearch: true
     },
     {
       title: "创建人",
@@ -261,8 +252,7 @@ const DictionaryList: React.FC<DeviceListDataType> = () => {
           dicCodeData={ {
             searchType,
             searchBrand,
-            searchSpecification,
-            searchWarrantyPeriod
+            // searchSpecification
           } }
         />
       ) }

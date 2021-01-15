@@ -1,23 +1,22 @@
-import type { DeviceSearchType, DeviceSaveDataType } from './data.d';
+import type { PartSearchType, PartSaveDataType } from './data.d';
 import API from '@/services/API.d'
 import httpServer from '@/utils/httpServer'
 
-export const queryDeviceList = async (params: DeviceSearchType) => {
-  return await httpServer.get(API.DEVICE_LIST, {
+export const queryPartList = async (params: PartSearchType) => {
+  return await httpServer.get(API.PART_LIST, {
     params: {
       pageSize: params.pageSize,
       pageNo: params.current,
       name: params.name,
-      no: params.no,
-      specification: params.specification,
+      model: params.model,
       type: params.type
     }
   });
 }
-export const saveDevice = async (params: DeviceSaveDataType) => {
-  return httpServer.post(API.DEVICE_SAVE, { data: params });
+export const savePart = async (params: PartSaveDataType) => {
+  return httpServer.post(API.PART_SAVE, { data: params });
 }
 
-export const deleteDevice = async (id: string) => {
-  return httpServer.post(`${API.DEVICE_DELETE}/${id}`)
+export const deletePart = async (id: string) => {
+  return httpServer.post(`${API.PART_DETAIL}/${id}`)
 }

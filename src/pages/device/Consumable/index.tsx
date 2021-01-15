@@ -256,9 +256,7 @@ const DictionaryList: React.FC<ConsumableListDataType> = () => {
           handleModalVisible={ handleModalVisible }
           actionRef={ actionRef }
           currentRow={ currentRow }
-          dicCodeData={ {
-            searchType
-          } }
+          searchType={ searchType }
         />
       ) }
 

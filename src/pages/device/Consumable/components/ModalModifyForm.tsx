@@ -14,12 +14,10 @@ type ModalModifyFormDataProps = {
   handleModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
   actionRef: React.MutableRefObject<ActionType | undefined>;
   currentRow: ConsumableSaveDataType | undefined;
-  dicCodeData: {
-    searchType: any
-  };
+  searchType: any
 }
 const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
-  const { createModalVisible, handleModalVisible, actionRef, currentRow, dicCodeData } = props
+  const { createModalVisible, handleModalVisible, actionRef, currentRow, searchType } = props
   const [ uploadImages, setUploadImages ] = useState<string[]>(currentRow?.imgUrls ? currentRow?.imgUrls : [])
   const [ searchModel, setSearchModel ] = useState<any>({});
   const [ loading, setLoading ] = useState<boolean>(false)
@@ -96,7 +94,7 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
           },
         ] }
         label="耗材类型"
-        valueEnum={ { ...dicCodeData.searchType } }
+        valueEnum={ { ...searchType } }
         placeholder="请选择耗材类型"
         initialValue={ currentRow?.type }
         getValueFromEvent={ (arg) => {

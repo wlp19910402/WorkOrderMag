@@ -3,7 +3,7 @@ import { PageDataType } from '../data.d'
 export type DeviceSearchType = {
   name?: string;
   no?: string;
-  specification?: string;
+  model?: string;
   type?: string;
 } & PageDataType
 // 设备保存
@@ -13,10 +13,8 @@ export type DeviceSaveDataType = {
   id?: number;// 主键
   imgUrls: string[];// 图片
   name: string[];// 设备名称
-  no: string;// 设备编号
-  specification: string;// 规格
+  model: string;// 规格
   type: string;// 设备类型
-  warrantyPeriod: string;// 保修周期
 }
 // 设备详情
 export type DeviceListDataType = {
@@ -27,7 +25,7 @@ export type DeviceListDataType = {
   createUsername: string;
   updateUsername: string;
   brandName: string;
-  specificationName: string;
-  warrantyPeriodName: string;
+  module: string;
+  moduleName: string;
   typeName: string;// 设备类型
 } & DeviceSaveDataType
