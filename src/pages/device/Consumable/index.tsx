@@ -123,7 +123,7 @@ const DictionaryList: React.FC<DeviceListDataType> = () => {
         <Button
           type="text"
           size="small"
-          onClick={ async () => { fetchUserEdit(record) } }
+          onClick={ () => { fetchUserEdit(record) } }
         >
           编辑
         </Button>,
@@ -150,7 +150,7 @@ const DictionaryList: React.FC<DeviceListDataType> = () => {
   const fetchQueryList = async (params: any) => {
     const response = await queryDeviceList(params)
     if (!response) return
-    const {data} = response;
+    const { data } = response;
     return ({ ...data, data: data.records })
   }
   return (

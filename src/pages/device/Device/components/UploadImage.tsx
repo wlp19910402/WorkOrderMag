@@ -2,7 +2,6 @@ import React from 'react';
 import { Spin } from 'antd';
 import { PlusOutlined, CloseOutlined } from '@ant-design/icons';
 import { Image, message } from 'antd';
-import httpServer from '@/utils/httpServer'
 import request from '@/utils/request';
 // import OSS from 'ali-oss';
 // import moment from 'moment';
@@ -23,14 +22,14 @@ type UploadProps = {
 }
 
 const UploadView: React.FC<UploadProps> = props => {
-  const { title, name, value, onChange } = props;
+  const { value, onChange } = props;
   const [ status, setStatus ] = React.useState<'' | 'done' | 'uploading' | 'error'>('');
   const uploadId = "upload1"
   const fileMaxSize = "500KB"
   const uploadImage = async () => {
     const file = document.getElementById(uploadId)?.files[ 0 ];
     console.log(file)
-    if (file == undefined) {
+    if (file === undefined) {
       return
     }
     setStatus("uploading");

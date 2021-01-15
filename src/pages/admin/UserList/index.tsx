@@ -15,22 +15,22 @@ import ModalAuthifyForm from './components/ModalAuthifyForm'
  *  删除节点
  * @param selectedRows
  */
-const handleRemove = async (selectedRows: UserListDataType[]) => {
-  const hide = message.loading('正在删除');
-  if (!selectedRows) return true;
-  try {
-    // await removeRule({
-    //   deleteId: selectedRows.map((row) => row.id),
-    // });
-    hide;
-    message.success('删除成功，即将刷新');
-    return true;
-  } catch (error) {
-    hide;
-    message.error('删除失败，请重试');
-    return false;
-  }
-};
+// const handleRemove = async (selectedRows: UserListDataType[]) => {
+//   const hide = message.loading('正在删除');
+//   if (!selectedRows) return true;
+//   try {
+//     // await removeRule({
+//     //   deleteId: selectedRows.map((row) => row.id),
+//     // });
+//     hide;
+//     message.success('删除成功，即将刷新');
+//     return true;
+//   } catch (error) {
+//     hide;
+//     message.error('删除失败，请重试');
+//     return false;
+//   }
+// };
 export type RoleCheckBoxDataType = {
   label: string;
   value: number;
@@ -180,7 +180,7 @@ const ResumeList: React.FC<UserListDataType> = () => {
   const fetchQueryUserList = async (params: any) => {
     const response = await queryUserList(params)
     if (!response) return
-    const {data} = response;
+    const { data } = response;
     return ({ ...data, data: data.records })
   }
   return (

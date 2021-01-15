@@ -13,7 +13,7 @@ type BlankLayout = {
   loading: boolean;
   token: string | undefined;
 } & ConnectProps
-const BlankLayoutCmp: React.FC<BlankLayout> = ({ children, isLogin, dispatch, loading, token }) => {
+const BlankLayoutCmp: React.FC<BlankLayout> = ({ children, dispatch, token }) => {
   useEffect(() => {
     if (!token && dispatch) {
       dispatch({

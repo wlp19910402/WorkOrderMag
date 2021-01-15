@@ -84,7 +84,7 @@ const Model: MenuModelType = {
       if (callback) callback(menuData, flatMenuData)
     },
     // 保存菜单
-    *saveMenu ({ payload, callback }, { call, put }) {
+    *saveMenu ({ payload, callback }, { call }) {
       const response = yield call(saveMenu, payload)
       if (!response) return
       if (callback) callback(response)

@@ -95,16 +95,15 @@ const Model: LoginModelType = {
       yield put({
         type: 'clearUser'
       });
-      localforage.removeItem('token').then(token => {
-        if (window.location.pathname !== '/user/login' && !redirect) {
-          history.replace({
-            pathname: '/user/login',
-            search: stringify({
-              redirect: window.location.href,
-            }),
-          });
-        }
-      })
+      localforage.removeItem('token')
+      if (window.location.pathname !== '/user/login' && !redirect) {
+        history.replace({
+          pathname: '/user/login',
+          search: stringify({
+            redirect: window.location.href,
+          }),
+        });
+      }
     }
   },
   reducers: {

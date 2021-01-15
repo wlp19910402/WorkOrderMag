@@ -21,7 +21,8 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
     if (currentRow?.id !== undefined) {
       params = { id: currentRow.id, ...params };
     }
-    const response = await saveDictionary({ ...value, id: currentRow?.id })
+    // let params = currentRow?.id !== undefined ? { id: currentRow.id, ...value } : value;
+    const response = await saveDictionary({ ...params, id: currentRow?.id })
     if (!response) return
     if (actionRef.current) {
       actionRef.current.reload();

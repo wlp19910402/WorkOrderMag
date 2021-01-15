@@ -85,7 +85,7 @@ const DictionaryList: React.FC<DictionaryDataType> = () => {
           type="text"
           size="small"
           disabled={ record.id === 1 }
-          onClick={ async () => { fetchUserEdit(record) } }
+          onClick={ () => { fetchUserEdit(record) } }
         >
           编辑
         </Button>,

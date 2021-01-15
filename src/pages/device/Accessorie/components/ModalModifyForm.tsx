@@ -21,7 +21,7 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
     if (currentRow?.id !== undefined) {
       params = { id: currentRow.id, ...params };
     }
-    const response = await saveDevice({ ...value, id: currentRow?.id })
+    const response = await saveDevice({ ...params })
     if (!response) return
     actionRef.current && actionRef.current.reload();
     handleModalVisible(false);
