@@ -12,6 +12,7 @@ import ModalModifyForm from './components/ModalModifyForm'
 import ImgNull from '@/assets/images/images-null.png';
 import { fetchDicTypeSelectObj } from '@/pages/admin/Dictionary/service'
 import CODE from '@/utils/DicCode.d'
+import SearchSelect from '@/components/common/SerchSelect'
 // const handleRemove = async (selectedRows: DeviceListDataType[]) => {
 //   const hide = message.loading('正在删除');
 //   if (!selectedRows) return true;
@@ -35,7 +36,6 @@ const DictionaryList: React.FC<DeviceListDataType> = () => {
   const [ searchBrand, setSearchBrand ] = useState<any>({})//品牌
   let dicCode = async () => {
     setSearchType(await fetchDicTypeSelectObj(CODE.DEVICE_TYPE))
-    setSearchBrand(await fetchDicTypeSelectObj(CODE.DEVICE_BRAND))
   }
   useEffect(() => {
     dicCode()
@@ -94,21 +94,6 @@ const DictionaryList: React.FC<DeviceListDataType> = () => {
       dataIndex: 'no'
     },
     {
-      title: "设备型号",
-      dataIndex: 'moduleName',
-      hideInSearch: true
-    },
-    {
-      title: "设备型号",
-      dataIndex: 'module',
-      hideInDescriptions: true,
-      hideInTable: true,
-      valueType: 'select',
-      valueEnum: {
-        // ...searchSpecification
-      }
-    },
-    {
       title: "设备类型",
       dataIndex: 'typeName',
       hideInSearch: true
@@ -121,6 +106,32 @@ const DictionaryList: React.FC<DeviceListDataType> = () => {
       valueType: 'select',
       valueEnum: {
         ...searchType
+      },
+    },
+    {
+      title: "设备型号",
+      dataIndex: 'moduleName',
+      hideInSearch: true
+    },
+    {
+      title: "设备型号",
+      dataIndex: 'module',
+      hideInDescriptions: true,
+      hideInTable: true,
+      valueType: 'select',
+      renderFormItem: (item, { type, defaultRender, ...rest }, form) => {
+        if (type === 'form') {
+          return null;
+        }
+        const stateType = form.getFieldValue('type');
+        return (
+          < SearchSelect
+            { ...rest }
+            state={ {
+              type: stateType,
+            } }
+          />
+        );
       },
     },
     {
@@ -249,11 +260,7 @@ const DictionaryList: React.FC<DeviceListDataType> = () => {
           handleModalVisible={ handleModalVisible }
           actionRef={ actionRef }
           currentRow={ currentRow }
-          dicCodeData={ {
-            searchType,
-            searchBrand,
-            // searchSpecification
-          } }
+          searchType={ searchType }
         />
       ) }
 

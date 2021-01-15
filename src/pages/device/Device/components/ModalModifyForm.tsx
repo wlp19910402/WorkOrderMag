@@ -1,27 +1,28 @@
 /**
  * 设备列表 编辑 和 新增
  */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import type { ActionType } from '@ant-design/pro-table';
 import { ModalForm, ProFormText, ProFormTextArea, ProFormSelect } from '@ant-design/pro-form';
 import { saveDevice } from '../service';
 import type { DeviceSaveDataType } from '../data.d';
-import { message, Form, Row, Col } from 'antd'
+import { message, Form, Row, Col, Spin } from 'antd'
 import UploadImage from '@/components/Upload/index'
-
+import { fetchDicTypeSelectObj } from '@/pages/admin/Dictionary/service'
 type ModalModifyFormDataProps = {
   createModalVisible: boolean;
   handleModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
   actionRef: React.MutableRefObject<ActionType | undefined>;
   currentRow: DeviceSaveDataType | undefined;
-  dicCodeData: {
-    searchType: any,
-    searchBrand: any
-  };
+  searchType: any;
 }
 const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
-  const { createModalVisible, handleModalVisible, actionRef, currentRow, dicCodeData } = props
+  const { createModalVisible, handleModalVisible, actionRef, currentRow, searchType } = props
   const [ uploadImages, setUploadImages ] = useState<string[]>(currentRow?.imgUrls ? currentRow?.imgUrls : [])
+  const [ searchModel, setSearchModel ] = useState<any>({});
+  const [ searchBrand, setSearchBrand ] = useState<any>({});
+  const [ loadingModel, setLoadingModel ] = useState<boolean>(false)
+  const [ loadingBrand, setLoadingBrand ] = useState<boolean>(false)
   const submitForm = async (value: DeviceSaveDataType) => {
     let params = currentRow?.id !== undefined ? { ...value, id: currentRow.id } : value;
     const response = await saveDevice({
@@ -53,7 +54,14 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
   }
   useEffect(() => {
     setUploadUrlImage()
+    currentRow?.type && fetchDicTypeSelectObj(currentRow?.type).then(res => {
+      setSearchModel(res);
+    });
+    currentRow?.model && fetchDicTypeSelectObj(currentRow?.model).then(res => {
+      setSearchBrand(res);
+    });
   }, [])
+  const formRef = useRef<any | null>(null);
   return (
     <ModalForm
       modalProps={ {
@@ -68,6 +76,7 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
       } }
       labelCol={ { span: 4 } }
       layout="horizontal"
+      formRef={ formRef }
     >
       <ProFormText
         rules={ [
@@ -90,38 +99,65 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
           },
         ] }
         label="设备类型"
-        valueEnum={ { ...dicCodeData.searchType } }
+        valueEnum={ { ...searchType } }
         placeholder="请选择设备类型"
         initialValue={ currentRow?.type }
-      />
-      <ProFormSelect
-        name="brand"
-        label="品牌"
-        rules={ [
-          {
-            required: true,
-            message: "请选择品牌！"
-          },
-        ] }
-        valueEnum={ { ...dicCodeData.searchBrand } }
-        placeholder="请选择品牌"
-        initialValue={ currentRow?.brand }
-      />
-      <ProFormSelect
-        name="model"
-        label="设备型号"
-        rules={ [
-          {
-            required: true,
-            message: "请选择设备型号！"
-          },
-        ] }
-        valueEnum={ {
-          // ...dicCodeData.searchSpecification
+        getValueFromEvent={ (arg) => {
+          fetchDicTypeSelectObj(arg).then(async (res) => {
+            await setLoadingModel(true);
+            await setLoadingBrand(true);
+            await setSearchModel(res);
+            setLoadingModel(false);
+            setLoadingBrand(false);
+            formRef.current.setFieldsValue({ "model": undefined })
+            formRef.current.setFieldsValue({ "brand": undefined })
+          });
+          return arg
         } }
-        placeholder="请选择设备型号"
-        initialValue={ currentRow?.model }
       />
+      <Spin spinning={ loadingModel }>
+        <ProFormSelect
+          name="model"
+          label="设备型号"
+          rules={ [
+            {
+              required: true,
+              message: "请选择设备型号！"
+            },
+          ] }
+          valueEnum={ {
+            ...searchModel
+          } }
+          placeholder="请选择设备型号"
+          initialValue={ currentRow?.model }
+          getValueFromEvent={ (arg) => {
+            fetchDicTypeSelectObj(arg).then(async (res) => {
+              await setLoadingBrand(true);
+              await setSearchBrand(res);
+              setLoadingBrand(false);
+              formRef.current.setFieldsValue({ "brand": undefined })
+            });
+            return arg
+          } }
+        />
+      </Spin>
+      <Spin spinning={ loadingBrand }>
+        <ProFormSelect
+          name="brand"
+          label="品牌"
+          rules={ [
+            {
+              required: true,
+              message: "请选择品牌！"
+            },
+          ] }
+          valueEnum={ {
+            ...searchBrand
+          } }
+          placeholder="请选择品牌"
+          initialValue={ currentRow?.brand }
+        />
+      </Spin>
       <ProFormTextArea
         name="description"
         label="设备描述"
