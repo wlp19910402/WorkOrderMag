@@ -13,6 +13,11 @@ export default {
       changeOrigin: true,
       pathRewrite: { '^/api': '' },
     },
+    '/uploadAliyuncs': {
+      target: "https://liyunboji-pub.oss-cn-beijing.aliyuncs.com",
+      changeOrigin: true,
+      pathRewrite: { '^/uploadAliyuncs': '' },
+    }
   },
   // test: {
   //   '/api/': {

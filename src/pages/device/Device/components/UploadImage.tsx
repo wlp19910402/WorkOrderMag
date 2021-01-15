@@ -2,6 +2,8 @@ import React from 'react';
 import { Spin } from 'antd';
 import { PlusOutlined, CloseOutlined } from '@ant-design/icons';
 import { Image, message } from 'antd';
+import httpServer from '@/utils/httpServer'
+import request from '@/utils/request';
 // import OSS from 'ali-oss';
 // import moment from 'moment';
 // import { encode } from 'js-base64';
@@ -10,7 +12,7 @@ import { Image, message } from 'antd';
 // import { Geolocation } from '@ionic-native/geolocation';
 import ImgNull from '@/assets/images/images-null.png';
 import styles from './Upload.less';
-import { uploadOssSign, uploadFile } from './service'
+import { uploadOssSign } from './service'
 interface UploadProps {
   // token: API.OssToken;
   title: string;
@@ -24,7 +26,7 @@ const UploadView: React.FC<UploadProps> = props => {
   const [ status, setStatus ] = React.useState<'' | 'done' | 'uploading' | 'error'>('');
   const uploadId = "upload1"
   const fileMaxSize = "500KB"
-  const uploadImage = async (v: any) => {
+  const uploadImage = async () => {
     let file = document.getElementById(uploadId)?.files[ 0 ];
     console.log(file)
     if (file == undefined) {
@@ -41,6 +43,16 @@ const UploadView: React.FC<UploadProps> = props => {
         setStatus("error");
         return
       }
+      const defaultConfig = {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS,post',
+          'Access-Control-Allow-Headers': 'X-Requested-With, content-type, Authorization',
+        },
+        timeout: 0
+      }
+      const mergeConfig = Object.assign(defaultConfig, {})
       const fileName = response.data.fileName;
       const signInfo = response.data.signInfo;
       let formData = new FormData();
@@ -50,76 +62,30 @@ const UploadView: React.FC<UploadProps> = props => {
       formData.append("signature", signInfo.signature);
       formData.append("file", file);
       formData.append("success_action_status", 200);
-      console.log(formData)
-      console.log(formData.get("key"), "3333", formData);
-      let res = await uploadFile({ file: formData })
-      console.log(res);
-      // if (!this.ossClient) {
-      //   await this.fetchOssToken()
-      // }
-      // await this.ossPutUpload(idx, file, fileName)
+      // signInfo.host
+      request.post('/uploadAliyuncs',
+        {
+          data: formData,
+          headers: mergeConfig.headers,
+          timeout: mergeConfig.timeout
+        }).then(res => {
+          console.log(res)
+        }).catch(err => {
+          console.log(err)
+        })
     }
-    // this.isRequestLoading[ idx ] = false
-    // this.isRequestLoading = [ ...this.isRequestLoading ]
-    // try {
-    //   const fileUri = await Camera.getPicture({
-    //     quality: 25,
-    //     destinationType: Camera.DestinationType.FILE_URI,
-    //     encodingType: Camera.EncodingType.JPEG,
-    //     mediaType: Camera.MediaType.PICTURE,
-    //     saveToPhotoAlbum: false,
-    //   })
-    //   console.log(fileUri);
-    //   setStatus('uploading');
-    //   const entry: FileEntry = (await File.resolveLocalFilesystemUrl(fileUri)) as FileEntry;
-    //   entry.file(
-    //     async file => {
-    //       try {
-    //         // 初始化OSS客户端
-    //         const client = new OSS({
-    //           ...token,
-    //         });
-    //         // 上传文件
-    //         const result = await client.put(
-    //           `${token.uploadFullPath}${name}-${Date.now()}.jpeg`,
-    //           file,
-    //         );
-    //         console.log(result);
-    //         if (onChange) {
-    //           // 设置水印
-    //           const geo = await Geolocation.getCurrentPosition();
-    //           const lat_lon = `${geo.coords.latitude}:${geo.coords.longitude}`;
-    //           const watermarks = `watermark,text_${encode(moment().format('YYYY-MM-DD HH:mm:ss'))},color_77CC99,size_60,g_nw,x_20,y_20/watermark,text_${encode(lat_lon)},color_77CC99,size_60,g_se,x_20,y_20`;
-    //           onChange(`${result.url}?x-oss-process=image/resize,w_2000,h_2000/${watermarks}`);
-    //         }
-    //         setStatus('done');
-    //       } catch (error) {
-    //         console.log(error);
-    //         setStatus('error');
-    //       }
-    //     },
-    //     error => {
-    //       console.log(error);
-    //       setStatus('error');
-    //     },
-    //   );
-    // } catch (error) {
-    //   console.log(error);
-    //   setStatus('');
-    // }
   }
-
   return (
     <div className={ styles.qmUploadBox }>
       <Spin spinning={ status === 'uploading' }>
         <div className={ styles.qmUploadBox } >
           { status !== "uploading" &&
-            <input id={ uploadId } type="file" onChange={ (v) => {
+            <input id={ uploadId } type="file" onChange={ () => {
               if (
                 (!value || value === '') &&
                 (status === '' || status === 'error')
               ) {
-                uploadImage(v);
+                uploadImage();
               }
             } } /> }
           { value && value !== '' ? (
@@ -145,13 +111,6 @@ const UploadView: React.FC<UploadProps> = props => {
                   ) }
               </>
             ) }
-
-        </div>
-        <div
-          style={ { fontSize: '12px', textAlign: 'center', color: '#999999' } }
-        >
-          { title }
-
         </div>
       </Spin>
     </div>

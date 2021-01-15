@@ -36,4 +36,5 @@ export default {
   //上传文件的接口
   UPLOAD_OSS_SIGN: '/api/oss/upload-sign',//获取上传签名信息
   UPLOAD_FILE: '/api/oss/upload-file',//文件直传服务
+  UPLOAD_STS_SIGN: '/api/oss/sts-sign',//获取STS签名
 }

@@ -12,10 +12,18 @@ const defaultUploadOssSign: UploadOssSignParamsType = {
   share: true,
   target: ""
 }
+export interface OssToken {
+  accessKeyId: string;
+  accessKeySecret: string;
+  stsToken: string;
+  bucket: string;
+  region: string;
+  // uploadFullPath: string;
+}
 export const uploadOssSign = async (params: UploadOssSignParamsType) => {
   return httpServer.post(`${API.UPLOAD_OSS_SIGN}`, { data: { ...defaultUploadOssSign, ...params } });
 }
-
-export const uploadStsSign = async () => {
-  return httpServer.post(API.UPLOAD_STS_SIGN)
+//获取sts签名
+export const uploadStsSign = async (params: UploadOssSignParamsType) => {
+  return httpServer.post(API.UPLOAD_STS_SIGN, { data: { ...defaultUploadOssSign, ...params } });
 }

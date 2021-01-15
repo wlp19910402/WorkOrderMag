@@ -53,13 +53,14 @@ const request = extend({
   credentials: 'include', // 默认请求是否带上cookie
 })
 request.interceptors.request.use(async (url: RequestInterceptor, options: OnionOptions | undefined) => {
-  let token = await localforage.getItem('token')
+  let token = await localforage.getItem('token');
   return (
     {
       url,
       options: {
         ...options,
         headers: {
+          ...options?.headers,
           token: token ? token : ''
         }
       }
