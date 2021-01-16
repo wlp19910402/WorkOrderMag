@@ -26,7 +26,8 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
   return (
     <ModalForm
       modalProps={ {
-        maskClosable: false
+        maskClosable: false,
+        okText: "保存"
       } }
       title='新建用户'
       width="400px"

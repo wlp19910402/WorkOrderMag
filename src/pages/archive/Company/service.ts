@@ -19,5 +19,5 @@ export const saveCompany = async (params: CompanySaveDataType) => {
 }
 
 export const deleteCompany = async (id: string) => {
-  return httpServer.post(`${API.COMPANY_DETAIL}/${id}`)
+  return httpServer.post(`${API.COMPANY_DELETE}/${id}`)
 }

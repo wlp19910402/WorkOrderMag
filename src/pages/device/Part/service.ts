@@ -18,5 +18,5 @@ export const savePart = async (params: PartSaveDataType) => {
 }
 
 export const deletePart = async (id: string) => {
-  return httpServer.post(`${API.PART_DETAIL}/${id}`)
+  return httpServer.post(`${API.PART_DELETE}/${id}`)
 }
