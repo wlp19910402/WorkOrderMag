@@ -1,5 +1,5 @@
 /**
- * 公司列表 编辑 和 新增
+ * 单位列表 编辑 和 新增
  */
 import React, { useRef } from 'react';
 import type { ActionType } from '@ant-design/pro-table';
@@ -32,7 +32,7 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
         maskClosable: false,
         okText: "保存"
       } }
-      title={ currentRow?.id !== undefined ? "公司编辑" : "公司新增" }
+      title={ currentRow?.id !== undefined ? "单位编辑" : "单位新增" }
       width="600px"
       visible={ createModalVisible }
       onVisibleChange={ handleModalVisible }
@@ -47,24 +47,24 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
         rules={ [
           {
             required: true,
-            message: "请输入公司名称！"
+            message: "请输入单位名称！"
           },
         ] }
-        label="公司名称"
+        label="单位名称"
         name="company"
-        placeholder="请输入公司名称"
+        placeholder="请输入单位名称"
         initialValue={ currentRow?.company }
       />
       <ProFormText
         rules={ [
           {
             required: true,
-            message: "请输入公司编号！"
+            message: "请输入单位编号！"
           },
         ] }
-        label="公司编号"
+        label="单位编号"
         name="no"
-        placeholder="请输入公司编号"
+        placeholder="请输入单位编号"
         initialValue={ currentRow?.no }
       />
       <ProFormText

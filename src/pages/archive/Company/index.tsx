@@ -35,7 +35,7 @@ const DictionaryList: React.FC<CompanyListDataType> = () => {
       hideInSearch: true
     },
     {
-      title: "公司名称",
+      title: "单位名称",
       dataIndex: 'company',
       render: (val, entity) => {
         return (
@@ -52,7 +52,7 @@ const DictionaryList: React.FC<CompanyListDataType> = () => {
     },
 
     {
-      title: "公司编号",
+      title: "单位编号",
       dataIndex: 'no'
     },
     {

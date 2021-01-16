@@ -119,17 +119,17 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
       <Spin spinning={ loadingBrand }>
         <ProFormSelect
           name="brand"
-          label="品牌"
+          label="设备品牌"
           rules={ [
             {
               required: true,
-              message: "请选择品牌！"
+              message: "请选择设备品牌！"
             },
           ] }
           valueEnum={ {
             ...searchBrand
           } }
-          placeholder="请选择品牌"
+          placeholder="请选择设备品牌"
           initialValue={ currentRow?.brand }
           getValueFromEvent={ (arg) => {
             fetchDicTypeSelectObj(arg).then(async (res) => {

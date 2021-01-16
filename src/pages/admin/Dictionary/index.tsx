@@ -84,16 +84,16 @@ const DictionaryList: React.FC<DictionaryDataType> = () => {
         <Button
           type="text"
           size="small"
-          disabled={ record.id === 1 }
+          disabled={ record.type === "0" }
           onClick={ () => { fetchUserEdit(record) } }
         >
           编辑
         </Button>,
         <Popconfirm
-          disabled={ record.id === 1 }
+          disabled={ record.type === "0" }
           title="是否要删除此行？"
-          onConfirm={ () => { record.id !== undefined && tiggerDeleteDictionary(record.id?.toString()); } }>
-          <Button disabled={ record.id === 1 } size="small" type="text">删除</Button>
+          onConfirm={ () => { record.type !== undefined && tiggerDeleteDictionary(record.id?.toString()); } }>
+          <Button disabled={ record.type === "0" } size="small" type="text">删除</Button>
         </Popconfirm>
       ],
     },
@@ -113,7 +113,7 @@ const DictionaryList: React.FC<DictionaryDataType> = () => {
   const fetchQueryList = async (params: any) => {
     const response = await queryDictionaryList(params)
     if (!response) return
-    const {data} = response;
+    const { data } = response;
     return ({ ...data, data: data.records })
   }
   return (

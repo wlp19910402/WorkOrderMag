@@ -16,7 +16,7 @@ export default {
   ROLE_SAVE: '/api/sys/role/save',
   ROLE_BIND: '/api/sys/role/bind',
   ROLE_GET_MENU: '/api/sys/role/menu',// 绑定权限回显/sys/role/menu/{id}
-  ROLE_DETAIL: '/api/sys/role/detail',/// sys/role/detail/{id}
+  ROLE_INFO: '/api/sys/role/detail',/// sys/role/detail/{id}
   ROLE_DELETE: '/api/sys/role/del',// 角色删除/sys/role/del/{id}
   // 菜单管理接口
   MENU_TREE: '/api/sys/menu/tree',// 当前用户菜单【用于用户登录后菜单加载】
@@ -34,22 +34,28 @@ export default {
   UPLOAD_STS_SIGN: '/api/oss/sts-sign',// 获取STS签名
   //设备管理-设备管理接口
   DEVICE_LIST: '/api/device/list',
-  DEVICE_DETAIL: '/api/device/info',/// device/info/{id}
+  DEVICE_INFO: '/api/device/info',/// device/info/{id}
   DEVICE_DELETE: '/api/device/del',/// device/del/{id}
   DEVICE_SAVE: '/api/device/save',
   // 耗材管理-设备管理接口
   COMSUMABLE_LIST: '/api/consumable/list',
-  COMSUMABLE_DETAIL: '/api/consumable/info',/// consumable/info/{id}
+  COMSUMABLE_INFO: '/api/consumable/info',/// consumable/info/{id}
   COMSUMABLE_DELETE: '/api/consumable/del',/// consumable/del/{id}
   COMSUMABLE_SAVE: '/api/consumable/save',
   // 备件管理-设备管理接口
   PART_LIST: '/api/part/list',
-  PART_DETAIL: '/api/part/info',/// part/info/{id}
+  PART_INFO: '/api/part/info',/// part/info/{id}
   PART_DELETE: '/api/part/del',/// part/del/{id}
   PART_SAVE: '/api/part/save',
-  // 公司管理- 设备档案管理接口
+  // 安装单位管理-设备档案管理接口
   COMPANY_LIST: '/api/company/list',
-  COMPANY_DETAIL: '/api/company/info',/// company/info/{id}
+  COMPANY_INFO: '/api/company/info',/// company/info/{id}
   COMPANY_DELETE: '/api/company/del',/// company/del/{id}
   COMPANY_SAVE: '/api/company/save',
+  // 档案列表管理-设备档案管理接口
+  PORTFOLIO_LIST: '/api/portfolio/list',//档案列表查询
+  PORTFOLIO_SAVE: '/api/portfolio/add',//
+  PORTFOLIO_INFO: '/api/portfolio/info',/// portfolio/info/{id}
+  ORTFOLIO_DELETE: '/api/portfolio/del',/// portfolio/del/{id}
+
 }

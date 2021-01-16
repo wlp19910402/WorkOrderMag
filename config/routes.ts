@@ -88,8 +88,13 @@
                 routes: [
                   {
                     path: '/archive/company',
-                    name: "公司管理",
+                    name: "安装单位管理",
                     component: './archive/Company'
+                  },
+                  {
+                    path: '/archive/portfolio',
+                    name: "设备档案管理",
+                    component: './archive/Portfolio'
                   }
                 ]
               },

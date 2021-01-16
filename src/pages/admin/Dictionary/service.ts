@@ -26,17 +26,27 @@ export const queryDictionaryType = async (type: string) => {
 }
 
 export const fetchDicTypeSelect = async (type: string) => {
-  const response = await queryDictionaryType(type)
-  if (!response) return []
-  return response.data.map((item: any) => ({ label: item.value, value: item.code }))
+  try {
+    const response = await queryDictionaryType(type)
+    if (!response) return []
+    return response.data.map((item: any) => ({ label: item.value, value: item.code }))
+  } catch (err) {
+    console.log(err)
+    return {}
+  }
 }
 
 export const fetchDicTypeSelectObj = async (type: string) => {
-  const response = await queryDictionaryType(type)
-  if (!response) return []
-  let obj = {}
-  response.data.map((item: any) => ({ label: item.value, value: item.code })).forEach((item: any) => {
-    obj[ item.value ] = item.label
-  })
-  return obj
+  try {
+    const response = await queryDictionaryType(type)
+    if (!response) return []
+    let obj = {}
+    response.data.map((item: any) => ({ label: item.value, value: item.code })).forEach((item: any) => {
+      obj[ item.value ] = item.label
+    })
+    return obj
+  } catch (err) {
+    console.log(err)
+    return []
+  }
 }

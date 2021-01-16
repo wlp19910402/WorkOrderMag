@@ -13,7 +13,7 @@ export const saveRole = async (params: RoleDataType) => {
 }
 // 删除用户
 export const deleteRole = async (id: string) => {
-  return await httpServer.post(`${API.ROLE_DELETE  }/${  id}`)
+  return await httpServer.post(`${API.ROLE_DELETE}/${id}`)
 }
 // 角色绑定
 export const BindRole = async (params: SaveRoleParamsType) => {
@@ -21,5 +21,5 @@ export const BindRole = async (params: SaveRoleParamsType) => {
 }
 // 绑定权限回显
 export const getRoleDetail = async (id: string) => {
-  return await httpServer.get(`${API.ROLE_DETAIL  }/${  id}`)
+  return await httpServer.get(`${API.ROLE_INFO}/${id}`)
 }

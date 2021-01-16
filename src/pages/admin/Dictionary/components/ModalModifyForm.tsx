@@ -171,6 +171,7 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
         name="code"
         placeholder="请输入字典码"
         initialValue={ currentRow?.code }
+        disabled={ currentRow?.id !== undefined }
       />
       <ProFormText
         rules={ [

@@ -6,14 +6,14 @@ import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
 import type { ProDescriptionsItemProps } from '@ant-design/pro-descriptions';
 import ProDescriptions from '@ant-design/pro-descriptions';
-import { queryDeviceList, deleteDevice } from './service';
-import type { DeviceListDataType } from './data.d';
+import { queryProtfolioList, deleteProtfolio } from './service';
+import type { PortfolioListDataType } from './data.d';
 import ModalModifyForm from './components/ModalModifyForm'
 import ImgNull from '@/assets/images/images-null.png';
 import { fetchDicTypeSelectObj } from '@/pages/admin/Dictionary/service'
 import CODE from '@/utils/DicCode.d'
 import SearchSelect from '@/components/common/SerchSelect'
-// const handleRemove = async (selectedRows: DeviceListDataType[]) => {
+// const handleRemove = async (selectedRows: PortfolioListDataType[]) => {
 //   const hide = message.loading('正在删除');
 //   if (!selectedRows) return true;
 //   try {
@@ -26,11 +26,11 @@ import SearchSelect from '@/components/common/SerchSelect'
 //     return false;
 //   }
 // };
-const DictionaryList: React.FC<DeviceListDataType> = () => {
+const DictionaryList: React.FC<PortfolioListDataType> = () => {
   const [ showDetail, setShowDetail ] = useState<boolean>(false);
   const actionRef = useRef<ActionType>();
-  const [ currentRow, setCurrentRow ] = useState<DeviceListDataType>();
-  const [ selectedRowsState, setSelectedRows ] = useState<DeviceListDataType[]>([]);
+  const [ currentRow, setCurrentRow ] = useState<PortfolioListDataType>();
+  const [ selectedRowsState, setSelectedRows ] = useState<PortfolioListDataType[]>([]);
   const [ createModalVisible, handleModalVisible ] = useState<boolean>(false);
   const [ searchType, setSearchType ] = useState<any>({})//设备类型
   let dicCode = async () => {
@@ -46,13 +46,8 @@ const DictionaryList: React.FC<DeviceListDataType> = () => {
       hideInSearch: true
     },
     {
-      title: "设备品牌",
-      dataIndex: 'brandName',
-      hideInSearch: true,
-    },
-    {
-      title: "设备名称",
-      dataIndex: 'name',
+      title: "档案编号",
+      dataIndex: 'no',
       render: (val, entity) => {
         return (
           <a
@@ -65,6 +60,30 @@ const DictionaryList: React.FC<DeviceListDataType> = () => {
           </a>
         );
       }
+    },
+    {
+      title: "单位id",
+      dataIndex: 'companyId',
+      hideInSearch: true,
+      hideInTable: true
+    },
+    {
+      title: "单位名称",
+      dataIndex: 'companyName',
+    }, {
+      title: "二维码code",
+      dataIndex: 'qrCodde',
+    },
+    {
+      title: "设备id",
+      dataIndex: 'deviceId',
+      hideInSearch: true,
+      hideInTable: true
+    },
+    {
+      title: "设备名称",
+      dataIndex: 'deviceName',
+
     },
     {
       title: "图片",
@@ -89,8 +108,9 @@ const DictionaryList: React.FC<DeviceListDataType> = () => {
       }
     },
     {
-      title: "设备编号",
-      dataIndex: 'no'
+      title: "品牌名称",
+      dataIndex: 'brandName',
+      hideInSearch: true,
     },
     {
       title: "设备类型",
@@ -155,10 +175,23 @@ const DictionaryList: React.FC<DeviceListDataType> = () => {
       },
     },
     {
+      title: "安装位置",
+      dataIndex: 'installLocation',
+      hideInSearch: true,
+      hideInTable: true
+    },
+    {
+      title: "安装时间",
+      dataIndex: 'installTime',
+      hideInSearch: true,
+      hideInTable: true
+    },
+    {
       title: "创建人",
       dataIndex: 'createUsername',
       hideInForm: true,
-      hideInSearch: true
+      hideInSearch: true,
+      hideInTable: true
     },
     {
       title: "创建日期",
@@ -171,7 +204,8 @@ const DictionaryList: React.FC<DeviceListDataType> = () => {
       title: "修改人",
       dataIndex: 'updateUsername',
       hideInForm: true,
-      hideInSearch: true
+      hideInSearch: true,
+      hideInTable: true
     },
     {
       title: "修改时间",
@@ -233,19 +267,19 @@ const DictionaryList: React.FC<DeviceListDataType> = () => {
     return item
   })
   const tiggerDelete = async (id: string) => {
-    const response = await deleteDevice(id)
+    const response = await deleteProtfolio(id)
     if (!response) return
     if (actionRef.current) {
       actionRef.current.reloadAndRest?.();
     }
     message.success("删除成功")
   }
-  const fetchUserEdit = async (record: DeviceListDataType) => {
+  const fetchUserEdit = async (record: PortfolioListDataType) => {
     await setCurrentRow(record);
     handleModalVisible(true);
   }
   const fetchQueryList = async (params: any) => {
-    const response = await queryDeviceList(params)
+    const response = await queryProtfolioList(params)
     if (!response) return
     const { data } = response;
     return ({ ...data, data: data.records })
@@ -317,7 +351,7 @@ const DictionaryList: React.FC<DeviceListDataType> = () => {
         closable={ false }
       >
         { currentRow?.id && (
-          <ProDescriptions<DeviceListDataType>
+          <ProDescriptions<PortfolioListDataType>
             column={ 1 }
             title={ currentRow?.name }
             key={ currentRow?.id }
@@ -327,7 +361,7 @@ const DictionaryList: React.FC<DeviceListDataType> = () => {
             params={ {
               id: currentRow?.id,
             } }
-            columns={ columnsDrawer as ProDescriptionsItemProps<DeviceListDataType>[] }
+            columns={ columnsDrawer as ProDescriptionsItemProps<PortfolioListDataType>[] }
           />
         ) }
       </Drawer>
