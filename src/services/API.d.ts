@@ -47,4 +47,9 @@ export default {
   PART_DETAIL: '/api/part/info',/// part/info/{id}
   PART_DELETE: '/api/part/del',/// part/del/{id}
   PART_SAVE: '/api/part/save',
+  // 公司管理- 设备档案管理接口
+  COMPANY_LIST: '/api/company/list',
+  COMPANY_DETAIL: '/api/company/info',/// company/info/{id}
+  COMPANY_DELETE: '/api/company/del',/// company/del/{id}
+  COMPANY_SAVE: '/api/company/save',
 }

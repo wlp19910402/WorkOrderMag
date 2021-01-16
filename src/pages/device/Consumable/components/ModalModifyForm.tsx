@@ -1,5 +1,5 @@
 /**
- * 设备列表 编辑 和 新增
+ * 耗材列表 编辑 和 新增
  */
 import React, { useState, useEffect, useRef } from 'react';
 import type { ActionType } from '@ant-design/pro-table';
@@ -62,7 +62,7 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
       modalProps={ {
         maskClosable: false
       } }
-      title={ currentRow?.id !== undefined ? "设备编辑" : "设备新增" }
+      title={ currentRow?.id !== undefined ? "耗材编辑" : "耗材新增" }
       width="600px"
       visible={ createModalVisible }
       onVisibleChange={ handleModalVisible }

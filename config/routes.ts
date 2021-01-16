@@ -82,6 +82,18 @@
                 ]
               },
               {
+                path: '/archive',
+                name: '设备档案管理',
+                icon: 'smile',
+                routes: [
+                  {
+                    path: '/archive/company',
+                    name: "公司管理",
+                    component: './archive/Company'
+                  }
+                ]
+              },
+              {
                 name: "exception",
                 path: "/exception",
                 routes: [
