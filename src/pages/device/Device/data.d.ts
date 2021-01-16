@@ -5,6 +5,7 @@ export type DeviceSearchType = {
   no?: string;
   model?: string;
   type?: string;
+  brand?: string;//品牌
 } & PageDataType
 // 设备保存
 export type DeviceSaveDataType = {
@@ -25,7 +26,6 @@ export type DeviceListDataType = {
   createUsername: string;
   updateUsername: string;
   brandName: string;
-  module: string;
-  moduleName: string;
+  modelName: string;
   typeName: string;// 设备类型
 } & DeviceSaveDataType

@@ -57,8 +57,8 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
     currentRow?.type && fetchDicTypeSelectObj(currentRow?.type).then(res => {
       setSearchModel(res);
     });
-    currentRow?.model && fetchDicTypeSelectObj(currentRow?.model).then(res => {
-      setSearchBrand(res);
+    currentRow?.brand && fetchDicTypeSelectObj(currentRow?.brand).then(res => {
+      setSearchModel(res);
     });
   }, [])
   const formRef = useRef<any | null>(null);
@@ -106,7 +106,7 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
           fetchDicTypeSelectObj(arg).then(async (res) => {
             await setLoadingModel(true);
             await setLoadingBrand(true);
-            await setSearchModel(res);
+            await setSearchBrand(res);
             setLoadingModel(false);
             setLoadingBrand(false);
             formRef.current.setFieldsValue({ "model": undefined })
@@ -115,32 +115,6 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
           return arg
         } }
       />
-      <Spin spinning={ loadingModel }>
-        <ProFormSelect
-          name="model"
-          label="设备型号"
-          rules={ [
-            {
-              required: true,
-              message: "请选择设备型号！"
-            },
-          ] }
-          valueEnum={ {
-            ...searchModel
-          } }
-          placeholder="请选择设备型号"
-          initialValue={ currentRow?.model }
-          getValueFromEvent={ (arg) => {
-            fetchDicTypeSelectObj(arg).then(async (res) => {
-              await setLoadingBrand(true);
-              await setSearchBrand(res);
-              setLoadingBrand(false);
-              formRef.current.setFieldsValue({ "brand": undefined })
-            });
-            return arg
-          } }
-        />
-      </Spin>
       <Spin spinning={ loadingBrand }>
         <ProFormSelect
           name="brand"
@@ -156,6 +130,32 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
           } }
           placeholder="请选择品牌"
           initialValue={ currentRow?.brand }
+          getValueFromEvent={ (arg) => {
+            fetchDicTypeSelectObj(arg).then(async (res) => {
+              await setLoadingBrand(true);
+              await setSearchModel(res);
+              setLoadingBrand(false);
+              formRef.current.setFieldsValue({ "model": undefined })
+            });
+            return arg
+          } }
+        />
+      </Spin>
+      <Spin spinning={ loadingModel }>
+        <ProFormSelect
+          name="model"
+          label="设备型号"
+          rules={ [
+            {
+              required: true,
+              message: "请选择设备型号！"
+            },
+          ] }
+          valueEnum={ {
+            ...searchModel
+          } }
+          placeholder="请选择设备型号"
+          initialValue={ currentRow?.model }
         />
       </Spin>
       <ProFormTextArea

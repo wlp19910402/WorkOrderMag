@@ -33,7 +33,6 @@ const DictionaryList: React.FC<DeviceListDataType> = () => {
   const [ selectedRowsState, setSelectedRows ] = useState<DeviceListDataType[]>([]);
   const [ createModalVisible, handleModalVisible ] = useState<boolean>(false);
   const [ searchType, setSearchType ] = useState<any>({})//设备类型
-  const [ searchBrand, setSearchBrand ] = useState<any>({})//品牌
   let dicCode = async () => {
     setSearchType(await fetchDicTypeSelectObj(CODE.DEVICE_TYPE))
   }
@@ -109,13 +108,8 @@ const DictionaryList: React.FC<DeviceListDataType> = () => {
       },
     },
     {
-      title: "设备型号",
-      dataIndex: 'moduleName',
-      hideInSearch: true
-    },
-    {
-      title: "设备型号",
-      dataIndex: 'module',
+      title: "品牌",
+      dataIndex: 'brand',
       hideInDescriptions: true,
       hideInTable: true,
       valueType: 'select',
@@ -126,6 +120,32 @@ const DictionaryList: React.FC<DeviceListDataType> = () => {
         const stateType = form.getFieldValue('type');
         return (
           < SearchSelect
+            { ...rest }
+            state={ {
+              type: stateType,
+            } }
+          />
+        );
+      },
+    },
+    {
+      title: "设备品牌",
+      dataIndex: 'modelName',
+      hideInSearch: true,
+    },
+    {
+      title: "设备型号",
+      dataIndex: 'model',
+      hideInDescriptions: true,
+      hideInTable: true,
+      valueType: 'select',
+      renderFormItem: (item, { type, defaultRender, ...rest }, form) => {
+        if (type === 'form') {
+          return null;
+        }
+        const stateType = form.getFieldValue('brand');
+        return (
+          <SearchSelect
             { ...rest }
             state={ {
               type: stateType,
