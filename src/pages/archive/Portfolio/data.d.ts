@@ -1,4 +1,6 @@
 import { PageDataType } from '../data.d'
+import { PartListDataType } from '@/pages/device/Part/data.d'
+import { ConsumableListDataType } from '@/pages/device/Consumable/data.d'
 // 设备档案管理查询搜索的
 export type PortfolioSearchType = {
   no?: string;//档案编号
@@ -24,7 +26,7 @@ export type PortfolioSaveDataType = {
   model?: string;// 设备型号
   type?: string;// 设备类型
 }
-// 设备详情
+// 设备列表详情
 export type PortfolioListDataType = {
   createTime: string;// 创建日期
   createUser: number;// 创建人
@@ -38,3 +40,45 @@ export type PortfolioListDataType = {
   imgUrls: string[];
   no: string;//档案编号
 } & DeviceSaveDataType
+export type RecordPartsDataType = {
+  baseInfo: PartListDataType[]
+  createTime: string;
+  createUser: string;
+  reateUsername: string;
+  id: number;//档案备件id
+  portfolioId: number;//档案id
+  warrantyPeriod: string;//报修周期
+}
+export type RecordConsumableDataType = {
+  baseInfo: ConsumableListDataType[]
+  createTime: string;
+  createUser: string;
+  reateUsername: string;
+  id: number;//档案耗材id
+  consumableId: number;//耗材id
+  warrantyPeriod: string;
+  expirationTime: string;
+  portfolioId: number;
+  replacementCycle: string;
+  replacementTime: string;
+}
+export type PortfolioInfoDataType = {
+  consumables: RecordConsumableDataType[],
+  parts: RecordPartsDataType[]//档案耗材信息
+} & PortfolioListDataType
+//档案耗材添加
+export type ConsumableAddDataType = {
+  consumableId: number,//耗材id
+  expirationTime: string,//到期时间
+  num: number,//数量
+  portfolioId: number,//档案id
+  replacementCycle: string,// 更换周期
+  replacementTime: string// 实际更换时间
+}
+//档案耗材编辑
+export type ConsumableEditDataType = {
+  expirationTime: string;//到期时间
+  id: number;//档案耗材id
+  replacementCycle: string;//更换周期
+  replacementTime: string;//实际更换时间
+}

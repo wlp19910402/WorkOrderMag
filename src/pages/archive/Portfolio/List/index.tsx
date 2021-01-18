@@ -11,7 +11,7 @@ import type { PortfolioListDataType } from '../data';
 import ImgNull from '@/assets/images/images-null.png';
 import { fetchDicTypeSelectObj } from '@/pages/admin/Dictionary/service'
 import CODE from '@/utils/DicCode.d'
-import { history } from 'umi'
+import { history, Link } from 'umi'
 import SearchSelect from '@/components/common/SerchSelect'
 // const handleRemove = async (selectedRows: PortfolioListDataType[]) => {
 //   const hide = message.loading('正在删除');
@@ -224,20 +224,26 @@ const DictionaryList: React.FC<PortfolioListDataType> = () => {
     {
       title: "操作",
       valueType: 'option',
-      width: "140px",
+      width: "120px",
       render: (_, record) => [
-        <Button
-          type="text"
-          size="small"
-          onClick={ () => { history.push(`/archive/portfolio/edit/${record.id}`) } }
-        >
-          编辑
-        </Button>,
         <Popconfirm
           title="是否要删除此行？"
           onConfirm={ () => { record.id !== undefined && tiggerDelete(record.id?.toString()); } }>
-          <Button size="small" type="text" >删除</Button>
-        </Popconfirm>
+          <a>删除</a>
+        </Popconfirm>,
+        <Link to={ `/archive/portfolio/edit/${record.id}` }>
+          编辑
+        </Link>,
+        <Link to={ `/archive/portfolio/consumablemodify/${record.id}` }>
+          耗材
+       </Link>,
+        <Link to={ `/archive/portfolio/edit/${record.id}` }>
+          备件
+        </Link>,
+        <Link to={ `/archive/portfolio/info/${record.id}` }>
+          详情
+        </Link>
+
       ],
     },
   ];

@@ -1,9 +1,8 @@
-import { Card, Form, Select, Descriptions, Button, Row, Col, Input, Popover, InputNumber, DatePicker, message } from 'antd';
+import { Card, Form, Select, Descriptions, Button, Row, Col, Input, InputNumber, DatePicker, message } from 'antd';
 import moment from 'moment';
-import { CloseCircleOutlined } from '@ant-design/icons';
 import React, { useState, useEffect } from 'react';
-import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
-import type { PortfolioListDataType, PortfolioSaveDataType } from '../data.d';
+import { FooterToolbar } from '@ant-design/pro-layout';
+import type { PortfolioListDataType, PortfolioSaveDataType } from '../data';
 import { findCompanyByName } from '@/pages/archive/Company/service'
 import { queryDeviceList } from '@/pages/device/Device/service'
 import { DeviceListDataType } from '@/pages/device/Device/data.d'
@@ -109,59 +108,68 @@ const DictionaryList: React.FC<ModifyFormTypeProps> = ({ currentRow }) => {
       onFinish={ onFinish }
       onFinishFailed={ onFinishFailed }
     >
-      <Card title="单位信息" style={ { marginBottom: "20px" } } bordered={ false }>
-        <Form.Item label="单位名称" name="companyName"
-          rules={ [ { required: true, message: '请输入单位名称' } ] }
-          initialValue={ currentRow?.companyName }>
-          <Select
-            showSearch
-            style={ { width: "240px" } }
-            size="large"
-            placeholder="检索单位名称"
-            optionFilterProp="children"
-            onChange={ companyChange }
-            onSearch={ searchCompany }
-          >
-            { companyNameOptions?.map((item: any) => <Select.Option key={ item.value } value={ item.value } >{ item.label }</Select.Option>) }
-          </Select>
-        </Form.Item>
-        <Descriptions bordered size="small"
-          column={ { xs: 3, sm: 3, md: 3, lg: 3, xl: 5, xxl: 5 } }
-          labelStyle={ { width: "80px", padding: "8px" } }
-        >
-          <Descriptions.Item label="单位ID" >{ selectCompanyData?.id ? selectCompanyData.id : "" }</Descriptions.Item>
-          <Descriptions.Item label="单位编号">{ selectCompanyData?.no ? selectCompanyData.no : "" }</Descriptions.Item>
-          <Descriptions.Item label="单位名称">{ selectCompanyData?.company ? selectCompanyData.company : "" }</Descriptions.Item>
-          <Descriptions.Item label="联系人">{ selectCompanyData?.contactUser ? selectCompanyData.contactUser : "" }</Descriptions.Item>
-          <Descriptions.Item label="联系电话">{ selectCompanyData?.contactMobile ? selectCompanyData.contactMobile : "" }</Descriptions.Item>
-        </Descriptions>
-      </Card>
-      <Card title="设备信息" style={ { marginBottom: "20px" } } bordered={ false }>
-        <Form.Item label="设备名称" rules={ [ { required: true, message: '请输入设备名称' } ] } name="deviceName" initialValue={ currentRow?.deviceName }>
-          <Select
-            showSearch
-            style={ { width: "240px" } }
-            size="large"
-            placeholder="检索设备名称"
-            optionFilterProp="children"
-            onChange={ deviceChange }
-            onSearch={ searchDevice }
-          >
-            { deviceNameOptions?.map((item: any) => <Select.Option key={ item.value } value={ item.value } >{ item.label }</Select.Option>) }
-          </Select>
-        </Form.Item>
-        <Descriptions bordered size="small"
-          column={ { xs: 3, sm: 3, md: 3, lg: 3, xl: 5, xxl: 5 } }
-          labelStyle={ { width: "80px", padding: "8px" } }
-        >
-          <Descriptions.Item label="设备ID">{ selectDeviceData?.id ? selectDeviceData?.id : "" }</Descriptions.Item>
-          <Descriptions.Item label="设备编号">{ selectDeviceData?.no ? selectDeviceData?.no : "" }</Descriptions.Item>
-          <Descriptions.Item label="设备名称">{ selectDeviceData?.name ? selectDeviceData?.name : "" }</Descriptions.Item>
-          <Descriptions.Item label="设备类型">{ selectDeviceData?.typeName ? selectDeviceData?.typeName : "" }</Descriptions.Item>
-          <Descriptions.Item label="设备品牌">{ selectDeviceData?.brandName ? selectDeviceData?.brandName : "" }</Descriptions.Item>
-          <Descriptions.Item label="联系电话">{ selectDeviceData?.modelName ? selectDeviceData?.modelName : "" }</Descriptions.Item>
-        </Descriptions>
-      </Card>
+      <Row gutter={ 20 }>
+        <Col span={ 12 }>
+          <Card title="单位信息" style={ { marginBottom: "20px" } } bordered={ false }>
+            <Form.Item label="单位名称" name="companyName"
+              rules={ [ { required: true, message: '请输入单位名称' } ] }
+              initialValue={ currentRow?.companyName }>
+              <Select
+                showSearch
+                style={ { width: "240px" } }
+                size="large"
+                placeholder="检索单位名称"
+                optionFilterProp="children"
+                onChange={ companyChange }
+                onSearch={ searchCompany }
+                disabled={ currentRow?.id !== undefined }
+              >
+                { companyNameOptions?.map((item: any) => <Select.Option key={ item.value } value={ item.value } >{ item.label }</Select.Option>) }
+              </Select>
+            </Form.Item>
+            <Descriptions bordered size="small"
+              column={ { xs: 2, sm: 2, md: 2, lg: 2, xl: 2, xxl: 2 } }
+              labelStyle={ { width: "80px", padding: "8px" } }
+            >
+              <Descriptions.Item label="单位ID" >{ selectCompanyData?.id ? selectCompanyData.id : "" }</Descriptions.Item>
+              <Descriptions.Item label="单位编号">{ selectCompanyData?.no ? selectCompanyData.no : "" }</Descriptions.Item>
+              <Descriptions.Item label="单位名称">{ selectCompanyData?.company ? selectCompanyData.company : "" }</Descriptions.Item>
+              <Descriptions.Item label="联系人">{ selectCompanyData?.contactUser ? selectCompanyData.contactUser : "" }</Descriptions.Item>
+              <Descriptions.Item label="联系电话">{ selectCompanyData?.contactMobile ? selectCompanyData.contactMobile : "" }</Descriptions.Item>
+            </Descriptions>
+          </Card>
+
+        </Col>
+        <Col span={ 12 }>
+          <Card title="设备信息" style={ { marginBottom: "20px" } } bordered={ false }>
+            <Form.Item label="设备名称" rules={ [ { required: true, message: '请输入设备名称' } ] } name="deviceName" initialValue={ currentRow?.deviceName }>
+              <Select
+                showSearch
+                style={ { width: "240px" } }
+                size="large"
+                placeholder="检索设备名称"
+                optionFilterProp="children"
+                onChange={ deviceChange }
+                onSearch={ searchDevice }
+                disabled={ currentRow?.id !== undefined }
+              >
+                { deviceNameOptions?.map((item: any) => <Select.Option key={ item.value } value={ item.value } >{ item.label }</Select.Option>) }
+              </Select>
+            </Form.Item>
+            <Descriptions bordered size="small"
+              column={ { xs: 2, sm: 2, md: 2, lg: 2, xl: 2, xxl: 2 } }
+              labelStyle={ { width: "80px", padding: "8px" } }
+            >
+              <Descriptions.Item label="设备ID">{ selectDeviceData?.id ? selectDeviceData?.id : "" }</Descriptions.Item>
+              <Descriptions.Item label="设备编号">{ selectDeviceData?.no ? selectDeviceData?.no : "" }</Descriptions.Item>
+              <Descriptions.Item label="设备名称">{ selectDeviceData?.name ? selectDeviceData?.name : "" }</Descriptions.Item>
+              <Descriptions.Item label="设备类型">{ selectDeviceData?.typeName ? selectDeviceData?.typeName : "" }</Descriptions.Item>
+              <Descriptions.Item label="设备品牌">{ selectDeviceData?.brandName ? selectDeviceData?.brandName : "" }</Descriptions.Item>
+              <Descriptions.Item label="联系电话">{ selectDeviceData?.modelName ? selectDeviceData?.modelName : "" }</Descriptions.Item>
+            </Descriptions>
+          </Card>
+        </Col>
+      </Row>
       <Card title="档案基本信息" bordered={ false }>
         <Row gutter={ 10 } >
           <Col { ...colProps }>

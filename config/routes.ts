@@ -108,6 +108,14 @@
                         path: '/archive/portfolio/edit/:id',
                         name: "设备档案编辑",
                         component: './archive/Portfolio/Edit/[id]',
+                      }, {
+                        path: '/archive/portfolio/consumablemodify/:id',
+                        name: "耗材管理",
+                        component: './archive/Portfolio/ConsumableModify/[id]',
+                      }, {
+                        path: '/archive/portfolio/info/:id',
+                        name: "详情",
+                        component: './archive/Portfolio/info/[id]',
                       }
                     ]
                   }
