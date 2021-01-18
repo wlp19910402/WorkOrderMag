@@ -56,6 +56,7 @@ const menuDataRender = (menuList: MenuDataItem[]): MenuDataItem[] => menuList.ma
     key: item.id.toString(),
     routes: item.children && item.children?.length ? menuDataRender(item.children) : undefined,
     children: item.children && item.children?.length ? menuDataRender(item.children) : undefined,
+    hideInMenu: item.hideInMenu
   };
   return Authorized.check(item.perms, localItem, null) as MenuDataItem;
 });
@@ -94,6 +95,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
   );
   return (
     <>
+      {JSON.stringify(currentMenu) }
       {
         currentMenu.length > 0 && <ProLayout
           menuDataRender={ () => menuDataRender(currentMenu) }

@@ -3,7 +3,7 @@
  */
 import React from 'react';
 import { Button, Row, Col, Form, Input, Radio } from 'antd'
-import type { MenuDataType, TypeFormType} from '../data.d';
+import type { MenuDataType, TypeFormType } from '../data.d';
 import { menuDefault } from '../data.d';
 import type { Dispatch } from 'umi'
 
@@ -87,6 +87,9 @@ const ModifyForm: React.FC<ModifyFormDataProps> = (props) => {
       }
       {
         typeFormType === 2 && <>
+          <Form.Item initialValue={ currentRow.url } label="菜单地址" name="url" >
+            <Input placeholder="请输入菜单地址" disabled={ editDisable } />
+          </Form.Item>
           <Form.Item label="授权标识：" name="perms" >
             <Input placeholder="请输入授权标识" disabled={ editDisable } />
           </Form.Item>

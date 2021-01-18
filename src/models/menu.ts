@@ -28,7 +28,7 @@ const fetchFaltMenuData: any = (menuData: MenuDataType[] | []) => {
   const tmpArr: any = [];
   const fn = (data: MenuDataType[]) => {
     if (data.length > 0) {
-      data?.forEach((item: any) => {
+      data.forEach((item: any) => {
         tmpArr.push(item)
         if (item.children?.length > 0) {
           fn(item.children)
@@ -38,6 +38,20 @@ const fetchFaltMenuData: any = (menuData: MenuDataType[] | []) => {
   }
   fn(menuData)
   return tmpArr;
+}
+const hideChildrenInMenu: any = (menuData: MenuDataType[] | []) => {
+  const fn = (data: any) => {
+    if (data.length > 0) {
+      data.forEach((item: any) => {
+        item.hideInMenu = item.type === "2" || item.type === 2
+        if (item.children?.length > 0) {
+          item.children = fn(item.children)
+        }
+      })
+      return data;
+    }
+  }
+  return fn(menuData)
 }
 export type MenuModelType = {
   namespace: string;
@@ -110,7 +124,7 @@ const Model: MenuModelType = {
         });
         return
       };
-      const menuData = response.data
+      const menuData = hideChildrenInMenu(response.data)
       yield put({
         type: 'changeCurrentMenu',
         payload: [ welcome, ...menuData ]

@@ -1,6 +1,6 @@
 import { Popover } from 'antd';
 import { CloseCircleOutlined } from '@ant-design/icons';
-import React, { useState } from 'react';
+import React from 'react';
 import styles from './ErrorForm.less';
 export interface ErrorField {
   name: (string | number)[];
