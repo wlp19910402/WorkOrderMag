@@ -9,66 +9,20 @@ import { queryDeviceList } from '@/pages/device/Device/service'
 import { DeviceListDataType } from '@/pages/device/Device/data.d'
 import { CompanyListDataType } from '@/pages/archive/Company/data.d'
 import { saveProtfolio } from '../service'
-import styles from '../style.less';
 import { history } from 'umi'
+import getErrorInfo, { ErrorField } from '@/components/common/ErrorForm'
 interface ModifyFormTypeProps {
   currentRow?: PortfolioListDataType
 }
-interface ErrorField {
-  name: (string | number)[];
-  errors: string[];
-}
+const colProps = { xs: 24, sm: 24, md: 16, lg: 8, xl: 8, xxl: 8 };
 const DictionaryList: React.FC<ModifyFormTypeProps> = ({ currentRow }) => {
   const [ companyNameOptions, setCompanyNameOptions ] = useState<any[]>([])
   const [ selectCompanyData, setSelectCompanyData ] = useState<CompanyListDataType>()
   const [ deviceNameOptions, setDeviceNameOptions ] = useState<any[]>([])
   const [ selectDeviceData, setSelectDeviceData ] = useState<DeviceListDataType>()
   const [ error, setError ] = useState<ErrorField[]>([]);
-  const getErrorInfo = (errors: ErrorField[]) => {
-    const errorCount = errors.filter((item) => item.errors.length > 0).length;
-    if (!errors || errorCount === 0) {
-      return null;
-    }
-    const scrollToField = (fieldKey: string) => {
-      const labelNode = document.querySelector(`label[for="${fieldKey}"]`);
-      if (labelNode) {
-        labelNode.scrollIntoView(true);
-      }
-    }
-    const errorList = errors.map((err) => {
-      if (!err || err.errors.length === 0) {
-        return null;
-      }
-      const key = err.name[ 0 ] as string;
-      return (
-        <li key={ key } className={ styles.errorListItem } onClick={ () => scrollToField(key) }>
-          <CloseCircleOutlined className={ styles.errorIcon } />
-          <div className={ styles.errorMessage }>{ err.errors[ 0 ] }</div>
-        </li>
-      );
-    })
-    return (
-      <span className={ styles.errorIcon }>
-        <Popover
-          title="表单校验信息"
-          content={ errorList }
-          overlayClassName={ styles.errorPopover }
-          trigger="click"
-          getPopupContainer={ (trigger: HTMLElement) => {
-            if (trigger && trigger.parentNode) {
-              return trigger.parentNode as HTMLElement;
-            }
-            return trigger;
-          } }
-        >
-          <CloseCircleOutlined />
-        </Popover>
-        {errorCount }
-      </span>
-    );
-  }
   const searchCompany = async (name?: string) => {
-    findCompanyByName(name).then(res => {
+    return findCompanyByName(name).then(async (res) => {
       let arr = []
       if (res) {
         arr = res.data.map((item: any) => ({
@@ -77,14 +31,17 @@ const DictionaryList: React.FC<ModifyFormTypeProps> = ({ currentRow }) => {
           value: item.id
         }))
       }
-      setCompanyNameOptions(arr)
+      await setCompanyNameOptions(arr)
+      return arr
+    }).catch(err => {
+      return false
     })
   }
-  const companyChange = (val: any) => {
+  const companyChange = async (val: any) => {
     setSelectCompanyData(companyNameOptions.find(item => item.id === val))
   }
   const searchDevice = (name: string = "") => {
-    queryDeviceList({
+    return queryDeviceList({
       pageSize: 10,
       current: 1,
       name: name
@@ -98,15 +55,28 @@ const DictionaryList: React.FC<ModifyFormTypeProps> = ({ currentRow }) => {
         }))
       }
       setDeviceNameOptions(arr)
+      return arr
+    }).catch(err => {
+      return false
     })
   }
   const deviceChange = (val: any) => {
     setSelectDeviceData(deviceNameOptions.find(item => item.id === val))
   }
-  const colProps = { xs: 24, sm: 24, md: 16, lg: 8, xl: 8, xxl: 8 };
+  const initFetchData = async () => {
+    searchCompany(currentRow?.companyName).then(res => {
+      if (res && currentRow?.id !== undefined) {
+        setSelectCompanyData(res.find((item: any) => item.company === currentRow?.companyName))
+      }
+    });
+    searchDevice(currentRow?.deviceName).then(res => {
+      if (res && currentRow?.id !== undefined) {
+        setSelectDeviceData(res.find((item: any) => item.name === currentRow?.deviceName))
+      }
+    });
+  }
   useEffect(() => {
-    searchCompany(currentRow?.companyName);
-    searchDevice(currentRow?.deviceName);
+    initFetchData()
   }, [])
   const [ form ] = Form.useForm();
   const onFinish = async (values: { [ key: string ]: any }) => {
@@ -130,7 +100,6 @@ const DictionaryList: React.FC<ModifyFormTypeProps> = ({ currentRow }) => {
     message.success("保存成功")
     history.replace('/archive/portfolio/list');
   }
-
   const onFinishFailed = (errorInfo: any) => {
     setError(errorInfo.errorFields);
   }
