@@ -8,7 +8,6 @@ export const queryCompanyList = async (params: CompanySearchType) => {
       pageSize: params.pageSize,
       pageNo: params.current,
       company: params.company,
-      no: params.no,
       contactMobile: params.contactMobile,
       contactUser: params.contactUser
     }
@@ -20,4 +19,8 @@ export const saveCompany = async (params: CompanySaveDataType) => {
 
 export const deleteCompany = async (id: string) => {
   return httpServer.post(`${API.COMPANY_DELETE}/${id}`)
+}
+
+export const findCompanyByName = async (name: string = "") => {
+  return httpServer.get(API.COMPANY_FIND_BY_NAME, { params: { name: name } })
 }

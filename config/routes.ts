@@ -94,7 +94,22 @@
                   {
                     path: '/archive/portfolio',
                     name: "设备档案管理",
-                    component: './archive/Portfolio'
+                    routes: [
+                      {
+                        path: '/archive/portfolio/list',
+                        name: "设备档案管理",
+                        component: './archive/Portfolio/List/index',
+                      },
+                      {
+                        path: '/archive/portfolio/create',
+                        name: "设备档案新增",
+                        component: './archive/Portfolio/Create/index',
+                      }, {
+                        path: '/archive/portfolio/edit/:id',
+                        name: "设备档案编辑",
+                        component: './archive/Portfolio/Edit/[id]',
+                      }
+                    ]
                   }
                 ]
               },

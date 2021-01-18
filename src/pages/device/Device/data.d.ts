@@ -13,7 +13,7 @@ export type DeviceSaveDataType = {
   description: string;// 设备描述
   id?: number;// 主键
   imgUrls: string[];// 图片
-  name: string[];// 设备名称
+  name: string;// 设备名称
   model: string;// 规格
   type: string;// 设备类型
 }
@@ -27,5 +27,6 @@ export type DeviceListDataType = {
   updateUsername: string;
   brandName: string;
   modelName: string;
+  no: string;
   typeName: string;// 设备类型
 } & DeviceSaveDataType

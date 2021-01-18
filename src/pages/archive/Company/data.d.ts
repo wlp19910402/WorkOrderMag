@@ -12,7 +12,6 @@ export type CompanySaveDataType = {
   id?: number;
   contactMobile: string;// 图片
   contactUser: string;// 联系人
-  no: string;// 单位编号
   remark: string;//备注
 }
 // 单位详情
@@ -22,6 +21,7 @@ export type CompanyListDataType = {
   updateTime: string;// 修改时间
   updateUser: number;// 修改人
   createUsername: string;
+  no: string;// 单位编号
   updateUsername: string;
 } & CompanySaveDataType
 

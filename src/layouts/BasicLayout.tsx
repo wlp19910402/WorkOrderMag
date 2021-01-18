@@ -6,12 +6,13 @@
 import type {
   MenuDataItem,
   BasicLayoutProps as ProLayoutProps,
-  Settings} from '@ant-design/pro-layout';
+  Settings
+} from '@ant-design/pro-layout';
 import ProLayout, {
   DefaultFooter,
 } from '@ant-design/pro-layout';
 import React, { useMemo, useRef } from 'react';
-import type { Dispatch} from 'umi';
+import type { Dispatch } from 'umi';
 import { Link, connect, history } from 'umi';
 import { Result, Button } from 'antd';
 import Authorized from '@/utils/Authorized';

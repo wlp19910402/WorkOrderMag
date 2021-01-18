@@ -49,10 +49,12 @@ const ResumeList: React.FC<UserListDataType> = () => {
     {
       title: "id",
       dataIndex: 'id',
+      key: "id",
       sorter: true
     },
     {
       title: "部门id",
+      key: "deptId",
       dataIndex: 'deptId'
     },
     {
@@ -76,16 +78,19 @@ const ResumeList: React.FC<UserListDataType> = () => {
     {
       title: "用户名",
       dataIndex: 'username',
+      key: "username",
     },
     {
       title: "电子邮箱",
       dataIndex: 'email',
       valueType: 'textarea',
+      key: "email",
     },
     {
       title: "手机号",
       dataIndex: 'mobile',
       valueType: 'textarea',
+      key: "mobile",
     },
     {
       title: "创建时间",
@@ -93,11 +98,13 @@ const ResumeList: React.FC<UserListDataType> = () => {
       hideInSearch: true,
       hideInTable: true,
       valueType: 'textarea',
+      key: "createTime",
     },
     {
       title: "状态",
       dataIndex: 'status',
       hideInForm: true,
+      key: "status",
       render: ((val, record) => {
         return (<Switch disabled={ record.id === 1 } loading={ false } onClick={ async (checked: boolean, event: Event) => {
           record.id !== undefined && switchUserStatus(record.id?.toString(), val === 1)
@@ -107,6 +114,7 @@ const ResumeList: React.FC<UserListDataType> = () => {
     {
       title: "操作",
       valueType: 'option',
+      key: "option",
       render: (_, record) => [
         <Button
           type="text"

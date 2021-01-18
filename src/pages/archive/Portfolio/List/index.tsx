@@ -6,12 +6,13 @@ import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
 import type { ProDescriptionsItemProps } from '@ant-design/pro-descriptions';
 import ProDescriptions from '@ant-design/pro-descriptions';
-import { queryProtfolioList, deleteProtfolio } from './service';
-import type { PortfolioListDataType } from './data.d';
-import ModalModifyForm from './components/ModalModifyForm'
+import { queryProtfolioList, deleteProtfolio } from '../service';
+import type { PortfolioListDataType } from '../data';
+import ModalModifyForm from '../components/ModifyForm'
 import ImgNull from '@/assets/images/images-null.png';
 import { fetchDicTypeSelectObj } from '@/pages/admin/Dictionary/service'
 import CODE from '@/utils/DicCode.d'
+import { history } from 'umi'
 import SearchSelect from '@/components/common/SerchSelect'
 // const handleRemove = async (selectedRows: PortfolioListDataType[]) => {
 //   const hide = message.loading('正在删除');
@@ -149,7 +150,7 @@ const DictionaryList: React.FC<PortfolioListDataType> = () => {
       },
     },
     {
-      title: "设备品牌",
+      title: "设备型号",
       dataIndex: 'modelName',
       hideInSearch: true,
     },
@@ -229,7 +230,7 @@ const DictionaryList: React.FC<PortfolioListDataType> = () => {
         <Button
           type="text"
           size="small"
-          onClick={ () => { fetchUserEdit(record) } }
+          onClick={ () => { history.push(`/archive/portfolio/edit/${record.id}`) } }
         >
           编辑
         </Button>,
@@ -297,7 +298,7 @@ const DictionaryList: React.FC<PortfolioListDataType> = () => {
           pageSize: 10,
         } }
         toolBarRender={ () => [
-          <Button type="primary" onClick={ async () => { await setCurrentRow(undefined); handleModalVisible(true); } }>
+          <Button type="primary" onClick={ async () => { history.push('/archive/portfolio/create') } }>
             <PlusOutlined />新建
           </Button>,
         ] }
@@ -307,8 +308,7 @@ const DictionaryList: React.FC<PortfolioListDataType> = () => {
           onChange: (_, selectedRows: any) => setSelectedRows(selectedRows),
         } }
       />
-
-      {createModalVisible && (
+      {/* {createModalVisible && (
         <ModalModifyForm
           createModalVisible={ createModalVisible }
           handleModalVisible={ handleModalVisible }
@@ -316,7 +316,7 @@ const DictionaryList: React.FC<PortfolioListDataType> = () => {
           currentRow={ currentRow }
           searchType={ searchType }
         />
-      ) }
+      ) } */}
 
       {selectedRowsState?.length > 0 && (
         <FooterToolbar

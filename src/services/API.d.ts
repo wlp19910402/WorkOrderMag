@@ -52,10 +52,10 @@ export default {
   COMPANY_INFO: '/api/company/info',/// company/info/{id}
   COMPANY_DELETE: '/api/company/del',/// company/del/{id}
   COMPANY_SAVE: '/api/company/save',
+  COMPANY_FIND_BY_NAME: "/api/company/find-by-name",
   // 档案列表管理-设备档案管理接口
   PORTFOLIO_LIST: '/api/portfolio/list',//档案列表查询
   PORTFOLIO_SAVE: '/api/portfolio/add',//
   PORTFOLIO_INFO: '/api/portfolio/info',/// portfolio/info/{id}
-  ORTFOLIO_DELETE: '/api/portfolio/del',/// portfolio/del/{id}
-
+  PORTFOLIO_DELETE: '/api/portfolio/del',/// portfolio/del/{id}
 }

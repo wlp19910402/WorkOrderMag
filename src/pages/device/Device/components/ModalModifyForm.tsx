@@ -55,7 +55,7 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
   useEffect(() => {
     setUploadUrlImage()
     currentRow?.type && fetchDicTypeSelectObj(currentRow?.type).then(res => {
-      setSearchModel(res);
+      setSearchBrand(res);
     });
     currentRow?.brand && fetchDicTypeSelectObj(currentRow?.brand).then(res => {
       setSearchModel(res);

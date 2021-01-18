@@ -59,18 +59,6 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
         rules={ [
           {
             required: true,
-            message: "请输入单位编号！"
-          },
-        ] }
-        label="单位编号"
-        name="no"
-        placeholder="请输入单位编号"
-        initialValue={ currentRow?.no }
-      />
-      <ProFormText
-        rules={ [
-          {
-            required: true,
             message: "请输入联系电话！"
           },
         ] }

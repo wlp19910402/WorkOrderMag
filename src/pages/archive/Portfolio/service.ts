@@ -22,5 +22,9 @@ export const saveProtfolio = async (params: PortfolioSaveDataType) => {
 }
 
 export const deleteProtfolio = async (id: string) => {
-  return httpServer.post(`${API.ORTFOLIO_DELETE}/${id}`)
+  return httpServer.post(`${API.PORTFOLIO_DELETE}/${id}`)
+}
+
+export const infoProtfolio = async (id: any) => {
+  return httpServer.get(`${API.PORTFOLIO_INFO}/${id}`)
 }
