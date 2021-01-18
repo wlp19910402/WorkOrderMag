@@ -8,7 +8,6 @@ import type { ProDescriptionsItemProps } from '@ant-design/pro-descriptions';
 import ProDescriptions from '@ant-design/pro-descriptions';
 import { queryProtfolioList, deleteProtfolio } from '../service';
 import type { PortfolioListDataType } from '../data';
-import ModalModifyForm from '../components/ModifyForm'
 import ImgNull from '@/assets/images/images-null.png';
 import { fetchDicTypeSelectObj } from '@/pages/admin/Dictionary/service'
 import CODE from '@/utils/DicCode.d'
@@ -274,10 +273,6 @@ const DictionaryList: React.FC<PortfolioListDataType> = () => {
       actionRef.current.reloadAndRest?.();
     }
     message.success("删除成功")
-  }
-  const fetchUserEdit = async (record: PortfolioListDataType) => {
-    await setCurrentRow(record);
-    handleModalVisible(true);
   }
   const fetchQueryList = async (params: any) => {
     const response = await queryProtfolioList(params)

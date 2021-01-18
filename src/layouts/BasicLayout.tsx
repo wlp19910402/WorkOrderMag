@@ -56,7 +56,8 @@ const menuDataRender = (menuList: MenuDataItem[]): MenuDataItem[] => menuList.ma
     key: item.id.toString(),
     routes: item.children && item.children?.length ? menuDataRender(item.children) : undefined,
     children: item.children && item.children?.length ? menuDataRender(item.children) : undefined,
-    hideInMenu: item.hideInMenu
+    hideChildrenInMenu: item.type === '1' || item.type === 1,
+    hideInBreadcrumb: false
   };
   return Authorized.check(item.perms, localItem, null) as MenuDataItem;
 });
@@ -95,7 +96,6 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
   );
   return (
     <>
-      {JSON.stringify(currentMenu) }
       {
         currentMenu.length > 0 && <ProLayout
           menuDataRender={ () => menuDataRender(currentMenu) }
@@ -110,13 +110,15 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
             }
             return <Link to={ menuItemProps.path }>{ defaultDom }</Link>;
           } }
-          breadcrumbRender={ (routers = []) => [
-            {
-              path: '/',
-              breadcrumbName: '首页'
-            },
-            ...routers,
-          ] }
+          breadcrumbRender={ (routers = []) => {
+            return [
+              {
+                path: '/',
+                breadcrumbName: '首页'
+              },
+              ...routers,
+            ]
+          } }
           itemRender={ (route, params, routes, paths) => {
             const first = routes.indexOf(route) === 0;
             return first ? (

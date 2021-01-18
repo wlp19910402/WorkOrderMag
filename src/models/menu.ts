@@ -39,20 +39,6 @@ const fetchFaltMenuData: any = (menuData: MenuDataType[] | []) => {
   fn(menuData)
   return tmpArr;
 }
-const hideChildrenInMenu: any = (menuData: MenuDataType[] | []) => {
-  const fn = (data: any) => {
-    if (data.length > 0) {
-      data.forEach((item: any) => {
-        item.hideInMenu = item.type === "2" || item.type === 2
-        if (item.children?.length > 0) {
-          item.children = fn(item.children)
-        }
-      })
-      return data;
-    }
-  }
-  return fn(menuData)
-}
 export type MenuModelType = {
   namespace: string;
   state: MenuModelState;
@@ -124,7 +110,7 @@ const Model: MenuModelType = {
         });
         return
       };
-      const menuData = hideChildrenInMenu(response.data)
+      const menuData = response.data
       yield put({
         type: 'changeCurrentMenu',
         payload: [ welcome, ...menuData ]
