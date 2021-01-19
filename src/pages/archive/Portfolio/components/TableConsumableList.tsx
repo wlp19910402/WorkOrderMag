@@ -83,7 +83,9 @@ const TableConsumableList: React.FC<TableConsumableListProps> = ({ setSelectedRo
       valueType: 'option',
       width: "120px",
       render: (_, record) => [
-        <Button type="text"
+        <Button
+          style={ selectedRowsState.length > 0 ? !!selectedRowsState.find(item => item.consumableId === record.id) ? {} : { color: "#1890ff" } : { color: "#1890ff" } }
+          type="text"
           disabled={ selectedRowsState.length > 0 ? !!selectedRowsState.find(item => item.consumableId === record.id) : false }
           onClick={ () => {
             selectRecord(record)
@@ -114,14 +116,16 @@ const TableConsumableList: React.FC<TableConsumableListProps> = ({ setSelectedRo
   }
   return (
     <ProTable
-      tableStyle={ { maxHeight: "200px", overflow: "auto" } }
-      headerTitle="查询表格"
+      style={ { border: "10px solid #999", maxHeight: "300px", overflow: "auto" } }
+      tableStyle={ {} }
+      size="small"
+      headerTitle="请选择添加对应的耗材"
       rowKey="id"
       search={ {
-        labelWidth: 80,
+        labelWidth: 60,
       } }
       pagination={ {
-        pageSize: 6
+        pageSize: 4
       } }
       request={ async (params, sorter, filter) => await fetchQueryList({ ...params, ...filter }) }
       columns={ columns }

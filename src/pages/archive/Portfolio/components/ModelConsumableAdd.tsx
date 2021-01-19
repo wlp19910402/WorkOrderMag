@@ -41,7 +41,7 @@ const ModelConsumableAdd: React.FC<ModalModifyFormDataProps> = ({ createModalVis
       renderFormItem: (_, { isEditable }) => {
         return isEditable ? <DatePicker
           format="YYYY-MM-DD"
-          placeholder="请输入安装时间"
+          placeholder="请选择到期时间"
           style={ { width: "100%" } }
         /> : "ddd"
       }
@@ -61,7 +61,7 @@ const ModelConsumableAdd: React.FC<ModalModifyFormDataProps> = ({ createModalVis
         return isEditable ? <DatePicker
           picker="date"
           format="YYYY-MM-DD"
-          placeholder="请输入安装时间"
+          placeholder="请选择实际更换时间"
           style={ { width: "100%" } }
         /> : ""
       }
@@ -106,17 +106,18 @@ const ModelConsumableAdd: React.FC<ModalModifyFormDataProps> = ({ createModalVis
         onCancel={ () => handleModalVisible(false) }
         onOk={ submitConsumable }
         okText="保存"
+        bodyStyle={ { padding: "0 " } }
       >
-        { JSON.stringify(dataSource) }
         <TableConsumableList
           selectedRowsState={ dataSource }
           setSelectedRows={ setDataSource }
           setEditableRowKeys={ setEditableRowKeys }
           portfolioId={ portfolioId }
         />
-        { dataSource.length > 0 && <EditableProTable<ColumnEditConsumableType>
+        <EditableProTable<ColumnEditConsumableType>
+          style={ { height: "300px", overflow: "auto" } }
           rowKey="consumableId"
-          headerTitle="可编辑表格"
+          headerTitle="设置新增耗材内容"
           columns={ columns }
           value={ dataSource }
           onChange={ (data) => {
@@ -135,7 +136,7 @@ const ModelConsumableAdd: React.FC<ModalModifyFormDataProps> = ({ createModalVis
             },
             onChange: setEditableRowKeys,
           } }
-        /> }
+        />
       </Modal>
     </>
   );

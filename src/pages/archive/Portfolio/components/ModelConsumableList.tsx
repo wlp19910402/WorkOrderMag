@@ -80,7 +80,6 @@ const EditableTable = () => {
   const save = async (key: React.Key) => {
     try {
       const row = (await form.validateFields()) as Item;
-
       const newData = [ ...data ];
       const index = newData.findIndex(item => key === item.key);
       if (index > -1) {
