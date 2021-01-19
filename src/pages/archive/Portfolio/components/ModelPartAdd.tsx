@@ -3,8 +3,8 @@ import type { ProColumns } from '@ant-design/pro-table'
 import { EditableProTable } from '@ant-design/pro-table'
 import { Modal, message, DatePicker, InputNumber } from 'antd'
 import { PartAddDataType } from '@/pages/archive/portfolio/data.d'
-import { addProtfolioPart } from '../service'
-import TablePartList from './TablePartList'
+import { addProtfolioPart } from '@/pages/archive/portfolio/service'
+import TablePartList from '@/pages/archive/portfolio/components/TablePartList'
 
 export type ColumnEditPartType = {
   partName: string;

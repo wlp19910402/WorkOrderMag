@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
-import { infoProtfolio } from '../service'
+import { infoProtfolio } from '@/pages/archive/portfolio/service'
 import { match } from 'react-router'
 import { Descriptions, Row, Col, Image, Card, Button, Spin } from 'antd'
-import { PortfolioInfoDataType } from '../data.d'
-import ModelConsumableAdd from '../components/ModelConsumableAdd'
-import ModelPartAdd from '../components/ModelPartAdd'
-import PortfolioConsumableList from '../components/PortfolioConsumableList'
-import PortfolioPartList from '../components/PortfolioPartList'
-import { queryProtfolioConsumableList, queryProtfolioPartList } from '../service'
+import { PortfolioInfoDataType } from '@/pages/archive/portfolio/data.d'
+import ModelConsumableAdd from '@/pages/archive/portfolio/components/ModelConsumableAdd'
+import ModelPartAdd from '@/pages/archive/portfolio/components/ModelPartAdd'
+import PortfolioConsumableList from '@/pages/archive/portfolio/components/PortfolioConsumableList'
+import PortfolioPartList from '@/pages/archive/portfolio/components/PortfolioPartList'
+import { queryProtfolioConsumableList, queryProtfolioPartList } from '@/pages/archive/portfolio/service'
 interface PortfolioEditProps {
   match: match
 }

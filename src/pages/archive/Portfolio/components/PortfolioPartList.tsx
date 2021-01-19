@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Table, InputNumber, Popconfirm, Drawer, Form, Typography, message, Descriptions, Row, Col, Image } from 'antd';
-import { deleteProtfolioPart, updateProtfolioPart } from '../service'
-import { RecordPartsDataType } from '../data'
+import { deleteProtfolioPart, updateProtfolioPart } from '@/pages/archive/portfolio/service'
+import { RecordPartsDataType } from '@/pages/archive/portfolio/data.d'
 import ProDescriptions from '@ant-design/pro-descriptions';
 import type { ProDescriptionsItemProps } from '@ant-design/pro-descriptions';
 interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {

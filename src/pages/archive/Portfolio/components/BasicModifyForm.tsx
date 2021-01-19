@@ -1,12 +1,12 @@
 import { Card, Form, Select, Descriptions, Button, Row, Col, Input, InputNumber, DatePicker, message } from 'antd';
 import React, { useState, useEffect } from 'react';
 import { FooterToolbar } from '@ant-design/pro-layout';
-import type { PortfolioListDataType, PortfolioSaveDataType } from '../data';
+import type { PortfolioListDataType, PortfolioSaveDataType } from '@/pages/archive/portfolio/data.d';
 import { findCompanyByName } from '@/pages/archive/Company/service'
 import { queryDeviceList } from '@/pages/device/Device/service'
 import { DeviceListDataType } from '@/pages/device/Device/data.d'
 import { CompanyListDataType } from '@/pages/archive/Company/data.d'
-import { saveProtfolio } from '../service'
+import { saveProtfolio } from '@/pages/archive/portfolio/service'
 import { history } from 'umi'
 import getErrorInfo, { ErrorField } from '@/components/common/ErrorForm'
 interface ModifyFormTypeProps {

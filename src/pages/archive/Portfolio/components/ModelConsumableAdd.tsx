@@ -3,8 +3,8 @@ import type { ProColumns } from '@ant-design/pro-table';
 import { EditableProTable } from '@ant-design/pro-table';
 import { Modal, message, DatePicker, InputNumber } from 'antd';
 import { ConsumableAddDataType } from '@/pages/archive/portfolio/data.d'
-import { addConsumableProtfolio } from '../service'
-import TableConsumableList from './TableConsumableList'
+import { addConsumableProtfolio } from '@/pages/archive/portfolio/service'
+import TableConsumableList from '@/pages/archive/portfolio/components/TableConsumableList'
 
 export type ColumnEditConsumableType = {
   consumableName: string;

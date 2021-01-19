@@ -6,8 +6,8 @@ import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
 import type { ProDescriptionsItemProps } from '@ant-design/pro-descriptions';
 import ProDescriptions from '@ant-design/pro-descriptions';
-import { queryProtfolioList, deleteProtfolio } from '../service';
-import type { PortfolioListDataType } from '../data';
+import { queryProtfolioList, deleteProtfolio } from '@/pages/archive/portfolio/service';
+import type { PortfolioListDataType } from '@/pages/archive/portfolio/data';
 import ImgNull from '@/assets/images/images-null.png';
 import { fetchDicTypeSelectObj } from '@/pages/admin/Dictionary/service'
 import CODE from '@/utils/DicCode.d'
