@@ -14,8 +14,9 @@ type ModalModifyFormDataProps = {
   createModalVisible: boolean;
   handleModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
   portfolioId: string;
+  queryConsumableList: () => void;
 }
-const ModelConsumableAdd: React.FC<ModalModifyFormDataProps> = ({ createModalVisible = false, handleModalVisible, portfolioId }) => {
+const ModelConsumableAdd: React.FC<ModalModifyFormDataProps> = ({ createModalVisible = false, handleModalVisible, queryConsumableList, portfolioId }) => {
   const [ editableKeys, setEditableRowKeys ] = useState<React.Key[]>([]);
   const [ dataSource, setDataSource ] = useState<ColumnEditConsumableType[]>([]);
   const columns: ProColumns<ColumnEditConsumableType>[] = [
@@ -98,6 +99,7 @@ const ModelConsumableAdd: React.FC<ModalModifyFormDataProps> = ({ createModalVis
     if (!response) return
     message.success("新增成功")
     handleModalVisible(false);
+    queryConsumableList();
   }
   return (
     <>

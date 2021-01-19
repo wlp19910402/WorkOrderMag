@@ -92,6 +92,7 @@ const DictionaryList: React.FC<PortfolioEditProps> = ({ match }) => {
             createModalVisible={ createModalVisible }
             handleModalVisible={ handleModalVisible }
             portfolioId={ portfolioId }
+            queryConsumableList={ queryConsumableList }
           />
         ) }
         <Card title="耗材信息" extra={ <Button type="primary" onClick={ () => handleModalVisible(true) }>新增</Button> }>
