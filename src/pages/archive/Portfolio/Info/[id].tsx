@@ -54,6 +54,8 @@ const DictionaryList: React.FC<PortfolioEditProps> = ({ match }) => {
           >
             <Descriptions.Item label="单位名称">{ currentRow?.companyName }</Descriptions.Item>
             <Descriptions.Item label="单位编号">{ currentRow?.companyNo }</Descriptions.Item>
+            <Descriptions.Item label="单位联系人">{ currentRow?.contactUser }</Descriptions.Item>
+            <Descriptions.Item label="单位联系电话">{ currentRow?.contactMobile }</Descriptions.Item>
             <Descriptions.Item label="设备名称">{ currentRow?.deviceName }</Descriptions.Item>
             <Descriptions.Item label="设备编号">{ currentRow?.deviceNo }</Descriptions.Item>
             <Descriptions.Item label="设备类型">{ currentRow?.typeName }</Descriptions.Item>

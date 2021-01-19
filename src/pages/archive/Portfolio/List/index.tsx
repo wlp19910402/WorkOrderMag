@@ -97,7 +97,7 @@ const DictionaryList: React.FC<PortfolioListDataType> = () => {
       }
     },
     {
-      title: "品牌名称",
+      title: "设备品牌",
       dataIndex: 'brandName',
       hideInSearch: true,
     },
