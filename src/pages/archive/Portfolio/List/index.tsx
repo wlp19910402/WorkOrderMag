@@ -31,7 +31,6 @@ const DictionaryList: React.FC<PortfolioListDataType> = () => {
   const actionRef = useRef<ActionType>();
   const [ currentRow, setCurrentRow ] = useState<PortfolioListDataType>();
   const [ selectedRowsState, setSelectedRows ] = useState<PortfolioListDataType[]>([]);
-  const [ createModalVisible, handleModalVisible ] = useState<boolean>(false);
   const [ searchType, setSearchType ] = useState<any>({})//设备类型
   let dicCode = async () => {
     setSearchType(await fetchDicTypeSelectObj(CODE.DEVICE_TYPE))
@@ -40,11 +39,6 @@ const DictionaryList: React.FC<PortfolioListDataType> = () => {
     dicCode()
   }, [])
   const columns: ProColumns<any>[] = [
-    {
-      title: "id",
-      dataIndex: 'id',
-      hideInSearch: true
-    },
     {
       title: "档案编号",
       dataIndex: 'no',
@@ -62,15 +56,10 @@ const DictionaryList: React.FC<PortfolioListDataType> = () => {
       }
     },
     {
-      title: "单位id",
-      dataIndex: 'companyId',
-      hideInSearch: true,
-      hideInTable: true
-    },
-    {
       title: "单位名称",
       dataIndex: 'companyName',
-    }, {
+    },
+    {
       title: "二维码code",
       dataIndex: 'qrCodde',
     },
@@ -86,7 +75,7 @@ const DictionaryList: React.FC<PortfolioListDataType> = () => {
 
     },
     {
-      title: "图片",
+      title: "设备图片",
       dataIndex: 'imgUrls',
       hideInSearch: true,
       render: (val: any) => {

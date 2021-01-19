@@ -94,15 +94,6 @@ const EditableTable: React.FC<ConsumableEditableProps> = ({ queryPartList, dataP
   };
   const columns = [
     {
-      title: '档案备件ID',
-      dataIndex: 'id',
-    },
-    {
-      title: '备件ID',
-      dataIndex: 'baseInfo',
-      render: (val: any) => val.id
-    },
-    {
       title: '备件名称',
       dataIndex: 'baseInfo',
       render: (val: any, entity: any) => {
@@ -117,6 +108,21 @@ const EditableTable: React.FC<ConsumableEditableProps> = ({ queryPartList, dataP
           </a>
         );
       }
+    },
+    {
+      title: '备件编号',
+      dataIndex: 'baseInfo',
+      render: (val: any, entity: any) => val.no
+    },
+    {
+      title: '备件类型',
+      dataIndex: 'baseInfo',
+      render: (val: any, entity: any) => val.typeName
+    },
+    {
+      title: '备件型号',
+      dataIndex: 'baseInfo',
+      render: (val: any, entity: any) => val.modelName
     },
     {
       title: '保修周期',
@@ -149,16 +155,8 @@ const EditableTable: React.FC<ConsumableEditableProps> = ({ queryPartList, dataP
       },
     },
   ];
-  let descriptionsColums = [ ...columns,
-  {
-    title: '创建时间',
-    dataIndex: 'createTime',
-  },
-  {
-    title: '创建人',
-    dataIndex: 'createUsername',
-  }, {
-    title: '备件信息',
+  let descriptionsColums = [ {
+    title: "备件详情",
     dataIndex: 'baseInfo',
     hideInForm: true,
     hideInTable: false,
@@ -171,13 +169,16 @@ const EditableTable: React.FC<ConsumableEditableProps> = ({ queryPartList, dataP
           labelStyle={ { width: "110px", padding: "8px" } }
           style={ { width: "100%" } }
         >
-          <Descriptions.Item label="备件ID" >{ val?.id }</Descriptions.Item>
-          <Descriptions.Item label="备件编号" >{ val?.no }</Descriptions.Item>
           <Descriptions.Item label="备件名称">{ val?.name }</Descriptions.Item>
+          <Descriptions.Item label="备件编号" >{ val?.no }</Descriptions.Item>
           <Descriptions.Item label="备件类型">{ val?.typeName }</Descriptions.Item>
           <Descriptions.Item label="备件型号">{ val?.modelName }</Descriptions.Item>
           <Descriptions.Item label="备件描述">{ val?.description }</Descriptions.Item>
-          <Descriptions.Item label="备件图片">
+          <Descriptions.Item label="备件创建时间">{ val?.createTime }</Descriptions.Item>
+          <Descriptions.Item label="备件创建人">{ val?.createUsername }</Descriptions.Item>
+          <Descriptions.Item label="备件修改时间">{ val?.updateTime }</Descriptions.Item>
+          <Descriptions.Item label="备件修改人">{ val?.updateUsername }</Descriptions.Item>
+          <Descriptions.Item label="dd">
             { val?.imgUrls.length > 0 ?
               (
                 <Row gutter={ [ 16, 16 ] } >
@@ -193,10 +194,6 @@ const EditableTable: React.FC<ConsumableEditableProps> = ({ queryPartList, dataP
               ) : "暂无图片"
             }
           </Descriptions.Item>
-          <Descriptions.Item label="备件创建时间">{ val?.createTime }</Descriptions.Item>
-          <Descriptions.Item label="备件创建人">{ val?.createUsername }</Descriptions.Item>
-          <Descriptions.Item label="备件修改时间">{ val?.updateTime }</Descriptions.Item>
-          <Descriptions.Item label="备件修改人">{ val?.updateUsername }</Descriptions.Item>
         </Descriptions>
       );
     }
@@ -248,8 +245,9 @@ const EditableTable: React.FC<ConsumableEditableProps> = ({ queryPartList, dataP
       >
         { currentRow?.id && (
           <ProDescriptions<RecordPartsDataType>
+
             column={ 1 }
-            title={ currentRow?.name }
+            title={ " " }
             key={ currentRow?.id }
             request={ async () => ({
               data: currentRow || {},

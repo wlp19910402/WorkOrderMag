@@ -39,11 +39,6 @@ const RoleList: React.FC<RoleDataType> = () => {
   const [ modalTreeVisible, handleModalTreeVisible ] = useState<boolean>(false);
   const columns: ProColumns<any>[] | undefined = [
     {
-      title: "id",
-      dataIndex: 'id',
-      sorter: true
-    },
-    {
       title: "角色名称",
       dataIndex: 'roleName',
       tip: '规则名称是唯一的 key',

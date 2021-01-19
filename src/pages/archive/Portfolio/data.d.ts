@@ -72,7 +72,7 @@ export type ConsumableAddDataType = {
   num: number,//数量
   portfolioId: number,//档案id
   replacementCycle: string,// 更换周期
-  replacementTime: string// 实际更换时间
+  replacementTime: string// 安装日期
 }
 //档案备件添加
 export type PartAddDataType = {

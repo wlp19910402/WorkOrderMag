@@ -30,11 +30,6 @@ const DictionaryList: React.FC<CompanyListDataType> = () => {
   const [ createModalVisible, handleModalVisible ] = useState<boolean>(false);
   const columns: ProColumns<any>[] = [
     {
-      title: "id",
-      dataIndex: 'id',
-      hideInSearch: true
-    },
-    {
       title: "单位名称",
       dataIndex: 'company',
       render: (val, entity) => {
@@ -50,7 +45,6 @@ const DictionaryList: React.FC<CompanyListDataType> = () => {
         );
       }
     },
-
     {
       title: "单位编号",
       dataIndex: 'no'

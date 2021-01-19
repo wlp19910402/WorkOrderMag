@@ -40,16 +40,11 @@ const DictionaryList: React.FC<DeviceListDataType> = () => {
     dicCode()
   }, [])
   const columns: ProColumns<any>[] = [
-    {
-      title: "id",
-      dataIndex: 'id',
-      hideInSearch: true
-    },
-    {
-      title: "设备品牌",
-      dataIndex: 'brandName',
-      hideInSearch: true,
-    },
+    // {
+    //   dataIndex: 'index',
+    //   valueType: 'indexBorder',
+    //   width: "40px"
+    // },
     {
       title: "设备名称",
       dataIndex: 'name',
@@ -65,6 +60,11 @@ const DictionaryList: React.FC<DeviceListDataType> = () => {
           </a>
         );
       }
+    },
+    {
+      title: "设备品牌",
+      dataIndex: 'brandName',
+      hideInSearch: true,
     },
     {
       title: "图片",

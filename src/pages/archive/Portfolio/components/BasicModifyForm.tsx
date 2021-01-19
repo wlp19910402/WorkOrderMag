@@ -1,5 +1,4 @@
 import { Card, Form, Select, Descriptions, Button, Row, Col, Input, InputNumber, DatePicker, message } from 'antd';
-import moment from 'moment';
 import React, { useState, useEffect } from 'react';
 import { FooterToolbar } from '@ant-design/pro-layout';
 import type { PortfolioListDataType, PortfolioSaveDataType } from '../data';
@@ -165,7 +164,7 @@ const DictionaryList: React.FC<ModifyFormTypeProps> = ({ currentRow }) => {
           <Descriptions.Item label="设备名称">{ selectDeviceData?.name ? selectDeviceData?.name : "" }</Descriptions.Item>
           <Descriptions.Item label="设备类型">{ selectDeviceData?.typeName ? selectDeviceData?.typeName : "" }</Descriptions.Item>
           <Descriptions.Item label="设备品牌">{ selectDeviceData?.brandName ? selectDeviceData?.brandName : "" }</Descriptions.Item>
-          <Descriptions.Item label="联系电话">{ selectDeviceData?.modelName ? selectDeviceData?.modelName : "" }</Descriptions.Item>
+          <Descriptions.Item label="设备型号">{ selectDeviceData?.modelName ? selectDeviceData?.modelName : "" }</Descriptions.Item>
         </Descriptions>
       </Card>
       {/* </Col>
@@ -222,7 +221,7 @@ const DictionaryList: React.FC<ModifyFormTypeProps> = ({ currentRow }) => {
       <FooterToolbar>
         { getErrorInfo(error) }
         <Button type="primary" onClick={ () => { form?.submit() } } loading={ false }>
-          提交
+          保存
         </Button>
       </FooterToolbar>
     </Form>

@@ -48,12 +48,17 @@ const DictionaryList: React.FC<PortfolioEditProps> = ({ match }) => {
     <PageContainer>
       <Spin spinning={ Loading }>
         <Card style={ { marginBottom: "20px" } } bordered={ false }>
-          <Descriptions bordered size="small" title="档案信息"
+          <Descriptions bordered size="small" title="档案基本信息"
             column={ { xs: 2, sm: 2, md: 3, lg: 3, xl: 3, xxl: 3 } }
-            labelStyle={ { width: "80px", padding: "8px", } }
-            style={ { marginBottom: "20px" } }
+            labelStyle={ { width: "120px", padding: "8px" } }
           >
-            <Descriptions.Item label="档案ID" >{ currentRow?.id }</Descriptions.Item>
+            <Descriptions.Item label="单位名称">{ currentRow?.companyName }</Descriptions.Item>
+            <Descriptions.Item label="单位编号">{ currentRow?.companyNo }</Descriptions.Item>
+            <Descriptions.Item label="设备名称">{ currentRow?.deviceName }</Descriptions.Item>
+            <Descriptions.Item label="设备编号">{ currentRow?.deviceNo }</Descriptions.Item>
+            <Descriptions.Item label="设备类型">{ currentRow?.typeName }</Descriptions.Item>
+            <Descriptions.Item label="设备品牌">{ currentRow?.brandName }</Descriptions.Item>
+            <Descriptions.Item label="设备型号">{ currentRow?.modelName }</Descriptions.Item>
             <Descriptions.Item label="档案编号">{ currentRow?.no }</Descriptions.Item>
             <Descriptions.Item label="安装位置">{ currentRow?.installLocation }</Descriptions.Item>
             <Descriptions.Item label="安装时间">{ currentRow?.installTime }</Descriptions.Item>
@@ -62,19 +67,8 @@ const DictionaryList: React.FC<PortfolioEditProps> = ({ match }) => {
             <Descriptions.Item label="创建人">{ currentRow?.createUsername }</Descriptions.Item>
             <Descriptions.Item label="创建时间">{ currentRow?.createTime }</Descriptions.Item>
             <Descriptions.Item label="修改人">{ currentRow?.updateUsername }</Descriptions.Item>
-          </Descriptions>
-          <Descriptions bordered size="small" title="设备信息"
-            column={ { xs: 2, sm: 2, md: 3, lg: 3, xl: 3, xxl: 3 } }
-            labelStyle={ { width: "80px", padding: "8px" } }
-            style={ { marginBottom: "20px" } }
-          >
-            <Descriptions.Item label="设备ID" >{ currentRow?.deviceId }</Descriptions.Item>
-            <Descriptions.Item label="设备编号" >{ currentRow?.deviceNo }</Descriptions.Item>
-            <Descriptions.Item label="设备名称">{ currentRow?.deviceName }</Descriptions.Item>
-            <Descriptions.Item label="设备类型">{ currentRow?.typeName }</Descriptions.Item>
-            <Descriptions.Item label="设备品牌">{ currentRow?.brandName }</Descriptions.Item>
-            <Descriptions.Item label="设备型号">{ currentRow?.modelName }</Descriptions.Item>
-            <Descriptions.Item label="设备图片">
+            <Descriptions.Item label="修改时间">{ currentRow?.updateTime }</Descriptions.Item>
+            <Descriptions.Item label="设备图片" >
               { currentRow?.imgUrls.length > 0 ?
                 (
                   <Row gutter={ [ 16, 16 ] } >
@@ -90,14 +84,6 @@ const DictionaryList: React.FC<PortfolioEditProps> = ({ match }) => {
                 ) : "暂无图片"
               }
             </Descriptions.Item>
-          </Descriptions>
-          <Descriptions bordered size="small" title="公司信息"
-            column={ { xs: 2, sm: 2, md: 3, lg: 3, xl: 3, xxl: 3 } }
-            labelStyle={ { width: "80px", padding: "8px" } }
-          >
-            <Descriptions.Item label="单位ID" >{ currentRow?.companyId }</Descriptions.Item>
-            <Descriptions.Item label="单位编号">{ currentRow?.companyNo }</Descriptions.Item>
-            <Descriptions.Item label="单位名称">{ currentRow?.companyName }</Descriptions.Item>
           </Descriptions>
         </Card>
         { createModalVisible && (

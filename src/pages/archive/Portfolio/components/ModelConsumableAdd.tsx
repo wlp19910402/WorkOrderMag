@@ -2,12 +2,15 @@ import React, { useState } from 'react';
 import type { ProColumns } from '@ant-design/pro-table';
 import { EditableProTable } from '@ant-design/pro-table';
 import { Modal, message, DatePicker, InputNumber } from 'antd';
-import { ConsumableAddDataType } from '@/pages/archive/Portfolio/data.d'
+import { ConsumableAddDataType } from '@/pages/archive/portfolio/data.d'
 import { addConsumableProtfolio } from '../service'
 import TableConsumableList from './TableConsumableList'
 
 export type ColumnEditConsumableType = {
   consumableName: string;
+  consumableNo: string;
+  consumableTypeName: string;
+  consumableModelName: string;
 } & ConsumableAddDataType
 
 type ModalModifyFormDataProps = {
@@ -21,32 +24,40 @@ const ModelConsumableAdd: React.FC<ModalModifyFormDataProps> = ({ createModalVis
   const [ dataSource, setDataSource ] = useState<ColumnEditConsumableType[]>([]);
   const columns: ProColumns<ColumnEditConsumableType>[] = [
     {
-      title: "档案ID",
-      dataIndex: 'portfolioId',
-      editable: false,
-      hideInTable: true,
-    },
-    {
-      title: "耗材ID",
-      dataIndex: 'consumableId',
-      editable: false,
-      width: "80px"
-    },
-    {
       title: "耗材名称",
       dataIndex: 'consumableName',
       editable: false,
       width: "80px"
     },
     {
-      title: "到期时间",
-      dataIndex: 'expirationTime',
+      title: "耗材编号",
+      dataIndex: 'consumableNo',
+      editable: false,
+      width: "80px"
+    },
+    // {
+    //   title: "耗材类型",
+    //   dataIndex: 'consumableTypeName',
+    //   editable: false,
+    //   width: "80px"
+    // },
+    // {
+    //   title: "耗材型号",
+    //   dataIndex: 'consumableModelName',
+    //   editable: false,
+    //   width: "80px"
+    // },
+
+    {
+      title: "安装日期",
+      dataIndex: 'replacementTime',
       renderFormItem: (_, { isEditable }) => {
         return isEditable ? <DatePicker
+          picker="date"
           format="YYYY-MM-DD"
-          placeholder="请选择到期时间"
+          placeholder="请选择安装日期"
           style={ { width: "100%" } }
-        /> : "ddd"
+        /> : ""
       }
     },
     {
@@ -58,15 +69,14 @@ const ModelConsumableAdd: React.FC<ModalModifyFormDataProps> = ({ createModalVis
       }
     },
     {
-      title: "实际更换时间",
-      dataIndex: 'replacementTime',
+      title: "到期日期",
+      dataIndex: 'expirationTime',
       renderFormItem: (_, { isEditable }) => {
         return isEditable ? <DatePicker
-          picker="date"
           format="YYYY-MM-DD"
-          placeholder="请选择实际更换时间"
+          placeholder="请选择到期时间"
           style={ { width: "100%" } }
-        /> : ""
+        /> : "ddd"
       }
     },
     {

@@ -23,11 +23,6 @@ const TableConsumableList: React.FC<TableConsumableListProps> = ({ setSelectedRo
   }, [])
   const columns: ProColumns<any>[] = [
     {
-      title: "id",
-      dataIndex: 'id',
-      hideInSearch: true
-    },
-    {
       title: "耗材名称",
       dataIndex: 'name',
     },
@@ -104,7 +99,10 @@ const TableConsumableList: React.FC<TableConsumableListProps> = ({ setSelectedRo
         expirationTime: "",
         num: 1,
         replacementCycle: "",
-        replacementTime: ""
+        replacementTime: "",
+        consumableNo: record.no,
+        consumableTypeName: record.typeName,
+        consumableModelName: record.modelName
       } ]
     )
     setEditableRowKeys([ ...selectedRowsState.map(item => item.consumableId), record.id ])

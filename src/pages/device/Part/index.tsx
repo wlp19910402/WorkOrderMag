@@ -40,11 +40,11 @@ const DictionaryList: React.FC<PartListDataType> = () => {
     dicCode()
   }, [])
   const columns: ProColumns<any>[] = [
-    {
-      title: "id",
-      dataIndex: 'id',
-      hideInSearch: true
-    },
+    // {
+    //   dataIndex: 'index',
+    //   valueType: 'indexBorder',
+    //   width: "40px"
+    // },
     {
       title: "备件名称",
       dataIndex: 'name',
@@ -60,6 +60,11 @@ const DictionaryList: React.FC<PartListDataType> = () => {
           </a>
         );
       }
+    },
+    {
+      title: "备件编号",
+      dataIndex: 'no',
+      hideInSearch: true
     },
     {
       title: "图片",
@@ -82,11 +87,6 @@ const DictionaryList: React.FC<PartListDataType> = () => {
             ></Image >
           )
       }
-    },
-    {
-      title: "备件编号",
-      dataIndex: 'no',
-      hideInSearch: true
     },
     {
       title: "备件类型",

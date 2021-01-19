@@ -40,11 +40,11 @@ const DictionaryList: React.FC<ConsumableListDataType> = () => {
     dicCode()
   }, [])
   const columns: ProColumns<any>[] = [
-    {
-      title: "id",
-      dataIndex: 'id',
-      hideInSearch: true
-    },
+    // {
+    //   dataIndex: 'index',
+    //   valueType: 'indexBorder',
+    //   width: "40px"
+    // },
     {
       title: "耗材名称",
       dataIndex: 'name',
@@ -60,6 +60,11 @@ const DictionaryList: React.FC<ConsumableListDataType> = () => {
           </a>
         );
       }
+    },
+    {
+      title: "耗材编号",
+      dataIndex: 'no',
+      hideInSearch: true
     },
     {
       title: "图片",
@@ -82,11 +87,6 @@ const DictionaryList: React.FC<ConsumableListDataType> = () => {
             ></Image >
           )
       }
-    },
-    {
-      title: "耗材编号",
-      dataIndex: 'no',
-      hideInSearch: true
     },
     {
       title: "耗材类型",

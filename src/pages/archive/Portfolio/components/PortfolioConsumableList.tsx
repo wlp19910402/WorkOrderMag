@@ -101,14 +101,6 @@ const EditableTable: React.FC<ConsumableEditableProps> = ({ queryConsumableList,
   };
   const columns = [
     {
-      title: '档案耗材ID',
-      dataIndex: 'id',
-    },
-    {
-      title: '耗材ID',
-      dataIndex: 'consumableId',
-    },
-    {
       title: '耗材名称',
       dataIndex: 'baseInfo',
       render: (val: any, entity: any) => {
@@ -125,9 +117,24 @@ const EditableTable: React.FC<ConsumableEditableProps> = ({ queryConsumableList,
       }
     },
     {
-      title: '到期时间',
-      dataIndex: 'expirationTime',
-      editable: true,
+      title: '耗材编号',
+      dataIndex: 'baseInfo',
+      render: (val: any, entity: any) => val.no
+    },
+    {
+      title: '耗材类型',
+      dataIndex: 'baseInfo',
+      render: (val: any, entity: any) => val.typeName
+    },
+    {
+      title: '耗材型号',
+      dataIndex: 'baseInfo',
+      render: (val: any, entity: any) => val.modelName
+    },
+    {
+      title: '安装日期',
+      dataIndex: 'replacementTime',
+      editable: true
     },
     {
       title: '更换周期',
@@ -136,11 +143,10 @@ const EditableTable: React.FC<ConsumableEditableProps> = ({ queryConsumableList,
       inputType: "number",
     },
     {
-      title: '实际更换时间',
-      dataIndex: 'replacementTime',
-      editable: true
+      title: '到期日期',
+      dataIndex: 'expirationTime',
+      editable: true,
     },
-
     {
       title: '操作',
       dataIndex: 'operation',
@@ -167,58 +173,52 @@ const EditableTable: React.FC<ConsumableEditableProps> = ({ queryConsumableList,
       },
     },
   ];
-  let descriptionsColums = [ ...columns, {
-    title: '创建时间',
-    dataIndex: 'createTime',
-  },
-  {
-    title: '创建人',
-    dataIndex: 'createUsername',
-  },
-  {
-    title: '耗材信息',
-    dataIndex: 'baseInfo',
-    hideInForm: true,
-    hideInTable: false,
-    hideInSearch: true,
-    hide: true,
-    render: (val: any, entity: any) => {
-      return (
-        <Descriptions bordered size="small"
-          column={ 1 }
-          labelStyle={ { width: "110px", padding: "8px" } }
-          style={ { width: "100%" } }
-        >
-          <Descriptions.Item label="耗材ID" >{ val?.id }</Descriptions.Item>
-          <Descriptions.Item label="耗材编号" >{ val?.no }</Descriptions.Item>
-          <Descriptions.Item label="耗材名称">{ val?.name }</Descriptions.Item>
-          <Descriptions.Item label="耗材类型">{ val?.typeName }</Descriptions.Item>
-          <Descriptions.Item label="耗材型号">{ val?.modelName }</Descriptions.Item>
-          <Descriptions.Item label="耗材描述">{ val?.description }</Descriptions.Item>
-          <Descriptions.Item label="耗材图片">
-            { val?.imgUrls.length > 0 ?
-              (
-                <Row gutter={ [ 16, 16 ] } >
-                  { val?.imgUrls.map((url: string) =>
-                    <Col>
-                      <Image
-                        width="60px" height="60px"
-                        src={ `${url}?x-oss-process=image/resize,h_100,w_100,m_lfit` }
-                        preview={ { src: url } }
-                      />
-                    </Col>
-                  ) }</Row>
-              ) : "暂无图片"
-            }
-          </Descriptions.Item>
-          <Descriptions.Item label="耗材创建时间">{ val?.createTime }</Descriptions.Item>
-          <Descriptions.Item label="耗材创建人">{ val?.createUsername }</Descriptions.Item>
-          <Descriptions.Item label="耗材修改时间">{ val?.updateTime }</Descriptions.Item>
-          <Descriptions.Item label="耗材修改人">{ val?.updateUsername }</Descriptions.Item>
-        </Descriptions>
-      );
-    }
-  } ]
+  let descriptionsColums = [
+    {
+      title: '耗材详细',
+      dataIndex: 'baseInfo',
+      hideInForm: true,
+      hideInTable: false,
+      hideInSearch: true,
+      hide: true,
+      render: (val: any, entity: any) => {
+        return (
+          <span>
+            <Descriptions bordered size="small"
+              column={ 1 }
+              labelStyle={ { width: "110px", padding: "8px" } }
+              style={ { width: "100%" } }
+            >
+              <Descriptions.Item label="耗材名称">{ val?.name }</Descriptions.Item>
+              <Descriptions.Item label="耗材编号" >{ val?.no }</Descriptions.Item>
+              <Descriptions.Item label="耗材类型">{ val?.typeName }</Descriptions.Item>
+              <Descriptions.Item label="耗材型号">{ val?.modelName }</Descriptions.Item>
+              <Descriptions.Item label="耗材描述">{ val?.description }</Descriptions.Item>
+              <Descriptions.Item label="耗材创建时间">{ val?.createTime }</Descriptions.Item>
+              <Descriptions.Item label="耗材创建人">{ val?.createUsername }</Descriptions.Item>
+              <Descriptions.Item label="耗材修改时间">{ val?.updateTime }</Descriptions.Item>
+              <Descriptions.Item label="耗材修改人">{ val?.updateUsername }</Descriptions.Item>
+              <Descriptions.Item label="">{
+                val?.imgUrls.length > 0 ?
+                  (
+                    <Row gutter={ [ 16, 16 ] } >
+                      { val?.imgUrls.map((url: string) =>
+                        <Col>
+                          <Image
+                            width="60px" height="60px"
+                            src={ `${url}?x-oss-process=image/resize,h_100,w_100,m_lfit` }
+                            preview={ { src: url } }
+                          />
+                        </Col>
+                      ) }</Row>
+                  ) : "暂无图片"
+              }</Descriptions.Item>
+            </Descriptions>
+
+          </span>
+        );
+      }
+    } ]
   const mergedColumns = columns.map(col => {
     if (!col.editable) {
       return col;
@@ -267,7 +267,7 @@ const EditableTable: React.FC<ConsumableEditableProps> = ({ queryConsumableList,
         { currentRow?.id && (
           <ProDescriptions<RecordConsumableDataType>
             column={ 1 }
-            title={ currentRow?.name }
+            title={ " " }
             key={ currentRow?.id }
             request={ async () => ({
               data: currentRow || {},

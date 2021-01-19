@@ -23,11 +23,6 @@ const TablePartList: React.FC<TablePartListProps> = ({ setSelectedRows, selected
   }, [])
   const columns: ProColumns<any>[] = [
     {
-      title: "id",
-      dataIndex: 'id',
-      hideInSearch: true
-    },
-    {
       title: "备件名称",
       dataIndex: 'name',
     },
@@ -102,7 +97,10 @@ const TablePartList: React.FC<TablePartListProps> = ({ setSelectedRows, selected
         partId: record.id,
         partName: record.name,
         num: 1,
-        warrantyPeriod: ""
+        warrantyPeriod: "",
+        partNo: record.no,
+        partTypeName: record.typeName,
+        paryModelName: record.modelName
       } ]
     )
     setEditableRowKeys([ ...selectedRowsState.map(item => item.partId), record.id ])

@@ -28,5 +28,6 @@ export type DeviceListDataType = {
   brandName: string;
   modelName: string;
   no: string;
+  deviceNo?: string;
   typeName: string;// 设备类型
 } & DeviceSaveDataType

@@ -1,13 +1,16 @@
-import React, { useState } from 'react';
-import type { ProColumns } from '@ant-design/pro-table';
-import { EditableProTable } from '@ant-design/pro-table';
-import { Modal, message, DatePicker, InputNumber } from 'antd';
-import { PartAddDataType } from '@/pages/archive/Portfolio/data.d'
+import React, { useState } from 'react'
+import type { ProColumns } from '@ant-design/pro-table'
+import { EditableProTable } from '@ant-design/pro-table'
+import { Modal, message, DatePicker, InputNumber } from 'antd'
+import { PartAddDataType } from '@/pages/archive/portfolio/data.d'
 import { addProtfolioPart } from '../service'
 import TablePartList from './TablePartList'
 
 export type ColumnEditPartType = {
   partName: string;
+  partNo: string;
+  partTypeName: string;
+  paryModelName: string;
 } & PartAddDataType
 
 type ModalModifyFormDataProps = {
@@ -21,24 +24,29 @@ const ModelPartAdd: React.FC<ModalModifyFormDataProps> = ({ createModalVisible =
   const [ dataSource, setDataSource ] = useState<ColumnEditPartType[]>([]);
   const columns: ProColumns<ColumnEditPartType>[] = [
     {
-      title: "档案ID",
-      dataIndex: 'portfolioId',
-      editable: false,
-      hideInTable: true,
-    },
-    {
-      title: "备件ID",
-      dataIndex: 'partId',
-      editable: false,
-      width: "100px"
-    },
-    {
       title: "备件名称",
       dataIndex: 'partName',
       editable: false,
       width: "80px"
     },
-
+    {
+      title: "备件编号",
+      dataIndex: 'partNo',
+      editable: false,
+      width: "80px"
+    },
+    {
+      title: "备件类型",
+      dataIndex: 'partTypeName',
+      editable: false,
+      width: "80px"
+    },
+    {
+      title: "备件型号",
+      dataIndex: 'partModelName',
+      editable: false,
+      width: "80px"
+    },
     {
       title: "报修周期(月)",
       dataIndex: 'warrantyPeriod',

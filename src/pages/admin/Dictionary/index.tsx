@@ -37,11 +37,11 @@ const DictionaryList: React.FC<DictionaryDataType> = () => {
   const [ selectedRowsState, setSelectedRows ] = useState<DictionaryDataType[]>([]);
   const [ createModalVisible, handleModalVisible ] = useState<boolean>(false);
   const columns: ProColumns<any>[] = [
-    {
-      title: "id",
-      dataIndex: 'id',
-      sorter: true
-    },
+    // {
+    //   dataIndex: 'index',
+    //   valueType: 'index',
+    //   width: "40px"
+    // },
     {
       title: "字典名称",
       dataIndex: 'name',

@@ -47,17 +47,6 @@ const ResumeList: React.FC<UserListDataType> = () => {
   const [ initialRoleIds, setInitialRoleIds ] = useState<number[] | undefined>(undefined)
   const columns: ProColumns<any>[] = [
     {
-      title: "id",
-      dataIndex: 'id',
-      key: "id",
-      sorter: true
-    },
-    {
-      title: "部门id",
-      key: "deptId",
-      dataIndex: 'deptId'
-    },
-    {
       title: "姓名",
       dataIndex: 'realname',
       tip: '规则名称是唯一的 key',
@@ -79,6 +68,11 @@ const ResumeList: React.FC<UserListDataType> = () => {
       title: "用户名",
       dataIndex: 'username',
       key: "username",
+    },
+    {
+      title: "部门id",
+      key: "deptId",
+      dataIndex: 'deptId'
     },
     {
       title: "电子邮箱",
