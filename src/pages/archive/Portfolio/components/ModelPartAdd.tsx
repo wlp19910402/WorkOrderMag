@@ -2,24 +2,24 @@ import React, { useState } from 'react';
 import type { ProColumns } from '@ant-design/pro-table';
 import { EditableProTable } from '@ant-design/pro-table';
 import { Modal, message, DatePicker, InputNumber } from 'antd';
-import { ConsumableAddDataType } from '@/pages/archive/Portfolio/data.d'
-import { addConsumableProtfolio } from '../service'
-import TableConsumableList from './TableConsumableList'
+import { PartAddDataType } from '@/pages/archive/Portfolio/data.d'
+import { addProtfolioPart } from '../service'
+import TablePartList from './TablePartList'
 
-export type ColumnEditConsumableType = {
-  consumableName: string;
-} & ConsumableAddDataType
+export type ColumnEditPartType = {
+  partName: string;
+} & PartAddDataType
 
 type ModalModifyFormDataProps = {
   createModalVisible: boolean;
   handleModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
   portfolioId: string;
-  queryConsumableList: () => void;
+  queryPartList: () => void;
 }
-const ModelConsumableAdd: React.FC<ModalModifyFormDataProps> = ({ createModalVisible = false, handleModalVisible, queryConsumableList, portfolioId }) => {
+const ModelPartAdd: React.FC<ModalModifyFormDataProps> = ({ createModalVisible = false, handleModalVisible, queryPartList, portfolioId }) => {
   const [ editableKeys, setEditableRowKeys ] = useState<React.Key[]>([]);
-  const [ dataSource, setDataSource ] = useState<ColumnEditConsumableType[]>([]);
-  const columns: ProColumns<ColumnEditConsumableType>[] = [
+  const [ dataSource, setDataSource ] = useState<ColumnEditPartType[]>([]);
+  const columns: ProColumns<ColumnEditPartType>[] = [
     {
       title: "档案ID",
       dataIndex: 'portfolioId',
@@ -27,46 +27,24 @@ const ModelConsumableAdd: React.FC<ModalModifyFormDataProps> = ({ createModalVis
       hideInTable: true,
     },
     {
-      title: "耗材ID",
-      dataIndex: 'consumableId',
+      title: "备件ID",
+      dataIndex: 'partId',
+      editable: false,
+      width: "100px"
+    },
+    {
+      title: "备件名称",
+      dataIndex: 'partName',
       editable: false,
       width: "80px"
     },
+
     {
-      title: "耗材名称",
-      dataIndex: 'consumableName',
-      editable: false,
-      width: "80px"
-    },
-    {
-      title: "到期时间",
-      dataIndex: 'expirationTime',
-      renderFormItem: (_, { isEditable }) => {
-        return isEditable ? <DatePicker
-          format="YYYY-MM-DD"
-          placeholder="请选择到期时间"
-          style={ { width: "100%" } }
-        /> : "ddd"
-      }
-    },
-    {
-      title: "更换周期(天)",
-      dataIndex: 'replacementCycle',
+      title: "报修周期(月)",
+      dataIndex: 'warrantyPeriod',
       width: "100px",
       renderFormItem: (_, { isEditable }) => {
         return isEditable ? <InputNumber style={ { width: "100%" } } min={ 0 } max={ 1000 } /> : ""
-      }
-    },
-    {
-      title: "实际更换时间",
-      dataIndex: 'replacementTime',
-      renderFormItem: (_, { isEditable }) => {
-        return isEditable ? <DatePicker
-          picker="date"
-          format="YYYY-MM-DD"
-          placeholder="请选择实际更换时间"
-          style={ { width: "100%" } }
-        /> : ""
       }
     },
     {
@@ -87,24 +65,22 @@ const ModelConsumableAdd: React.FC<ModalModifyFormDataProps> = ({ createModalVis
     },
   ];
   const submitConsumable = async () => {
-    let data: ConsumableAddDataType[] = dataSource.map(item => ({
-      consumableId: item.consumableId,
-      expirationTime: item.expirationTime,
+    let data: PartAddDataType[] = dataSource.map(item => ({
+      partId: item.partId,
       num: item.num,
       portfolioId: item.portfolioId,
-      replacementCycle: item.replacementCycle,
-      replacementTime: item.replacementTime
+      warrantyPeriod: item.warrantyPeriod
     }))
-    let response = await addConsumableProtfolio(data)
+    let response = await addProtfolioPart(data)
     if (!response) return
     message.success("新增成功")
     handleModalVisible(false);
-    queryConsumableList();
+    queryPartList();
   }
   return (
     <>
       <Modal
-        title="添加耗材"
+        title="添加备件"
         width="800px"
         visible={ createModalVisible }
         onCancel={ () => handleModalVisible(false) }
@@ -112,19 +88,19 @@ const ModelConsumableAdd: React.FC<ModalModifyFormDataProps> = ({ createModalVis
         okText="保存"
         bodyStyle={ { padding: "0 " } }
       >
-        <TableConsumableList
+        <TablePartList
           selectedRowsState={ dataSource }
           setSelectedRows={ setDataSource }
           setEditableRowKeys={ setEditableRowKeys }
           portfolioId={ portfolioId }
         />
-        <EditableProTable<ColumnEditConsumableType>
-          rowKey="consumableId"
-          headerTitle="设置新增耗材内容"
+        <EditableProTable<ColumnEditPartType>
+          rowKey="partId"
+          headerTitle="设置新增备件内容"
           columns={ columns }
           value={ dataSource }
           onChange={ (data) => {
-            setEditableRowKeys(data.map((item) => item.consumableId));
+            setEditableRowKeys(data.map((item) => item.partId));
             setDataSource(data);
           } }
           recordCreatorProps={ false }
@@ -146,4 +122,4 @@ const ModelConsumableAdd: React.FC<ModalModifyFormDataProps> = ({ createModalVis
   );
 };
 
-export default ModelConsumableAdd
+export default ModelPartAdd

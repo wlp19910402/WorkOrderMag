@@ -74,10 +74,22 @@ export type ConsumableAddDataType = {
   replacementCycle: string,// 更换周期
   replacementTime: string// 实际更换时间
 }
+//档案备件添加
+export type PartAddDataType = {
+  partId: number,//备件id
+  num: number,//数量
+  portfolioId: number,//档案id
+  warrantyPeriod: string,//报修周期
+}
 //档案耗材编辑
 export type ConsumableEditDataType = {
   expirationTime: string;//到期时间
   id: number;//档案耗材id
   replacementCycle: string;//更换周期
   replacementTime: string;//实际更换时间
+}
+//档案备件编辑
+export type PartEditDataType = {
+  id: number;//档案备件id
+  warrantyPeriod: string;//更换周期
 }

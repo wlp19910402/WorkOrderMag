@@ -78,12 +78,12 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
         rules={ [
           {
             required: true,
-            message: "请输入耗材名称！"
+            message: "请输入备件名称！"
           },
         ] }
-        label="耗材名称"
+        label="备件名称"
         name="name"
-        placeholder="请输入耗材名称"
+        placeholder="请输入备件名称"
         initialValue={ currentRow?.name }
       />
       <ProFormSelect
@@ -91,12 +91,12 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
         rules={ [
           {
             required: true,
-            message: "请选择耗材类型！"
+            message: "请选择备件类型！"
           },
         ] }
-        label="耗材类型"
+        label="备件类型"
         valueEnum={ { ...searchType } }
-        placeholder="请选择耗材类型"
+        placeholder="请选择备件类型"
         initialValue={ currentRow?.type }
         getValueFromEvent={ (arg) => {
           fetchDicTypeSelectObj(arg).then(async (res) => {
@@ -111,22 +111,22 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
       <Spin spinning={ loading }>
         <ProFormSelect
           name="model"
-          label="耗材型号"
+          label="备件型号"
           rules={ [
             {
               required: true,
-              message: "请选择耗材型号！"
+              message: "请选择备件型号！"
             },
           ] }
           valueEnum={ { ...searchModel } }
-          placeholder="请选择耗材型号"
+          placeholder="请选择备件型号"
           initialValue={ currentRow?.model }
         />
       </Spin>
       <ProFormTextArea
         name="description"
-        label="耗材描述"
-        placeholder="请输入耗材描述"
+        label="备件描述"
+        placeholder="请输入备件描述"
         initialValue={ currentRow?.description }
       />
       {/* //图片 */ }

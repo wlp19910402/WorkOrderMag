@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Table, InputNumber, Popconfirm, Drawer, Form, Typography, DatePicker, message, Descriptions, Row, Col, Image } from 'antd';
-import { deleteProtfolioConsumable, updateProtfolioConsumable } from '../service'
-import { RecordConsumableDataType } from '../data'
+import { Table, InputNumber, Popconfirm, Drawer, Form, Typography, message, Descriptions, Row, Col, Image } from 'antd';
+import { deleteProtfolioPart, updateProtfolioPart } from '../service'
+import { RecordPartsDataType } from '../data'
 import ProDescriptions from '@ant-design/pro-descriptions';
 import type { ProDescriptionsItemProps } from '@ant-design/pro-descriptions';
 interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
@@ -9,7 +9,7 @@ interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
   dataIndex: string;
   title: any;
   inputType: 'number' | 'text';
-  record: RecordConsumableDataType;
+  record: RecordPartsDataType;
   index: number;
   value: string;
   children: React.ReactNode;
@@ -25,12 +25,7 @@ const EditableCell: React.FC<EditableCellProps> = ({
   value,
   ...restProps
 }) => {
-  const inputNode = inputType === 'number' ? <InputNumber min={ 0 } max={ 1000 } /> : <DatePicker
-    picker="date"
-    mode="date"
-    placeholder={ `请选择${title}` }
-    style={ { width: "100%" } }
-  />;
+  const inputNode = <InputNumber min={ 0 } max={ 1000 } />;
   return (
     <td { ...restProps }>
       {editing ? (
@@ -53,10 +48,10 @@ const EditableCell: React.FC<EditableCellProps> = ({
   );
 };
 interface ConsumableEditableProps {
-  queryConsumableList: () => void;
-  dataConsumableList: any[]
+  queryPartList: () => void;
+  dataPartList: any[]
 }
-const EditableTable: React.FC<ConsumableEditableProps> = ({ queryConsumableList, dataConsumableList }) => {
+const EditableTable: React.FC<ConsumableEditableProps> = ({ queryPartList, dataPartList }) => {
   const [ form ] = Form.useForm();
   const [ editingKey, setEditingKey ] = useState('');
   const [ showDetail, setShowDetail ] = useState<boolean>(false);
@@ -70,29 +65,27 @@ const EditableTable: React.FC<ConsumableEditableProps> = ({ queryConsumableList,
     setEditingKey('');
   };
   const tiggerDelete = async (id: React.Key) => {
-    let response = await deleteProtfolioConsumable(id)
+    let response = await deleteProtfolioPart(id)
     if (!response) return
     message.success("删除成功");
-    queryConsumableList();
+    queryPartList();
   }
   const sumbitSave = async (key: React.Key) => {
     try {
-      const row = (await form.validateFields()) as RecordConsumableDataType;
-      const newData = [ ...dataConsumableList ];
+      const row = (await form.validateFields()) as RecordPartsDataType;
+      const newData = [ ...dataPartList ];
       const index = newData.findIndex(item => key === item.id);
       if (index > -1) {
-        const item: RecordConsumableDataType = newData[ index ];
+        const item: RecordPartsDataType = newData[ index ];
         let editParams = {
-          expirationTime: row.expirationTime,//到期时间
           id: item.id,
-          replacementCycle: row.replacementCycle,//更换周期
-          replacementTime: row.replacementTime
+          warrantyPeriod: row.warrantyPeriod,//保险周期
         }
-        let response = await updateProtfolioConsumable(editParams)
+        let response = await updateProtfolioPart(editParams)
         if (!response) return
         message.success("修改成功");
         setEditingKey('');
-        queryConsumableList();
+        queryPartList();
       } else {
       }
     } catch (errInfo) {
@@ -101,15 +94,16 @@ const EditableTable: React.FC<ConsumableEditableProps> = ({ queryConsumableList,
   };
   const columns = [
     {
-      title: '档案耗材ID',
+      title: '档案备件ID',
       dataIndex: 'id',
     },
     {
-      title: '耗材ID',
-      dataIndex: 'consumableId',
+      title: '备件ID',
+      dataIndex: 'baseInfo',
+      render: (val: any) => val.id
     },
     {
-      title: '耗材名称',
+      title: '备件名称',
       dataIndex: 'baseInfo',
       render: (val: any, entity: any) => {
         return (
@@ -125,27 +119,15 @@ const EditableTable: React.FC<ConsumableEditableProps> = ({ queryConsumableList,
       }
     },
     {
-      title: '到期时间',
-      dataIndex: 'expirationTime',
-      editable: true,
-    },
-    {
-      title: '更换周期',
-      dataIndex: 'replacementCycle',
-      editable: true,
-      inputType: "number",
-    },
-    {
-      title: '实际更换时间',
-      dataIndex: 'replacementTime',
+      title: '保修周期',
+      dataIndex: 'warrantyPeriod',
       editable: true
     },
-
     {
       title: '操作',
       dataIndex: 'operation',
       hideInDescriptions: true,
-      render: (_: any, record: RecordConsumableDataType) => {
+      render: (_: any, record: RecordPartsDataType) => {
         const editable = isEditing(record);
         return editable ? (
           <span>
@@ -167,16 +149,16 @@ const EditableTable: React.FC<ConsumableEditableProps> = ({ queryConsumableList,
       },
     },
   ];
-  let descriptionsColums = [ ...columns, {
+  let descriptionsColums = [ ...columns,
+  {
     title: '创建时间',
     dataIndex: 'createTime',
   },
   {
     title: '创建人',
     dataIndex: 'createUsername',
-  },
-  {
-    title: '耗材信息',
+  }, {
+    title: '备件信息',
     dataIndex: 'baseInfo',
     hideInForm: true,
     hideInTable: false,
@@ -189,13 +171,13 @@ const EditableTable: React.FC<ConsumableEditableProps> = ({ queryConsumableList,
           labelStyle={ { width: "110px", padding: "8px" } }
           style={ { width: "100%" } }
         >
-          <Descriptions.Item label="耗材ID" >{ val?.id }</Descriptions.Item>
-          <Descriptions.Item label="耗材编号" >{ val?.no }</Descriptions.Item>
-          <Descriptions.Item label="耗材名称">{ val?.name }</Descriptions.Item>
-          <Descriptions.Item label="耗材类型">{ val?.typeName }</Descriptions.Item>
-          <Descriptions.Item label="耗材型号">{ val?.modelName }</Descriptions.Item>
-          <Descriptions.Item label="耗材描述">{ val?.description }</Descriptions.Item>
-          <Descriptions.Item label="耗材图片">
+          <Descriptions.Item label="备件ID" >{ val?.id }</Descriptions.Item>
+          <Descriptions.Item label="备件编号" >{ val?.no }</Descriptions.Item>
+          <Descriptions.Item label="备件名称">{ val?.name }</Descriptions.Item>
+          <Descriptions.Item label="备件类型">{ val?.typeName }</Descriptions.Item>
+          <Descriptions.Item label="备件型号">{ val?.modelName }</Descriptions.Item>
+          <Descriptions.Item label="备件描述">{ val?.description }</Descriptions.Item>
+          <Descriptions.Item label="备件图片">
             { val?.imgUrls.length > 0 ?
               (
                 <Row gutter={ [ 16, 16 ] } >
@@ -211,10 +193,10 @@ const EditableTable: React.FC<ConsumableEditableProps> = ({ queryConsumableList,
               ) : "暂无图片"
             }
           </Descriptions.Item>
-          <Descriptions.Item label="耗材创建时间">{ val?.createTime }</Descriptions.Item>
-          <Descriptions.Item label="耗材创建人">{ val?.createUsername }</Descriptions.Item>
-          <Descriptions.Item label="耗材修改时间">{ val?.updateTime }</Descriptions.Item>
-          <Descriptions.Item label="耗材修改人">{ val?.updateUsername }</Descriptions.Item>
+          <Descriptions.Item label="备件创建时间">{ val?.createTime }</Descriptions.Item>
+          <Descriptions.Item label="备件创建人">{ val?.createUsername }</Descriptions.Item>
+          <Descriptions.Item label="备件修改时间">{ val?.updateTime }</Descriptions.Item>
+          <Descriptions.Item label="备件修改人">{ val?.updateUsername }</Descriptions.Item>
         </Descriptions>
       );
     }
@@ -225,7 +207,7 @@ const EditableTable: React.FC<ConsumableEditableProps> = ({ queryConsumableList,
     }
     return {
       ...col,
-      onCell: (record: RecordConsumableDataType) => ({
+      onCell: (record: RecordPartsDataType) => ({
         record,
         inputType: col.dataIndex === 'replacementCycle' ? 'number' : 'date',
         dataIndex: col.dataIndex,
@@ -236,7 +218,7 @@ const EditableTable: React.FC<ConsumableEditableProps> = ({ queryConsumableList,
   })
 
   useEffect(() => {
-    queryConsumableList();
+    queryPartList();
   }, [])
   return (
     <>
@@ -248,7 +230,7 @@ const EditableTable: React.FC<ConsumableEditableProps> = ({ queryConsumableList,
             },
           } }
           bordered
-          dataSource={ dataConsumableList }
+          dataSource={ dataPartList }
           columns={ mergedColumns }
           rowClassName="editable-row"
           pagination={ false }
@@ -265,7 +247,7 @@ const EditableTable: React.FC<ConsumableEditableProps> = ({ queryConsumableList,
         closable={ false }
       >
         { currentRow?.id && (
-          <ProDescriptions<RecordConsumableDataType>
+          <ProDescriptions<RecordPartsDataType>
             column={ 1 }
             title={ currentRow?.name }
             key={ currentRow?.id }
@@ -275,7 +257,7 @@ const EditableTable: React.FC<ConsumableEditableProps> = ({ queryConsumableList,
             params={ {
               id: currentRow?.id,
             } }
-            columns={ descriptionsColums as ProDescriptionsItemProps<RecordConsumableDataType>[] }
+            columns={ descriptionsColums as ProDescriptionsItemProps<RecordPartsDataType>[] }
           />
         ) }
       </Drawer>

@@ -5,15 +5,19 @@ import { match } from 'react-router'
 import { Descriptions, Row, Col, Image, Card, Button } from 'antd'
 import { PortfolioInfoDataType } from '../data.d'
 import ModelConsumableAdd from '../components/ModelConsumableAdd'
+import ModelPartAdd from '../components/ModelPartAdd'
 import PortfolioConsumableList from '../components/PortfolioConsumableList'
-import { queryProtfolioConsumableList } from '../service'
+import PortfolioPartList from '../components/PortfolioPartList'
+import { queryProtfolioConsumableList, queryProtfolioPartList } from '../service'
 interface PortfolioEditProps {
   match: match
 }
 const DictionaryList: React.FC<PortfolioEditProps> = ({ match }) => {
   const [ currentRow, setCurrentRow ] = useState<PortfolioInfoDataType>()
   const [ createModalVisible, handleModalVisible ] = useState<boolean>(false);
+  const [ modalPartVisible, handleModalPartVisible ] = useState<boolean>(false);
   const [ dataConsumableList, setData ] = useState<any[]>([]);
+  const [ dataPartList, setPartData ] = useState<any[]>([]);
   const portfolioId = match.params.id
   useEffect(() => {
     infoProtfolio(portfolioId).then(res => {
@@ -21,12 +25,19 @@ const DictionaryList: React.FC<PortfolioEditProps> = ({ match }) => {
       setCurrentRow(res.data)
     })
     queryConsumableList()
+    queryPartList()
   }, [])
 
   const queryConsumableList = () => {
     queryProtfolioConsumableList(portfolioId).then(res => {
       if (!res) return
       setData(res.data)
+    })
+  }
+  const queryPartList = () => {
+    queryProtfolioPartList(portfolioId).then(res => {
+      if (!res) return
+      setPartData(res.data)
     })
   }
   return (
@@ -93,10 +104,26 @@ const DictionaryList: React.FC<PortfolioEditProps> = ({ match }) => {
             queryConsumableList={ queryConsumableList }
           />
         ) }
-        <Card title="耗材信息" extra={ <Button type="primary" onClick={ () => handleModalVisible(true) }>新增</Button> }>
+        <Card title="耗材信息"
+          style={ { marginBottom: "20px" } }
+          extra={ <Button type="primary" onClick={ () => handleModalVisible(true) }>新增</Button> }>
           <PortfolioConsumableList
             queryConsumableList={ queryConsumableList }
             dataConsumableList={ dataConsumableList }
+          />
+        </Card>
+        {modalPartVisible && (
+          <ModelPartAdd
+            createModalVisible={ modalPartVisible }
+            handleModalVisible={ handleModalPartVisible }
+            portfolioId={ portfolioId }
+            queryPartList={ queryPartList }
+          />
+        ) }
+        <Card title="备件信息" extra={ <Button type="primary" onClick={ () => handleModalPartVisible(true) }>新增</Button> }>
+          <PortfolioPartList
+            queryPartList={ queryPartList }
+            dataPartList={ dataPartList }
           />
         </Card>
       </>

@@ -1,7 +1,7 @@
 import type { PortfolioSearchType, PortfolioSaveDataType } from './data.d';
 import API from '@/services/API.d'
 import httpServer from '@/utils/httpServer'
-import type { ConsumableAddDataType, ConsumableEditDataType } from './data.d'
+import type { ConsumableAddDataType, ConsumableEditDataType, PartEditDataType, PartAddDataType } from './data.d'
 
 export const queryProtfolioList = async (params: PortfolioSearchType) => {
   return await httpServer.get(API.PORTFOLIO_LIST, {
@@ -46,18 +46,18 @@ export const deleteProtfolioConsumable = async (id: React.Key) => {
   return httpServer.post(`${API.PORTFOLIO_DELETE_CONSUMABLE}/${id}`)
 }
 //档案备件新增
-export const addPartProtfolio = async (params: ConsumableAddDataType[]) => {
+export const addProtfolioPart = async (params: PartAddDataType[]) => {
   return httpServer.post(API.PORTFOLIO_ADD_PART, { data: params });
 }
 //档案备件列表
-export const queryPartConsumableList = async (id: React.Key) => {
+export const queryProtfolioPartList = async (id: React.Key) => {
   return httpServer.get(`${API.PORTFOLIO_LIST_PART}/${id}`)
 }
 //档案备件编辑
-export const updatePartConsumable = async (params: ConsumableEditDataType) => {
+export const updateProtfolioPart = async (params: PartEditDataType) => {
   return httpServer.post(API.PORTFOLIO_UPDATE_PART, { data: params });
 }
 //档案备件删除
-export const deletePartConsumable = async (id: React.Key) => {
+export const deleteProtfolioPart = async (id: React.Key) => {
   return httpServer.post(`${API.PORTFOLIO_DELETE_PART}/${id}`)
 }
