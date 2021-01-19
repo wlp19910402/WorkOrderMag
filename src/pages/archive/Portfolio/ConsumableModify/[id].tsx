@@ -7,7 +7,7 @@ import { Descriptions, Row, Col, Image, Card, Button } from 'antd'
 import { PortfolioInfoDataType } from '../data.d'
 import ConsumableList from '@/pages/device/Consumable/index'
 import ModelConsumableAdd from '../components/ModelConsumableAdd'
-import ModelConsumableList from '../components/ModelConsumableList'
+import PortfolioConsumableList from '../components/PortfolioConsumableList'
 import { queryProtfolioConsumableList } from '../service'
 interface PortfolioEditProps {
   match: match
@@ -95,7 +95,7 @@ const DictionaryList: React.FC<PortfolioEditProps> = ({ match }) => {
           />
         ) }
         <Card title="耗材信息" extra={ <Button type="primary" onClick={ () => handleModalVisible(true) }>新增</Button> }>
-          <ModelConsumableList
+          <PortfolioConsumableList
             queryConsumableList={ queryConsumableList }
             dataConsumableList={ dataConsumableList }
           />

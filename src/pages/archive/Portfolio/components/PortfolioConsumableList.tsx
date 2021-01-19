@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Input, InputNumber, Popconfirm, Form, Typography, DatePicker, message } from 'antd';
+import { Table, InputNumber, Popconfirm, Drawer, Form, Typography, DatePicker, message, Descriptions, Row, Col, Image } from 'antd';
 import { deleteProtfolioConsumable, updateProtfolioConsumable } from '../service'
-import { RecordConsumableDataType } from '../data.d'
-import type { ProColumns } from '@ant-design/pro-table';
+import { RecordConsumableDataType } from '../data'
+import ProDescriptions from '@ant-design/pro-descriptions';
+import type { ProDescriptionsItemProps } from '@ant-design/pro-descriptions';
 interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
   editing: boolean;
   dataIndex: string;
@@ -12,7 +13,6 @@ interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
   index: number;
   value: string;
   children: React.ReactNode;
-  render: string;
 }
 const EditableCell: React.FC<EditableCellProps> = ({
   editing,
@@ -23,10 +23,9 @@ const EditableCell: React.FC<EditableCellProps> = ({
   index,
   children,
   value,
-  render,
   ...restProps
 }) => {
-  const inputNode = inputType === 'number' ? <InputNumber min={ 0 } max={ 1000 } allowClear={ false } /> : <DatePicker
+  const inputNode = inputType === 'number' ? <InputNumber min={ 0 } max={ 1000 } /> : <DatePicker
     picker="date"
     mode="date"
     placeholder={ `请选择${title}` }
@@ -60,6 +59,8 @@ interface ConsumableEditableProps {
 const EditableTable: React.FC<ConsumableEditableProps> = ({ queryConsumableList, dataConsumableList }) => {
   const [ form ] = Form.useForm();
   const [ editingKey, setEditingKey ] = useState('');
+  const [ showDetail, setShowDetail ] = useState<boolean>(false);
+  const [ currentRow, setCurrentRow ] = useState<any>();
   const isEditing = (record: any) => record.id === editingKey;
   const tiggerEdit = (record: any) => {
     form.setFieldsValue({ expirationTime: '', replacementCycle: '', replacementTime: '', id: record.id });
@@ -110,8 +111,17 @@ const EditableTable: React.FC<ConsumableEditableProps> = ({ queryConsumableList,
     {
       title: '耗材名称',
       dataIndex: 'baseInfo',
-      render: (val: any) => {
-        return val.name
+      render: (val: any, entity: any) => {
+        return (
+          <a
+            onClick={ () => {
+              setCurrentRow(entity);
+              setShowDetail(true);
+            } }
+          >
+            {`${val.name}` }
+          </a>
+        );
       }
     },
     {
@@ -130,9 +140,11 @@ const EditableTable: React.FC<ConsumableEditableProps> = ({ queryConsumableList,
       dataIndex: 'replacementTime',
       editable: true
     },
+
     {
       title: '操作',
       dataIndex: 'operation',
+      hideInDescriptions: true,
       render: (_: any, record: RecordConsumableDataType) => {
         const editable = isEditing(record);
         return editable ? (
@@ -155,6 +167,50 @@ const EditableTable: React.FC<ConsumableEditableProps> = ({ queryConsumableList,
       },
     },
   ];
+  let descriptionsColums = [ ...columns, {
+    title: '耗材',
+    dataIndex: 'baseInfo',
+    hideInForm: true,
+    hideInTable: false,
+    hideInSearch: true,
+    hide: true,
+    render: (val: any, entity: any) => {
+      return (
+        <Descriptions bordered size="small"
+          column={ 1 }
+          labelStyle={ { width: "80px", padding: "8px" } }
+          style={ { marginBottom: "20px" } }
+        >
+          <Descriptions.Item label="耗材ID" >{ val?.id }</Descriptions.Item>
+          <Descriptions.Item label="耗材编号" >{ val?.no }</Descriptions.Item>
+          <Descriptions.Item label="耗材名称">{ val?.name }</Descriptions.Item>
+          <Descriptions.Item label="耗材类型">{ val?.typeName }</Descriptions.Item>
+          <Descriptions.Item label="耗材型号">{ val?.modelName }</Descriptions.Item>
+          <Descriptions.Item label="耗材描述">{ val?.description }</Descriptions.Item>
+          <Descriptions.Item label="设备图片">
+            { val?.imgUrls.length > 0 ?
+              (
+                <Row gutter={ [ 16, 16 ] } >
+                  { val?.imgUrls.map((url: string) =>
+                    <Col>
+                      <Image
+                        width="60px" height="60px"
+                        src={ `${url}?x-oss-process=image/resize,h_100,w_100,m_lfit` }
+                        preview={ { src: url } }
+                      />
+                    </Col>
+                  ) }</Row>
+              ) : "暂无图片"
+            }
+          </Descriptions.Item>
+          <Descriptions.Item label="创建日期">{ val?.createTime }</Descriptions.Item>
+          <Descriptions.Item label="创建人">{ val?.createUsername }</Descriptions.Item>
+          <Descriptions.Item label="修改时间">{ val?.updateTime }</Descriptions.Item>
+          <Descriptions.Item label="修改人">{ val?.updateUsername }</Descriptions.Item>
+        </Descriptions>
+      );
+    }
+  } ]
   const mergedColumns = columns.map(col => {
     if (!col.editable) {
       return col;
@@ -175,21 +231,47 @@ const EditableTable: React.FC<ConsumableEditableProps> = ({ queryConsumableList,
     queryConsumableList();
   }, [])
   return (
-    <Form form={ form } component={ false }>
-      <Table
-        components={ {
-          body: {
-            cell: EditableCell,
-          },
+    <>
+      <Form form={ form } component={ false }>
+        <Table
+          components={ {
+            body: {
+              cell: EditableCell,
+            },
+          } }
+          bordered
+          dataSource={ dataConsumableList }
+          columns={ mergedColumns }
+          rowClassName="editable-row"
+          pagination={ false }
+          scroll={ { y: 480 } }
+        />
+      </Form>
+      <Drawer
+        width={ 600 }
+        visible={ showDetail }
+        onClose={ () => {
+          setCurrentRow(undefined);
+          setShowDetail(false);
         } }
-        bordered
-        dataSource={ dataConsumableList }
-        columns={ mergedColumns }
-        rowClassName="editable-row"
-        pagination={ false }
-        scroll={ { y: 480 } }
-      />
-    </Form>
+        closable={ false }
+      >
+        { currentRow?.id && (
+          <ProDescriptions<RecordConsumableDataType>
+            column={ 1 }
+            title={ currentRow?.name }
+            key={ currentRow?.id }
+            request={ async () => ({
+              data: currentRow || {},
+            }) }
+            params={ {
+              id: currentRow?.id,
+            } }
+            columns={ descriptionsColums as ProDescriptionsItemProps<RecordConsumableDataType>[] }
+          />
+        ) }
+      </Drawer>
+    </>
   );
 };
 
