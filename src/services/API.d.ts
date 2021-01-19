@@ -58,6 +58,8 @@ export default {
   PORTFOLIO_SAVE: '/api/portfolio/add',//
   PORTFOLIO_INFO: '/api/portfolio/info',/// portfolio/info/{id}
   PORTFOLIO_DELETE: '/api/portfolio/del',/// portfolio/del/{id}
-  PORTFOLIO_ADD_CONSUMABLE: '/api/portfolio/add-consumable'//档案耗材新增
-
+  PORTFOLIO_ADD_CONSUMABLE: '/api/portfolio/add-consumable',//档案耗材新增
+  PORTFOLIO_LIST_CONSUMABLE: "/api/portfolio/consumable-list",///portfolio/consumable-list/{id} 档案耗材列表
+  PORTFOLIO_DELETE_CONSUMABLE: '/api/portfolio/move-consumable',///portfolio/move-consumable/{portfolioConsumableId} 移除档案耗材
+  PORTFOLIO_UPDATE_CONSUMABLE: '/api/portfolio/update-consumable',///portfolio/update-consumable//修改档案耗材
 }

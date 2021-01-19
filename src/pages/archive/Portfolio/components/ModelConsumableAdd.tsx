@@ -23,17 +23,19 @@ const ModelConsumableAdd: React.FC<ModalModifyFormDataProps> = ({ createModalVis
       title: "档案ID",
       dataIndex: 'portfolioId',
       editable: false,
-      hideInTable: true
+      hideInTable: true,
     },
     {
       title: "耗材ID",
       dataIndex: 'consumableId',
-      editable: false
+      editable: false,
+      width: "80px"
     },
     {
       title: "耗材名称",
       dataIndex: 'consumableName',
-      editable: false
+      editable: false,
+      width: "80px"
     },
     {
       title: "到期时间",
@@ -115,7 +117,6 @@ const ModelConsumableAdd: React.FC<ModalModifyFormDataProps> = ({ createModalVis
           portfolioId={ portfolioId }
         />
         <EditableProTable<ColumnEditConsumableType>
-          style={ { height: "300px", overflow: "auto" } }
           rowKey="consumableId"
           headerTitle="设置新增耗材内容"
           columns={ columns }
@@ -136,6 +137,7 @@ const ModelConsumableAdd: React.FC<ModalModifyFormDataProps> = ({ createModalVis
             },
             onChange: setEditableRowKeys,
           } }
+          scroll={ { y: 200 } }
         />
       </Modal>
     </>

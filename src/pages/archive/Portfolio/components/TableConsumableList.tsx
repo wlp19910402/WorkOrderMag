@@ -55,7 +55,8 @@ const TableConsumableList: React.FC<TableConsumableListProps> = ({ setSelectedRo
     {
       title: "耗材型号",
       dataIndex: 'modelName',
-      hideInSearch: true
+      hideInSearch: true,
+      width: "100px"
     },
     {
       title: "耗材型号",
@@ -81,7 +82,7 @@ const TableConsumableList: React.FC<TableConsumableListProps> = ({ setSelectedRo
     {
       title: "操作",
       valueType: 'option',
-      width: "120px",
+      width: "48px",
       render: (_, record) => [
         <Button
           style={ selectedRowsState.length > 0 ? !!selectedRowsState.find(item => item.consumableId === record.id) ? {} : { color: "#1890ff" } : { color: "#1890ff" } }
@@ -116,8 +117,8 @@ const TableConsumableList: React.FC<TableConsumableListProps> = ({ setSelectedRo
   }
   return (
     <ProTable
-      style={ { border: "10px solid #999", maxHeight: "300px", overflow: "auto" } }
-      tableStyle={ {} }
+      style={ { border: "8px solid #ddd", } }
+      tableStyle={ { marginTop: "-70px" } }
       size="small"
       headerTitle="请选择添加对应的耗材"
       rowKey="id"
@@ -129,6 +130,7 @@ const TableConsumableList: React.FC<TableConsumableListProps> = ({ setSelectedRo
       } }
       request={ async (params, sorter, filter) => await fetchQueryList({ ...params, ...filter }) }
       columns={ columns }
+      scroll={ { y: 100 } }
     />
   );
 };

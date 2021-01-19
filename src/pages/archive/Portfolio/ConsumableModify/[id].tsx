@@ -8,18 +8,29 @@ import { PortfolioInfoDataType } from '../data.d'
 import ConsumableList from '@/pages/device/Consumable/index'
 import ModelConsumableAdd from '../components/ModelConsumableAdd'
 import ModelConsumableList from '../components/ModelConsumableList'
+import { queryProtfolioConsumableList } from '../service'
 interface PortfolioEditProps {
   match: match
 }
 const DictionaryList: React.FC<PortfolioEditProps> = ({ match }) => {
   const [ currentRow, setCurrentRow ] = useState<PortfolioInfoDataType>()
   const [ createModalVisible, handleModalVisible ] = useState<boolean>(false);
+  const [ dataConsumableList, setData ] = useState<any[]>([]);
+  const portfolioId = match.params.id
   useEffect(() => {
-    infoProtfolio(match.params.id).then(res => {
+    infoProtfolio(portfolioId).then(res => {
       if (!res) return;
       setCurrentRow(res.data)
     })
+    queryConsumableList()
   }, [])
+
+  const queryConsumableList = () => {
+    queryProtfolioConsumableList(portfolioId).then(res => {
+      if (!res) return
+      setData(res.data)
+    })
+  }
   return (
     <PageContainer>
       <>
@@ -80,11 +91,14 @@ const DictionaryList: React.FC<PortfolioEditProps> = ({ match }) => {
           <ModelConsumableAdd
             createModalVisible={ createModalVisible }
             handleModalVisible={ handleModalVisible }
-            portfolioId = { match.params.id}
+            portfolioId={ portfolioId }
           />
         ) }
         <Card title="耗材信息" extra={ <Button type="primary" onClick={ () => handleModalVisible(true) }>新增</Button> }>
-          <ModelConsumableList />
+          <ModelConsumableList
+            queryConsumableList={ queryConsumableList }
+            dataConsumableList={ dataConsumableList }
+          />
         </Card>
       </>
     </PageContainer>

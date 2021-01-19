@@ -56,7 +56,6 @@ export type RecordConsumableDataType = {
   reateUsername: string;
   id: number;//档案耗材id
   consumableId: number;//耗材id
-  warrantyPeriod: string;
   expirationTime: string;
   portfolioId: number;
   replacementCycle: string;

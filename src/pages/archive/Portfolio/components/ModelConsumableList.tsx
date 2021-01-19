@@ -1,32 +1,19 @@
-import React, { useState } from 'react';
-import { Table, Input, InputNumber, Popconfirm, Form, Typography } from 'antd';
-
-interface Item {
-  key: string;
-  name: string;
-  age: number;
-  address: string;
-}
-
-const originData: Item[] = [];
-for (let i = 0; i < 100; i++) {
-  originData.push({
-    key: i.toString(),
-    name: `Edrward ${i}`,
-    age: 32,
-    address: `London Park no. ${i}`,
-  });
-}
+import React, { useState, useEffect } from 'react';
+import { Table, Input, InputNumber, Popconfirm, Form, Typography, DatePicker, message } from 'antd';
+import { deleteProtfolioConsumable, updateProtfolioConsumable } from '../service'
+import { RecordConsumableDataType } from '../data.d'
+import type { ProColumns } from '@ant-design/pro-table';
 interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
   editing: boolean;
   dataIndex: string;
   title: any;
   inputType: 'number' | 'text';
-  record: Item;
+  record: RecordConsumableDataType;
   index: number;
+  value: string;
   children: React.ReactNode;
+  render: string;
 }
-
 const EditableCell: React.FC<EditableCellProps> = ({
   editing,
   dataIndex,
@@ -35,10 +22,16 @@ const EditableCell: React.FC<EditableCellProps> = ({
   record,
   index,
   children,
+  value,
+  render,
   ...restProps
 }) => {
-  const inputNode = inputType === 'number' ? <InputNumber /> : <Input />;
-
+  const inputNode = inputType === 'number' ? <InputNumber min={ 0 } max={ 1000 } allowClear={ false } /> : <DatePicker
+    picker="date"
+    mode="date"
+    placeholder={ `请选择${title}` }
+    style={ { width: "100%" } }
+  />;
   return (
     <td { ...restProps }>
       {editing ? (
@@ -48,7 +41,7 @@ const EditableCell: React.FC<EditableCellProps> = ({
           rules={ [
             {
               required: true,
-              message: `Please Input ${title}!`,
+              message: `${title}不能为空!`,
             },
           ] }
         >
@@ -60,104 +53,127 @@ const EditableCell: React.FC<EditableCellProps> = ({
     </td>
   );
 };
-
-const EditableTable = () => {
+interface ConsumableEditableProps {
+  queryConsumableList: () => void;
+  dataConsumableList: any[]
+}
+const EditableTable: React.FC<ConsumableEditableProps> = ({ queryConsumableList, dataConsumableList }) => {
   const [ form ] = Form.useForm();
-  const [ data, setData ] = useState(originData);
   const [ editingKey, setEditingKey ] = useState('');
-
-  const isEditing = (record: Item) => record.key === editingKey;
-
-  const edit = (record: Partial<Item> & { key: React.Key }) => {
-    form.setFieldsValue({ name: '', age: '', address: '', ...record });
-    setEditingKey(record.key);
+  const isEditing = (record: any) => record.id === editingKey;
+  const tiggerEdit = (record: any) => {
+    form.setFieldsValue({ expirationTime: '', replacementCycle: '', replacementTime: '', id: record.id });
+    setEditingKey(record.id);
   };
-
-  const cancel = () => {
+  const tiggerCancel = () => {
     setEditingKey('');
   };
-
-  const save = async (key: React.Key) => {
+  const tiggerDelete = async (id: React.Key) => {
+    let response = await deleteProtfolioConsumable(id)
+    if (!response) return
+    message.success("删除成功");
+    queryConsumableList();
+  }
+  const sumbitSave = async (key: React.Key) => {
     try {
-      const row = (await form.validateFields()) as Item;
-      const newData = [ ...data ];
-      const index = newData.findIndex(item => key === item.key);
+      const row = (await form.validateFields()) as RecordConsumableDataType;
+      const newData = [ ...dataConsumableList ];
+      const index = newData.findIndex(item => key === item.id);
       if (index > -1) {
-        const item = newData[ index ];
-        newData.splice(index, 1, {
-          ...item,
-          ...row,
-        });
-        setData(newData);
+        const item: RecordConsumableDataType = newData[ index ];
+        let editParams = {
+          expirationTime: row.expirationTime,//到期时间
+          id: item.id,
+          replacementCycle: row.replacementCycle,//更换周期
+          replacementTime: row.replacementTime
+        }
+        let response = await updateProtfolioConsumable(editParams)
+        if (!response) return
+        message.success("修改成功");
         setEditingKey('');
+        queryConsumableList();
       } else {
-        newData.push(row);
-        setData(newData);
-        setEditingKey('');
       }
     } catch (errInfo) {
-      console.log('Validate Failed:', errInfo);
+      console.log('异常', errInfo);
     }
   };
-
   const columns = [
     {
-      title: 'name',
-      dataIndex: 'name',
-      width: '25%',
+      title: '档案耗材ID',
+      dataIndex: 'id',
+    },
+    {
+      title: '耗材ID',
+      dataIndex: 'consumableId',
+    },
+    {
+      title: '耗材名称',
+      dataIndex: 'baseInfo',
+      render: (val: any) => {
+        return val.name
+      }
+    },
+    {
+      title: '到期时间',
+      dataIndex: 'expirationTime',
       editable: true,
     },
     {
-      title: 'age',
-      dataIndex: 'age',
-      width: '15%',
+      title: '更换周期',
+      dataIndex: 'replacementCycle',
       editable: true,
+      inputType: "number",
     },
     {
-      title: 'address',
-      dataIndex: 'address',
-      width: '40%',
-      editable: true,
+      title: '实际更换时间',
+      dataIndex: 'replacementTime',
+      editable: true
     },
     {
-      title: 'operation',
+      title: '操作',
       dataIndex: 'operation',
-      render: (_: any, record: Item) => {
+      render: (_: any, record: RecordConsumableDataType) => {
         const editable = isEditing(record);
         return editable ? (
           <span>
-            <a href="javascript:;" onClick={ () => save(record.key) } style={ { marginRight: 8 } }>
-              Save
+            <a href="javascript:;" onClick={ () => sumbitSave(record.id) } style={ { marginRight: 8 } }>
+              保存
             </a>
-            <Popconfirm title="Sure to cancel?" onConfirm={ cancel }>
-              <a>Cancel</a>
-            </Popconfirm>
+            <a href="javascript:;" onClick={ tiggerCancel } >取消</a>
           </span>
         ) : (
-            <Typography.Link disabled={ editingKey !== '' } onClick={ () => edit(record) }>
-              Edit
-            </Typography.Link>
+            <>
+              <Typography.Link disabled={ editingKey !== '' } onClick={ () => tiggerEdit(record) } style={ { marginRight: 8 } }>
+                编辑
+             </Typography.Link>
+              <Popconfirm title="确认删除吗?" onConfirm={ () => tiggerDelete(record.id) }>
+                <a href="javascript:;"> 删除</a>
+              </Popconfirm>
+            </>
           );
       },
     },
   ];
-
   const mergedColumns = columns.map(col => {
     if (!col.editable) {
       return col;
     }
     return {
       ...col,
-      onCell: (record: Item) => ({
+      onCell: (record: RecordConsumableDataType) => ({
         record,
-        inputType: col.dataIndex === 'age' ? 'number' : 'text',
+        inputType: col.dataIndex === 'replacementCycle' ? 'number' : 'date',
         dataIndex: col.dataIndex,
         title: col.title,
         editing: isEditing(record),
       }),
     };
-  });
+  })
 
+  useEffect(() => {
+    queryConsumableList();
+  }, [])
   return (
     <Form form={ form } component={ false }>
       <Table
@@ -167,12 +183,11 @@ const EditableTable = () => {
           },
         } }
         bordered
-        dataSource={ data }
+        dataSource={ dataConsumableList }
         columns={ mergedColumns }
         rowClassName="editable-row"
-        pagination={ {
-          onChange: cancel,
-        } }
+        pagination={ false }
+        scroll={ { y: 480 } }
       />
     </Form>
   );
