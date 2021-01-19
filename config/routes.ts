@@ -98,24 +98,20 @@
                       {
                         path: '/archive/portfolio/list',
                         name: "设备档案管理",
-                        component: './archive/Portfolio/List/index',
+                        component: './archive/portfolio/List/index',
                       },
                       {
                         path: '/archive/portfolio/create',
                         name: "设备档案新增",
-                        component: './archive/Portfolio/Create/index',
+                        component: './archive/portfolio/Create/index',
                       }, {
                         path: '/archive/portfolio/edit/:id',
                         name: "设备档案编辑",
-                        component: './archive/Portfolio/Edit/[id]',
-                      }, {
-                        path: '/archive/portfolio/consumablemodify/:id',
-                        name: "耗材管理",
-                        component: './archive/Portfolio/ConsumableModify/[id]',
+                        component: './archive/portfolio/Edit/[id]',
                       }, {
                         path: '/archive/portfolio/info/:id',
                         name: "详情",
-                        component: './archive/Portfolio/info/[id]',
+                        component: './archive/portfolio/Info/[id]',
                       }
                     ]
                   }

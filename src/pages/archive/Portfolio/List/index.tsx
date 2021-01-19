@@ -234,12 +234,6 @@ const DictionaryList: React.FC<PortfolioListDataType> = () => {
         <Link to={ `/archive/portfolio/edit/${record.id}` }>
           编辑
         </Link>,
-        <Link to={ `/archive/portfolio/consumablemodify/${record.id}` }>
-          耗材
-       </Link>,
-        <Link to={ `/archive/portfolio/edit/${record.id}` }>
-          备件
-        </Link>,
         <Link to={ `/archive/portfolio/info/${record.id}` }>
           详情
         </Link>

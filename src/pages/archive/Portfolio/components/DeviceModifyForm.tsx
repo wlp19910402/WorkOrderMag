@@ -159,9 +159,9 @@ const DictionaryList: React.FC<ModifyFormTypeProps> = ({ currentRow }) => {
               initialValue={ currentRow?.nativePlace }
             >
               <DatePicker
-                format="YYYY-MM-DD HH:mm:ss"
+                picker="date"
+                format="YYYY-MM-DD"
                 placeholder="请输入安装时间"
-                showTime={ { defaultValue: moment('00:00:00', 'HH:mm:ss') } }
                 style={ { width: "100%" } }
               />
             </Form.Item>
