@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import BasicModifyForm from '../components/BasicModifyForm'
 import { PageContainer } from '@ant-design/pro-layout';
 import { infoProtfolio } from '../service'
 import { match } from 'react-router'
 import { Descriptions, Row, Col, Image, Card, Button } from 'antd'
 import { PortfolioInfoDataType } from '../data.d'
-import ConsumableList from '@/pages/device/Consumable/index'
 import ModelConsumableAdd from '../components/ModelConsumableAdd'
 import PortfolioConsumableList from '../components/PortfolioConsumableList'
 import { queryProtfolioConsumableList } from '../service'

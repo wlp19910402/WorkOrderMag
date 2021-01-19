@@ -58,8 +58,14 @@ export default {
   PORTFOLIO_SAVE: '/api/portfolio/add',//
   PORTFOLIO_INFO: '/api/portfolio/info',/// portfolio/info/{id}
   PORTFOLIO_DELETE: '/api/portfolio/del',/// portfolio/del/{id}
+  //档案耗材管理-设备档案管理接口
   PORTFOLIO_ADD_CONSUMABLE: '/api/portfolio/add-consumable',//档案耗材新增
   PORTFOLIO_LIST_CONSUMABLE: "/api/portfolio/consumable-list",///portfolio/consumable-list/{id} 档案耗材列表
   PORTFOLIO_DELETE_CONSUMABLE: '/api/portfolio/move-consumable',///portfolio/move-consumable/{portfolioConsumableId} 移除档案耗材
   PORTFOLIO_UPDATE_CONSUMABLE: '/api/portfolio/update-consumable',///portfolio/update-consumable//修改档案耗材
+  //档案备件管理-设备档案管理接口
+  PORTFOLIO_ADD_PART: '/api/portfolio/add-part',//档案耗材新增
+  PORTFOLIO_LIST_PART: "/api/portfolio/part-list",///portfolio/part-list/{id} 档案耗材列表
+  PORTFOLIO_DELETE_PART: '/api/portfolio/move-part',///portfolio/move-part/{portfolioPartId} 移除档案耗材
+  PORTFOLIO_UPDATE_PART: '/api/portfolio/update-part',///portfolio/update-part//修改档案耗材
 }

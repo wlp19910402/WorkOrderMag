@@ -45,3 +45,19 @@ export const updateProtfolioConsumable = async (params: ConsumableEditDataType) 
 export const deleteProtfolioConsumable = async (id: React.Key) => {
   return httpServer.post(`${API.PORTFOLIO_DELETE_CONSUMABLE}/${id}`)
 }
+//档案备件新增
+export const addPartProtfolio = async (params: ConsumableAddDataType[]) => {
+  return httpServer.post(API.PORTFOLIO_ADD_PART, { data: params });
+}
+//档案备件列表
+export const queryPartConsumableList = async (id: React.Key) => {
+  return httpServer.get(`${API.PORTFOLIO_LIST_PART}/${id}`)
+}
+//档案备件编辑
+export const updatePartConsumable = async (params: ConsumableEditDataType) => {
+  return httpServer.post(API.PORTFOLIO_UPDATE_PART, { data: params });
+}
+//档案备件删除
+export const deletePartConsumable = async (id: React.Key) => {
+  return httpServer.post(`${API.PORTFOLIO_DELETE_PART}/${id}`)
+}
