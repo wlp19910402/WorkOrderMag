@@ -1,6 +1,7 @@
 import type { PortfolioSearchType, PortfolioSaveDataType } from './data.d';
 import API from '@/services/API.d'
 import httpServer from '@/utils/httpServer'
+import type { ConsumableAddDataType } from './data.d'
 
 export const queryProtfolioList = async (params: PortfolioSearchType) => {
   return await httpServer.get(API.PORTFOLIO_LIST, {
@@ -27,4 +28,7 @@ export const deleteProtfolio = async (id: string) => {
 
 export const infoProtfolio = async (id: any) => {
   return httpServer.get(`${API.PORTFOLIO_INFO}/${id}`)
+}
+export const addConsumableProtfolio = async (params: ConsumableAddDataType[]) => {
+  return httpServer.post(API.PORTFOLIO_ADD_CONSUMABLE, { data: params });
 }

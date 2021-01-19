@@ -6,10 +6,14 @@ import type { ConsumableListDataType } from '@/pages/device/Consumable/data.d';
 import { fetchDicTypeSelectObj } from '@/pages/admin/Dictionary/service'
 import CODE from '@/utils/DicCode.d'
 import SearchSelect from '@/components/common/SerchSelect'
-
-
-const ModelConsumableAdd: React.FC<ConsumableListDataType> = () => {
-  const [ selectedRowsState, setSelectedRows ] = useState<ConsumableListDataType[]>([]);
+import { Button } from 'antd'
+interface TableConsumableListProps {
+  setSelectedRows: React.Dispatch<React.SetStateAction<any[]>>
+  selectedRowsState: any[];
+  setEditableRowKeys: React.Dispatch<React.SetStateAction<any[]>>;
+  portfolioId: string;
+}
+const TableConsumableList: React.FC<TableConsumableListProps> = ({ setSelectedRows, selectedRowsState = [], setEditableRowKeys, portfolioId }) => {
   const [ searchType, setSearchType ] = useState<any>({})//设备类型
   let dicCode = async () => {
     setSearchType(await fetchDicTypeSelectObj(CODE.CONSUMABLE_TYPE))
@@ -27,28 +31,6 @@ const ModelConsumableAdd: React.FC<ConsumableListDataType> = () => {
       title: "耗材名称",
       dataIndex: 'name',
     },
-    // {
-    //   title: "图片",
-    //   dataIndex: 'imgUrls',
-    //   hideInSearch: true,
-    //   render: (val: any) => {
-    //     return val && val.length > 0 ?
-    //       (
-    //         <Image
-    //           width="60px" height="60px"
-    //           src={ `${val[ 0 ]}?x-oss-process=image/resize,h_100,w_100,m_lfit` }
-    //           preview={ { src: val[ 0 ] } }
-    //         />
-    //       ) : (
-    //         <Image
-    //           width="60px"
-    //           height="60px"
-    //           src={ ImgNull }
-    //           preview={ false }
-    //         ></Image >
-    //       )
-    //   }
-    // },
     {
       title: "耗材编号",
       dataIndex: 'no',
@@ -87,7 +69,7 @@ const ModelConsumableAdd: React.FC<ConsumableListDataType> = () => {
         }
         const stateType = form.getFieldValue('type');
         return (
-          < SearchSelect
+          <SearchSelect
             { ...rest }
             state={ {
               type: stateType,
@@ -101,17 +83,28 @@ const ModelConsumableAdd: React.FC<ConsumableListDataType> = () => {
       valueType: 'option',
       width: "120px",
       render: (_, record) => [
-        <a onClick={ () => {
-          selectRecord(record)
-        } }>添加</a>
+        <Button type="text"
+          disabled={ selectedRowsState.length > 0 ? !!selectedRowsState.find(item => item.consumableId === record.id) : false }
+          onClick={ () => {
+            selectRecord(record)
+          } }>添加</Button>
       ],
     },
   ];
 
-  const selectRecord = (record: any) => {
-    let data = selectedRowsState;
-    data.push(record);
-    setSelectedRows(data);
+  const selectRecord = (record: ConsumableListDataType) => {
+    setSelectedRows(
+      [ ...selectedRowsState, {
+        portfolioId: parseInt(portfolioId),
+        consumableId: record.id,
+        consumableName: record.name,
+        expirationTime: "",
+        num: 1,
+        replacementCycle: "",
+        replacementTime: ""
+      } ]
+    )
+    setEditableRowKeys([ ...selectedRowsState.map(item => item.consumableId), record.id ])
   }
   const fetchQueryList = async (params: any) => {
     const response = await queryConsumableList(params)
@@ -128,7 +121,7 @@ const ModelConsumableAdd: React.FC<ConsumableListDataType> = () => {
         labelWidth: 80,
       } }
       pagination={ {
-        pageSize: 10
+        pageSize: 6
       } }
       request={ async (params, sorter, filter) => await fetchQueryList({ ...params, ...filter }) }
       columns={ columns }
@@ -136,4 +129,4 @@ const ModelConsumableAdd: React.FC<ConsumableListDataType> = () => {
   );
 };
 
-export default ModelConsumableAdd;
+export default TableConsumableList;

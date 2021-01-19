@@ -1,214 +1,144 @@
+import React, { useState } from 'react';
+import type { ProColumns } from '@ant-design/pro-table';
+import { EditableProTable } from '@ant-design/pro-table';
+import { Modal, message, DatePicker, InputNumber } from 'antd';
+import { ConsumableAddDataType } from '@/pages/archive/Portfolio/data.d'
+import { addConsumableProtfolio } from '../service'
+import TableConsumableList from './TableConsumableList'
 
-import { Image, Modal, Popconfirm } from 'antd';
-import React, { useState, useRef, useEffect, } from 'react';
-import type { ProColumns, ActionType } from '@ant-design/pro-table';
-import ProTable from '@ant-design/pro-table';
-import { queryConsumableList } from '@/pages/device/Consumable/service';
-import type { ConsumableListDataType } from '@/pages/device/Consumable/data.d';
-import { fetchDicTypeSelectObj } from '@/pages/admin/Dictionary/service'
-import CODE from '@/utils/DicCode.d'
-import { Link } from 'umi'
-import SearchSelect from '@/components/common/SerchSelect'
+export type ColumnEditConsumableType = {
+  consumableName: string;
+} & ConsumableAddDataType
+
 type ModalModifyFormDataProps = {
   createModalVisible: boolean;
   handleModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
-  // actionRef: React.MutableRefObject<ActionType | undefined>;
-  // currentRow: ConsumableSaveDataType | undefined;
-  // searchType: any
+  portfolioId: string;
 }
-const ModelConsumableAdd: React.FC<ModalModifyFormDataProps> = ({ createModalVisible = false, handleModalVisible }) => {
-  const actionRef = useRef<ActionType>();
-  const [ selectedRowsState, setSelectedRows ] = useState<ConsumableListDataType[]>([]);
-  const [ searchType, setSearchType ] = useState<any>({})//设备类型
-  let dicCode = async () => {
-    setSearchType(await fetchDicTypeSelectObj(CODE.CONSUMABLE_TYPE))
-  }
-  useEffect(() => {
-    dicCode()
-  }, [])
-  const tiggerModelDelete = (id: number | string) => {
-    console.log(id)
-  }
-  const columns: ProColumns<any>[] = [
-    {
-      title: "id",
-      dataIndex: 'id',
-      hideInSearch: true
-    },
-    {
-      title: "耗材名称",
-      dataIndex: 'name',
-    },
-    // {
-    //   title: "图片",
-    //   dataIndex: 'imgUrls',
-    //   hideInSearch: true,
-    //   render: (val: any) => {
-    //     return val && val.length > 0 ?
-    //       (
-    //         <Image
-    //           width="60px" height="60px"
-    //           src={ `${val[ 0 ]}?x-oss-process=image/resize,h_100,w_100,m_lfit` }
-    //           preview={ { src: val[ 0 ] } }
-    //         />
-    //       ) : (
-    //         <Image
-    //           width="60px"
-    //           height="60px"
-    //           src={ ImgNull }
-    //           preview={ false }
-    //         ></Image >
-    //       )
-    //   }
-    // },
-    {
-      title: "耗材编号",
-      dataIndex: 'no',
-      hideInSearch: true
-    },
-    {
-      title: "耗材类型",
-      dataIndex: 'typeName',
-      hideInSearch: true
-    },
-    {
-      title: "耗材类型",
-      dataIndex: 'type',
-      hideInDescriptions: true,
-      hideInTable: true,
-      filters: true,
-      onFilter: true,
-      valueEnum: {
-        ...searchType
-      },
-    },
-    {
-      title: "耗材型号",
-      dataIndex: 'modelName',
-      hideInSearch: true
-    },
-    {
-      title: "耗材型号",
-      dataIndex: 'model',
-      hideInDescriptions: true,
-      hideInTable: true,
-      valueType: 'select',
-      renderFormItem: (item, { type, defaultRender, ...rest }, form) => {
-        if (type === 'form') {
-          return null;
-        }
-        const stateType = form.getFieldValue('type');
-        return (
-          < SearchSelect
-            { ...rest }
-            state={ {
-              type: stateType,
-            } }
-          />
-        );
-      },
-    },
-    {
-      title: "操作",
-      valueType: 'option',
-      width: "120px",
-      render: (_, record) => [
-        <a onClick={ () => {
-          selectRecord(record)
-        } }>添加</a>
-      ],
-    },
-  ];
-
-  const columnsForm: ProColumns<any>[] = [
+const ModelConsumableAdd: React.FC<ModalModifyFormDataProps> = ({ createModalVisible = false, handleModalVisible, portfolioId }) => {
+  const [ editableKeys, setEditableRowKeys ] = useState<React.Key[]>([]);
+  const [ dataSource, setDataSource ] = useState<ColumnEditConsumableType[]>([]);
+  const columns: ProColumns<ColumnEditConsumableType>[] = [
     {
       title: "档案ID",
       dataIndex: 'portfolioId',
-      hideInSearch: true
+      editable: false,
+      hideInTable: true
     },
     {
       title: "耗材ID",
       dataIndex: 'consumableId',
-      hideInSearch: true
+      editable: false
     },
     {
       title: "耗材名称",
-      dataIndex: 'name',
-      hideInSearch: true
+      dataIndex: 'consumableName',
+      editable: false
     },
     {
       title: "到期时间",
       dataIndex: 'expirationTime',
-      hideInSearch: true
+      renderFormItem: (_, { isEditable }) => {
+        return isEditable ? <DatePicker
+          format="YYYY-MM-DD"
+          placeholder="请输入安装时间"
+          style={ { width: "100%" } }
+        /> : "ddd"
+      }
     },
     {
-      title: "更换周期",
+      title: "更换周期(月)",
       dataIndex: 'replacementCycle',
-      hideInSearch: true
+      width: "100px",
+      renderFormItem: (_, { isEditable }) => {
+        return isEditable ? <InputNumber style={ { width: "100%" } } min={ 0 } max={ 1000 } /> : ""
+      }
     },
     {
       title: "实际更换时间",
       dataIndex: 'replacementTime',
-      hideInSearch: true
+      renderFormItem: (_, { isEditable }) => {
+        return isEditable ? <DatePicker
+          picker="date"
+          format="YYYY-MM-DD"
+          placeholder="请输入安装时间"
+          style={ { width: "100%" } }
+        /> : ""
+      }
     },
     {
       title: "数量",
       dataIndex: 'num',
-      hideInSearch: true
+      width: "80px",
+      renderFormItem: (_, { isEditable }) => {
+        return isEditable ? <InputNumber style={ { width: "100%" } } min={ 1 } max={ 100 } /> : ""
+      }
     },
     {
-      title: "操作",
+      title: '操作',
       valueType: 'option',
-      width: "120px",
-      render: (_, record) => [
-        <Popconfirm
-          title="是否要删除此行？"
-          onConfirm={ () => { record.id !== undefined && tiggerModelDelete(record.id?.toString()); } }>
-          <a>删除</a>
-        </Popconfirm>,
-      ],
+      width: 48,
+      render: () => {
+        return null;
+      },
     },
   ];
-  const selectRecord = (record: any) => {
-    let data = selectedRowsState;
-    data.push(record);
-    setSelectedRows(data);
-  }
-  const fetchQueryList = async (params: any) => {
-    const response = await queryConsumableList(params)
+  const submitConsumable = async () => {
+    let data: ConsumableAddDataType[] = dataSource.map(item => ({
+      consumableId: item.consumableId,
+      expirationTime: item.expirationTime,
+      num: item.num,
+      portfolioId: item.portfolioId,
+      replacementCycle: item.replacementCycle,
+      replacementTime: item.replacementTime
+    }))
+    let response = await addConsumableProtfolio(data)
     if (!response) return
-    const { data } = response;
-    return ({ ...data, data: data.records })
+    message.success("新增成功")
+    handleModalVisible(false);
   }
-  const handleOk = () => {
-    // setIsModalVisible(false);
-  };
   return (
-    <Modal title="添加耗材"
-      width="800px"
-      visible={ createModalVisible }
-      onCancel={ () => handleModalVisible(false) }
-      onOk={ handleOk }>
-      {JSON.stringify(selectedRowsState) }
-      <ProTable
-        tableStyle={ { maxHeight: "200px", overflow: "auto" } }
-        headerTitle="查询表格"
-        rowKey="id"
-        search={ {
-          labelWidth: 80,
-        } }
-        pagination={ {
-          pageSize: 10
-        } }
-        request={ async (params, sorter, filter) => await fetchQueryList({ ...params, ...filter }) }
-        columns={ columns }
-      // rowSelection={ {
-      //   onChange: (_, selectedRows: any) => setSelectedRows(selectedRows),
-      // } }
-      />
-
-    </Modal>
+    <>
+      <Modal
+        title="添加耗材"
+        width="800px"
+        visible={ createModalVisible }
+        onCancel={ () => handleModalVisible(false) }
+        onOk={ submitConsumable }
+        okText="保存"
+      >
+        { JSON.stringify(dataSource) }
+        <TableConsumableList
+          selectedRowsState={ dataSource }
+          setSelectedRows={ setDataSource }
+          setEditableRowKeys={ setEditableRowKeys }
+          portfolioId={ portfolioId }
+        />
+        { dataSource.length > 0 && <EditableProTable<ColumnEditConsumableType>
+          rowKey="consumableId"
+          headerTitle="可编辑表格"
+          columns={ columns }
+          value={ dataSource }
+          onChange={ (data) => {
+            setEditableRowKeys(data.map((item) => item.consumableId));
+            setDataSource(data);
+          } }
+          recordCreatorProps={ false }
+          editable={ {
+            type: 'multiple',
+            editableKeys,
+            actionRender: (row: any, config: any, doms: any) => {
+              return [ doms.delete ];
+            },
+            onValuesChange: (record: any, recordList: any) => {
+              setDataSource(recordList);
+            },
+            onChange: setEditableRowKeys,
+          } }
+        /> }
+      </Modal>
+    </>
   );
 };
 
-export default ModelConsumableAdd;
+export default ModelConsumableAdd

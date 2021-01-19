@@ -58,5 +58,6 @@ export default {
   PORTFOLIO_SAVE: '/api/portfolio/add',//
   PORTFOLIO_INFO: '/api/portfolio/info',/// portfolio/info/{id}
   PORTFOLIO_DELETE: '/api/portfolio/del',/// portfolio/del/{id}
-  
+  PORTFOLIO_ADD_CONSUMABLE: '/api/portfolio/add-consumable'//档案耗材新增
+
 }

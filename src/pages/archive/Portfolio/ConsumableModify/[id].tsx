@@ -80,9 +80,7 @@ const DictionaryList: React.FC<PortfolioEditProps> = ({ match }) => {
           <ModelConsumableAdd
             createModalVisible={ createModalVisible }
             handleModalVisible={ handleModalVisible }
-          // actionRef={ actionRef }
-          // currentRow={ currentRow }
-          // searchType={ searchType }
+            portfolioId = { match.params.id}
           />
         ) }
         <Card title="耗材信息" extra={ <Button type="primary" onClick={ () => handleModalVisible(true) }>新增</Button> }>
