@@ -16,12 +16,14 @@ export type PortfolioSaveDataType = {
   brand?: string;// 品牌
   companyId?: number;//单位id；
   companyName?: string;//单位名称；
+  companyNo?: string;
   deviceId?: number;//设备id;
   deviceName?: string;//设备名称
   installLocation?: string;//安装位置
   installTime?: string;//安装时间
   qrCodde?: string;//二维码code
   warrantyPeriod?: string;//保修周期
+  deviceNo?: string;
   id?: number;// 主键
   model?: string;// 设备型号
   type?: string;// 设备类型

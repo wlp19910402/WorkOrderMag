@@ -85,10 +85,12 @@ const DictionaryList: React.FC<ModifyFormTypeProps> = ({ currentRow }) => {
       brand: selectDeviceData?.brand,
       companyId: selectCompanyData?.id,
       companyName: selectCompanyData?.company,
+      companyNo: selectCompanyData?.no,
       deviceId: selectDeviceData?.id,
       deviceName: selectDeviceData?.name,
+      deviceNo: selectDeviceData?.no,
       installLocation: values.installLocation,
-      installTime: values.installTime,
+      installTime: pickerDateFormat(values.installTime),
       qrCodde: values.qrCodde,
       warrantyPeriod: values.warrantyPeriod,
       model: selectDeviceData?.model,
@@ -175,9 +177,9 @@ const DictionaryList: React.FC<ModifyFormTypeProps> = ({ currentRow }) => {
           <Col { ...colProps }>
             <Form.Item
               label='安装位置'
-              name="name"
+              name="installLocation"
               rules={ [ { required: true, message: '请输入安装位置' } ] }
-              initialValue={ currentRow?.name }
+              initialValue={ currentRow?.installLocation }
             >
               <Input placeholder="请输入名称" />
             </Form.Item>
@@ -185,9 +187,9 @@ const DictionaryList: React.FC<ModifyFormTypeProps> = ({ currentRow }) => {
           <Col { ...colProps }>
             <Form.Item
               label='安装日期'
-              name="nativePlace"
+              name="installTime"
               rules={ [ { required: true, message: '请输入安装日期' } ] }
-              initialValue={ pickerDateFormat(currentRow?.nativePlace) }
+              initialValue={ pickerDateFormat(currentRow?.installTime) }
             >
               <DatePicker
                 picker="date"
