@@ -1,3 +1,4 @@
+import moment from 'moment'
 import React, { useState, useEffect } from 'react';
 import { Table, InputNumber, Popconfirm, Drawer, Form, Typography, DatePicker, message, Descriptions, Row, Col, Image } from 'antd';
 import { deleteProtfolioConsumable, updateProtfolioConsumable } from '@/pages/archive/portfolio/service'
@@ -134,7 +135,8 @@ const EditableTable: React.FC<ConsumableEditableProps> = ({ queryConsumableList,
     {
       title: '安装日期',
       dataIndex: 'replacementTime',
-      editable: true
+      editable: true,
+      render: (val: any) => moment(val).format('YYYY-MM-DD')
     },
     {
       title: '更换周期',
@@ -146,6 +148,7 @@ const EditableTable: React.FC<ConsumableEditableProps> = ({ queryConsumableList,
       title: '到期日期',
       dataIndex: 'expirationTime',
       editable: true,
+      render: (val: any) => moment(val).format('YYYY-MM-DD')
     },
     {
       title: '操作',
@@ -175,7 +178,7 @@ const EditableTable: React.FC<ConsumableEditableProps> = ({ queryConsumableList,
   ];
   let descriptionsColums = [
     {
-      title: '耗材详细',
+      title: '',
       dataIndex: 'baseInfo',
       hideInForm: true,
       hideInTable: false,
@@ -184,10 +187,10 @@ const EditableTable: React.FC<ConsumableEditableProps> = ({ queryConsumableList,
       render: (val: any, entity: any) => {
         return (
           <span>
-            <Descriptions bordered size="small"
+            <Descriptions size="small"
               column={ 1 }
-              labelStyle={ { width: "110px", padding: "8px" } }
               style={ { width: "100%" } }
+              title="耗材信息"
             >
               <Descriptions.Item label="耗材名称">{ val?.name }</Descriptions.Item>
               <Descriptions.Item label="耗材编号" >{ val?.no }</Descriptions.Item>
@@ -198,7 +201,7 @@ const EditableTable: React.FC<ConsumableEditableProps> = ({ queryConsumableList,
               <Descriptions.Item label="耗材创建人">{ val?.createUsername }</Descriptions.Item>
               <Descriptions.Item label="耗材修改时间">{ val?.updateTime }</Descriptions.Item>
               <Descriptions.Item label="耗材修改人">{ val?.updateUsername }</Descriptions.Item>
-              <Descriptions.Item label="">{
+              <Descriptions.Item label="耗材图片">{
                 val?.imgUrls.length > 0 ?
                   (
                     <Row gutter={ [ 16, 16 ] } >
@@ -266,6 +269,7 @@ const EditableTable: React.FC<ConsumableEditableProps> = ({ queryConsumableList,
       >
         { currentRow?.id && (
           <ProDescriptions<RecordConsumableDataType>
+            prefixCls="0"
             column={ 1 }
             title={ " " }
             key={ currentRow?.id }

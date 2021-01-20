@@ -153,15 +153,15 @@ const DictionaryList: React.FC<ModifyFormTypeProps> = ({ currentRow }) => {
           </Col>
           <Col { ...colProps }>
             <Form.Item
-              label='安装时间'
+              label='安装日期'
               name="nativePlace"
-              rules={ [ { required: true, message: '请输入安装时间' } ] }
+              rules={ [ { required: true, message: '请输入安装日期' } ] }
               initialValue={ currentRow?.nativePlace }
             >
               <DatePicker
                 picker="date"
                 format="YYYY-MM-DD"
-                placeholder="请输入安装时间"
+                placeholder="请输入安装日期"
                 style={ { width: "100%" } }
               />
             </Form.Item>

@@ -5,7 +5,7 @@ import { Modal, message, DatePicker, InputNumber } from 'antd';
 import { ConsumableAddDataType } from '@/pages/archive/portfolio/data.d'
 import { addConsumableProtfolio } from '@/pages/archive/portfolio/service'
 import TableConsumableList from '@/pages/archive/portfolio/components/TableConsumableList'
-
+import moment from 'moment'
 export type ColumnEditConsumableType = {
   consumableName: string;
   consumableNo: string;
@@ -74,7 +74,7 @@ const ModelConsumableAdd: React.FC<ModalModifyFormDataProps> = ({ createModalVis
       renderFormItem: (_, { isEditable }) => {
         return isEditable ? <DatePicker
           format="YYYY-MM-DD"
-          placeholder="请选择到期时间"
+          placeholder="请选择到期日期"
           style={ { width: "100%" } }
         /> : "ddd"
       }
@@ -99,11 +99,11 @@ const ModelConsumableAdd: React.FC<ModalModifyFormDataProps> = ({ createModalVis
   const submitConsumable = async () => {
     let data: ConsumableAddDataType[] = dataSource.map(item => ({
       consumableId: item.consumableId,
-      expirationTime: item.expirationTime,
+      expirationTime: moment(item.expirationTime).format('YYYY-MM-DD'),
       num: item.num,
       portfolioId: item.portfolioId,
       replacementCycle: item.replacementCycle,
-      replacementTime: item.replacementTime
+      replacementTime: moment(item.replacementTime).format('YYYY-MM-DD')
     }))
     let response = await addConsumableProtfolio(data)
     if (!response) return

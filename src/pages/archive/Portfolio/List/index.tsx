@@ -13,6 +13,7 @@ import { fetchDicTypeSelectObj } from '@/pages/admin/Dictionary/service'
 import CODE from '@/utils/DicCode.d'
 import { history, Link } from 'umi'
 import SearchSelect from '@/components/common/SerchSelect'
+import moment from 'moment'
 // const handleRemove = async (selectedRows: PortfolioListDataType[]) => {
 //   const hide = message.loading('正在删除');
 //   if (!selectedRows) return true;
@@ -60,19 +61,34 @@ const DictionaryList: React.FC<PortfolioListDataType> = () => {
       dataIndex: 'companyName',
     },
     {
-      title: "二维码code",
-      dataIndex: 'qrCodde',
+      title: "单位编号",
+      dataIndex: 'companyNo',
+      hideInSearch: true,
     },
     {
-      title: "设备id",
-      dataIndex: 'deviceId',
+      title: "单位联系人",
+      dataIndex: 'contactUser',
       hideInSearch: true,
       hideInTable: true
     },
     {
+      title: "单位联系电话",
+      dataIndex: 'contactMobile',
+      hideInSearch: true,
+      hideInTable: true
+    },
+    {
+      title: "二维码code",
+      dataIndex: 'qrCodde',
+    },
+    {
       title: "设备名称",
       dataIndex: 'deviceName',
-
+    },
+    {
+      title: "设备编号",
+      dataIndex: 'deviceNo',
+      hideInSearch: true
     },
     {
       title: "设备图片",
@@ -170,10 +186,18 @@ const DictionaryList: React.FC<PortfolioListDataType> = () => {
       hideInTable: true
     },
     {
-      title: "安装时间",
+      title: "安装日期",
       dataIndex: 'installTime',
       hideInSearch: true,
-      hideInTable: true
+      hideInTable: true,
+      render: (val: any) => moment(val).format('YYYY-MM-DD')
+    },
+    {
+      title: "设备描述",
+      dataIndex: 'description',
+      hideInForm: true,
+      hideInTable: true,
+      hideInSearch: true
     },
     {
       title: "创建人",
@@ -183,7 +207,7 @@ const DictionaryList: React.FC<PortfolioListDataType> = () => {
       hideInTable: true
     },
     {
-      title: "创建日期",
+      title: "创建时间",
       dataIndex: 'createTime',
       hideInForm: true,
       hideInTable: true,
@@ -204,13 +228,6 @@ const DictionaryList: React.FC<PortfolioListDataType> = () => {
       hideInSearch: true
     },
     {
-      title: "设备描述",
-      dataIndex: 'description',
-      hideInForm: true,
-      hideInTable: true,
-      hideInSearch: true
-    },
-    {
       title: "操作",
       valueType: 'option',
       width: "120px",
@@ -226,35 +243,31 @@ const DictionaryList: React.FC<PortfolioListDataType> = () => {
         <Link to={ `/archive/portfolio/info/${record.id}` }>
           详情
         </Link>
-
       ],
     },
   ];
-  const columnsDrawer = columns.map(item => {
-    if (item.dataIndex === 'imgUrls') {
-      return ({
-        title: "图片",
-        dataIndex: 'imgUrls',
-        hideInSearch: true,
-        render: (val: any) => {
-          return val && val.length > 0 ?
-            (
-              <Row gutter={ [ 16, 16 ] } >
-                { val.map((url: string) =>
-                  <Col>
-                    <Image
-                      width="60px" height="60px"
-                      src={ `${url}?x-oss-process=image/resize,h_100,w_100,m_lfit` }
-                      preview={ { src: url } }
-                    />
-                  </Col>
-                ) }</Row>
-            ) : "暂无图片"
-        }
-      })
-    }
-    return item
-  })
+  const columnsDrawer = [
+    ...columns.filter(item => item.dataIndex !== 'imgUrls'),
+    {
+      title: "设备图片",
+      dataIndex: 'imgUrls',
+      hideInSearch: true,
+      render: (val: any) => {
+        return val && val.length > 0 ?
+          (
+            <Row gutter={ [ 16, 16 ] } >
+              { val.map((url: string) =>
+                <Col>
+                  <Image
+                    width="60px" height="60px"
+                    src={ `${url}?x-oss-process=image/resize,h_100,w_100,m_lfit` }
+                    preview={ { src: url } }
+                  />
+                </Col>
+              ) }</Row>
+          ) : "暂无图片"
+      }
+    } ]
   const tiggerDelete = async (id: string) => {
     const response = await deleteProtfolio(id)
     if (!response) return

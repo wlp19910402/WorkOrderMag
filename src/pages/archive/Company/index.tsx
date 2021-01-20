@@ -58,10 +58,18 @@ const DictionaryList: React.FC<CompanyListDataType> = () => {
       dataIndex: 'contactUser',
     },
     {
+      title: "备注",
+      dataIndex: 'remark',
+      hideInForm: true,
+      hideInTable: true,
+      hideInSearch: true
+    },
+    {
       title: "创建人",
       dataIndex: 'createUsername',
       hideInForm: true,
-      hideInSearch: true
+      hideInSearch: true,
+      hideInTable: true,
     },
     {
       title: "创建日期",
@@ -74,18 +82,12 @@ const DictionaryList: React.FC<CompanyListDataType> = () => {
       title: "修改人",
       dataIndex: 'updateUsername',
       hideInForm: true,
-      hideInSearch: true
+      hideInSearch: true,
+      hideInTable: true,
     },
     {
       title: "修改时间",
       dataIndex: 'updateTime',
-      hideInForm: true,
-      hideInTable: true,
-      hideInSearch: true
-    },
-    {
-      title: "备注",
-      dataIndex: 'remark',
       hideInForm: true,
       hideInTable: true,
       hideInSearch: true
@@ -197,7 +199,7 @@ const DictionaryList: React.FC<CompanyListDataType> = () => {
         { currentRow?.id && (
           <ProDescriptions<CompanyListDataType>
             column={ 1 }
-            title={ currentRow?.company }
+            title={ "单位信息" }
             key={ currentRow?.id }
             request={ async () => ({
               data: currentRow || {},

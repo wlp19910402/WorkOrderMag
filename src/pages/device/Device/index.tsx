@@ -161,7 +161,7 @@ const DictionaryList: React.FC<DeviceListDataType> = () => {
       hideInSearch: true
     },
     {
-      title: "创建日期",
+      title: "创建时间",
       dataIndex: 'createTime',
       hideInForm: true,
       hideInTable: true,
@@ -207,31 +207,28 @@ const DictionaryList: React.FC<DeviceListDataType> = () => {
       ],
     },
   ];
-  const columnsDrawer = columns.map(item => {
-    if (item.dataIndex === 'imgUrls') {
-      return ({
-        title: "图片",
-        dataIndex: 'imgUrls',
-        hideInSearch: true,
-        render: (val: any) => {
-          return val && val.length > 0 ?
-            (
-              <Row gutter={ [ 16, 16 ] } >
-                { val.map((url: string) =>
-                  <Col>
-                    <Image
-                      width="60px" height="60px"
-                      src={ `${url}?x-oss-process=image/resize,h_100,w_100,m_lfit` }
-                      preview={ { src: url } }
-                    />
-                  </Col>
-                ) }</Row>
-            ) : "暂无图片"
-        }
-      })
-    }
-    return item
-  })
+  const columnsDrawer = [
+    ...columns.filter(item => item.dataIndex !== 'imgUrls'),
+    {
+      title: "图片",
+      dataIndex: 'imgUrls',
+      hideInSearch: true,
+      render: (val: any) => {
+        return val && val.length > 0 ?
+          (
+            <Row gutter={ [ 16, 16 ] } >
+              { val.map((url: string) =>
+                <Col>
+                  <Image
+                    width="60px" height="60px"
+                    src={ `${url}?x-oss-process=image/resize,h_100,w_100,m_lfit` }
+                    preview={ { src: url } }
+                  />
+                </Col>
+              ) }</Row>
+          ) : "暂无图片"
+      }
+    } ]
   const tiggerDelete = async (id: string) => {
     const response = await deleteDevice(id)
     if (!response) return
@@ -319,7 +316,7 @@ const DictionaryList: React.FC<DeviceListDataType> = () => {
         { currentRow?.id && (
           <ProDescriptions<DeviceListDataType>
             column={ 1 }
-            title={ currentRow?.name }
+            title={ "设备信息" }
             key={ currentRow?.id }
             request={ async () => ({
               data: currentRow || {},
