@@ -92,8 +92,7 @@ const DictionaryList: React.FC<PortfolioEditProps> = ({ match }) => {
             <Descriptions.Item label="创建时间">{ currentRow?.createTime }</Descriptions.Item>
             <Descriptions.Item label="修改人">{ currentRow?.updateUsername }</Descriptions.Item>
             <Descriptions.Item label="修改时间">{ currentRow?.updateTime }</Descriptions.Item> */ }
-
-            <Descriptions.Item label="设备图片" span={ 12 } >
+            <Descriptions.Item label="设备图片"  >
               { currentRow?.imgUrls.length > 0 ?
                 (
                   <Row gutter={ [ 16, 16 ] } >

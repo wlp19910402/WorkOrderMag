@@ -72,6 +72,7 @@ const RoleList: React.FC<RoleDataType> = () => {
       valueType: 'option',
       render: (_, record) => [
         <a
+
           onClick={ () => { handleModalVisible(true); setCurrentRow(record); } }
         >
           编辑
@@ -79,7 +80,7 @@ const RoleList: React.FC<RoleDataType> = () => {
         <Popconfirm
           title="是否要删除此行？"
           onConfirm={ () => { record.id !== undefined && tiggerDeleteRole(record.id?.toString()); } }>
-          <a>删除</a>
+          <a >删除</a>
         </Popconfirm>,
         <a
           onClick={ () => { handleModalTreeVisible(true); setCurrentRow(record); } }

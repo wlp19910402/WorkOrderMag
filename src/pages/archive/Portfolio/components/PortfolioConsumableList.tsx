@@ -158,10 +158,10 @@ const EditableTable: React.FC<ConsumableEditableProps> = ({ queryConsumableList,
         const editable = isEditing(record);
         return editable ? (
           <span>
-            <a href="javascript:;" onClick={ () => sumbitSave(record.id) } style={ { marginRight: 8 } }>
+            <a onClick={ () => sumbitSave(record.id) } style={ { marginRight: 8 } }>
               保存
             </a>
-            <a href="javascript:;" onClick={ tiggerCancel } >取消</a>
+            <a onClick={ tiggerCancel } >取消</a>
           </span>
         ) : (
             <>
@@ -169,7 +169,7 @@ const EditableTable: React.FC<ConsumableEditableProps> = ({ queryConsumableList,
                 编辑
              </Typography.Link>
               <Popconfirm title="确认删除吗?" onConfirm={ () => tiggerDelete(record.id) }>
-                <a href="javascript:;"> 删除</a>
+                <a > 删除</a>
               </Popconfirm>
             </>
           );
