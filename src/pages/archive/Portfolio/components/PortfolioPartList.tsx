@@ -58,7 +58,7 @@ const EditableTable: React.FC<ConsumableEditableProps> = ({ queryPartList, dataP
   const [ currentRow, setCurrentRow ] = useState<any>();
   const isEditing = (record: any) => record.id === editingKey;
   const tiggerEdit = (record: any) => {
-    form.setFieldsValue({ expirationTime: '', replacementCycle: '', replacementTime: '', id: record.id });
+    form.setFieldsValue({ warrantyPeriod: record.warrantyPeriod, id: record.id });
     setEditingKey(record.id);
   };
   const tiggerCancel = () => {

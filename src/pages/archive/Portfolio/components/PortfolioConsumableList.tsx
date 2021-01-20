@@ -29,6 +29,7 @@ const EditableCell: React.FC<EditableCellProps> = ({
   const inputNode = inputType === 'number' ? <InputNumber min={ 0 } max={ 1000 } /> : <DatePicker
     picker="date"
     mode="date"
+    format="YYYY-MM-DD"
     placeholder={ `请选择${title}` }
     style={ { width: "100%" } }
   />;
@@ -64,7 +65,10 @@ const EditableTable: React.FC<ConsumableEditableProps> = ({ queryConsumableList,
   const [ currentRow, setCurrentRow ] = useState<any>();
   const isEditing = (record: any) => record.id === editingKey;
   const tiggerEdit = (record: any) => {
-    form.setFieldsValue({ expirationTime: '', replacementCycle: '', replacementTime: '', id: record.id });
+    // console.log(record)
+    // form.setFieldsValue({ expirationTime: pickerDateFormat(record.expirationTime), replacementCycle: record.replacementCycle, replacementTime: pickerDateFormat(record.replacementTime), id: record.id });
+    console.log(pickerDateFormat(record.expirationTime), record.expirationTime)
+    form.setFieldsValue({ expirationTime: "", replacementCycle: record.replacementCycle, replacementTime: "", id: record.id });
     setEditingKey(record.id);
   };
   const tiggerCancel = () => {

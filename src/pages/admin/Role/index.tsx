@@ -72,7 +72,6 @@ const RoleList: React.FC<RoleDataType> = () => {
       valueType: 'option',
       render: (_, record) => [
         <a
-
           onClick={ () => { handleModalVisible(true); setCurrentRow(record); } }
         >
           编辑
