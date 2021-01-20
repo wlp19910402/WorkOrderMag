@@ -37,11 +37,6 @@ const DictionaryList: React.FC<DictionaryDataType> = () => {
   const [ selectedRowsState, setSelectedRows ] = useState<DictionaryDataType[]>([]);
   const [ createModalVisible, handleModalVisible ] = useState<boolean>(false);
   const columns: ProColumns<any>[] = [
-    // {
-    //   dataIndex: 'index',
-    //   valueType: 'index',
-    //   width: "40px"
-    // },
     {
       title: "字典名称",
       dataIndex: 'name',
@@ -117,7 +112,7 @@ const DictionaryList: React.FC<DictionaryDataType> = () => {
     return ({ ...data, data: data.records })
   }
   return (
-    <PageContainer>
+    <PageContainer header={ { title: "" } }>
       <ProTable
         headerTitle="查询表格"
         actionRef={ actionRef }

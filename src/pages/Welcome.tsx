@@ -1,8 +1,8 @@
 import React from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import { Card, Alert, Typography, Col, Row } from 'antd';
-import { EditOutlined, EyeOutlined } from '@ant-design/icons';
-
+import { ExperimentTwoTone, ReconciliationTwoTone, DatabaseTwoTone, ApiTwoTone, RocketTwoTone } from '@ant-design/icons';
+import '@/pages/Welcome.less'
 const topColResponsiveProps = {
   xs: 24,
   sm: 12,
@@ -11,9 +11,46 @@ const topColResponsiveProps = {
   xl: 6,
   style: { marginBottom: 24 }
 };
+const iconPorps = {
+  className: "welcomeIcon"
+}
+
+const welcomeModel = [
+  {
+    Icon: () => <ReconciliationTwoTone twoToneColor="#eb2f96" { ...iconPorps } />,
+    title: "工单",
+    dec: "工单描述信息",
+
+  },
+  {
+    Icon: () => <DatabaseTwoTone twoToneColor="#eb2f96" { ...iconPorps } />,
+    title: "档案",
+    dec: "档案描述信息",
+    twoToneColor: "#eb2f96"
+  },
+  {
+    Icon: () => <ApiTwoTone twoToneColor="#eb2f96" { ...iconPorps } />,
+    title: "设备",
+    dec: "设备的描述信息",
+    twoToneColor: "#eb2f96"
+  },
+  {
+    Icon: () => <RocketTwoTone twoToneColor="#eb2f96" { ...iconPorps } />,
+    title: "耗材",
+    dec: "耗材的描述信息",
+    twoToneColor: "#eb2f96"
+  },
+  {
+    Icon: () => <ExperimentTwoTone twoToneColor="#eb2f96" { ...iconPorps } />,
+    title: "备件",
+    dec: "设备的描述信息",
+    twoToneColor: "#eb2f96"
+  },
+
+]
 export default (): React.ReactNode => {
   return (
-    <PageContainer>
+    <PageContainer header={ { title: "" } }>
       <Card>
         <Alert
           message="凌云博际管理端。编辑，新增，查询.更加快捷使用"
@@ -28,19 +65,16 @@ export default (): React.ReactNode => {
         <Typography.Text strong>
           欢迎使用
         </Typography.Text>
-        <Row gutter={ 24 } >
-          { [ 1, 2, 3, 4 ].map((value, index) => (
+        <Row gutter={ 24 } style={ { marginTop: "20px" } }>
+          { welcomeModel.map((item, index) => (
             <Col key={ index } { ...topColResponsiveProps }>
               <Card
+                className="welcomeModelBox"
                 hoverable
-                style={ { width: 240 } }
-                cover={ <img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" /> }
-                actions={ [
-                  <EyeOutlined key="view" />,
-                  <EditOutlined key="edit" />,
-                ] }
+                style={ { width: 180, height: 180, textAlign: "center", overflow: "hidden" } }
               >
-                <Card.Meta title="Europe Street beat" description="www.instagram.com" />
+                { item.Icon() }
+                <Card.Meta style={ { textAlign: "center" } } title={ item.title } description={ item.dec } />
               </Card>
             </Col>
           )) }

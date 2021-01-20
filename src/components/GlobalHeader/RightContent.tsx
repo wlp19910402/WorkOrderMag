@@ -27,26 +27,16 @@ const GlobalHeaderRight: React.SFC<GlobalHeaderRightProps> = (props) => {
   }
 
   return (
-    <div className={ className }>
-      <Tooltip title="使用文档">
-        <a
-          style={ {
-            color: 'inherit',
-          } }
-          target="_blank"
-          href="https://pro.ant.design/docs/getting-started"
-          rel="noopener noreferrer"
-          className={ styles.action }
-        >
-          <QuestionCircleOutlined />
-        </a>
-      </Tooltip>
-      <Avatar />
-      {REACT_APP_ENV && (
-        <span>
-          <Tag color={ ENVTagColor[ REACT_APP_ENV ] }>{ REACT_APP_ENV }</Tag>
-        </span>
-      ) }
+    <div className={ className } style={ { position: "fixed", width: "100%", background: "#fff", boxShadow: "0 1px 4px rgb(0 21 41 / 8%)" } }>
+      <div style={ { display: "flex", marginLeft: "auto", marginRight: "16px" } }>
+
+        <Avatar />
+        { REACT_APP_ENV && (
+          <span>
+            <Tag color={ ENVTagColor[ REACT_APP_ENV ] }>{ REACT_APP_ENV }</Tag>
+          </span>
+        ) }
+      </div>
     </div>
   );
 };

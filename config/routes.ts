@@ -11,8 +11,12 @@
             name: '登录',
             path: '/user/login',
             component: './Login',
-          }
-        ],
+          },
+          {
+            path: "*",
+            component: './404',
+          },
+        ]
       },
       {
         path: '/',
@@ -56,6 +60,10 @@
                     path: '/admin/dictionary',
                     name: '系统字典',
                     component: "./admin/Dictionary"
+                  },
+                  {
+                    path: "*",
+                    component: './404',
                   }
                 ]
               },
@@ -79,6 +87,10 @@
                     name: "备件管理",
                     component: './device/Part'
                   },
+                  {
+                    path: "*",
+                    component: './404',
+                  }
                 ]
               },
               {
@@ -96,6 +108,10 @@
                     name: "设备档案管理",
                     routes: [
                       {
+                        path: '/archive/portfolio/',
+                        redirect: '/archive/portfolio/list',
+                      },
+                      {
                         path: '/archive/portfolio/list',
                         name: "设备档案管理",
                         component: './archive/portfolio/List/index',
@@ -112,9 +128,17 @@
                         path: '/archive/portfolio/info/:id',
                         name: "详情",
                         component: './archive/portfolio/Info/[id]',
-                      }
+                      },
+                      {
+                        path: "*",
+                        component: './404',
+                      },
                     ]
-                  }
+                  },
+                  {
+                    path: "*",
+                    component: './404',
+                  },
                 ]
               },
               {
@@ -148,20 +172,25 @@
                     "path": "/exception/500",
                     "component": './exception/500',
                     "exact": true
-                  }
+                  },
+                  {
+                    path: "*",
+                    component: './404',
+                  },
                 ]
               },
               {
+                path: "*",
                 component: './404',
               },
-            ],
+            ]
           },
           {
             component: './404',
           },
-        ],
-      },
-    ],
+        ]
+      }
+    ]
   },
   {
     component: './404',

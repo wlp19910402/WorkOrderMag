@@ -40,11 +40,6 @@ const DictionaryList: React.FC<PartListDataType> = () => {
     dicCode()
   }, [])
   const columns: ProColumns<any>[] = [
-    // {
-    //   dataIndex: 'index',
-    //   valueType: 'indexBorder',
-    //   width: "40px"
-    // },
     {
       title: "备件名称",
       dataIndex: 'name',
@@ -227,7 +222,7 @@ const DictionaryList: React.FC<PartListDataType> = () => {
     return ({ ...data, data: data.records })
   }
   return (
-    <PageContainer>
+    <PageContainer header={ { title: "" } }>
       <ProTable
         headerTitle="查询表格"
         actionRef={ actionRef }

@@ -251,7 +251,7 @@ const DictionaryList: React.FC<DeviceListDataType> = () => {
     return ({ ...data, data: data.records })
   }
   return (
-    <PageContainer>
+    <PageContainer header={ { title: "" } }>
       <ProTable
         headerTitle="查询表格"
         actionRef={ actionRef }

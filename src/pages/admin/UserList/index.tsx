@@ -1,5 +1,5 @@
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, Drawer, message, Popconfirm, Switch } from 'antd';
+import { Button, Drawer, message, Popconfirm, Switch, Menu, Dropdown } from 'antd';
 import React, { useState, useRef } from 'react';
 import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
 import type { ProColumns, ActionType } from '@ant-design/pro-table';
@@ -186,7 +186,7 @@ const ResumeList: React.FC<UserListDataType> = () => {
     return ({ ...data, data: data.records })
   }
   return (
-    <PageContainer>
+    <PageContainer header={ { title: "" } }>
       <ProTable
         headerTitle="查询表格"
         actionRef={ actionRef }

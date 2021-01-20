@@ -4,9 +4,9 @@ import React, { useState, useEffect, } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import type { MenuDataType } from './data.d';
 import type { DataNode } from 'rc-tree/lib/interface.d'
-import type { Dispatch} from 'umi';
+import type { Dispatch } from 'umi';
 import { connect } from 'umi'
-import type { TypeFormType} from './data.d';
+import type { TypeFormType } from './data.d';
 import { menuDefault } from './data.d'
 import ModifyForm from './components/ModifyForm'
 import { IconFont } from '@/components/common/IconFont'
@@ -118,7 +118,7 @@ const MenuTree: React.FC<MenuTreeTypeProps> = (props) => {
     }
   }
   return (
-    <PageContainer>
+    <PageContainer header={ { title: "" } }>
       <Spin spinning={ loading }>
         <Card title="基本信息" bordered={ false }>
           <Row>

@@ -1,7 +1,7 @@
 import { LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
 import { Avatar, Menu, Spin } from 'antd';
 import React from 'react';
-import type { ConnectProps} from 'umi';
+import type { ConnectProps } from 'umi';
 import { history, connect } from 'umi';
 import type { ConnectState } from '@/models/connect';
 import type { UserStateType } from '@/models/user';
@@ -73,7 +73,7 @@ class AvatarDropdown extends React.Component<GlobalHeaderRightProps> {
       </Menu>
     );
     return currentUser && currentUser.username ? (
-      <HeaderDropdown overlay={ menuHeaderDropdown }>
+      <HeaderDropdown overlay={ menuHeaderDropdown } >
         <span className={ `${styles.action} ${styles.account}` }>
           <Avatar size="small" className={ styles.avatar } src={ isLogin ? inLoginAvatar : notLoginAvatar } alt="avatar" />
           <span className={ `${styles.name} anticon` }>{ isLogin ? currentUser.username : "游客" }</span>

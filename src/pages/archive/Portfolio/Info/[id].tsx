@@ -45,7 +45,27 @@ const DictionaryList: React.FC<PortfolioEditProps> = ({ match }) => {
     })
   }
   return (
-    <PageContainer>
+    <PageContainer
+      header={ {
+        title: "",
+        breadcrumb: {
+          routes: [
+            {
+              path: '/',
+              breadcrumbName: '首页',
+            },
+            {
+              path: '/archive/portfolio/list',
+              breadcrumbName: '设备档案管理',
+            },
+            {
+              path: '/archive/portfolio/info/' + portfolioId,
+              breadcrumbName: '详情',
+            }
+          ],
+        }
+      } }
+    >
       <Spin spinning={ Loading }>
         <Card style={ { marginBottom: "20px" } } bordered={ false }>
           <Descriptions bordered size="small" title="档案基本信息"

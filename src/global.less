@@ -17,7 +17,24 @@ body,
 .ant-layout {
   min-height: 100vh;
 }
-
+.ant-pro-global-header{
+  position: fixed;
+  height:48px;
+  z-index: 4000;
+  text-align: right;
+  padding:0;
+  left: 0;
+  top: 0;
+  box-shadow: 0 1px 4px rgb(0 21 41 / 8%);
+}
+.ant-pro-global-header-collapsed-button{
+  z-index: 22100000;
+  position: absolute;
+}
+.qm-fixed-header{
+  position: fixed;
+  box-shadow: 0 1px 4px rgb(0 21 41 / 8%);
+}
 canvas {
   display: block;
 }
@@ -54,5 +71,18 @@ ol {
 @media screen and(-ms-high-contrast: active), (-ms-high-contrast: none) {
   body .ant-design-pro > .ant-layout {
     min-height: 100vh;
+  }
+}
+
+.ant-page-header {
+  &.has-breadcrumb {
+    &.ant-page-header-ghost{
+      position: fixed;
+      top: 0;
+      z-index: 300;
+      height: 48px;
+      margin-left:48px;
+      padding:12px 0;
+    }
   }
 }
