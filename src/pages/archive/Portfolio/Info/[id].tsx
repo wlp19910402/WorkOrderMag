@@ -1,9 +1,9 @@
-import moment from 'moment'
+import { pickerDateFormat } from '@/utils/parameter'
 import React, { useState, useEffect } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import { infoProtfolio } from '@/pages/archive/portfolio/service'
 import { match } from 'react-router'
-import { Descriptions, Row, Col, Image, Card, Button, Spin } from 'antd'
+import { Descriptions, Row, Col, Image, Card, Button, Spin, Alert } from 'antd'
 import { PortfolioInfoDataType } from '@/pages/archive/portfolio/data.d'
 import ModelConsumableAdd from '@/pages/archive/portfolio/components/ModelConsumableAdd'
 import ModelPartAdd from '@/pages/archive/portfolio/components/ModelPartAdd'
@@ -84,14 +84,16 @@ const DictionaryList: React.FC<PortfolioEditProps> = ({ match }) => {
             <Descriptions.Item label="设备型号">{ currentRow?.modelName }</Descriptions.Item>
             <Descriptions.Item label="档案编号">{ currentRow?.no }</Descriptions.Item>
             <Descriptions.Item label="安装位置">{ currentRow?.installLocation }</Descriptions.Item>
-            <Descriptions.Item label="安装日期">{ moment(currentRow?.installTime).format('YYYY-MM-DD') }</Descriptions.Item>
+            <Descriptions.Item label="安装日期">{ pickerDateFormat(currentRow?.installTime) }</Descriptions.Item>
             <Descriptions.Item label="保修周期">{ currentRow?.warrantyPeriod }</Descriptions.Item>
             <Descriptions.Item label="二维码code">{ currentRow?.qrCodde }</Descriptions.Item>
-            <Descriptions.Item label="创建人">{ currentRow?.createUsername }</Descriptions.Item>
+            <Descriptions.Item label="">{ }</Descriptions.Item>
+            {/*  <Descriptions.Item label="创建人">{ currentRow?.createUsername }</Descriptions.Item>
             <Descriptions.Item label="创建时间">{ currentRow?.createTime }</Descriptions.Item>
             <Descriptions.Item label="修改人">{ currentRow?.updateUsername }</Descriptions.Item>
-            <Descriptions.Item label="修改时间">{ currentRow?.updateTime }</Descriptions.Item>
-            <Descriptions.Item label="设备图片" >
+            <Descriptions.Item label="修改时间">{ currentRow?.updateTime }</Descriptions.Item> */ }
+
+            <Descriptions.Item label="设备图片" span={ 12 } >
               { currentRow?.imgUrls.length > 0 ?
                 (
                   <Row gutter={ [ 16, 16 ] } >
@@ -108,6 +110,14 @@ const DictionaryList: React.FC<PortfolioEditProps> = ({ match }) => {
               }
             </Descriptions.Item>
           </Descriptions>
+          <Alert
+            style={ { fontSize: "12px", marginTop: "20px" } }
+            message={
+              `创建人2：${currentRow?.createUsername}
+               创建时间：${currentRow?.createTime}
+              ${currentRow?.updateUsername ? '修改人：' + currentRow?.updateUsername + '修改时间：' + currentRow?.updateTime : ""}
+               `
+            } type="info" showIcon />
         </Card>
         { createModalVisible && (
           <ModelConsumableAdd

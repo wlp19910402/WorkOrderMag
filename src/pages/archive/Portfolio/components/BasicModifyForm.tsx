@@ -8,7 +8,7 @@ import { DeviceListDataType } from '@/pages/device/Device/data.d'
 import { CompanyListDataType } from '@/pages/archive/Company/data.d'
 import { saveProtfolio } from '@/pages/archive/portfolio/service'
 import { history } from 'umi'
-import moment from 'moment'
+import { pickerDateFormat } from '@/utils/parameter'
 import getErrorInfo, { ErrorField } from '@/components/common/ErrorForm'
 interface ModifyFormTypeProps {
   currentRow?: PortfolioListDataType
@@ -187,7 +187,7 @@ const DictionaryList: React.FC<ModifyFormTypeProps> = ({ currentRow }) => {
               label='安装日期'
               name="nativePlace"
               rules={ [ { required: true, message: '请输入安装日期' } ] }
-              initialValue={ moment(currentRow?.nativePlace).format('YYYY-MM-DD') }
+              initialValue={ pickerDateFormat(currentRow?.nativePlace) }
             >
               <DatePicker
                 picker="date"

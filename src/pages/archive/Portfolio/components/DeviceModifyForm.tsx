@@ -1,5 +1,4 @@
 import { Card, Form, Select, Descriptions, Button, Row, Col, Input, InputNumber, DatePicker, message } from 'antd';
-import moment from 'moment';
 import React, { useState, useEffect } from 'react';
 import { FooterToolbar } from '@ant-design/pro-layout';
 import type { PortfolioListDataType, PortfolioSaveDataType } from '../data';

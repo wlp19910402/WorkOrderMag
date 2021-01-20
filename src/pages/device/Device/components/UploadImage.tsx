@@ -4,7 +4,6 @@ import { PlusOutlined, CloseOutlined } from '@ant-design/icons';
 import { Image, message } from 'antd';
 import request from '@/utils/request';
 // import OSS from 'ali-oss';
-// import moment from 'moment';
 // import { encode } from 'js-base64';
 // import { Camera } from '@ionic-native/camera';
 // import { File, FileEntry } from '@ionic-native/file';

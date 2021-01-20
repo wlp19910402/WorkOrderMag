@@ -13,7 +13,7 @@ import { fetchDicTypeSelectObj } from '@/pages/admin/Dictionary/service'
 import CODE from '@/utils/DicCode.d'
 import { history, Link } from 'umi'
 import SearchSelect from '@/components/common/SerchSelect'
-import moment from 'moment'
+import { pickerDateFormat } from '@/utils/parameter'
 // const handleRemove = async (selectedRows: PortfolioListDataType[]) => {
 //   const hide = message.loading('正在删除');
 //   if (!selectedRows) return true;
@@ -190,7 +190,7 @@ const DictionaryList: React.FC<PortfolioListDataType> = () => {
       dataIndex: 'installTime',
       hideInSearch: true,
       hideInTable: true,
-      render: (val: any) => moment(val).format('YYYY-MM-DD')
+      render: (val: any) => pickerDateFormat(val)
     },
     {
       title: "设备描述",

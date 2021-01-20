@@ -1,4 +1,4 @@
-import moment from 'moment'
+import { pickerDateFormat } from '@/utils/parameter'
 import React, { useState, useEffect } from 'react';
 import { Table, InputNumber, Popconfirm, Drawer, Form, Typography, DatePicker, message, Descriptions, Row, Col, Image } from 'antd';
 import { deleteProtfolioConsumable, updateProtfolioConsumable } from '@/pages/archive/portfolio/service'
@@ -136,7 +136,7 @@ const EditableTable: React.FC<ConsumableEditableProps> = ({ queryConsumableList,
       title: '安装日期',
       dataIndex: 'replacementTime',
       editable: true,
-      render: (val: any) => moment(val).format('YYYY-MM-DD')
+      render: (val: any) => pickerDateFormat(val)
     },
     {
       title: '更换周期',
@@ -148,7 +148,7 @@ const EditableTable: React.FC<ConsumableEditableProps> = ({ queryConsumableList,
       title: '到期日期',
       dataIndex: 'expirationTime',
       editable: true,
-      render: (val: any) => moment(val).format('YYYY-MM-DD')
+      render: (val: any) => pickerDateFormat(val)
     },
     {
       title: '操作',
