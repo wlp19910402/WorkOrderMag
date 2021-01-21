@@ -206,8 +206,8 @@ const EditableTable: React.FC<ConsumableEditableProps> = ({ queryConsumableList,
                 val?.imgUrls.length > 0 ?
                   (
                     <Row gutter={ [ 16, 16 ] } >
-                      { val?.imgUrls.map((url: string ,index:number) =>
-                        <Col key={index}>
+                      { val?.imgUrls.map((url: string, index: number) =>
+                        <Col key={ index }>
                           <Image
                             width="60px" height="60px"
                             src={ `${url}?x-oss-process=image/resize,h_100,w_100,m_lfit` }
@@ -251,6 +251,7 @@ const EditableTable: React.FC<ConsumableEditableProps> = ({ queryConsumableList,
               cell: EditableCell,
             },
           } }
+          rowKey="id"
           bordered
           dataSource={ dataConsumableList }
           columns={ mergedColumns }

@@ -225,6 +225,7 @@ const EditableTable: React.FC<ConsumableEditableProps> = ({ queryPartList, dataP
               cell: EditableCell,
             },
           } }
+          rowKey="id"
           bordered
           dataSource={ dataPartList }
           columns={ mergedColumns }
