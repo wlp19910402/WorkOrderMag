@@ -52,7 +52,7 @@ const ModifyForm: React.FC<ModifyFormDataProps> = (props) => {
       <Form.Item name="parentId" hidden initialValue={ currentRow.parentId || 0 } >
         <Input />
       </Form.Item>
-      {currentRow.id ? <Form.Item name="id" hidden initialValue={ currentRow.id } /> : "" }
+      {currentRow.id ? <Form.Item name="id" hidden initialValue={ currentRow.id }><Input /></Form.Item> : "" }
       <Form.Item label="类型：" name="type" initialValue={ currentRow.type }>
         <Radio.Group onChange={ (e) => { setTypeFormType(e.target.value) } } disabled={ editDisable }>
           <Radio.Button value={ 0 }>目录</Radio.Button>
