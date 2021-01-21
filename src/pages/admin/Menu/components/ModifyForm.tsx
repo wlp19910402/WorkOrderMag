@@ -49,7 +49,9 @@ const ModifyForm: React.FC<ModifyFormDataProps> = (props) => {
       onFinish={ onFinish }
       labelCol={ { span: 4 } }
     >
-      <Form.Item name="parentId" hidden initialValue={ currentRow.parentId || 0 } />
+      <Form.Item name="parentId" hidden initialValue={ currentRow.parentId || 0 } >
+        <Input />
+      </Form.Item>
       {currentRow.id ? <Form.Item name="id" hidden initialValue={ currentRow.id } /> : "" }
       <Form.Item label="类型：" name="type" initialValue={ currentRow.type }>
         <Radio.Group onChange={ (e) => { setTypeFormType(e.target.value) } } disabled={ editDisable }>
@@ -64,16 +66,14 @@ const ModifyForm: React.FC<ModifyFormDataProps> = (props) => {
       <Form.Item label="上级菜单">
         <Input disabled value={ flatMenuData?.find(item => item.id === currentRow.parentId)?.name } />
       </Form.Item>
-      { typeFormType === 0 && <Form.Item hidden initialValue={ currentRow.url } name="url" /> }
+      <Form.Item hidden={ typeFormType === 0 } initialValue={ currentRow.url } label="菜单地址" name="url" >
+        <Input placeholder="请输入菜单地址" disabled={ editDisable } />
+      </Form.Item>
       {
-        typeFormType === 1 && <>
-          <Form.Item initialValue={ currentRow.url } label="菜单地址" name="url" >
-            <Input placeholder="请输入菜单地址" disabled={ editDisable } />
-          </Form.Item>
-          <Form.Item label="授权标识" initialValue={ currentRow.perms } name="perms" >
-            <Input placeholder="请输入授权标识" disabled={ editDisable } />
-          </Form.Item>
-        </>
+        (typeFormType === 1 || typeFormType === 2) &&
+        <Form.Item label="授权标识" initialValue={ currentRow.perms } name="perms" >
+          <Input placeholder="请输入授权标识" disabled={ editDisable } />
+        </Form.Item>
       }
       {
         (typeFormType === 1 || typeFormType === 0) && <>
@@ -86,21 +86,11 @@ const ModifyForm: React.FC<ModifyFormDataProps> = (props) => {
         </>
       }
       {
-        typeFormType === 2 && <>
-          <Form.Item initialValue={ currentRow.url } label="菜单地址" name="url" >
-            <Input placeholder="请输入菜单地址" disabled={ editDisable } />
-          </Form.Item>
-          <Form.Item label="授权标识：" name="perms" >
-            <Input placeholder="请输入授权标识" disabled={ editDisable } />
-          </Form.Item>
-        </>
-      }
-      {
         !editDisable && currentRow.id !== 0 &&
         <Form.Item label=" ">
           <Row>
             <Col span={ 6 }><Button type="default" onClick={ () => form.resetFields() }>取消</Button></Col>
-            <Col span={ 6 } offset={ 1 }><Button type="primary" htmlType="submit">提交</Button>
+            <Col span={ 6 } offset={ 1 }><Button type="primary" htmlType="submit">保存</Button>
             </Col>
           </Row>
         </Form.Item>

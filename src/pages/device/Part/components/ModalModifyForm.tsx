@@ -133,7 +133,7 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
       <Form.Item extra="外观图片（最多上传六张）带“删除”按钮" name="imgUrls" label="图片上传" valuePropName="checked">
         <Row gutter={ [ 16, 16 ] } >
           { uploadImages.map((item, index) => {
-            return <Col><UploadImage uploadId={ `uploadImagesId_${index}` } value={ item } onChange={ (url) => { setUploadUrlImage(url, index) } } /></Col>
+            return <Col key={ index }><UploadImage uploadId={ `uploadImagesId_${index}` } value={ item } onChange={ (url) => { setUploadUrlImage(url, index) } } /></Col>
           }) }
         </Row>
       </Form.Item>

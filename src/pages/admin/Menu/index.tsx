@@ -39,7 +39,8 @@ export const treeData: any = (data: MenuDataType[] | []) => treeData ? data.filt
   key: item.id?.toString(),
   title: item.name,
   children: treeData(item.children),
-  icon: item.icon ? <IconFont style={ { fontSize: "16px" } } type={ item.icon } /> : true
+  icon: item.icon ? <IconFont style={ { fontSize: "16px" } } type={ item.icon } /> : true,
+  parentKeys: [ item.parentId?.toString() ]
 })) : undefined
 const MenuTree: React.FC<MenuTreeTypeProps> = (props) => {
   const { dispatch, loading } = props;

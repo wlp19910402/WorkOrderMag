@@ -70,7 +70,7 @@ const Model: MenuModelType = {
       const menuData = [
         {
           "icon": "icon-FolderOpen",
-          "name": "一级菜单",
+          "name": "目录",
           "id": 0,
           "url": "#",
           "type": 0,

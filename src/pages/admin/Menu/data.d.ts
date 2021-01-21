@@ -1,6 +1,6 @@
 export type MenuDataType = {
   id?: number;// 主键id
-  parentId?: number;// 父菜单ID，一级菜单为0
+  parentId?: number;// 父菜单ID，目录为0
   name?: string;// 菜单名称
   url?: string;// 菜单URL【前端路由】#表示目录
   icon?: string;// 图标

@@ -219,8 +219,8 @@ const DictionaryList: React.FC<DeviceListDataType> = () => {
         return val && val.length > 0 ?
           (
             <Row gutter={ [ 16, 16 ] } >
-              { val.map((url: string) =>
-                <Col>
+              { val.map((url: string, index: number) =>
+                <Col key={ index }>
                   <Image
                     width="60px" height="60px"
                     src={ `${url}?x-oss-process=image/resize,h_100,w_100,m_lfit` }
