@@ -1,4 +1,4 @@
-import { pickerDateFormat } from '@/utils/parameter'
+import { pickerDateFormat, pickerInitialValue } from '@/utils/parameter'
 import React, { useState, useEffect } from 'react';
 import { Table, InputNumber, Popconfirm, Drawer, Form, Typography, DatePicker, message, Descriptions, Row, Col, Image } from 'antd';
 import { deleteProtfolioConsumable, updateProtfolioConsumable } from '@/pages/archive/portfolio/service'
@@ -65,10 +65,7 @@ const EditableTable: React.FC<ConsumableEditableProps> = ({ queryConsumableList,
   const [ currentRow, setCurrentRow ] = useState<any>();
   const isEditing = (record: any) => record.id === editingKey;
   const tiggerEdit = (record: any) => {
-    // console.log(record)
-    // form.setFieldsValue({ expirationTime: pickerDateFormat(record.expirationTime), replacementCycle: record.replacementCycle, replacementTime: pickerDateFormat(record.replacementTime), id: record.id });
-    console.log(pickerDateFormat(record.expirationTime), record.expirationTime)
-    form.setFieldsValue({ expirationTime: "", replacementCycle: record.replacementCycle, replacementTime: "", id: record.id });
+    form.setFieldsValue({ expirationTime: pickerInitialValue(record.expirationTime), replacementCycle: record.replacementCycle, replacementTime: pickerInitialValue(record.replacementTime), id: record.id });
     setEditingKey(record.id);
   };
   const tiggerCancel = () => {

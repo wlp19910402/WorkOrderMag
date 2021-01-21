@@ -15,3 +15,7 @@ export const pickerDateFormat = (picker: any) => {
   if (!picker) return ""
   return moment(picker).format(dateFormat)
 }
+export const pickerInitialValue = (val: string) => {
+  if (!val) return
+  return moment(val, dateFormat)
+}

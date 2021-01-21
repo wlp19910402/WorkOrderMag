@@ -8,7 +8,7 @@ import { DeviceListDataType } from '@/pages/device/Device/data.d'
 import { CompanyListDataType } from '@/pages/archive/Company/data.d'
 import { saveProtfolio } from '@/pages/archive/portfolio/service'
 import { history } from 'umi'
-import { pickerDateFormat } from '@/utils/parameter'
+import { pickerDateFormat, pickerInitialValue } from '@/utils/parameter'
 import getErrorInfo, { ErrorField } from '@/components/common/ErrorForm'
 interface ModifyFormTypeProps {
   currentRow?: PortfolioListDataType
@@ -92,7 +92,7 @@ const DictionaryList: React.FC<ModifyFormTypeProps> = ({ currentRow }) => {
       installLocation: values.installLocation,
       installTime: pickerDateFormat(values.installTime),
       qrCodde: values.qrCodde,
-      warrantyPeriod: values.warrantyPeriod,
+      warrantyPeriod: values.warrantyPeriod.toString(),
       model: selectDeviceData?.model,
       type: selectDeviceData?.type
     }
@@ -189,7 +189,7 @@ const DictionaryList: React.FC<ModifyFormTypeProps> = ({ currentRow }) => {
               label='安装日期'
               name="installTime"
               rules={ [ { required: true, message: '请输入安装日期' } ] }
-              initialValue={ pickerDateFormat(currentRow?.installTime) }
+              initialValue={ pickerInitialValue(currentRow?.installTime) }
             >
               <DatePicker
                 picker="date"
