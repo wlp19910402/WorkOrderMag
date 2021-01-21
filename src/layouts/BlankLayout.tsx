@@ -10,7 +10,6 @@ type BlankLayout = {
   children: React.ReactNode;
   isLogin: boolean;
   dispatch: Dispatch;
-  loading: boolean;
   token: string | undefined;
 } & ConnectProps
 const BlankLayoutCmp: React.FC<BlankLayout> = ({ children, dispatch, token }) => {
@@ -29,10 +28,9 @@ const BlankLayoutCmp: React.FC<BlankLayout> = ({ children, dispatch, token }) =>
       });
     }
   }, []);
-  return <Spin spinning={ false }><InspectorWrapper>{ children }</InspectorWrapper></Spin>
+  return <InspectorWrapper>{ children }</InspectorWrapper>
 };
 
-export default connect(({ user, loading }: ConnectState) => ({
-  token: user.currentUser?.token,
-  loading: !!(loading.models.user || loading.effects[ 'menu/fetctCurrentMenu' ])
+export default connect(({ user }: ConnectState) => ({
+  token: user.currentUser?.token
 }))(BlankLayoutCmp)
