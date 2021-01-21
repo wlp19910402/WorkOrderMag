@@ -124,11 +124,10 @@ const MenuTree: React.FC<MenuTreeTypeProps> = (props) => {
         <Card title="基本信息" bordered={ false }>
           <Row>
             <Col flex={ 2 }>
-              <Tree
+              { menuData.length > 0 && <Tree
                 autoExpandParent={ true }
                 defaultExpandedKeys={ [ "0" ] }
                 showLine={ true }
-                defaultExpandAll={ true }
                 onSelect={ onSelect }
                 treeData={ menuData }
                 showIcon={ true }
@@ -167,7 +166,7 @@ const MenuTree: React.FC<MenuTreeTypeProps> = (props) => {
                     </>
                   )
                 } }
-              />
+              /> }
             </Col>
             <Col>
               <Divider style={ { height: "100%" } } type="vertical"></Divider>
