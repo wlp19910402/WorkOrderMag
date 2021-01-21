@@ -77,6 +77,7 @@ const DictionaryList: React.FC<DictionaryDataType> = () => {
       width: "140px",
       render: (_, record) => [
         <Button
+          key="edit"
           type="text"
           size="small"
           disabled={ record.type === "0" }
@@ -85,6 +86,7 @@ const DictionaryList: React.FC<DictionaryDataType> = () => {
           编辑
         </Button>,
         <Popconfirm
+          key="delete"
           disabled={ record.type === "0" }
           title="是否要删除此行？"
           onConfirm={ () => { record.type !== undefined && tiggerDeleteDictionary(record.id?.toString()); } }>

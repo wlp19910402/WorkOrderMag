@@ -80,6 +80,7 @@ const TableConsumableList: React.FC<TableConsumableListProps> = ({ setSelectedRo
       width: "48px",
       render: (_, record) => [
         <Button
+          key="add"
           style={ selectedRowsState.length > 0 ? !!selectedRowsState.find(item => item.consumableId === record.id) ? {} : { color: "#1890ff" } : { color: "#1890ff" } }
           type="text"
           disabled={ selectedRowsState.length > 0 ? !!selectedRowsState.find(item => item.consumableId === record.id) : false }

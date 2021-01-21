@@ -111,6 +111,7 @@ const ResumeList: React.FC<UserListDataType> = () => {
       key: "option",
       render: (_, record) => [
         <Button
+          key="edit"
           type="text"
           size="small"
           disabled={ record.id === 1 }
@@ -119,12 +120,14 @@ const ResumeList: React.FC<UserListDataType> = () => {
           编辑
         </Button>,
         <Popconfirm
+          key="delete"
           disabled={ record.id === 1 }
           title="是否要删除此行？"
           onConfirm={ () => { record.id !== undefined && tiggerDeleteUser(record.id?.toString()); } }>
           <Button disabled={ record.id === 1 } size="small" type="text" >删除</Button>
         </Popconfirm>,
         <Button
+          key="setRole"
           type="text"
           size="small"
           disabled={ record.id === 1 }

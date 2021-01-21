@@ -56,8 +56,11 @@ const Model: LoginModelType = {
         const redirectUrlParams = new URL(redirect);
         if (redirectUrlParams.origin === urlParams.origin) {
           redirect = redirect.substr(urlParams.origin.length);
+          console.log(redirect, redirect)
           if (redirect.match(/^\/.*#/)) {
             redirect = redirect.substr(redirect.indexOf('#') + 1);
+          } else {
+            history.replace('/welcome');
           }
         } else {
           history.replace('/welcome');

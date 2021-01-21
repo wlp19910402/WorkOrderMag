@@ -70,18 +70,22 @@ const RoleList: React.FC<RoleDataType> = () => {
       title: "操作",
       width: 200,
       valueType: 'option',
+      key: "option",
       render: (_, record) => [
         <a
+          key="edit"
           onClick={ () => { handleModalVisible(true); setCurrentRow(record); } }
         >
           编辑
         </a>,
         <Popconfirm
+          key="delete"
           title="是否要删除此行？"
           onConfirm={ () => { record.id !== undefined && tiggerDeleteRole(record.id?.toString()); } }>
           <a >删除</a>
         </Popconfirm>,
         <a
+          key="setBindRole"
           onClick={ () => { handleModalTreeVisible(true); setCurrentRow(record); } }
         >
           绑定权限

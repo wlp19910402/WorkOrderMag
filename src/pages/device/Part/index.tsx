@@ -164,6 +164,7 @@ const DictionaryList: React.FC<PartListDataType> = () => {
       width: "140px",
       render: (_, record) => [
         <Button
+          key="edit"
           type="text"
           size="small"
           onClick={ () => { fetchUserEdit(record) } }
@@ -171,6 +172,7 @@ const DictionaryList: React.FC<PartListDataType> = () => {
           编辑
         </Button>,
         <Popconfirm
+          key="delete"
           title="是否要删除此行？"
           onConfirm={ () => { record.id !== undefined && tiggerDelete(record.id?.toString()); } }>
           <Button size="small" type="text" >删除</Button>

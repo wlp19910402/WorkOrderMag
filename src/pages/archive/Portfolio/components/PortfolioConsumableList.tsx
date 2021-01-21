@@ -158,21 +158,21 @@ const EditableTable: React.FC<ConsumableEditableProps> = ({ queryConsumableList,
       render: (_: any, record: RecordConsumableDataType) => {
         const editable = isEditing(record);
         return editable ? (
-          <span>
+          <span key="edit">
             <a onClick={ () => sumbitSave(record.id) } style={ { marginRight: 8 } }>
               保存
             </a>
             <a onClick={ tiggerCancel } >取消</a>
           </span>
         ) : (
-            <>
+            <span key="info">
               <Typography.Link disabled={ editingKey !== '' } onClick={ () => tiggerEdit(record) } style={ { marginRight: 8 } }>
                 编辑
              </Typography.Link>
               <Popconfirm title="确认删除吗?" onConfirm={ () => tiggerDelete(record.id) }>
                 <a > 删除</a>
               </Popconfirm>
-            </>
+            </span>
           );
       },
     },
@@ -206,8 +206,8 @@ const EditableTable: React.FC<ConsumableEditableProps> = ({ queryConsumableList,
                 val?.imgUrls.length > 0 ?
                   (
                     <Row gutter={ [ 16, 16 ] } >
-                      { val?.imgUrls.map((url: string) =>
-                        <Col>
+                      { val?.imgUrls.map((url: string ,index:number) =>
+                        <Col key={index}>
                           <Image
                             width="60px" height="60px"
                             src={ `${url}?x-oss-process=image/resize,h_100,w_100,m_lfit` }

@@ -52,14 +52,17 @@ const DictionaryList: React.FC<PortfolioEditProps> = ({ match }) => {
         breadcrumb: {
           routes: [
             {
+              key: "1",
               path: '/',
               breadcrumbName: '首页',
             },
             {
+              key: "2",
               path: '/archive/portfolio/list',
               breadcrumbName: '设备档案管理',
             },
             {
+              key: "3",
               path: '/archive/portfolio/info/' + portfolioId,
               breadcrumbName: '详情',
             }
@@ -96,8 +99,8 @@ const DictionaryList: React.FC<PortfolioEditProps> = ({ match }) => {
               { currentRow?.imgUrls.length > 0 ?
                 (
                   <Row gutter={ [ 16, 16 ] } >
-                    { currentRow?.imgUrls.map((url: string) =>
-                      <Col>
+                    { currentRow?.imgUrls.map((url: string, index: number) =>
+                      <Col key={ index }>
                         <Image
                           width="60px" height="60px"
                           src={ `${url}?x-oss-process=image/resize,h_100,w_100,m_lfit` }

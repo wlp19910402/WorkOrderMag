@@ -236,14 +236,15 @@ const DictionaryList: React.FC<PortfolioListDataType> = () => {
       width: "120px",
       render: (_, record) => [
         <Popconfirm
+          key="delete"
           title="是否要删除此行？"
           onConfirm={ () => { record.id !== undefined && tiggerDelete(record.id?.toString()); } }>
           <a>删除</a>
         </Popconfirm>,
-        <Link to={ `/archive/portfolio/edit/${record.id}` }>
+        <Link key="edit" to={ `/archive/portfolio/edit/${record.id}` }>
           编辑
         </Link>,
-        <Link to={ `/archive/portfolio/info/${record.id}` }>
+        <Link key="info" to={ `/archive/portfolio/info/${record.id}` }>
           详情
         </Link>
       ],
