@@ -85,10 +85,10 @@ const EditableTable: React.FC<ConsumableEditableProps> = ({ queryConsumableList,
       if (index > -1) {
         const item: RecordConsumableDataType = newData[ index ];
         let editParams = {
-          expirationTime: row.expirationTime,//到期时间
+          expirationTime: pickerDateFormat(row.expirationTime),//到期时间
           id: item.id,
           replacementCycle: row.replacementCycle,//更换周期
-          replacementTime: row.replacementTime
+          replacementTime: pickerDateFormat(row.replacementTime)
         }
         let response = await updateProtfolioConsumable(editParams)
         if (!response) return
@@ -140,7 +140,7 @@ const EditableTable: React.FC<ConsumableEditableProps> = ({ queryConsumableList,
       render: (val: any) => pickerDateFormat(val)
     },
     {
-      title: '更换周期',
+      title: '更换周期(天)',
       dataIndex: 'replacementCycle',
       editable: true,
       inputType: "number",

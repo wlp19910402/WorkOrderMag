@@ -85,7 +85,7 @@ const DictionaryList: React.FC<PortfolioEditProps> = ({ match }) => {
             <Descriptions.Item label="档案编号">{ currentRow?.no }</Descriptions.Item>
             <Descriptions.Item label="安装位置">{ currentRow?.installLocation }</Descriptions.Item>
             <Descriptions.Item label="安装日期">{ pickerDateFormat(currentRow?.installTime) }</Descriptions.Item>
-            <Descriptions.Item label="保修周期">{ currentRow?.warrantyPeriod }</Descriptions.Item>
+            <Descriptions.Item label="保修周期">{ currentRow?.warrantyPeriod }个月</Descriptions.Item>
             <Descriptions.Item label="二维码code">{ currentRow?.qrCodde }</Descriptions.Item>
             <Descriptions.Item label="">{ }</Descriptions.Item>
             {/*  <Descriptions.Item label="创建人">{ currentRow?.createUsername }</Descriptions.Item>
@@ -112,7 +112,7 @@ const DictionaryList: React.FC<PortfolioEditProps> = ({ match }) => {
           <Alert
             style={ { fontSize: "12px", marginTop: "20px" } }
             message={
-              `创建人2：${currentRow?.createUsername}
+              `创建人：${currentRow?.createUsername}
                创建时间：${currentRow?.createTime}
               ${currentRow?.updateUsername ? '修改人：' + currentRow?.updateUsername + '修改时间：' + currentRow?.updateTime : ""}
                `

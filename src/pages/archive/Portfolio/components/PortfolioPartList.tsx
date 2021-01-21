@@ -125,7 +125,7 @@ const EditableTable: React.FC<ConsumableEditableProps> = ({ queryPartList, dataP
       render: (val: any, entity: any) => val.modelName
     },
     {
-      title: '保修周期',
+      title: '保修周期(月)',
       dataIndex: 'warrantyPeriod',
       editable: true
     },

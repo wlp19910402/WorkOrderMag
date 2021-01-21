@@ -50,12 +50,12 @@ const DictionaryList: React.FC<CompanyListDataType> = () => {
       dataIndex: 'no'
     },
     {
-      title: "联系电话",
-      dataIndex: 'contactMobile',
-    },
-    {
       title: "联系人",
       dataIndex: 'contactUser',
+    },
+    {
+      title: "联系电话",
+      dataIndex: 'contactMobile',
     },
     {
       title: "备注",

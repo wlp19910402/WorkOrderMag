@@ -7,6 +7,7 @@ export const queryCompanyList = async (params: CompanySearchType) => {
     params: {
       pageSize: params.pageSize,
       pageNo: params.current,
+      no: params.no,
       company: params.company,
       contactMobile: params.contactMobile,
       contactUser: params.contactUser

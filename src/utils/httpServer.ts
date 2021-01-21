@@ -1,14 +1,19 @@
 import request from '@/utils/request';
 import { history } from 'umi'
 import { message } from 'antd'
-
+import { stringify } from 'querystring';
 const codeMatch = (res: any) => {
   switch (res.code) {
     case 0:
       return res;
     case 301:
       if (window.location.pathname.includes('/user/login')) return null
-      history.replace("/user/login");
+      history.replace({
+        pathname: '/user/login',
+        search: stringify({
+          redirect: window.location.href,
+        }),
+      });
       break;
     default:
       break;

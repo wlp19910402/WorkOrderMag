@@ -59,6 +59,7 @@ const DictionaryList: React.FC<PortfolioListDataType> = () => {
     {
       title: "单位名称",
       dataIndex: 'companyName',
+      ellipsis: true
     },
     {
       title: "单位编号",
@@ -80,6 +81,7 @@ const DictionaryList: React.FC<PortfolioListDataType> = () => {
     {
       title: "二维码code",
       dataIndex: 'qrCodde',
+      ellipsis: true
     },
     {
       title: "设备名称",
@@ -183,7 +185,8 @@ const DictionaryList: React.FC<PortfolioListDataType> = () => {
       title: "安装位置",
       dataIndex: 'installLocation',
       hideInSearch: true,
-      hideInTable: true
+      hideInTable: true,
+      ellipsis: true
     },
     {
       title: "安装日期",
