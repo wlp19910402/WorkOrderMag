@@ -265,7 +265,6 @@ const ResumeList: React.FC<UserListDataType> = () => {
         } }
         closable={ false }
       >
-        { JSON.stringify(columns as ProDescriptionsItemProps<UserListDataType>[]) }
         { currentRow?.username && (
           <ProDescriptions<UserListDataType>
             column={ 1 }

@@ -56,7 +56,6 @@ const Model: LoginModelType = {
         const redirectUrlParams = new URL(redirect);
         if (redirectUrlParams.origin === urlParams.origin) {
           redirect = redirect.substr(urlParams.origin.length);
-          console.log(redirect, redirect)
           if (redirect.match(/^\/.*#/)) {
             redirect = redirect.substr(redirect.indexOf('#') + 1);
           } else {
@@ -72,7 +71,6 @@ const Model: LoginModelType = {
     // 使用token获取用户信息
     *fetchCurrent ({ callback }, { call, put }) {
       const response = yield call(fackAccountToken);
-      const { redirect } = getPageQuery();
       if (!response) {
         callback(false)
         return
@@ -82,31 +80,19 @@ const Model: LoginModelType = {
         payload: response.data,
       });
       localforage.setItem('token', response.data.token)
-      if (window.location.pathname === '/user/login') {
-        if (redirect) {
-          window.location.href = redirect.toString()
-        } else {
-          history.replace('/')
-        }
+      if (window.location.hash.indexOf('/user/login')) {
+        history.replace('/')
       }
       callback(true)
     },
     // 退出
     *logout (_, { put, call }) {
-      const { redirect } = getPageQuery();
       yield call(fackLogout);
       yield put({
         type: 'clearUser'
       });
       localforage.removeItem('token')
-      if (window.location.pathname !== '/user/login' && !redirect) {
-        history.replace({
-          pathname: '/user/login',
-          search: stringify({
-            redirect: window.location.href,
-          }),
-        });
-      }
+      history.replace('/user/login')
     }
   },
   reducers: {
