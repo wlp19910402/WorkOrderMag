@@ -11,5 +11,17 @@
       font-size: 5em;
       margin:0 auto 20px;
       text-align: center;
+       -webkit-transition: font-size 0.25s linear,
+       margin 0.25s linear;
+       -moz-transition: font-size 0.25s linear,
+       margin 0.25s linear;
+       transition: font-size 0.25s linear,
+       margin 0.25s linear;
+    }
+    &:hover{
+      .welcomeIcon {
+        font-size: 7em;
+        margin:16px auto 60px;
+      }
     }
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import { Card, Alert, Typography, Col, Row } from 'antd';
-import { ExperimentTwoTone, ReconciliationTwoTone, DatabaseTwoTone, ApiTwoTone, RocketTwoTone } from '@ant-design/icons';
+import { ExperimentTwoTone, ReconciliationTwoTone, DatabaseTwoTone, ApiTwoTone, RocketTwoTone, DashboardTwoTone } from '@ant-design/icons';
 import '@/pages/Welcome.less'
 const topColResponsiveProps = {
   xs: 24,
@@ -46,7 +46,12 @@ const welcomeModel = [
     dec: "设备的描述信息",
     twoToneColor: "#eb2f96"
   },
-
+  {
+    Icon: () => <DashboardTwoTone twoToneColor="#eb2f96" { ...iconPorps } />,
+    title: "监控",
+    dec: "监控的描述信息",
+    twoToneColor: "#eb2f96"
+  }
 ]
 export default (): React.ReactNode => {
   return (
