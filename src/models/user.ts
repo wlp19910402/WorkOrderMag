@@ -58,7 +58,7 @@ const Model: LoginModelType = {
           redirect = redirect.substr(urlParams.origin.length);
           if (redirect.match(/^\/.*#/)) {
             redirect = redirect.substr(redirect.indexOf('#') + 1);
-            if (redirect === '/user/login') redirect = "/welcome";
+            if (redirect.indexOf('/user/login') !== -1) redirect = "/welcome";
           } else {
             history.replace('/welcome');
           }
@@ -81,7 +81,7 @@ const Model: LoginModelType = {
         payload: response.data,
       });
       localforage.setItem('token', response.data.token)
-      if (window.location.hash.indexOf('/user/login')) {
+      if (window.location.hash.indexOf('/user/login') !== -1) {
         history.replace('/')
       }
       callback(true)

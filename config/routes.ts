@@ -142,6 +142,22 @@
                 ]
               },
               {
+                path: '/workOrder',
+                name: '工单管理',
+                icon: 'smile',
+                routes: [
+                  {
+                    path: '/workOrder/addOrder',
+                    name: "接单",
+                    component: './workOrder/AddOrder'
+                  },
+                  {
+                    path: "*",
+                    component: './404',
+                  },
+                ]
+              },
+              {
                 name: "exception",
                 path: "/exception",
                 routes: [
