@@ -119,12 +119,14 @@ const DictionaryList: React.FC<DictionaryDataType> = () => {
         headerTitle="查询表格"
         actionRef={ actionRef }
         rowKey="id"
-        search={ {
-          labelWidth: 80,
-        } }
+        // search={ {
+        //   labelWidth: 80,
+        // } }
+        search={ false }
         pagination={ {
           pageSize: 10,
         } }
+
         toolBarRender={ () => [
           <Button type="primary" onClick={ async () => { await setCurrentRow(undefined); handleModalVisible(true); } }>
             <PlusOutlined />新建

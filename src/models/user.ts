@@ -58,6 +58,7 @@ const Model: LoginModelType = {
           redirect = redirect.substr(urlParams.origin.length);
           if (redirect.match(/^\/.*#/)) {
             redirect = redirect.substr(redirect.indexOf('#') + 1);
+            if (redirect === '/user/login') redirect = "/welcome";
           } else {
             history.replace('/welcome');
           }

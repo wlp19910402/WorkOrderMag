@@ -194,9 +194,10 @@ const ResumeList: React.FC<UserListDataType> = () => {
         headerTitle="查询表格"
         actionRef={ actionRef }
         rowKey="id"
-        search={ {
-          labelWidth: 80,
-        } }
+        // search={ {
+        //   labelWidth: 80,
+        // } }
+        search={ false }
         pagination={ {
           pageSize: 10,
         } }
