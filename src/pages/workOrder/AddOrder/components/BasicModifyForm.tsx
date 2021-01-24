@@ -1,22 +1,13 @@
 import { Card, Form, Button, Row, Radio, Col, Input, message } from 'antd';
 import React, { useState, useEffect } from 'react';
-import type { PortfolioSaveDataType } from '@/pages/archive/portfolio/data.d';
-import { saveProtfolio } from '@/pages/archive/portfolio/service'
+import { OrderTypeType, orderTypeData } from '@/pages/workOrder/AddOrder/data.d';
+import { addWorkOrder } from '@/pages/workOrder/AddOrder/service'
 import UploadImage from '@/components/Upload/index'
 import ModelBindProtolioAdd from '@/pages/workOrder/AddOrder/components/ModelBindProtolioAdd'
 const layout = {
   labelCol: { span: 6 },
   wrapperCol: { span: 18 },
 };
-interface OrderTypeType {
-  company: string;
-  customerMobile: string;
-  customerName: string;
-  imgUrls: string[];
-  orderType: "az" | "wx" | "xj" | "jd";
-  portfolioId: number;//档案id
-  workDescription: string;
-}
 const DictionaryList: React.FC<{}> = () => {
   const [ uploadImages, setUploadImages ] = useState<string[]>([])
   const [ form ] = Form.useForm();
@@ -34,9 +25,9 @@ const DictionaryList: React.FC<{}> = () => {
       imgUrls: uploadImages.filter((item: any) => item !== '')
     }
     console.log(params)
-    // let response = await saveProtfolio(params)
-    // if (!response) { return }
-    // message.success("保存成功")
+    let response = await addWorkOrder(params)
+    if (!response) { return }
+    message.success("保存成功")
     // history.replace('/archive/portfolio/list');
   }
   const setUploadUrlImage = async (url?: string, index?: number) => {
@@ -82,13 +73,15 @@ const DictionaryList: React.FC<{}> = () => {
           <Form.Item
             rules={ [ { required: true } ] }
             label="工单类型"
-            initialValue="az"
+            initialValue={ orderTypeData[ 1 ].value }
+            name="orderType"
           >
-            <Radio.Group defaultValue="az">
-              <Radio.Button value="az">安装工单</Radio.Button>
-              <Radio.Button value="wx">维修工单</Radio.Button>
-              <Radio.Button value="xj">巡检工单</Radio.Button>
-              <Radio.Button value="jd">建档工单</Radio.Button>
+            <Radio.Group>
+              { orderTypeData.map(
+                (item) => <Radio.Button key={ item.value } value={ item.value }>
+                  { item.label }
+                </Radio.Button>)
+              }
             </Radio.Group>
           </Form.Item>
           <Form.Item
@@ -109,7 +102,6 @@ const DictionaryList: React.FC<{}> = () => {
             label='报单单位'
             name="company"
             rules={ [ { required: true, message: "请输入报单单位！" } ] }
-
           >
             <Input onChange={ (event) => { inputChangeCompany(event.nativeEvent) } } placeholder="请输入报单单位" addonAfter={ <a onClick={ () => handleModalVisible(true) }>或去绑定档案</a> } />
           </Form.Item>
@@ -117,6 +109,7 @@ const DictionaryList: React.FC<{}> = () => {
             <Form.Item
               label='档案id'
               name="portfolioId"
+              hidden
             >
               <Input disabled />
             </Form.Item>
@@ -135,7 +128,7 @@ const DictionaryList: React.FC<{}> = () => {
           >
             <Input.TextArea />
           </Form.Item>
-          <Form.Item extra="外观图片（最多上传六张）带“删除”按钮" name="imgUrls" label="图片上传" valuePropName="checked">
+          <Form.Item extra="外观图片（最多上传六张）带“删除”按钮" label="图片上传" valuePropName="checked">
             <Row gutter={ [ 16, 16 ] } >
               { uploadImages.map((item, index) => {
                 return <Col key={ index }><UploadImage uploadId={ `uploadImagesId_${index}` } value={ item } onChange={ (url) => { setUploadUrlImage(url, index) } } /></Col>
@@ -143,10 +136,14 @@ const DictionaryList: React.FC<{}> = () => {
             </Row>
           </Form.Item>
           <Form.Item wrapperCol={ { offset: 6, span: 18 } }>
-            <Button type="default" onClick={ () => { form.resetFields(); setProtolioInfo({}); } }>重置</Button>
-            <Button type="primary" onClick={ () => { form?.submit() } } loading={ false }>
-              保存
-            </Button>
+            <Row>
+              <Col span={ 6 }>
+                <Button type="default" onClick={ () => { form.resetFields(); setProtolioInfo({}); } }>重置</Button>
+              </Col>
+              <Col span={ 6 } offset={ 4 }>
+                <Button type="primary" onClick={ () => { form?.submit() } } loading={ false }>保存</Button>
+              </Col>
+            </Row>
           </Form.Item>
         </div>
         { createModalVisible && (

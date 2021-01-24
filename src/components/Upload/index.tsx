@@ -15,7 +15,7 @@ type UploadProps = {
 const UploadView: React.FC<UploadProps> = props => {
   const { uploadId, value = '', onChange } = props;
   const [ status, setStatus ] = React.useState<'' | 'done' | 'uploading' | 'error'>(value === '' ? '' : 'done');
-  // const fileMaxSize = "500KB"
+  const fileMaxSize = "51200KB"
   const uploadImage = async () => {
     const fileInput: any = document.getElementById(uploadId)
     const file = fileInput?.files[ 0 ]
@@ -23,11 +23,11 @@ const UploadView: React.FC<UploadProps> = props => {
       return
     }
     setStatus("uploading");
-    // if (file.size / 1024 >= parseInt(fileMaxSize.split('KB')[ 0 ])) {
-    //   message.error('上传的图片不能大于5M哦')
-    //   setStatus("");
-    //   return
-    // }
+    if (file.size / 1024 >= parseInt(fileMaxSize.split('KB')[ 0 ])) {
+      message.error('上传的图片不能大于50M哦')
+      setStatus("");
+      return
+    }
     const response = await uploadStsSign({ originalName: file.name })
     if (!response) {
       setStatus("error");

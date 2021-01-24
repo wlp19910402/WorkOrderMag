@@ -68,4 +68,6 @@ export default {
   PORTFOLIO_LIST_PART: "/api/portfolio/part-list",///portfolio/part-list/{id} 档案耗材列表
   PORTFOLIO_DELETE_PART: '/api/portfolio/move-part',///portfolio/move-part/{portfolioPartId} 移除档案耗材
   PORTFOLIO_UPDATE_PART: '/api/portfolio/update-part',///portfolio/update-part//修改档案耗材
+  //接单-工单管理
+  WORK_ORDER_ADD: '/api/work-order/sys-add',//接单
 }
