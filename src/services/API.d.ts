@@ -73,4 +73,6 @@ export default {
   WORK_ORDER_LIST: "/api/work-order/list",//工单列表
   WORK_ORDER_SEND_ORDERS: '/api/work-order/send-orders',//派单
   WORK_ORDER_BIND_PROTFOLIO: '/api/work-order/bind-portfolio',//绑定档案
+  //工程师管理
+  ENGINEER_LIST: "/api/engineer/list"
 }

@@ -1,7 +1,7 @@
 import { Card, Form, Button, Row, Radio, Col, Input, message } from 'antd';
 import React, { useState, useEffect } from 'react';
 import { OrderTypeType, orderTypeData } from '@/pages/workOrder/data.d';
-import { addWorkOrder } from '@/pages/workOrder/AddOrder/service'
+import { addWorkOrder } from '@/pages/workOrder/service'
 import UploadImage from '@/components/Upload/index'
 import ModelBindProtolioAdd from '@/pages/workOrder/components/ModelBindProtolioAdd'
 import { history } from 'umi'

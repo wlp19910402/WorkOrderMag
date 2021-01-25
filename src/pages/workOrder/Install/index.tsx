@@ -5,7 +5,7 @@ import WorkOrderList from '@/pages/workOrder/components/WorkOrderList'
 const DictionaryList: React.FC<{}> = () => {
   return (
     <PageContainer header={ { title: "" } } >
-      <WorkOrderList orderType="wx" />
+      <WorkOrderList orderType="az" />
     </PageContainer>
   );
 };

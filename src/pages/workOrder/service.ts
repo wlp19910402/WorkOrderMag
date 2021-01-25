@@ -1,7 +1,10 @@
 import API from '@/services/API.d'
 import httpServer from '@/utils/httpServer'
-import { OrderListSearchType } from '@/pages/workOrder/data.d'
+import { OrderListSearchType, OrderTypeType } from '@/pages/workOrder/data.d'
 
+export const addWorkOrder = async (params: OrderTypeType) => {
+  return await httpServer.post(API.WORK_ORDER_ADD, { data: params });
+}
 export const queryList = async (params: OrderListSearchType) => {
   return await httpServer.get(API.WORK_ORDER_LIST, {
     params: {
@@ -25,4 +28,8 @@ export const queryList = async (params: OrderListSearchType) => {
 
 export const bindProtolio = async (params: any) => {
   return httpServer.post(API.WORK_ORDER_BIND_PROTFOLIO, { data: params });
+}
+
+export const sendOrder = async (params: any) => {
+  return httpServer.post(API.WORK_ORDER_SEND_ORDERS, { data: params });
 }

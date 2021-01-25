@@ -303,7 +303,7 @@ const ModelConsumableAdd: React.FC<ModalModifyFormDataProps> = ({ createModalVis
           rowKey="id"
 
           search={ {
-            labelWidth: 80,
+            labelWidth: 110,
           } }
           pagination={ {
             pageSize: 10,
@@ -325,7 +325,7 @@ const ModelConsumableAdd: React.FC<ModalModifyFormDataProps> = ({ createModalVis
           { currentRow?.id && (
             <ProDescriptions<PortfolioListDataType>
               column={ 1 }
-              title={ currentRow?.name }
+              title={ "设备档案信息" }
               key={ currentRow?.id }
               request={ async () => ({
                 data: currentRow || {},

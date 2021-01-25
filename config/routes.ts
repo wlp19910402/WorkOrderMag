@@ -136,6 +136,11 @@
                     ]
                   },
                   {
+                    path: '/archive/engineer',
+                    name: "工程师管理",
+                    component: './archive/Engineer'
+                  },
+                  {
                     path: "*",
                     component: './404',
                   },
@@ -170,6 +175,16 @@
                     path: '/workOrder/maintain',
                     name: "维修工单",
                     component: './workOrder/Maintain'
+                  },
+                  {
+                    path: '/workOrder/patrol',
+                    name: "巡检工单",
+                    component: './workOrder/Patrol'
+                  },
+                  {
+                    path: '/workOrder/install',
+                    name: "安装工单",
+                    component: './workOrder/Install'
                   },
                   {
                     path: "*",

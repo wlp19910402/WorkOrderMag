@@ -293,7 +293,7 @@ const DictionaryList: React.FC<PortfolioListDataType> = () => {
         actionRef={ actionRef }
         rowKey="id"
         search={ {
-          labelWidth: 80,
+          labelWidth: 110,
         } }
         pagination={ {
           pageSize: 10,
