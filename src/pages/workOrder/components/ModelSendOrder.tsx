@@ -1,5 +1,5 @@
 import { ConsumableAddDataType } from '@/pages/archive/portfolio/data.d'
-import { Drawer, Modal, message } from 'antd';
+import { Drawer, Modal, message, Popconfirm } from 'antd';
 import React, { useState, useRef } from 'react';
 import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
@@ -58,9 +58,12 @@ const ModelConsumableAdd: React.FC<ModalModifyFormDataProps> = ({ createModalVis
       valueType: 'option',
       width: "48px",
       render: (_, record) => [
-        <a key="add" onClick={ () => {
-          tiggerSendOrder(record)
-        } }>派单</a>
+        <Popconfirm
+          key="add"
+          title="确认推送工程师进行派单？"
+          onConfirm={ () => { tiggerSendOrder(record) } }>
+          <a >派单</a>
+        </Popconfirm>
       ],
     },
   ];

@@ -1,5 +1,5 @@
 import { ConsumableAddDataType } from '@/pages/archive/portfolio/data.d'
-import { Drawer, Image, Row, Col, Modal, message } from 'antd';
+import { Drawer, Image, Row, Col, Modal, message, Popconfirm } from 'antd';
 import React, { useState, useRef, useEffect } from 'react';
 import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
@@ -236,9 +236,12 @@ const ModelConsumableAdd: React.FC<ModalModifyFormDataProps> = ({ createModalVis
       valueType: 'option',
       width: "48px",
       render: (_, record) => [
-        <a key="add" onClick={ () => {
-          tiggerBindProtolio(record)
-        } }>绑定</a>
+        <Popconfirm
+          key="add"
+          title="确定绑定当前档案？"
+          onConfirm={ () => { tiggerBindProtolio(record) } }>
+          <a >绑定</a>
+        </Popconfirm>
       ],
     },
   ];
@@ -301,7 +304,6 @@ const ModelConsumableAdd: React.FC<ModalModifyFormDataProps> = ({ createModalVis
           headerTitle="查询表格"
           actionRef={ actionRef }
           rowKey="id"
-
           search={ {
             labelWidth: 110,
           } }
