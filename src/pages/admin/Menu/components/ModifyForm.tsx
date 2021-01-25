@@ -9,8 +9,7 @@ import type { Dispatch } from 'umi'
 
 const formItemLayout = {
   labelCol: {
-    xs: { span: 8 },
-    sm: { span: 6 },
+    span: 4
   },
   wrapperCol: {
     xs: { span: 16 },
@@ -47,7 +46,7 @@ const ModifyForm: React.FC<ModifyFormDataProps> = (props) => {
       layout="horizontal"
       initialValues={ { typeFormType } }
       onFinish={ onFinish }
-      labelCol={ { span: 4 } }
+
     >
       <Form.Item name="parentId" hidden initialValue={ currentRow.parentId || 0 } >
         <Input />
@@ -87,9 +86,9 @@ const ModifyForm: React.FC<ModifyFormDataProps> = (props) => {
       }
       {
         !editDisable && currentRow.id !== 0 &&
-        <Form.Item label=" ">
+        <Form.Item >
           <Row>
-            <Col span={ 6 }><Button type="default" onClick={ () => form.resetFields() }>取消</Button></Col>
+            <Col span={ 6 } offset={ 6 }><Button type="default" onClick={ () => form.resetFields() }>取消</Button></Col>
             <Col span={ 6 } offset={ 1 }><Button type="primary" htmlType="submit">保存</Button>
             </Col>
           </Row>

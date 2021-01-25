@@ -1,17 +1,18 @@
 import { ConsumableAddDataType } from '@/pages/archive/portfolio/data.d'
-import { Drawer, message, Image, Row, Col, Modal } from 'antd';
+import { Drawer, Image, Row, Col, Modal, message } from 'antd';
 import React, { useState, useRef, useEffect } from 'react';
 import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
 import type { ProDescriptionsItemProps } from '@ant-design/pro-descriptions';
 import ProDescriptions from '@ant-design/pro-descriptions';
 import { queryProtfolioList } from '@/pages/archive/portfolio/service';
-import type { PortfolioListDataType } from '@/pages/archive/portfolio/data';
+import type { PortfolioListDataType } from '@/pages/archive/portfolio/data.d';
 import ImgNull from '@/assets/images/images-null.png';
 import { fetchDicTypeSelectObj } from '@/pages/admin/Dictionary/service'
 import CODE from '@/utils/DicCode.d'
 import SearchSelect from '@/components/common/SerchSelect'
 import { pickerDateFormat } from '@/utils/parameter'
+import { bindProtolio } from '@/pages/workOrder/service'
 export type ColumnEditConsumableType = {
   consumableName: string;
   consumableNo: string;
@@ -22,10 +23,12 @@ export type ColumnEditConsumableType = {
 type ModalModifyFormDataProps = {
   createModalVisible: boolean;
   handleModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
-  companyName: string;
-  bindProtolioInfo: (val: any) => void
+  companyName?: string;
+  bindProtolioInfo?: (val: any) => void;
+  listReloadAndRest?: () => void;
+  currentOrder?: any;
 }
-const ModelConsumableAdd: React.FC<ModalModifyFormDataProps> = ({ createModalVisible = false, handleModalVisible, companyName, bindProtolioInfo }) => {
+const ModelConsumableAdd: React.FC<ModalModifyFormDataProps> = ({ createModalVisible = false, handleModalVisible, companyName, bindProtolioInfo, listReloadAndRest, currentOrder }) => {
   const [ showDetail, setShowDetail ] = useState<boolean>(false);
   const actionRef = useRef<ActionType>();
   const [ currentRow, setCurrentRow ] = useState<PortfolioListDataType>();
@@ -56,7 +59,7 @@ const ModelConsumableAdd: React.FC<ModalModifyFormDataProps> = ({ createModalVis
     {
       title: "单位名称",
       dataIndex: 'companyName',
-      ellipsis: true
+      ellipsis: true,
     },
     {
       title: "单位编号",
@@ -233,10 +236,29 @@ const ModelConsumableAdd: React.FC<ModalModifyFormDataProps> = ({ createModalVis
       valueType: 'option',
       width: "48px",
       render: (_, record) => [
-        <a key="add" onClick={ () => { bindProtolioInfo(record); handleModalVisible(false); } }>添加</a>
+        <a key="add" onClick={ () => {
+          tiggerBindProtolio(record)
+        } }>绑定</a>
       ],
     },
   ];
+  const tiggerBindProtolio = async (record: any) => {
+    //接单-新增工单填写信息时进行绑定档案
+    if (bindProtolioInfo) {
+      bindProtolioInfo(record);
+      handleModalVisible(false);
+      return
+    }
+    //在工单列表中进行绑定档案
+    let response = await bindProtolio({
+      id: currentOrder.id,
+      portfolioId: record.id
+    })
+    if (!response) return
+    message.success("绑定成功");
+    if (listReloadAndRest) listReloadAndRest();
+    handleModalVisible(false);
+  }
   const columnsDrawer = [
     ...columns.filter(item => item.dataIndex !== 'imgUrls'),
     {

@@ -149,7 +149,27 @@
                   {
                     path: '/workOrder/addOrder',
                     name: "接单",
-                    component: './workOrder/AddOrder'
+                    routes: [
+                      {
+                        path: '/workOrder/addOrder/',
+                        name: "新增工单",
+                        component: './workOrder/AddOrder'
+                      },
+                      {
+                        path: '/workOrder/addOrder/success',
+                        name: "操作成功",
+                        component: './workOrder/AddOrder/success'
+                      },
+                      {
+                        path: "*",
+                        component: './404',
+                      },
+                    ]
+                  },
+                  {
+                    path: '/workOrder/maintain',
+                    name: "维修工单",
+                    component: './workOrder/Maintain'
                   },
                   {
                     path: "*",

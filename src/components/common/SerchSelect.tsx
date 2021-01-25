@@ -6,7 +6,7 @@ interface SelectOptionProps {
     type: any;
   };
   value?: string;
-  onChange?: (value: string) => void;
+  onChange?: (value: string | undefined) => void;
 }
 interface OptionProps {
   label: React.ReactNode;

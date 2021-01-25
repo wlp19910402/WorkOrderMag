@@ -68,6 +68,9 @@ export default {
   PORTFOLIO_LIST_PART: "/api/portfolio/part-list",///portfolio/part-list/{id} 档案耗材列表
   PORTFOLIO_DELETE_PART: '/api/portfolio/move-part',///portfolio/move-part/{portfolioPartId} 移除档案耗材
   PORTFOLIO_UPDATE_PART: '/api/portfolio/update-part',///portfolio/update-part//修改档案耗材
-  //接单-工单管理
-  WORK_ORDER_ADD: '/api/work-order/sys-add',//接单
+  //新增工单-工单管理
+  WORK_ORDER_ADD: '/api/work-order/sys-add',//新增工单
+  WORK_ORDER_LIST: "/api/work-order/list",//工单列表
+  WORK_ORDER_SEND_ORDERS: '/api/work-order/send-orders',//派单
+  WORK_ORDER_BIND_PROTFOLIO: '/api/work-order/bind-portfolio',//绑定档案
 }
