@@ -79,7 +79,7 @@ const ModelConsumableAdd: React.FC<ModalModifyFormDataProps> = ({ createModalVis
       hideInTable: true
     },
     {
-      title: "二维码code",
+      title: "二维码编号",
       dataIndex: 'qrCodde',
       ellipsis: true
     },
@@ -286,7 +286,7 @@ const ModelConsumableAdd: React.FC<ModalModifyFormDataProps> = ({ createModalVis
     } ]
   const fetchQueryList = async (params: any) => {
     const response = await queryProtfolioList(params)
-    if (!response) return
+    if (!response) return { data: [] }
     const { data } = response;
     return ({ ...data, data: data.records })
   }

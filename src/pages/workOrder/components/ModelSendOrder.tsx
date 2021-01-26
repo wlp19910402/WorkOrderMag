@@ -72,7 +72,7 @@ const ModelConsumableAdd: React.FC<ModalModifyFormDataProps> = ({ createModalVis
     let response = await sendOrder({
       id: currentOrder.id,
       engineerId: record.id,
-      supporterIds: 0,//???
+      supporterIds: [ 0 ]
     })
     if (!response) return
     message.success("绑定成功");
@@ -82,7 +82,7 @@ const ModelConsumableAdd: React.FC<ModalModifyFormDataProps> = ({ createModalVis
 
   const fetchQueryList = async (params: any) => {
     const response = await queryList(params)
-    if (!response) return
+    if (!response) return { data: [] }
     const { data } = response;
     return ({ ...data, data: data.records })
   }

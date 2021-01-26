@@ -201,12 +201,12 @@ const DictionaryList: React.FC<ModifyFormTypeProps> = ({ currentRow }) => {
           </Col>
           <Col { ...colProps }>
             <Form.Item
-              label='二维码 Code'
+              label='二维码编号'
               name="qrCodde"
-              rules={ [ { message: '请输入二维码 Code' } ] }
+              rules={ [ { message: '请输入二维码编号' } ] }
               initialValue={ currentRow?.qrCodde }
             >
-              <Input placeholder="请输入二维码 Code" />
+              <Input placeholder="请输入二维码编号" />
             </Form.Item>
           </Col>
           <Col { ...colProps }>

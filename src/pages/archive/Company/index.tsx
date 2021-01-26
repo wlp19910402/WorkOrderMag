@@ -129,7 +129,7 @@ const DictionaryList: React.FC<CompanyListDataType> = () => {
   }
   const fetchQueryList = async (params: any) => {
     const response = await queryCompanyList(params)
-    if (!response) return
+    if (!response) return { data: [] }
     const { data } = response;
     return ({ ...data, data: data.records })
   }

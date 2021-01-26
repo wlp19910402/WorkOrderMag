@@ -57,6 +57,16 @@ const DictionaryList: React.FC<{}> = () => {
       // }
     },
     {
+      title: "状态",
+      dataIndex: 'status',
+      valueEnum: {
+        0: "不可用",
+        1: "可用"
+      },
+      hideInDescriptions: true,
+      hideInTable: true
+    },
+    {
       title: "操作",
       valueType: 'option',
       width: "140px",
@@ -93,7 +103,7 @@ const DictionaryList: React.FC<{}> = () => {
   }
   const fetchQueryList = async (params: any) => {
     const response = await queryList(params)
-    if (!response) return
+    if (!response) return { data: [] }
     const { data } = response;
     return ({ ...data, data: data.records })
   }

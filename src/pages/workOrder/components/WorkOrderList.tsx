@@ -2,8 +2,8 @@ import { PlusOutlined } from '@ant-design/icons';
 import { Button, Drawer, message, Popconfirm, Image, Row, Col, } from 'antd';
 import React, { useState, useRef } from 'react';
 import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
-import type { ProColumns, ActionType } from '@ant-design/pro-table';
-import ProTable from '@ant-design/pro-table';
+import type { ProColumns, ActionType, } from '@ant-design/pro-table';
+import ProTable, { TableDropdown } from '@ant-design/pro-table';
 import type { ProDescriptionsItemProps } from '@ant-design/pro-descriptions';
 import ProDescriptions from '@ant-design/pro-descriptions';
 import { queryList } from '@/pages/workOrder/service';
@@ -57,7 +57,7 @@ const DictionaryList: React.FC<WorkOrderListProps> = ({ orderType = "wx" }) => {
     },
     {
       title: "图片",
-      dataIndex: 'imgUrls',
+      dataIndex: 'orderImgUrls',
       hideInSearch: true,
       render: (val: any) => {
         return val && val.length > 0 ?
@@ -137,32 +137,62 @@ const DictionaryList: React.FC<WorkOrderListProps> = ({ orderType = "wx" }) => {
     {
       title: "操作",
       valueType: 'option',
-      width: "140px",
+      width: "40px",
       render: (_, record) => [
         <Button
-          key="edit"
-          type="text"
+          key="bind"
           size="small"
+          style={ { width: "62px" } }
           onClick={ () => { fetchBindPortolio(record) } }
-          disabled={ record.portfolioId }
+          type={ record.portfolioId === "" ? "link" : "text" }
+          disabled={ record.status === "wc" }
         >
-          绑定档案
-        </Button >
-        ,
-        <Button
-          key="edit"
-          type="text"
-          size="small"
-          onClick={ () => { fetchSendOrder(record) } }
-        >
-          派单
-        </Button>,
-        <Popconfirm
-          key="delete"
-          title="是否要删除此行？"
-          onConfirm={ () => { record.id !== undefined && tiggerDelete(record.id?.toString()); } }>
-          <Button size="small" type="text" >删除</Button>
-        </Popconfirm>
+          { record.portfolioId !== "" ? "重新绑定" : "绑定档案" }
+        </Button >,
+        record.portfolioId === "" ?
+          <Popconfirm
+            key='send'
+            title="尚未绑定档案，确认去派单？"
+            onConfirm={ () => { fetchSendOrder(record) } }
+            disabled={ record.status === "wc" }
+          >
+            <Button
+              type={ record.portfolioId === "" ? "link" : "text" }
+              style={ { width: "62px" } }
+              size="small"
+            >
+              { record.portfolioId !== "" ? "重新派单" : "派单" }
+            </Button>
+          </Popconfirm> :
+          <Button
+            key='send'
+            type={ record.portfolioId === "" ? "link" : "text" }
+            style={ { width: "62px" } }
+            size="small"
+            onClick={ () => { fetchSendOrder(record) } }
+            disabled={ record.status === "wc" }
+          >
+            { record.portfolioId !== "" ? "重新派单" : "派单" }
+          </Button>,
+        <Button key="wancheng" size="small" type="link" disabled={ record.status === "wc" }>结单</Button>,
+        record.status !== "wc" &&
+        <TableDropdown
+          style={ { fontWeight: "bold" } }
+          key="actionGroup"
+          menus={ [
+            {
+              key: 'cancel',
+              name:
+                <Popconfirm
+                  key="delete"
+                  title="是否要撤单？"
+                  onConfirm={ () => { record.id !== undefined && tiggerDelete(record.id?.toString()); } }
+                >
+                  <Button size="small" type="text" >撤单</Button>
+                </Popconfirm>
+            },
+          ] }
+        />
       ],
     },
   ];
@@ -211,7 +241,7 @@ const DictionaryList: React.FC<WorkOrderListProps> = ({ orderType = "wx" }) => {
   }
   const fetchQueryList = async (params: any) => {
     const response = await queryList(params)
-    if (!response) return
+    if (!response) return { data: [] }
     const { data } = response;
     return ({ ...data, data: data.records })
   }

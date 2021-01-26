@@ -216,7 +216,7 @@ const DictionaryList: React.FC<PartListDataType> = () => {
   }
   const fetchQueryList = async (params: any) => {
     const response = await queryPartList(params)
-    if (!response) return
+    if (!response) return { data: [] }
     const { data } = response;
     return ({ ...data, data: data.records })
   }

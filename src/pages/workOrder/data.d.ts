@@ -15,13 +15,13 @@ export const orderTypeData = [
   { label: "安装工单", value: "az" },
   { label: "维修工单", value: "wx" },
   { label: "巡检工单", value: "xj" },
-  { label: "建档工单", value: "jd" }
+  // { label: "建档工单", value: "jd" }
 ]
 export const orderTypeEnum = {
   az: "安装工单",
   wx: "维修工单",
   xj: "巡检工单",
-  jd: "建档工单"
+  // jd: "建档工单"
 }
 export const orderStatusData = [
   { label: "未派单", value: "wpd" },

@@ -110,7 +110,7 @@ const TableConsumableList: React.FC<TableConsumableListProps> = ({ setSelectedRo
   }
   const fetchQueryList = async (params: any) => {
     const response = await queryConsumableList(params)
-    if (!response) return
+    if (!response) return { data: [] }
     const { data } = response;
     return ({ ...data, data: data.records })
   }

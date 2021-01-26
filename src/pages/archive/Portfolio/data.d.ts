@@ -9,7 +9,7 @@ export type PortfolioSearchType = {
   brand?: string;//设备品牌
   companyName?: string;//单位名称
   deviceName?: string;//设备名称
-  qrCodde?: string;//二维码code
+  qrCodde?: string;//二维码编号
 } & PageDataType
 // 设备档案保存
 export type PortfolioSaveDataType = {
@@ -21,7 +21,7 @@ export type PortfolioSaveDataType = {
   deviceName?: string;//设备名称
   installLocation?: string;//安装位置
   installTime?: string;//安装时间
-  qrCodde?: string;//二维码code
+  qrCodde?: string;//二维码编号
   warrantyPeriod?: string;//保修周期
   deviceNo?: string;
   id?: number;// 主键

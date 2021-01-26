@@ -245,7 +245,7 @@ const DictionaryList: React.FC<DeviceListDataType> = () => {
   }
   const fetchQueryList = async (params: any) => {
     const response = await queryDeviceList(params)
-    if (!response) return
+    if (!response) return { data: [] }
     const { data } = response;
     return ({ ...data, data: data.records })
   }
