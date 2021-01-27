@@ -1,9 +1,9 @@
 import { Button, Form, Card, Input, Row, Col, Descriptions, message, Image, } from 'antd';
 import React, { useState, useEffect } from 'react';
-import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
+import { FooterToolbar } from '@ant-design/pro-layout';
 import { queryList } from '@/pages/workOrder/service';
 import { OrderListType, orderStatusData, orderTypeMatchInfo } from '@/pages/workOrder/data.d';
-import { IRouteComponentProps, history } from 'umi';
+import { history } from 'umi';
 import { match } from 'react-router';
 import PortfolioConsumableList from '@/pages/workOrder/components/PortfolioConsumableList'
 import UploadImage from '@/components/Upload/index'
@@ -11,15 +11,15 @@ import { submitOrder } from '@/pages/workOrder/service'
 interface WorkOrderFinishProps {
   matchRoute: match<{}>;
   orderType: string;
-  routeProp: IRouteComponentProps,
 }
-const DictionaryList: React.FC<WorkOrderFinishProps> = ({ orderType = 'wx', matchRoute, routeProp }) => {
+const DictionaryList: React.FC<WorkOrderFinishProps> = ({ orderType = 'wx', matchRoute }) => {
   const [ currentRow, setCurrentRow ] = useState<OrderListType>();
   const [ portfolioId, setPortfolioId ] = useState<React.Key>();
   const [ consumableUpdate, setConsumableUpdate ] = useState<any[]>([])
   const [ uploadImages, setUploadImages ] = useState<string[]>([])
   const fetchQueryCurrentOrderInfo = async () => {
-    const response = await queryList({ current: 1, pageSize: 1, orderNo: matchRoute.params.no });
+    let routeParams: any = matchRoute.params
+    const response = await queryList({ current: 1, pageSize: 1, orderNo: routeParams.no });
     if (!response) {
       setCurrentRow(undefined)
       return

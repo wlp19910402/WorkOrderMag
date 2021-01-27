@@ -3,22 +3,21 @@ import React, { useState, useEffect } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import { infoOrder } from '@/pages/workOrder/service';
 import { OrderListType, orderStatusData, orderTypeMatchInfo } from '@/pages/workOrder/data.d';
-import { IRouteComponentProps, } from 'umi';
 import { match } from 'react-router';
 import PortfolioConsumableList from '@/pages/workOrder/components/PortfolioConsumableList'
 import UploadImage from '@/components/Upload/index'
 interface WorkOrderFinishProps {
   matchRoute: match<{}>;
   orderType: string;
-  routeProp: IRouteComponentProps,
 }
-const DictionaryList: React.FC<WorkOrderFinishProps> = ({ orderType = 'wx', matchRoute, routeProp }) => {
+const DictionaryList: React.FC<WorkOrderFinishProps> = ({ orderType = 'wx', matchRoute }) => {
   const [ currentRow, setCurrentRow ] = useState<OrderListType>();
   const [ portfolioId, setPortfolioId ] = useState<React.Key>();
   const [ consumableUpdate, setConsumableUpdate ] = useState<any[]>([])
   const [ uploadImages, setUploadImages ] = useState<string[]>([])
   const fetchQueryCurrentOrderInfo = async () => {
-    const response = await infoOrder(matchRoute.params.id);
+    let routeParams: any = matchRoute.params
+    const response = await infoOrder(routeParams.id);
     if (!response) {
       setCurrentRow(undefined)
       return
