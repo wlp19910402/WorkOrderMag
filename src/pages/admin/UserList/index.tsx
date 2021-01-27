@@ -112,7 +112,7 @@ const ResumeList: React.FC<UserListDataType> = () => {
       render: (_, record) => [
         <Button
           key="edit"
-          type="text"
+          type="link"
           size="small"
           disabled={ record.id === 1 }
           onClick={ async () => { fetchUserEdit(record) } }
@@ -124,11 +124,11 @@ const ResumeList: React.FC<UserListDataType> = () => {
           disabled={ record.id === 1 }
           title="是否要删除此行？"
           onConfirm={ () => { record.id !== undefined && tiggerDeleteUser(record.id?.toString()); } }>
-          <Button disabled={ record.id === 1 } size="small" type="text" >删除</Button>
+          <Button disabled={ record.id === 1 } size="small" type="link" >删除</Button>
         </Popconfirm>,
         <Button
           key="setRole"
-          type="text"
+          type="link"
           size="small"
           disabled={ record.id === 1 }
           onClick={ async () => { fetchUserRoleId(record) } }

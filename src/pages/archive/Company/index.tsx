@@ -99,7 +99,7 @@ const DictionaryList: React.FC<CompanyListDataType> = () => {
       render: (_, record) => [
         <Button
           key="edit"
-          type="text"
+          type="link"
           size="small"
           onClick={ () => { fetchUserEdit(record) } }
         >
@@ -109,7 +109,7 @@ const DictionaryList: React.FC<CompanyListDataType> = () => {
           key="delete"
           title="是否要删除此行？"
           onConfirm={ () => { record.id !== undefined && tiggerDelete(record.id?.toString()); } }>
-          <Button size="small" type="text" >删除</Button>
+          <Button size="small" type="link" >删除</Button>
         </Popconfirm>
       ],
     },
