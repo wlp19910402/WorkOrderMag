@@ -87,7 +87,8 @@ const DictionaryList: React.FC<WorkOrderListProps> = ({ orderType = 'wx' }) => {
     {
       title: "支持人员",
       dataIndex: "supporterNames",
-      hideInSearch: true
+      hideInSearch: true,
+      hideInTable: true
     },
     {
       title: '工单状态',
@@ -136,8 +137,8 @@ const DictionaryList: React.FC<WorkOrderListProps> = ({ orderType = 'wx' }) => {
     {
       title: '操作',
       valueType: 'option',
-      width: '40px',
-      render: (_, record) => [
+      width: '200px',
+      render: (_, record) => <>
         <Button
           key="bind"
           size="small"
@@ -149,8 +150,8 @@ const DictionaryList: React.FC<WorkOrderListProps> = ({ orderType = 'wx' }) => {
           disabled={ record.status === 'wc' || record.status === 'cancel' }
         >
           { record.portfolioId !== '' ? '重新绑定' : '绑定档案' }
-        </Button>,
-        record.portfolioId === '' ? (
+        </Button>
+        { record.portfolioId === '' ? (
           <Popconfirm
             key="send"
             title="尚未绑定档案，确认去派单？"
@@ -179,42 +180,40 @@ const DictionaryList: React.FC<WorkOrderListProps> = ({ orderType = 'wx' }) => {
               } }
               disabled={ record.status === 'wc' || record.status === 'cancel' }
             >
-              {record.engineerId !== '' ? '重新派单' : '派单' }
+              { record.engineerId !== '' ? '重新派单' : '派单' }
             </Button>
-          ),
+          ) }
         <Button key="wancheng" onClick={ () => { history.push(`${orderTypeMatchInfo(orderType)?.listPath}/finish/${record.orderNo}`) } } size="small" type="link" disabled={ record.status === 'wc' || record.status === 'cancel' }>
           结单
-        </Button>,
-        record.status !== 'wc' && (
-          <TableDropdown
-            style={ { fontWeight: 'bold' } }
-            key="actionGroup"
-            menus={ [
-              {
-                key: "info",
-                name: <Link to={ `${orderTypeMatchInfo(orderType)?.listPath}/info/${record.id}` } ><Button type="text">详情</Button></Link>
-              },
-              {
-                key: 'cancel',
-                name: (
-                  <Popconfirm
-                    key="cancel"
-                    title="是否要撤单？"
-                    onConfirm={ () => {
-                      record.id !== undefined && tiggerCancel(record.id?.toString());
-                    } }
-                    disabled={ record.status === 'wc' || record.status === 'cancel' }
-                  >
-                    <Button type="text" disabled={ record.status === 'wc' || record.status === 'cancel' }>
-                      撤单
+        </Button>
+        <TableDropdown
+          style={ { fontWeight: 'bold' } }
+          key="actionGroup"
+          menus={ [
+            {
+              key: "info",
+              name: <Link to={ `${orderTypeMatchInfo(orderType)?.listPath}/info/${record.id}` } ><Button type="text">详情</Button></Link>
+            },
+            {
+              key: 'cancel',
+              name: (
+                <Popconfirm
+                  key="cancel"
+                  title="是否要撤单？"
+                  onConfirm={ () => {
+                    record.id !== undefined && tiggerCancel(record.id?.toString());
+                  } }
+                  disabled={ record.status === 'wc' || record.status === 'cancel' }
+                >
+                  <Button type="text" disabled={ record.status === 'wc' || record.status === 'cancel' }>
+                    撤单
                     </Button>
-                  </Popconfirm>
-                ),
-              },
-            ] }
-          />
-        ),
-      ],
+                </Popconfirm>
+              ),
+            },
+          ] }
+        />
+      </>,
     },
   ];
   const columnsDrawer = [
