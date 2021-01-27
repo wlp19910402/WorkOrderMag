@@ -289,6 +289,7 @@ const DictionaryList: React.FC<PortfolioListDataType> = () => {
   return (
     <PageContainer header={ { title: "" } }>
       <ProTable
+        size="small"
         headerTitle="查询表格"
         actionRef={ actionRef }
         rowKey="id"

@@ -116,6 +116,7 @@ const DictionaryList: React.FC<DictionaryDataType> = () => {
   return (
     <PageContainer header={ { title: "" } }>
       <ProTable
+        size="small"
         headerTitle="查询表格"
         actionRef={ actionRef }
         rowKey="id"
@@ -126,7 +127,6 @@ const DictionaryList: React.FC<DictionaryDataType> = () => {
         pagination={ {
           pageSize: 10,
         } }
-
         toolBarRender={ () => [
           <Button type="primary" onClick={ async () => { await setCurrentRow(undefined); handleModalVisible(true); } }>
             <PlusOutlined />新建
