@@ -42,36 +42,38 @@ export const orderStatusEnum = {
   cancel: { text: "已撤单", status: 'Error' }
 }
 export interface OrderListSearchType extends PageDataType {
-  company: string;//报单单位
-  createTimeEnd: string;//创建时间2
-  createTimeStart: string;//创建时间1
-  customerMobile: string;//客户电话
-  customerName: string;//客户姓名
-  engineerName: string;//工程师姓名
+  company?: string;//报单单位
+  createTimeEnd?: string;//创建时间2
+  createTimeStart?: string;//创建时间1
+  customerMobile?: string;//客户电话
+  customerName?: string;//客户姓名
+  engineerName?: string;//工程师姓名
   orderNo: string;//工单编号
-  orderType: string;//工单类型
-  receivingTimeEnd: string;//接单时间2
-  receivingTimeStart: string;//接单时间1
-  sourceType: string;//工单来源
-  status: string;//工单状态
+  orderType?: string;//工单类型
+  receivingTimeEnd?: string;//接单时间2
+  receivingTimeStart?: string;//接单时间1
+  sourceType?: string;//工单来源
+  status?: string;//工单状态
 }
 export interface OrderListType extends OrderTypeType {
   createTime: string;
   createUser: string;
   createUserName: string;
-  // customerMobile: string;
-  // customerName: string;
+  customerMobile: string;
+  customerName: string;
   deviceName: string;
   deviceType: string;
   engineerId: number;
-  // engineerName: string;
+  engineerName: string;
   id: number;
-  imgUrls: string[];
-  // orderNo: string;//工单编号
-  // orderType: string;
+  orderImgUrls: string[];
+  orderNo: string;//工单编号
+  orderType: string;
   portfolioId: string;//档案id
+  supporterNames: string;
+  supporterIds: string;
   receivingTime: string;
-  // sourceType: string;
-  // status: string;
+  sourceType: string;
+  status: string;
   workDescription: string;
 }

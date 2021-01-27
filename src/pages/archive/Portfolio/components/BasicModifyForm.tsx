@@ -133,9 +133,8 @@ const DictionaryList: React.FC<ModifyFormTypeProps> = ({ currentRow }) => {
           column={ { xs: 2, sm: 2, md: 2, lg: 2, xl: 2, xxl: 2 } }
           labelStyle={ { width: "80px", padding: "8px" } }
         >
-          <Descriptions.Item label="单位ID" >{ selectCompanyData?.id ? selectCompanyData.id : "" }</Descriptions.Item>
-          <Descriptions.Item label="单位编号">{ selectCompanyData?.no ? selectCompanyData.no : "" }</Descriptions.Item>
           <Descriptions.Item label="单位名称">{ selectCompanyData?.company ? selectCompanyData.company : "" }</Descriptions.Item>
+          <Descriptions.Item label="单位编号">{ selectCompanyData?.no ? selectCompanyData.no : "" }</Descriptions.Item>
           <Descriptions.Item label="联系人">{ selectCompanyData?.contactUser ? selectCompanyData.contactUser : "" }</Descriptions.Item>
           <Descriptions.Item label="联系电话">{ selectCompanyData?.contactMobile ? selectCompanyData.contactMobile : "" }</Descriptions.Item>
         </Descriptions>
@@ -162,9 +161,8 @@ const DictionaryList: React.FC<ModifyFormTypeProps> = ({ currentRow }) => {
           column={ { xs: 2, sm: 2, md: 2, lg: 2, xl: 2, xxl: 2 } }
           labelStyle={ { width: "80px", padding: "8px" } }
         >
-          <Descriptions.Item label="设备ID">{ selectDeviceData?.id ? selectDeviceData?.id : "" }</Descriptions.Item>
-          <Descriptions.Item label="设备编号">{ selectDeviceData?.no ? selectDeviceData?.no : "" }</Descriptions.Item>
           <Descriptions.Item label="设备名称">{ selectDeviceData?.name ? selectDeviceData?.name : "" }</Descriptions.Item>
+          <Descriptions.Item label="设备编号">{ selectDeviceData?.no ? selectDeviceData?.no : "" }</Descriptions.Item>
           <Descriptions.Item label="设备类型">{ selectDeviceData?.typeName ? selectDeviceData?.typeName : "" }</Descriptions.Item>
           <Descriptions.Item label="设备品牌">{ selectDeviceData?.brandName ? selectDeviceData?.brandName : "" }</Descriptions.Item>
           <Descriptions.Item label="设备型号">{ selectDeviceData?.modelName ? selectDeviceData?.modelName : "" }</Descriptions.Item>

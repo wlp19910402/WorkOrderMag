@@ -1,8 +1,11 @@
 import React from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import WorkOrderFinish from '@/pages/workOrder/components/WorkOrderFinish'
-
-const DictionaryList: React.FC<{}> = () => {
+import { match } from 'react-router'
+interface FinishProps {
+  match: match<{}>
+}
+const DictionaryList: React.FC<FinishProps> = ({ match }) => {
   return (
     <PageContainer header={ {
       title: "",
@@ -23,7 +26,7 @@ const DictionaryList: React.FC<{}> = () => {
         ],
       }
     } } >
-      <WorkOrderFinish orderType="az" />
+      <WorkOrderFinish matchRoute={ match } orderType="az" />
     </PageContainer>
   );
 };

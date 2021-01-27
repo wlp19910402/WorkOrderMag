@@ -72,7 +72,6 @@ const DictionaryList: React.FC<WorkOrderListProps> = ({ orderType = 'wx' }) => {
           );
       },
     },
-
     {
       title: '客户姓名',
       dataIndex: 'customerName',
@@ -84,6 +83,11 @@ const DictionaryList: React.FC<WorkOrderListProps> = ({ orderType = 'wx' }) => {
     {
       title: '工程师姓名',
       dataIndex: 'engineerName',
+    },
+    {
+      title: "支持人员",
+      dataIndex: "supporterNames",
+      hideInSearch: true
     },
     {
       title: '工单状态',
@@ -178,7 +182,7 @@ const DictionaryList: React.FC<WorkOrderListProps> = ({ orderType = 'wx' }) => {
               {record.engineerId !== '' ? '重新派单' : '派单' }
             </Button>
           ),
-        <Button key="wancheng" onClick={ () => { history.push(`${orderTypeMatchInfo(orderType)?.listPath}/finish/${record.id}`) } } size="small" type="link" disabled={ record.status === 'wc' || record.status === 'cancel' }>
+        <Button key="wancheng" onClick={ () => { history.push(`${orderTypeMatchInfo(orderType)?.listPath}/finish/${record.orderNo}`) } } size="small" type="link" disabled={ record.status === 'wc' || record.status === 'cancel' }>
           结单
         </Button>,
         record.status !== 'wc' && (

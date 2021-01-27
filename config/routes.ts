@@ -190,7 +190,7 @@
                         component: './workOrder/Maintain/Info',
                       },
                       {
-                        path: '/workOrder/maintain/finish/:id',
+                        path: '/workOrder/maintain/finish/:no',
                         name: "结单",
                         component: './workOrder/Maintain/Finish',
                       },
@@ -215,7 +215,7 @@
                         component: './workOrder/Patrol/Info',
                       },
                       {
-                        path: '/workOrder/patrol/finish/:id',
+                        path: '/workOrder/patrol/finish/:no',
                         name: "结单",
                         component: './workOrder/Patrol/Finish',
                       },
@@ -240,7 +240,7 @@
                         component: './workOrder/Install/Info',
                       },
                       {
-                        path: '/workOrder/install/finish/:id',
+                        path: '/workOrder/install/finish/:no',
                         name: "结单",
                         component: './workOrder/Install/Finish',
                       },

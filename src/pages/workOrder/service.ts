@@ -38,3 +38,6 @@ export const cancelOrder = async (id: string) => {
   return httpServer.post(`${API.WORK_ORDER_CANCEL}/${id}`)
 }
 
+export const submitOrder = async (params: any) => {
+  return httpServer.post(API.WORK_ORDER_SUBMIT, { data: params })
+}
