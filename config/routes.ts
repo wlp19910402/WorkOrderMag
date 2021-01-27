@@ -174,17 +174,77 @@
                   {
                     path: '/workOrder/maintain',
                     name: "维修工单",
-                    component: './workOrder/Maintain'
+                    routes: [
+                      {
+                        path: '/workOrder/maintain/',
+                        redirect: '/workOrder/maintain/list',
+                      },
+                      {
+                        path: '/workOrder/maintain/list',
+                        name: "列表",
+                        component: './workOrder/Maintain/List',
+                      },
+                      {
+                        path: '/workOrder/maintain/info',
+                        name: "详情",
+                        component: './workOrder/Maintain/Info',
+                      },
+                      {
+                        path: '/workOrder/maintain/info',
+                        name: "结单",
+                        component: './workOrder/Maintain/Info',
+                      },
+                    ]
                   },
                   {
                     path: '/workOrder/patrol',
                     name: "巡检工单",
-                    component: './workOrder/Patrol'
+                    routes: [
+                      {
+                        path: '/workOrder/patrol/',
+                        redirect: '/workOrder/Patrol/list',
+                      },
+                      {
+                        path: '/workOrder/patrol/list',
+                        name: "列表",
+                        component: './workOrder/Patrol/List',
+                      },
+                      {
+                        path: '/workOrder/patrol/info',
+                        name: "详情",
+                        component: './workOrder/Patrol/Info',
+                      },
+                      {
+                        path: '/workOrder/patrol/info',
+                        name: "结单",
+                        component: './workOrder/Patrol/Info',
+                      },
+                    ]
                   },
                   {
                     path: '/workOrder/install',
                     name: "安装工单",
-                    component: './workOrder/Install'
+                    routes: [
+                      {
+                        path: '/workOrder/install/',
+                        redirect: '/workOrder/Install/list',
+                      },
+                      {
+                        path: '/workOrder/install/list',
+                        name: "列表",
+                        component: './workOrder/Install/List',
+                      },
+                      {
+                        path: '/workOrder/install/info',
+                        name: "详情",
+                        component: './workOrder/Install/Info',
+                      },
+                      {
+                        path: '/workOrder/install/info',
+                        name: "结单",
+                        component: './workOrder/Install/Info',
+                      },
+                    ]
                   },
                   {
                     path: "*",

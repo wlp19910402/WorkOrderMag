@@ -1,20 +1,21 @@
 import { Card, Form, Button, Row, Radio, Col, Input, message } from 'antd';
 import React, { useState, useEffect } from 'react';
-import { OrderTypeType, orderTypeData } from '@/pages/workOrder/data.d';
+import { OrderTypeType, orderTypeData, orderTypeMatchInfo } from '@/pages/workOrder/data.d';
 import { addWorkOrder } from '@/pages/workOrder/service'
 import UploadImage from '@/components/Upload/index'
 import ModelBindProtolioAdd from '@/pages/workOrder/components/ModelBindProtolioAdd'
-import { history } from 'umi'
+import { IRouteComponentProps } from 'umi'
 import { PageContainer } from '@ant-design/pro-layout';
 const layout = {
   labelCol: { span: 6 },
   wrapperCol: { span: 18 },
 };
-const DictionaryList: React.FC<{}> = () => {
+const DictionaryList: React.FC<IRouteComponentProps> = ({ location, history }) => {
   const [ uploadImages, setUploadImages ] = useState<string[]>([])
   const [ form ] = Form.useForm();
   const [ createModalVisible, handleModalVisible ] = useState<boolean>(false);
   const [ protolioInfo, setProtolioInfo ] = useState<any>({})
+  const orderTypeParams = location.query.orderType || orderTypeData[ 0 ].value
   const onFinish = async (values: { [ key: string ]: any }) => {
     setUploadUrlImage()
     let params: OrderTypeType = {
@@ -28,8 +29,11 @@ const DictionaryList: React.FC<{}> = () => {
     }
     let response = await addWorkOrder(params)
     if (!response) { return }
-    message.success("保存成功")
-    history.push('/workOrder/addOrder/success');
+    let orderTypeInfo = orderTypeMatchInfo(values.orderType)
+    message.success(`保存成功,即将跳转 "${orderTypeInfo?.label}列表" 页面`, 4)
+    setTimeout(() => {
+      if (orderTypeInfo) history.push(orderTypeInfo.listPath);
+    }, 1000);
   }
   const setUploadUrlImage = async (url?: string, index?: number) => {
     let tmp = uploadImages
@@ -75,16 +79,10 @@ const DictionaryList: React.FC<{}> = () => {
             <Form.Item
               rules={ [ { required: true } ] }
               label="工单类型"
-              initialValue={ orderTypeData[ 1 ].value }
+              initialValue={ orderTypeParams }
               name="orderType"
             >
-              <Radio.Group>
-                { orderTypeData.map(
-                  (item) => <Radio.Button key={ item.value } value={ item.value }>
-                    { item.label }
-                  </Radio.Button>)
-                }
-              </Radio.Group>
+              <Radio.Group optionType="button" options={ [ ...orderTypeData ] } />
             </Form.Item>
             <Form.Item
               label='客户姓名'

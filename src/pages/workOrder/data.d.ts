@@ -12,15 +12,16 @@ export interface OrderTypeType {
   workDescription: string;
 }
 export const orderTypeData = [
-  { label: "安装工单", value: "az" },
-  { label: "维修工单", value: "wx" },
-  { label: "巡检工单", value: "xj" },
+  { label: "维修工单", value: "wx", listPath: "/workOrder/maintain" },
+  { label: "巡检工单", value: "xj", listPath: "/workOrder/patrol" },
+  { label: "安装工单", value: "az", listPath: "/workOrder/install" },
   // { label: "建档工单", value: "jd" }
 ]
+export const orderTypeMatchInfo = (val) => orderTypeData.find(item => item.value === val)
 export const orderTypeEnum = {
-  az: "安装工单",
   wx: "维修工单",
   xj: "巡检工单",
+  az: "安装工单",
   // jd: "建档工单"
 }
 export const orderStatusData = [

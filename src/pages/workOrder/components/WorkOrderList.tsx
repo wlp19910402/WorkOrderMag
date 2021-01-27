@@ -281,7 +281,7 @@ const DictionaryList: React.FC<WorkOrderListProps> = ({ orderType = 'wx' }) => {
           <Button
             type="primary"
             onClick={ async () => {
-              history.push('/workOrder/addOrder');
+              history.push('/workOrder/addOrder?orderType=' + orderType);
             } }
           >
             <PlusOutlined />
@@ -300,7 +300,7 @@ const DictionaryList: React.FC<WorkOrderListProps> = ({ orderType = 'wx' }) => {
           handleModalVisible={ handleModalVisible }
           listReloadAndRest={ listReloadAndRest }
           currentOrder={ currentRow }
-          companyName={ currentRow?.company }
+          companyName={ currentRow?.company ? currentRow?.company : '' }
         />
       ) }
       {sendModalVisible && (

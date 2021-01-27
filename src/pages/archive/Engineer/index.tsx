@@ -65,27 +65,27 @@ const DictionaryList: React.FC<{}> = () => {
       hideInDescriptions: true,
       hideInTable: true
     },
-    {
-      title: "操作",
-      valueType: 'option',
-      width: "140px",
-      render: (_, record) => [
-        <Button
-          key="edit"
-          type="text"
-          size="small"
-          onClick={ () => { fetchUserEdit(record) } }
-        >
-          编辑
-        </Button>,
-        <Popconfirm
-          key="delete"
-          title="是否要删除此行？"
-          onConfirm={ () => { record.id !== undefined && tiggerDelete(record.id?.toString()); } }>
-          <Button size="small" type="text" >删除</Button>
-        </Popconfirm>
-      ],
-    },
+    // {
+    //   title: "操作",
+    //   valueType: 'option',
+    //   width: "140px",
+    //   render: (_, record) => [
+    //     <Button
+    //       key="edit"
+    //       type="text"
+    //       size="small"
+    //       onClick={ () => { fetchUserEdit(record) } }
+    //     >
+    //       编辑
+    //     </Button>,
+    //     <Popconfirm
+    //       key="delete"
+    //       title="是否要删除此行？"
+    //       onConfirm={ () => { record.id !== undefined && tiggerDelete(record.id?.toString()); } }>
+    //       <Button size="small" type="text" >删除</Button>
+    //     </Popconfirm>
+    //   ],
+    // },
   ];
 
   const tiggerDelete = async (id: string) => {
@@ -118,11 +118,11 @@ const DictionaryList: React.FC<{}> = () => {
         pagination={ {
           pageSize: 10,
         } }
-        toolBarRender={ () => [
-          <Button type="primary" onClick={ async () => { await setCurrentRow(undefined); handleModalVisible(true); } }>
-            <PlusOutlined />新建
-          </Button>,
-        ] }
+        // toolBarRender={ () => [
+        //   <Button type="primary" onClick={ async () => { await setCurrentRow(undefined); handleModalVisible(true); } }>
+        //     <PlusOutlined />新建
+        //   </Button>,
+        // ] }
         request={ async (params, sorter, filter) => await fetchQueryList({ ...params, ...filter }) }
         columns={ columns }
         rowSelection={ {
@@ -130,14 +130,14 @@ const DictionaryList: React.FC<{}> = () => {
         } }
       />
 
-      {createModalVisible && (
+      {/* {createModalVisible && (
         <ModalModifyForm
           createModalVisible={ createModalVisible }
           handleModalVisible={ handleModalVisible }
           actionRef={ actionRef }
           currentRow={ currentRow }
         />
-      ) }
+      ) } */}
 
       {selectedRowsState?.length > 0 && (
         <FooterToolbar
