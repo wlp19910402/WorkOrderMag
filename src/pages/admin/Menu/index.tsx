@@ -51,6 +51,8 @@ const MenuTree: React.FC<MenuTreeTypeProps> = (props) => {
   const [ defaultMenuData, setDefatultMenuData ] = useState<DataNode[] | []>([])
   const [ flatMenuData, setFlatMenuData ] = useState<MenuDataType[] | []>([]);
   const [ parentRow, setParentRow ] = useState<MenuDataType>();
+  const [ expandedKeys, setExpandedKeys ] = useState<any[]>([ '0' ])
+  const [ autoExpandParent, setAutoExpandParent ] = useState<boolean>(true)
   const onSelect = async (keys: any) => {
     await formDefault(keys[ 0 ]);
     setEditDisable(true);
@@ -91,6 +93,7 @@ const MenuTree: React.FC<MenuTreeTypeProps> = (props) => {
     await setCurrentRow(undefined)
     await setCurrentRow({ ...menuDefault, parentId: parseInt(Render?.key) })
     await setParentRow(flatMenuData.find(item => item.id === parseInt(Render?.key)))
+    setExpandedKeys([ ...expandedKeys, Render?.key ])
     setEditDisable(false);
     Render?.children.push({
       key: "new",
@@ -118,6 +121,10 @@ const MenuTree: React.FC<MenuTreeTypeProps> = (props) => {
       })
     }
   }
+  const onExpand = (expandedKeys: any) => {
+    setExpandedKeys(expandedKeys)
+    setAutoExpandParent(false)
+  };
   return (
     <PageContainer header={ { title: "" } }>
       <Spin spinning={ loading }>
@@ -125,8 +132,9 @@ const MenuTree: React.FC<MenuTreeTypeProps> = (props) => {
           <Row>
             <Col flex={ 2 }>
               { menuData.length > 0 && <Tree
-                autoExpandParent={ true }
-                defaultExpandedKeys={ [ "0" ] }
+                autoExpandParent={ autoExpandParent }
+                onExpand={ onExpand }
+                expandedKeys={ expandedKeys }
                 showLine={ true }
                 onSelect={ onSelect }
                 treeData={ menuData }
