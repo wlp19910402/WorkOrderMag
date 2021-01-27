@@ -178,7 +178,7 @@ const DictionaryList: React.FC<WorkOrderListProps> = ({ orderType = 'wx' }) => {
               {record.engineerId !== '' ? '重新派单' : '派单' }
             </Button>
           ),
-        <Button key="wancheng" size="small" type="link" disabled={ record.status === 'wc' || record.status === 'cancel' }>
+        <Button key="wancheng" onClick={ () => { history.push(`${orderTypeMatchInfo(orderType)?.listPath}/finish/${record.id}`) } } size="small" type="link" disabled={ record.status === 'wc' || record.status === 'cancel' }>
           结单
         </Button>,
         record.status !== 'wc' && (
