@@ -185,14 +185,14 @@
                         component: './workOrder/Maintain/List',
                       },
                       {
-                        path: '/workOrder/maintain/info',
+                        path: '/workOrder/maintain/info/:id',
                         name: "详情",
                         component: './workOrder/Maintain/Info',
                       },
                       {
-                        path: '/workOrder/maintain/info',
+                        path: '/workOrder/maintain/finish/:id',
                         name: "结单",
-                        component: './workOrder/Maintain/Info',
+                        component: './workOrder/Maintain/Finish',
                       },
                     ]
                   },
@@ -210,14 +210,14 @@
                         component: './workOrder/Patrol/List',
                       },
                       {
-                        path: '/workOrder/patrol/info',
+                        path: '/workOrder/patrol/info/:id',
                         name: "详情",
                         component: './workOrder/Patrol/Info',
                       },
                       {
-                        path: '/workOrder/patrol/info',
+                        path: '/workOrder/patrol/finish/:id',
                         name: "结单",
-                        component: './workOrder/Patrol/Info',
+                        component: './workOrder/Patrol/Finish',
                       },
                     ]
                   },
@@ -235,14 +235,14 @@
                         component: './workOrder/Install/List',
                       },
                       {
-                        path: '/workOrder/install/info',
+                        path: '/workOrder/install/info/:id',
                         name: "详情",
                         component: './workOrder/Install/Info',
                       },
                       {
-                        path: '/workOrder/install/info',
+                        path: '/workOrder/install/finish/:id',
                         name: "结单",
-                        component: './workOrder/Install/Info',
+                        component: './workOrder/Install/Finish',
                       },
                     ]
                   },

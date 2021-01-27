@@ -7,11 +7,11 @@ import ProTable, { TableDropdown } from '@ant-design/pro-table';
 import type { ProDescriptionsItemProps } from '@ant-design/pro-descriptions';
 import ProDescriptions from '@ant-design/pro-descriptions';
 import { queryList, cancelOrder } from '@/pages/workOrder/service';
-import { orderStatusEnum, OrderListType, orderTypeEnum, orderTypeMatchInfo } from '@/pages/workOrder/data.d';
+import { orderStatusEnum, OrderListType, orderTypeEnum } from '@/pages/workOrder/data.d';
 import ImgNull from '@/assets/images/images-null.png';
 import ModelBindProtolioAdd from '@/pages/workOrder/components/ModelBindProtolioAdd';
 import ModelSendOrder from '@/pages/workOrder/components/ModelSendOrder';
-import { history, Link } from 'umi';
+import { history } from 'umi';
 interface WorkOrderListProps {
   orderType: string;
 }
@@ -142,7 +142,7 @@ const DictionaryList: React.FC<WorkOrderListProps> = ({ orderType = 'wx' }) => {
             fetchBindPortolio(record);
           } }
           type={ record.portfolioId === '' ? 'link' : 'text' }
-          disabled={ record.status === 'wc' || record.status === 'cancel' }
+          disabled={ record.status === 'wc' }
         >
           { record.portfolioId !== '' ? '重新绑定' : '绑定档案' }
         </Button>,
@@ -153,13 +153,12 @@ const DictionaryList: React.FC<WorkOrderListProps> = ({ orderType = 'wx' }) => {
             onConfirm={ () => {
               fetchSendOrder(record);
             } }
-            disabled={ record.status === 'wc' || record.status === 'cancel' }
+            disabled={ record.status === 'wc' }
           >
             <Button
               type={ record.engineerId === '' ? 'link' : 'text' }
               style={ { width: '62px' } }
               size="small"
-              disabled={ record.status === 'wc' || record.status === 'cancel' }
             >
               { record.engineerId !== '' ? '重新派单' : '派单' }
             </Button>
@@ -173,12 +172,12 @@ const DictionaryList: React.FC<WorkOrderListProps> = ({ orderType = 'wx' }) => {
               onClick={ () => {
                 fetchSendOrder(record);
               } }
-              disabled={ record.status === 'wc' || record.status === 'cancel' }
+              disabled={ record.status === 'wc' }
             >
               {record.engineerId !== '' ? '重新派单' : '派单' }
             </Button>
           ),
-        <Button key="wancheng" size="small" type="link" disabled={ record.status === 'wc' || record.status === 'cancel' }>
+        <Button key="wancheng" size="small" type="link" disabled={ record.status === 'wc' }>
           结单
         </Button>,
         record.status !== 'wc' && (
@@ -188,7 +187,7 @@ const DictionaryList: React.FC<WorkOrderListProps> = ({ orderType = 'wx' }) => {
             menus={ [
               {
                 key: "info",
-                name: <Link to={ `${orderTypeMatchInfo(orderType)?.listPath}/info/${record.id}` } ><Button type="text">详情</Button></Link>
+                name: <Button size="small">详情</Button >
               },
               {
                 key: 'cancel',
@@ -199,9 +198,8 @@ const DictionaryList: React.FC<WorkOrderListProps> = ({ orderType = 'wx' }) => {
                     onConfirm={ () => {
                       record.id !== undefined && tiggerCancel(record.id?.toString());
                     } }
-                    disabled={ record.status === 'wc' || record.status === 'cancel' }
                   >
-                    <Button type="text" disabled={ record.status === 'wc' || record.status === 'cancel' }>
+                    <Button size="small" type="text">
                       撤单
                     </Button>
                   </Popconfirm>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
-import WorkOrderInfo from '@/pages/workOrder/components/WorkOrderInfo'
+import WorkOrderFinish from '@/pages/workOrder/components/WorkOrderFinish'
 
 const DictionaryList: React.FC<{}> = () => {
   return (
@@ -17,13 +17,13 @@ const DictionaryList: React.FC<{}> = () => {
             breadcrumbName: '安装工单',
           },
           {
-            path: '/workOrder/install/info',
-            breadcrumbName: '详情',
+            path: '/workOrder/install/finish',
+            breadcrumbName: '结单',
           }
         ],
       }
     } } >
-      <WorkOrderInfo orderType="az" />
+      <WorkOrderFinish orderType="az" />
     </PageContainer>
   );
 };
