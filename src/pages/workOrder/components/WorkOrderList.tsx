@@ -1,12 +1,12 @@
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, Drawer, message, Popconfirm, Image, Row, Col } from 'antd';
+import { Button, Drawer, Popconfirm, Image, Row, Col, message } from 'antd';
 import React, { useState, useRef } from 'react';
-import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
+import { PageContainer } from '@ant-design/pro-layout';
 import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import ProTable, { TableDropdown } from '@ant-design/pro-table';
 import type { ProDescriptionsItemProps } from '@ant-design/pro-descriptions';
 import ProDescriptions from '@ant-design/pro-descriptions';
-import { queryList } from '@/pages/workOrder/service';
+import { queryList, cancelOrder } from '@/pages/workOrder/service';
 import { orderStatusEnum, OrderListType, orderTypeEnum } from '@/pages/workOrder/data.d';
 import ImgNull from '@/assets/images/images-null.png';
 import ModelBindProtolioAdd from '@/pages/workOrder/components/ModelBindProtolioAdd';
@@ -186,13 +186,17 @@ const DictionaryList: React.FC<WorkOrderListProps> = ({ orderType = 'wx' }) => {
             key="actionGroup"
             menus={ [
               {
+                key: "info",
+                name: <Button size="small">详情</Button >
+              },
+              {
                 key: 'cancel',
                 name: (
                   <Popconfirm
-                    key="delete"
+                    key="cancel"
                     title="是否要撤单？"
                     onConfirm={ () => {
-                      record.id !== undefined && tiggerDelete(record.id?.toString());
+                      record.id !== undefined && tiggerCancel(record.id?.toString());
                     } }
                   >
                     <Button size="small" type="text">
@@ -208,10 +212,10 @@ const DictionaryList: React.FC<WorkOrderListProps> = ({ orderType = 'wx' }) => {
     },
   ];
   const columnsDrawer = [
-    ...columns.filter((item) => item.dataIndex !== 'imgUrls'),
+    ...columns.filter((item) => item.dataIndex !== 'orderImgUrls'),
     {
       title: '图片',
-      dataIndex: 'imgUrls',
+      dataIndex: 'orderImgUrls',
       hideInSearch: true,
       render: (val: any) => {
         return val && val.length > 0 ? (
@@ -233,13 +237,13 @@ const DictionaryList: React.FC<WorkOrderListProps> = ({ orderType = 'wx' }) => {
       },
     },
   ];
-  const tiggerDelete = async (id: string) => {
-    // const response = await deleteDevice(id)
-    // if (!response) return
-    // if (actionRef.current) {
-    //   actionRef.current.reloadAndRest?.();
-    // }
-    // message.success("删除成功")
+  const tiggerCancel = async (id: string) => {
+    const response = await cancelOrder(id)
+    if (!response) return
+    if (actionRef.current) {
+      actionRef.current.reloadAndRest?.();
+    }
+    message.success("撤单成功")
   };
   const listReloadAndRest = () => {
     if (actionRef.current) {
@@ -296,6 +300,7 @@ const DictionaryList: React.FC<WorkOrderListProps> = ({ orderType = 'wx' }) => {
           handleModalVisible={ handleModalVisible }
           listReloadAndRest={ listReloadAndRest }
           currentOrder={ currentRow }
+          companyName={ currentRow?.company }
         />
       ) }
       {sendModalVisible && (

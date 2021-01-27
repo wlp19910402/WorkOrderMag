@@ -5,6 +5,7 @@ import { ModalForm, ProFormCheckbox, ProFormRadio } from '@ant-design/pro-form';
 import { sendOrder } from '@/pages/workOrder/service'
 import { queryList } from '@/pages/archive/Engineer/service';
 import type { EngineerListDataType, } from "@/pages/archive/Engineer/data.d";
+import { ENGINNER_STATUS } from '@/pages/archive/Engineer/data.d'
 import style from "./sendOrder.less"
 export type ColumnEditConsumableType = {
   consumableName: string;
@@ -42,9 +43,9 @@ const ModelSendOrder: React.FC<ModalModifyFormDataProps> = ({ createModalVisible
   }
   const fetchQueryList = async () => {
     const response = await queryList({
-      pageSize: 100000,
+      pageSize: 10000000,
       current: 1,
-      status: 1
+      status: ENGINNER_STATUS.ON
     })
     if (!response) { setEngineerData([]); return }
     const { data } = response;

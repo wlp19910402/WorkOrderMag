@@ -33,3 +33,8 @@ export const bindProtolio = async (params: any) => {
 export const sendOrder = async (params: any) => {
   return httpServer.post(API.WORK_ORDER_SEND_ORDERS, { data: params });
 }
+
+export const cancelOrder = async (id: string) => {
+  return httpServer.post(`${API.WORK_ORDER_CANCEL}/${id}`)
+}
+

@@ -29,6 +29,7 @@ export const orderStatusData = [
   { label: "接单", value: "jd" },
   { label: "转单", value: "zd" },
   { label: "完成", value: "wc" },
+  { label: "已撤单", value: "cancel" }
 ]
 
 export const orderStatusEnum = {
@@ -37,6 +38,7 @@ export const orderStatusEnum = {
   jd: { text: "接单", status: 'Processing' },
   zd: { text: "转单", status: 'Default' },
   wc: { text: "完成", status: 'Success' },
+  cancel: { text: "已撤单", status: 'Error' }
 }
 export interface OrderListSearchType extends PageDataType {
   company: string;//报单单位

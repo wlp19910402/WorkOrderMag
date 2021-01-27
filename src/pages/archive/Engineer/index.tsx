@@ -7,7 +7,7 @@ import ProTable from '@ant-design/pro-table';
 import type { ProDescriptionsItemProps } from '@ant-design/pro-descriptions';
 import ProDescriptions from '@ant-design/pro-descriptions';
 import { queryList } from '@/pages/archive/Engineer/service';
-import type { EngineerListDataType } from "@/pages/archive/Engineer/data.d";
+import { EngineerListDataType, engineerStatusEnum } from "@/pages/archive/Engineer/data.d";
 import ModalModifyForm from './components/ModalModifyForm'
 // const handleRemove = async (selectedRows: DeviceListDataType[]) => {
 //   const hide = message.loading('正在删除');
@@ -60,8 +60,7 @@ const DictionaryList: React.FC<{}> = () => {
       title: "状态",
       dataIndex: 'status',
       valueEnum: {
-        0: "不可用",
-        1: "可用"
+        ...engineerStatusEnum
       },
       hideInDescriptions: true,
       hideInTable: true

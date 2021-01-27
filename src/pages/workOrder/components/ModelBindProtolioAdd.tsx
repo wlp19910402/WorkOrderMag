@@ -23,7 +23,7 @@ export type ColumnEditConsumableType = {
 type ModalModifyFormDataProps = {
   createModalVisible: boolean;
   handleModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
-  companyName?: string;
+  companyName: string;
   bindProtolioInfo?: (val: any) => void;
   listReloadAndRest?: () => void;
   currentOrder?: any;
@@ -60,6 +60,7 @@ const ModelConsumableAdd: React.FC<ModalModifyFormDataProps> = ({ createModalVis
       title: "单位名称",
       dataIndex: 'companyName',
       ellipsis: true,
+      initialValue: companyName
     },
     {
       title: "单位编号",
@@ -304,8 +305,9 @@ const ModelConsumableAdd: React.FC<ModalModifyFormDataProps> = ({ createModalVis
           headerTitle="查询表格"
           actionRef={ actionRef }
           rowKey="id"
+          style={ { padding: 0 } }
           search={ {
-            labelWidth: 110,
+            labelWidth: 90,
           } }
           pagination={ {
             pageSize: 10,
