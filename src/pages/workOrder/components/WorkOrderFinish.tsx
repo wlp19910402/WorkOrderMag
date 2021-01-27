@@ -73,7 +73,7 @@ const DictionaryList: React.FC<WorkOrderFinishProps> = ({ orderType = 'wx', matc
     setUploadImages(tmp)
   }
   return (
-    <PageContainer header={ { title: '' } }>
+    <>
       <Card title="工单信息" style={ { marginBottom: "20px" } } bordered={ false }>
         <Descriptions bordered size="small"
           column={ { xs: 2, sm: 2, md: 2, lg: 2, xl: 2, xxl: 2 } }
@@ -142,7 +142,7 @@ const DictionaryList: React.FC<WorkOrderFinishProps> = ({ orderType = 'wx', matc
         </Button>
         </FooterToolbar>
       </Form>
-    </PageContainer>
+    </>
   );
 };
 

@@ -1,6 +1,6 @@
 import { pickerDateFormat, pickerInitialValue } from '@/utils/parameter'
 import React, { useState, useEffect } from 'react';
-import { Table, InputNumber, Popconfirm, Drawer, Form, Button, DatePicker, Descriptions, Row, Col, Image } from 'antd';
+import { Table, InputNumber, Popconfirm, Drawer, Spin, Form, Button, DatePicker, Descriptions, Row, Col, Image } from 'antd';
 import { RecordConsumableDataType } from '@/pages/archive/portfolio/data.d'
 import ProDescriptions from '@ant-design/pro-descriptions';
 import type { ProDescriptionsItemProps } from '@ant-design/pro-descriptions';
@@ -67,6 +67,7 @@ const EditableTable: React.FC<ConsumableEditableProps> = ({ portfolioId, setCons
   const [ showDetail, setShowDetail ] = useState<boolean>(false);
   const [ currentRow, setCurrentRow ] = useState<any>();
   const [ dataConsumableList, setDataConsumableList ] = useState<any[]>()
+  const [ loading, setLoading ] = useState<boolean>(true)
   const isEditing = (record: any) => record.id === editingKey;
   const tiggerEdit = (record: any) => {
     formConsumable.setFieldsValue({ expirationTime: pickerInitialValue(record.expirationTime), replacementCycle: record.replacementCycle, replacementTime: pickerInitialValue(record.replacementTime), id: record.id });
@@ -77,6 +78,7 @@ const EditableTable: React.FC<ConsumableEditableProps> = ({ portfolioId, setCons
   };
   const initFun = async () => {
     let response = await infoProtfolio(portfolioId)
+    setLoading(false)
     if (!response) return
     setDataConsumableList(response.data.consumables)
   }
@@ -248,7 +250,7 @@ const EditableTable: React.FC<ConsumableEditableProps> = ({ portfolioId, setCons
     };
   })
   return (
-    <>
+    <Spin spinning={ loading }>
       <Form form={ formConsumable } component={ false }>
         <Table
           components={ {
@@ -290,7 +292,7 @@ const EditableTable: React.FC<ConsumableEditableProps> = ({ portfolioId, setCons
           />
         ) }
       </Drawer>
-    </>
+    </Spin>
   );
 };
 

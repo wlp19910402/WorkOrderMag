@@ -1,341 +1,104 @@
-import { PlusOutlined } from '@ant-design/icons';
-import { Button, Drawer, Popconfirm, Image, Row, Col, message } from 'antd';
-import React, { useState, useRef } from 'react';
+import { Card, Input, Row, Col, Descriptions, Image, } from 'antd';
+import React, { useState, useEffect } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
-import type { ProColumns, ActionType } from '@ant-design/pro-table';
-import ProTable, { TableDropdown } from '@ant-design/pro-table';
-import type { ProDescriptionsItemProps } from '@ant-design/pro-descriptions';
-import ProDescriptions from '@ant-design/pro-descriptions';
-import { queryList, cancelOrder } from '@/pages/workOrder/service';
-import { orderStatusEnum, OrderListType, orderTypeEnum } from '@/pages/workOrder/data.d';
-import ImgNull from '@/assets/images/images-null.png';
-import ModelBindProtolioAdd from '@/pages/workOrder/components/ModelBindProtolioAdd';
-import ModelSendOrder from '@/pages/workOrder/components/ModelSendOrder';
-import { history } from 'umi';
-interface WorkOrderListProps {
+import { infoOrder } from '@/pages/workOrder/service';
+import { OrderListType, orderStatusData, orderTypeMatchInfo } from '@/pages/workOrder/data.d';
+import { IRouteComponentProps, } from 'umi';
+import { match } from 'react-router';
+import PortfolioConsumableList from '@/pages/workOrder/components/PortfolioConsumableList'
+import UploadImage from '@/components/Upload/index'
+interface WorkOrderFinishProps {
+  matchRoute: match<{}>;
   orderType: string;
+  routeProp: IRouteComponentProps,
 }
-const DictionaryList: React.FC<WorkOrderListProps> = ({ orderType = 'wx' }) => {
-  const [ showDetail, setShowDetail ] = useState<boolean>(false);
-  const actionRef = useRef<ActionType>();
+const DictionaryList: React.FC<WorkOrderFinishProps> = ({ orderType = 'wx', matchRoute, routeProp }) => {
   const [ currentRow, setCurrentRow ] = useState<OrderListType>();
-  const [ createModalVisible, handleModalVisible ] = useState<boolean>(false);
-  const [ sendModalVisible, handleSendModalVisible ] = useState<boolean>(false);
-  const columns: ProColumns<any>[] = [
-    {
-      title: '工单编号',
-      dataIndex: 'orderNo',
-      render: (val, entity) => {
-        return (
-          <a
-            onClick={ () => {
-              setCurrentRow(entity);
-              setShowDetail(true);
-            } }
-          >
-            {`${val}` }
-          </a>
-        );
-      },
-    },
-    {
-      title: '报单单位',
-      dataIndex: 'company',
-    },
-    {
-      title: '工单类型',
-      dataIndex: 'orderType',
-      hideInSearch: true,
-      hideInTable: true,
-      valueEnum: {
-        ...orderTypeEnum,
-      },
-    },
-    {
-      title: '工单来源',
-      dataIndex: 'sourceType',
-    },
-    {
-      title: '图片',
-      dataIndex: 'orderImgUrls',
-      hideInSearch: true,
-      render: (val: any) => {
-        return val && val.length > 0 ? (
-          <Image
-            width="60px"
-            height="60px"
-            src={ `${val[ 0 ]}?x-oss-process=image/resize,h_100,w_100,m_lfit` }
-            preview={ { src: val[ 0 ] } }
-          />
-        ) : (
-            <Image width="60px" height="60px" src={ ImgNull } preview={ false }></Image>
-          );
-      },
-    },
-
-    {
-      title: '客户姓名',
-      dataIndex: 'customerName',
-    },
-    {
-      title: '客户电话',
-      dataIndex: 'customerMobile',
-    },
-    {
-      title: '工程师姓名',
-      dataIndex: 'engineerName',
-    },
-    {
-      title: '工单状态',
-      dataIndex: 'status',
-      valueEnum: {
-        ...orderStatusEnum,
-      },
-    },
-    {
-      title: '设备名称',
-      dataIndex: 'deviceName',
-      hideInTable: true,
-      hideInSearch: true,
-    },
-    {
-      title: '设备类型',
-      dataIndex: ' deviceType',
-      hideInTable: true,
-      hideInSearch: true,
-    },
-    {
-      title: '创建人',
-      dataIndex: 'createUsername',
-      hideInTable: true,
-      hideInSearch: true,
-    },
-    {
-      title: '创建时间',
-      dataIndex: 'createTime',
-      hideInTable: true,
-      hideInSearch: true,
-    },
-    {
-      title: '接单时间',
-      dataIndex: 'receivingTime',
-      hideInForm: true,
-      hideInTable: true,
-      hideInSearch: true,
-    },
-    {
-      title: '工单描述',
-      dataIndex: 'workDescription',
-      hideInTable: true,
-      hideInSearch: true,
-    },
-    {
-      title: '操作',
-      valueType: 'option',
-      width: '40px',
-      render: (_, record) => [
-        <Button
-          key="bind"
-          size="small"
-          style={ { width: '62px' } }
-          onClick={ () => {
-            fetchBindPortolio(record);
-          } }
-          type={ record.portfolioId === '' ? 'link' : 'text' }
-          disabled={ record.status === 'wc' }
-        >
-          { record.portfolioId !== '' ? '重新绑定' : '绑定档案' }
-        </Button>,
-        record.portfolioId === '' ? (
-          <Popconfirm
-            key="send"
-            title="尚未绑定档案，确认去派单？"
-            onConfirm={ () => {
-              fetchSendOrder(record);
-            } }
-            disabled={ record.status === 'wc' }
-          >
-            <Button
-              type={ record.engineerId === '' ? 'link' : 'text' }
-              style={ { width: '62px' } }
-              size="small"
-            >
-              { record.engineerId !== '' ? '重新派单' : '派单' }
-            </Button>
-          </Popconfirm>
-        ) : (
-            <Button
-              key="send"
-              type={ record.engineerId === '' ? 'link' : 'text' }
-              style={ { width: '62px' } }
-              size="small"
-              onClick={ () => {
-                fetchSendOrder(record);
-              } }
-              disabled={ record.status === 'wc' }
-            >
-              {record.engineerId !== '' ? '重新派单' : '派单' }
-            </Button>
-          ),
-        <Button key="wancheng" size="small" type="link" disabled={ record.status === 'wc' }>
-          结单
-        </Button>,
-        record.status !== 'wc' && (
-          <TableDropdown
-            style={ { fontWeight: 'bold' } }
-            key="actionGroup"
-            menus={ [
-              {
-                key: "info",
-                name: <Button size="small">详情</Button >
-              },
-              {
-                key: 'cancel',
-                name: (
-                  <Popconfirm
-                    key="cancel"
-                    title="是否要撤单？"
-                    onConfirm={ () => {
-                      record.id !== undefined && tiggerCancel(record.id?.toString());
-                    } }
-                  >
-                    <Button size="small" type="text">
-                      撤单
-                    </Button>
-                  </Popconfirm>
-                ),
-              },
-            ] }
-          />
-        ),
-      ],
-    },
-  ];
-  const columnsDrawer = [
-    ...columns.filter((item) => item.dataIndex !== 'orderImgUrls'),
-    {
-      title: '图片',
-      dataIndex: 'orderImgUrls',
-      hideInSearch: true,
-      render: (val: any) => {
-        return val && val.length > 0 ? (
-          <Row gutter={ [ 16, 16 ] }>
-            {val.map((url: string, index: number) => (
-              <Col key={ index }>
-                <Image
-                  width="60px"
-                  height="60px"
-                  src={ `${url}?x-oss-process=image/resize,h_100,w_100,m_lfit` }
-                  preview={ { src: url } }
-                />
-              </Col>
-            )) }
-          </Row>
-        ) : (
-            '暂无图片'
-          );
-      },
-    },
-  ];
-  const tiggerCancel = async (id: string) => {
-    const response = await cancelOrder(id)
-    if (!response) return
-    if (actionRef.current) {
-      actionRef.current.reloadAndRest?.();
+  const [ portfolioId, setPortfolioId ] = useState<React.Key>();
+  const [ consumableUpdate, setConsumableUpdate ] = useState<any[]>([])
+  const [ uploadImages, setUploadImages ] = useState<string[]>([])
+  const fetchQueryCurrentOrderInfo = async () => {
+    const response = await infoOrder(matchRoute.params.id);
+    if (!response) {
+      setCurrentRow(undefined)
+      return
     }
-    message.success("撤单成功")
+    let data = response.data
+    setCurrentRow(data)
+    setPortfolioId(data.portfolioId)
   };
-  const listReloadAndRest = () => {
-    if (actionRef.current) {
-      actionRef.current.reloadAndRest?.();
+  useEffect(() => {
+    fetchQueryCurrentOrderInfo();
+    setUploadUrlImage();
+  }, [])
+  const setUploadUrlImage = async (url?: string, index?: number) => {
+    let tmp = uploadImages
+    if (url !== '' && !url) {
+      tmp = tmp.filter((item: any) => item !== '');
+      if (tmp.length < 6) {
+        tmp.push("")
+      }
+    } else {
+      tmp = tmp.map((item: any, idx: number) => {
+        return idx === index ? url : item
+      }).filter((item: any) => item !== '');
+      if (tmp.length < 6) {
+        tmp.push("")
+      }
     }
-  };
-  const fetchBindPortolio = async (record: any) => {
-    await setCurrentRow(record);
-    handleModalVisible(true);
-  };
-  const fetchSendOrder = async (record: OrderListType) => {
-    await setCurrentRow(record);
-    handleSendModalVisible(true);
-  };
-  const fetchQueryList = async (params: any) => {
-    const response = await queryList(params);
-    if (!response) return { data: [] };
-    const { data } = response;
-    return { ...data, data: data.records };
-  };
+    await setUploadImages([])
+    setUploadImages(tmp)
+  }
   return (
-    <PageContainer header={ { title: '' } }>
-      <ProTable
-        size="small"
-        headerTitle="查询表格"
-        actionRef={ actionRef }
-        rowKey="id"
-        search={ {
-          labelWidth: 80,
-        } }
-        pagination={ {
-          pageSize: 10,
-        } }
-        toolBarRender={ () => [
-          <Button
-            type="primary"
-            onClick={ async () => {
-              history.push('/workOrder/addOrder?orderType=' + orderType);
-            } }
-          >
-            <PlusOutlined />
-            新建
-          </Button>,
-        ] }
-        request={ async (params, sorter, filter) =>
-          await fetchQueryList({ ...params, ...filter, orderType: orderType })
-        }
-        columns={ columns }
-        rowSelection={ false }
-      />
-      {createModalVisible && (
-        <ModelBindProtolioAdd
-          createModalVisible={ createModalVisible }
-          handleModalVisible={ handleModalVisible }
-          listReloadAndRest={ listReloadAndRest }
-          currentOrder={ currentRow }
-          companyName={ currentRow?.company ? currentRow?.company : '' }
-        />
-      ) }
-      {sendModalVisible && (
-        <ModelSendOrder
-          createModalVisible={ sendModalVisible }
-          handleModalVisible={ handleSendModalVisible }
-          listReloadAndRest={ listReloadAndRest }
-          currentOrder={ currentRow }
-        />
-      ) }
-      <Drawer
-        width={ 600 }
-        visible={ showDetail }
-        onClose={ () => {
-          setCurrentRow(undefined);
-          setShowDetail(false);
-        } }
-        closable={ false }
-      >
-        { currentRow?.id && (
-          <ProDescriptions<OrderListType>
-            column={ 1 }
-            title={ '设备信息' }
-            key={ currentRow?.id }
-            request={ async () => ({
-              data: currentRow || {},
-            }) }
-            params={ {
-              id: currentRow?.id,
-            } }
-            columns={ columnsDrawer as ProDescriptionsItemProps<OrderListType>[] }
+    <>
+      <Card title="工单信息" style={ { marginBottom: "20px" } } bordered={ false }>
+        <Descriptions bordered size="small"
+          column={ { xs: 2, sm: 2, md: 2, lg: 2, xl: 2, xxl: 2 } }
+          labelStyle={ { width: "120px", padding: "8px" } }
+        >
+          <Descriptions.Item label="工单编号" >{ currentRow?.orderNo }</Descriptions.Item>
+          <Descriptions.Item label="单位名称">{ currentRow?.company }</Descriptions.Item>
+          <Descriptions.Item label="工程师姓名">{ currentRow?.engineerName }</Descriptions.Item>
+          <Descriptions.Item label="支持人员">{ currentRow?.supporterNames }</Descriptions.Item>
+          <Descriptions.Item label="工单状态">{ orderStatusData.find(item => item.value === currentRow?.status)?.label }</Descriptions.Item>
+          <Descriptions.Item label="工单描述">{ currentRow?.workDescription }</Descriptions.Item>
+          <Descriptions.Item label="工单来源">{ currentRow?.sourceType }</Descriptions.Item>
+          <Descriptions.Item label="工单类型">{ orderTypeMatchInfo(currentRow?.orderType)?.label }</Descriptions.Item>
+          <Descriptions.Item label="设备名称">{ currentRow?.deviceName }</Descriptions.Item>
+          {/* <Descriptions.Item label="设备类型">{ currentRow?.deviceTypeName }</Descriptions.Item> */ }
+          <Descriptions.Item label="是否绑定档案">{ currentRow?.portfolioId !== "" ? "已绑定" : "未绑定" }</Descriptions.Item>
+          <Descriptions.Item label="工单图片">
+            { currentRow?.orderImgUrls && currentRow?.orderImgUrls.length > 0 ?
+              (
+                <Row gutter={ [ 16, 16 ] } >
+                  { currentRow?.orderImgUrls.map((url: string, index: number) =>
+                    <Col key={ index }>
+                      <Image
+                        width="60px" height="60px"
+                        src={ `${url}?x-oss-process=image/resize,h_100,w_100,m_lfit` }
+                        preview={ { src: url } }
+                      />
+                    </Col>
+                  ) }</Row>
+              ) : "暂无图片"
+            }
+          </Descriptions.Item>
+        </Descriptions>
+      </Card>
+      { portfolioId !== undefined && portfolioId !== "" &&
+        <Card title="耗材信息" style={ { marginBottom: "20px" } } bordered={ false }>
+          <PortfolioConsumableList
+            portfolioId={ portfolioId }
+            setConsumableUpdate={ setConsumableUpdate }
+            consumableUpdate={ consumableUpdate }
           />
-        ) }
-      </Drawer>
-    </PageContainer>
+        </Card>
+      }
+
+      <Card title="绑定档案信息信息" bordered={ false }>
+
+      </Card>
+    </>
   );
 };
 

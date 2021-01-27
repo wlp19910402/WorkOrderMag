@@ -26,7 +26,7 @@ const ModelSendOrder: React.FC<ModalModifyFormDataProps> = ({ createModalVisible
   const [ supporters, setSupporters ] = useState<string>(currentOrder.supporterNames);
   const currentEngineerId = currentOrder.engineerId
   const supportersId = currentOrder.supporterIds
-  const [ loading, setLoading ] = useState<boolean>(false)
+  const [ loading, setLoading ] = useState<boolean>(true)
   const submitForm = async (record: any) => {
     await setLoading(true)
     //在工单列表中进行绑定档案
@@ -47,6 +47,7 @@ const ModelSendOrder: React.FC<ModalModifyFormDataProps> = ({ createModalVisible
       current: 1,
       status: ENGINNER_STATUS.ON
     })
+    setLoading(false)
     if (!response) { setEngineerData([]); return }
     const { data } = response;
     conversionFormat(data.records)

@@ -1,7 +1,7 @@
 import API from '@/services/API.d'
 import httpServer from '@/utils/httpServer'
 import { OrderListSearchType, OrderTypeType } from '@/pages/workOrder/data.d'
-
+import React from 'react';
 export const addWorkOrder = async (params: OrderTypeType) => {
   return await httpServer.post(API.WORK_ORDER_ADD, { data: params });
 }
@@ -34,10 +34,13 @@ export const sendOrder = async (params: any) => {
   return httpServer.post(API.WORK_ORDER_SEND_ORDERS, { data: params });
 }
 
-export const cancelOrder = async (id: string) => {
+export const cancelOrder = async (id: React.Key) => {
   return httpServer.post(`${API.WORK_ORDER_CANCEL}/${id}`)
 }
 
 export const submitOrder = async (params: any) => {
   return httpServer.post(API.WORK_ORDER_SUBMIT, { data: params })
+}
+export const infoOrder = async (id: React.Key) => {
+  return await httpServer.get(`${API.WORK_ORDER_INFO}/${id}`)
 }
