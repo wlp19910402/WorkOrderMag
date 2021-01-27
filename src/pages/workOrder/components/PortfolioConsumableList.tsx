@@ -62,15 +62,15 @@ interface ConsumableEditableProps {
 }
 const EditableTable: React.FC<ConsumableEditableProps> = ({ portfolioId, setConsumableUpdate, consumableUpdate }) => {
   const [ form ] = Form.useForm();
-  const formConsumable = form
   const [ editingKey, setEditingKey ] = useState('');
   const [ showDetail, setShowDetail ] = useState<boolean>(false);
   const [ currentRow, setCurrentRow ] = useState<any>();
-  const [ dataConsumableList, setDataConsumableList ] = useState<any[]>()
+  const [ dataConsumableList, setDataConsumableList ] = useState<any[]>([])
+  const [ dataConsumableListOrgin, setDataConsumableListOrgin ] = useState<any[]>([])
   const [ loading, setLoading ] = useState<boolean>(true)
   const isEditing = (record: any) => record.id === editingKey;
   const tiggerEdit = (record: any) => {
-    formConsumable.setFieldsValue({ expirationTime: pickerInitialValue(record.expirationTime), replacementCycle: record.replacementCycle, replacementTime: pickerInitialValue(record.replacementTime), id: record.id });
+    form.setFieldsValue({ expirationTime: pickerInitialValue(record.expirationTime), id: record.id });
     setEditingKey(record.id);
   };
   const tiggerCancel = () => {
@@ -81,34 +81,50 @@ const EditableTable: React.FC<ConsumableEditableProps> = ({ portfolioId, setCons
     setLoading(false)
     if (!response) return
     setDataConsumableList(response.data.consumables)
+    setDataConsumableListOrgin(response.data.consumables.map((item: any) => ({ id: item.id, expirationTime: item.expirationTime })))
   }
   useEffect(() => {
     initFun()
   }, [])
   const tiggerDeleteUpdate = async (id: React.Key) => {
-    let newData = consumableUpdate.filter(item => item.pcId !== id)
-    setConsumableUpdate(newData)
+    let updateData = consumableUpdate.filter(item => item.pcId !== id)
+    let orginExpirationTime = dataConsumableListOrgin.find(item => item.id === id).expirationTime
+    let newData = dataConsumableList.map(item => {
+      if (item.id === id) {
+        item.expirationTime = orginExpirationTime
+      }
+      return item
+    })
+    setConsumableUpdate(updateData)
+    setDataConsumableList(newData)
   }
   const sumbitSave = async (key: React.Key) => {
-    const row = (await formConsumable.validateFields()) as RecordConsumableDataType;
+    const row = (await form.validateFields()) as RecordConsumableDataType;
+    const newData = dataConsumableList.map(item => {
+      if (item.id === key) {
+        item.expirationTime = pickerDateFormat(row.expirationTime)
+      }
+      return item
+    });
+    setDataConsumableList(newData)
     let editParams = {
       expirationTime: pickerDateFormat(row.expirationTime),//到期时间
       pcId: key
     }
-    let newData: any[] = []
+    let updateData: any[] = []
     if (consumableUpdate?.find((item: any) => item.pcId === key)) {
-      newData = consumableUpdate?.map(item => {
+      updateData = consumableUpdate?.map(item => {
         if (item.pcId === key) {
           item.expirationTime = editParams.expirationTime
         }
         return item
       })
     } else {
-      newData = [ ...consumableUpdate, editParams ]
+      updateData = [ ...consumableUpdate, editParams ]
     }
-    setConsumableUpdate(newData)
+    setConsumableUpdate(updateData)
     setEditingKey('');
-  };
+  }
   const columns = [
     {
       title: '耗材名称',
@@ -251,7 +267,7 @@ const EditableTable: React.FC<ConsumableEditableProps> = ({ portfolioId, setCons
   })
   return (
     <Spin spinning={ loading }>
-      <Form form={ formConsumable } component={ false }>
+      <Form form={ form } component={ false }>
         <Table
           components={ {
             body: {
