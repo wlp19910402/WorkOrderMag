@@ -1,13 +1,11 @@
 import { ConsumableAddDataType } from '@/pages/archive/portfolio/data.d'
-import { Drawer, Modal, message, Popconfirm } from 'antd';
-import React, { useState, useRef } from 'react';
-import type { ProColumns, ActionType } from '@ant-design/pro-table';
-import ProTable from '@ant-design/pro-table';
-import type { ProDescriptionsItemProps } from '@ant-design/pro-descriptions';
-import ProDescriptions from '@ant-design/pro-descriptions';
+import { message, Spin, Alert, Divider } from 'antd';
+import React, { useState, useRef, useEffect } from 'react';
+import { ModalForm, ProFormCheckbox, ProFormRadio } from '@ant-design/pro-form';
 import { sendOrder } from '@/pages/workOrder/service'
 import { queryList } from '@/pages/archive/Engineer/service';
-import type { EngineerListDataType } from "@/pages/archive/Engineer/data.d";
+import type { EngineerListDataType, } from "@/pages/archive/Engineer/data.d";
+import style from "./sendOrder.less"
 export type ColumnEditConsumableType = {
   consumableName: string;
   consumableNo: string;
@@ -21,123 +19,111 @@ type ModalModifyFormDataProps = {
   listReloadAndRest?: () => void;
   currentOrder?: any;
 }
-const ModelConsumableAdd: React.FC<ModalModifyFormDataProps> = ({ createModalVisible = false, handleModalVisible, listReloadAndRest, currentOrder }) => {
-  const [ showDetail, setShowDetail ] = useState<boolean>(false);
-  const actionRef = useRef<ActionType>();
-  const [ currentRow, setCurrentRow ] = useState<EngineerListDataType>();
-  const columns: ProColumns<any>[] = [
-    {
-      title: "工程师姓名",
-      dataIndex: 'engineerName',
-      render: (val, entity) => {
-        return (
-          <a
-            onClick={ () => {
-              setCurrentRow(entity);
-              setShowDetail(true);
-            } }
-          >
-            {`${val}` }
-          </a>
-        );
-      }
-    },
-    {
-      title: "工程师手机号",
-      dataIndex: 'engineerMobile'
-    },
-    {
-      title: "工程师角色",
-      dataIndex: 'roleName',
-      // valueEnum: {
-      //   role_engineer:"微信工程师"
-      // }
-    },
-    {
-      title: "操作",
-      valueType: 'option',
-      width: "48px",
-      render: (_, record) => [
-        <Popconfirm
-          key="add"
-          title="确认推送工程师进行派单？"
-          onConfirm={ () => { tiggerSendOrder(record) } }>
-          <a >派单</a>
-        </Popconfirm>
-      ],
-    },
-  ];
-  const tiggerSendOrder = async (record: any) => {
+const ModelSendOrder: React.FC<ModalModifyFormDataProps> = ({ createModalVisible = false, handleModalVisible, listReloadAndRest, currentOrder }) => {
+  const [ engineerData, setEngineerData ] = useState<any[] | []>([]);
+  const [ currentEngineer, setCurrentEngineer ] = useState<string>(currentOrder.engineerName);
+  const [ supporters, setSupporters ] = useState<string>(currentOrder.supporterNames);
+  const currentEngineerId = currentOrder.engineerId
+  const supportersId = currentOrder.supporterIds
+  const [ loading, setLoading ] = useState<boolean>(false)
+  const submitForm = async (record: any) => {
+    await setLoading(true)
     //在工单列表中进行绑定档案
     let response = await sendOrder({
       id: currentOrder.id,
-      engineerId: record.id,
-      supporterIds: [ 0 ]
+      engineerId: record.engineerId,
+      supporterIds: record.supporterIds
     })
+    await setLoading(false)
     if (!response) return
-    message.success("绑定成功");
+    message.success("派单成功");
     if (listReloadAndRest) listReloadAndRest();
     handleModalVisible(false);
   }
-
-  const fetchQueryList = async (params: any) => {
-    const response = await queryList(params)
-    if (!response) return { data: [] }
+  const fetchQueryList = async () => {
+    const response = await queryList({
+      pageSize: 100000,
+      current: 1,
+      status: 1
+    })
+    if (!response) { setEngineerData([]); return }
     const { data } = response;
-    return ({ ...data, data: data.records })
+    conversionFormat(data.records)
   }
+  const conversionFormat = (data: EngineerListDataType[]) => {
+    let obj: any[] = []
+    data.forEach(item => {
+      obj.push({ value: item.id, label: `${item.engineerName}(${item.engineerMobile})`, style: { "width": "260px", display: "inline-block", margin: "0" } })
+    })
+    setEngineerData(obj)
+  }
+  useEffect(() => {
+    fetchQueryList()
+  }, [])
+  const formRef = useRef<any | null>(null)
   return (
-    <>
-      <Modal
-        title="绑定档案"
-        width="800px"
+    <Spin spinning={ loading }>
+      <ModalForm
+        modalProps={ {
+          maskClosable: false,
+          okText: "保存"
+        } }
+        title="派单"
+        width="600px"
         visible={ createModalVisible }
-        footer={ null }
-        bodyStyle={ { padding: "0 " } }
-        onCancel={ () => handleModalVisible(false) }
+        onVisibleChange={ handleModalVisible }
+        onFinish={ async (value: any) => {
+          await submitForm(value)
+        } }
+        labelCol={ { span: 4 } }
+        layout="horizontal"
+        formRef={ formRef }
       >
-        <ProTable
-          headerTitle="查询表格"
-          actionRef={ actionRef }
-          rowKey="id"
-          search={ {
-            labelWidth: 120,
-          } }
-          pagination={ {
-            pageSize: 10,
-          } }
-          size="small"
-          request={ async (params, sorter, filter) => await fetchQueryList({ ...params, ...filter }) }
-          columns={ columns }
-          scroll={ { y: 300 } }
-        />
-        <Drawer
-          width={ 600 }
-          visible={ showDetail }
-          onClose={ () => {
-            setCurrentRow(undefined);
-            setShowDetail(false);
-          } }
-          closable={ false }
-        >
-          { currentRow?.id && (
-            <ProDescriptions<EngineerListDataType>
-              column={ 1 }
-              title={ "工程师信息" }
-              key={ currentRow?.id }
-              request={ async () => ({
-                data: currentRow || {},
-              }) }
-              params={ {
-                id: currentRow?.id,
+        <Alert message={ `工程师: ${currentEngineer}` } type="info" />
+        <div className={ style.groupBox }>
+          <div className={ style.groupBoxAuto } >
+            {
+              engineerData.length > 0 ? <ProFormRadio.Group
+                name="engineerId"
+                layout="vertical"
+                label=""
+                rules={ [ { required: true, message: "工程师必填!" } ] }
+                radioType="radio"
+                options={ [ ...engineerData ] }
+                initialValue={ currentEngineerId }
+                normalize={ (val, prevValue, all) => {
+                  setCurrentEngineer(engineerData.find(item => item.value === val).label)
+                  return val
+                } }
+              /> : "暂时无可用人员，请在新增工程师人员"
+            }
+          </div>
+        </div>
+        <Divider />
+        <Alert message={ `支持人员: ${supporters}` } type="info" />
+        <div className={ style.groupBox }>
+          <div className={ style.groupBoxAuto } >
+            { engineerData.length > 0 ? <ProFormCheckbox.Group
+              name="supporterIds"
+              layout="vertical"
+              label=""
+              options={ [ ...engineerData ] }
+              initialValue={ supportersId }
+              normalize={ (val, prevValue, all) => {
+                let res = "";
+                val.forEach((item: any) => {
+                  res += engineerData.find(ite => ite.value === item).label + ";"
+                });
+                setSupporters(res)
+                return val
               } }
-              columns={ columns as ProDescriptionsItemProps<EngineerListDataType>[] }
             />
-          ) }
-        </Drawer>
-      </Modal>
-    </>
+              : "暂时无可用人员，请在新增工程师人员" }
+          </div>
+        </div>
+      </ModalForm >
+    </Spin>
   );
 };
 
-export default ModelConsumableAdd
+export default ModelSendOrder

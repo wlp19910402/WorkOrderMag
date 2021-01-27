@@ -4,8 +4,8 @@
 import React, { useRef } from 'react';
 import type { ActionType } from '@ant-design/pro-table';
 import { ModalForm, ProFormText, ProFormTextArea } from '@ant-design/pro-form';
-import { saveCompany } from '../service';
-import type { CompanySaveDataType } from '../data';
+import { saveCompany } from '@/pages/archive/Company/service';
+import type { CompanySaveDataType } from '@/pages/archive/Company/data.d';
 import { message } from 'antd'
 type ModalModifyFormDataProps = {
   createModalVisible: boolean;
