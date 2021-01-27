@@ -86,6 +86,7 @@ const DictionaryList: React.FC<WorkOrderFinishProps> = ({ orderType = 'wx', matc
           <Descriptions.Item label="工单状态">{ orderStatusData.find(item => item.value === currentRow?.status)?.label }</Descriptions.Item>
           <Descriptions.Item label="工单描述">{ currentRow?.workDescription }</Descriptions.Item>
           <Descriptions.Item label="工单来源">{ currentRow?.sourceType }</Descriptions.Item>
+          <Descriptions.Item label="工单类型">{ orderTypeMatchInfo(currentRow?.orderType)?.label }</Descriptions.Item>
           <Descriptions.Item label="设备名称">{ currentRow?.deviceName }</Descriptions.Item>
           {/* <Descriptions.Item label="设备类型">{ currentRow?.deviceTypeName }</Descriptions.Item> */ }
           <Descriptions.Item label="是否绑定档案">{ currentRow?.portfolioId !== "" ? "已绑定" : "未绑定" }</Descriptions.Item>
