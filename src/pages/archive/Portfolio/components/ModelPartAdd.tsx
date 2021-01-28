@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import type { ProColumns } from '@ant-design/pro-table'
 import { EditableProTable } from '@ant-design/pro-table'
-import { Modal, message, DatePicker, InputNumber } from 'antd'
+import { Modal, message, InputNumber } from 'antd'
 import { PartAddDataType } from '@/pages/archive/portfolio/data.d'
 import { addProtfolioPart } from '@/pages/archive/portfolio/service'
 import TablePartList from '@/pages/archive/portfolio/components/TablePartList'
@@ -89,7 +89,7 @@ const ModelPartAdd: React.FC<ModalModifyFormDataProps> = ({ createModalVisible =
     <>
       <Modal
         title="添加备件"
-        width="800px"
+        width="90%"
         visible={ createModalVisible }
         onCancel={ () => handleModalVisible(false) }
         onOk={ submitConsumable }

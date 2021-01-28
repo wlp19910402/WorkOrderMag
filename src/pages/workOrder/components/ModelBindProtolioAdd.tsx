@@ -1,5 +1,5 @@
 import { ConsumableAddDataType } from '@/pages/archive/portfolio/data.d'
-import { Drawer, Image, Row, Col, Modal, message, Popconfirm } from 'antd';
+import { Drawer, Image,  Modal, message, Popconfirm } from 'antd';
 import React, { useState, useRef, useEffect } from 'react';
 import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
@@ -282,7 +282,7 @@ const ModelConsumableAdd: React.FC<ModalModifyFormDataProps> = ({ createModalVis
     <>
       <Modal
         title="绑定档案"
-        width="800px"
+        width="90%"
         visible={ createModalVisible }
         footer={ null }
         bodyStyle={ { padding: "0 " } }

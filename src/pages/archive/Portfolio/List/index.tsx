@@ -297,16 +297,6 @@ const DictionaryList: React.FC<PortfolioListDataType> = () => {
           onChange: (_, selectedRows: any) => setSelectedRows(selectedRows),
         } }
       />
-      {/* {createModalVisible && (
-        <ModalModifyForm
-          createModalVisible={ createModalVisible }
-          handleModalVisible={ handleModalVisible }
-          actionRef={ actionRef }
-          currentRow={ currentRow }
-          searchType={ searchType }
-        />
-      ) } */}
-
       {selectedRowsState?.length > 0 && (
         <FooterToolbar
           extra={

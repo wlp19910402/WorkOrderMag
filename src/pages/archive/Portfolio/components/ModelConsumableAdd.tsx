@@ -115,7 +115,7 @@ const ModelConsumableAdd: React.FC<ModalModifyFormDataProps> = ({ createModalVis
     <>
       <Modal
         title="添加耗材"
-        width="800px"
+        width="90%"
         visible={ createModalVisible }
         onCancel={ () => handleModalVisible(false) }
         onOk={ submitConsumable }

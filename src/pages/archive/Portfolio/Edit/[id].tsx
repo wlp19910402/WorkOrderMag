@@ -1,17 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import BasicModifyForm from '../components/BasicModifyForm'
 import { infoProtfolio } from '../service'
-import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
+import { PageContainer } from '@ant-design/pro-layout';
 import { match } from 'react-router'
+import { Spin } from 'antd'
 interface PortfolioEditProps {
   match: match
 }
 const DictionaryList: React.FC<PortfolioEditProps> = ({ match }) => {
   const [ currentRow, setCurrentRow ] = useState<any>()
+  const [ loading, setLoading ] = useState<boolean>(true)
+  const routeParams: any = match.params
   useEffect(() => {
-    infoProtfolio(match.params.id).then(res => {
+    infoProtfolio(routeParams.id).then(res => {
+      setLoading(false)
       if (!res) return;
       setCurrentRow(res.data)
+    }).catch(err => {
+      setLoading(false)
     })
   }, [])
   return (
@@ -36,7 +42,9 @@ const DictionaryList: React.FC<PortfolioEditProps> = ({ match }) => {
         }
       } }
     >
-      { currentRow && <BasicModifyForm currentRow={ currentRow } /> }
+      <Spin spinning={ loading }>
+        { currentRow && <BasicModifyForm currentRow={ currentRow } /> }
+      </Spin>
     </PageContainer>
   );
 };

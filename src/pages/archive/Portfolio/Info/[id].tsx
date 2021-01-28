@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import { infoProtfolio } from '@/pages/archive/portfolio/service'
 import { match } from 'react-router'
-import { Descriptions, Row, Col, Image, Card, Button, Spin, Alert } from 'antd'
+import { Descriptions, Card, Button, Spin, Alert } from 'antd'
 import { PortfolioInfoDataType } from '@/pages/archive/portfolio/data.d'
 import ModelConsumableAdd from '@/pages/archive/portfolio/components/ModelConsumableAdd'
 import ModelPartAdd from '@/pages/archive/portfolio/components/ModelPartAdd'
@@ -21,7 +21,8 @@ const DictionaryList: React.FC<PortfolioEditProps> = ({ match }) => {
   const [ dataConsumableList, setData ] = useState<any[]>([]);
   const [ dataPartList, setPartData ] = useState<any[]>([]);
   const [ Loading, setLoading ] = useState<boolean>(false)
-  const portfolioId = match.params.id
+  const routeParams: any = match.params
+  const portfolioId = routeParams.id
   useEffect(() => {
     setLoading(true);
     initFun()

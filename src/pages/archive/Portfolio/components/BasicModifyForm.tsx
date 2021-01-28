@@ -13,7 +13,16 @@ import getErrorInfo, { ErrorField } from '@/components/common/ErrorForm'
 interface ModifyFormTypeProps {
   currentRow?: PortfolioListDataType
 }
-const colProps = { xs: 24, sm: 24, md: 16, lg: 8, xl: 8, xxl: 8 };
+const formItemLayout = {
+  labelCol: {
+    span: 8
+  },
+  wrapperCol: {
+    xs: { span: 16 },
+    sm: { span: 16 },
+  },
+};
+const colProps = { xs: 24, sm: 24, md: 12, lg: 12, xl: 8, xxl: 8 };
 const DictionaryList: React.FC<ModifyFormTypeProps> = ({ currentRow }) => {
   const [ companyNameOptions, setCompanyNameOptions ] = useState<any[]>([])
   const [ selectCompanyData, setSelectCompanyData ] = useState<CompanyListDataType>()
@@ -110,8 +119,6 @@ const DictionaryList: React.FC<ModifyFormTypeProps> = ({ currentRow }) => {
       onFinish={ onFinish }
       onFinishFailed={ onFinishFailed }
     >
-      {/* <Row gutter={ 20 }>
-        <Col span={ 12 }> */}
       <Card title="单位信息" style={ { marginBottom: "20px" } } bordered={ false }>
         <Form.Item label="单位名称" name="companyName"
           rules={ [ { required: true, message: '请输入单位名称' } ] }
@@ -139,9 +146,6 @@ const DictionaryList: React.FC<ModifyFormTypeProps> = ({ currentRow }) => {
           <Descriptions.Item label="联系电话">{ selectCompanyData?.contactMobile ? selectCompanyData.contactMobile : "" }</Descriptions.Item>
         </Descriptions>
       </Card>
-
-      {/* </Col>
-        <Col span={ 12 }> */}
       <Card title="设备信息" style={ { marginBottom: "20px" } } bordered={ false }>
         <Form.Item label="设备名称" rules={ [ { required: true, message: '请输入设备名称' } ] } name="deviceName" initialValue={ currentRow?.deviceName }>
           <Select
@@ -168,12 +172,11 @@ const DictionaryList: React.FC<ModifyFormTypeProps> = ({ currentRow }) => {
           <Descriptions.Item label="设备型号">{ selectDeviceData?.modelName ? selectDeviceData?.modelName : "" }</Descriptions.Item>
         </Descriptions>
       </Card>
-      {/* </Col>
-      </Row> */}
       <Card title="档案基本信息" bordered={ false }>
         <Row gutter={ 10 } >
           <Col { ...colProps }>
             <Form.Item
+              { ...formItemLayout }
               label='安装位置'
               name="installLocation"
               rules={ [ { required: true, message: '请输入安装位置' } ] }
@@ -184,6 +187,7 @@ const DictionaryList: React.FC<ModifyFormTypeProps> = ({ currentRow }) => {
           </Col>
           <Col { ...colProps }>
             <Form.Item
+              { ...formItemLayout }
               label='安装日期'
               name="installTime"
               rules={ [ { required: true, message: '请输入安装日期' } ] }
@@ -199,6 +203,7 @@ const DictionaryList: React.FC<ModifyFormTypeProps> = ({ currentRow }) => {
           </Col>
           <Col { ...colProps }>
             <Form.Item
+              { ...formItemLayout }
               label='二维码编号'
               name="qrCodde"
               rules={ [ { message: '请输入二维码编号' } ] }
@@ -209,6 +214,7 @@ const DictionaryList: React.FC<ModifyFormTypeProps> = ({ currentRow }) => {
           </Col>
           <Col { ...colProps }>
             <Form.Item
+              { ...formItemLayout }
               label='保修周期(月)'
               name="warrantyPeriod"
               rules={ [ { required: true, message: '请输入保修周期' } ] }
