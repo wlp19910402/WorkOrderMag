@@ -1,4 +1,4 @@
-import { RecordPartsDataType, RecordConsumableDataType, ConsumableListDataType } from '@/pages/archive/portfolio/data.d'
+import { RecordPartsDataType, RecordConsumableDataType, ConsumableListDataType,PortfolioListDataType } from '@/pages/archive/portfolio/data.d'
 export type PageDataType = {
   current: number;
   pageSize: number;
@@ -96,6 +96,7 @@ export interface WorkConsumablesDataType {
 export interface WorkOrderInfoDataType extends OrderListType {
   consumables: RecordConsumableDataType[],//档案耗材信息
   parts: RecordPartsDataType[];//档案备件信息
+  portfolio: PortfolioListDataType;//档案信息
   subImgUrls: string[];//结单图片
   subRemark: string;//结单备注
   subTime: string;//结单时间

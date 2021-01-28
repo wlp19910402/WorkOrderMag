@@ -27,13 +27,11 @@ const ModelConsumableAdd: React.FC<ModalModifyFormDataProps> = ({ createModalVis
       title: "耗材名称",
       dataIndex: 'consumableName',
       editable: false,
-      width: "80px"
     },
     {
       title: "耗材编号",
       dataIndex: 'consumableNo',
       editable: false,
-      width: "80px"
     },
     // {
     //   title: "耗材类型",
@@ -51,6 +49,7 @@ const ModelConsumableAdd: React.FC<ModalModifyFormDataProps> = ({ createModalVis
     {
       title: "安装日期",
       dataIndex: 'replacementTime',
+      width: "180px",
       renderFormItem: (_, { isEditable }) => {
         return isEditable ? <DatePicker
           picker="date"
@@ -71,6 +70,7 @@ const ModelConsumableAdd: React.FC<ModalModifyFormDataProps> = ({ createModalVis
     {
       title: "到期日期",
       dataIndex: 'expirationTime',
+      width: "180px",
       renderFormItem: (_, { isEditable }) => {
         return isEditable ? <DatePicker
           format="YYYY-MM-DD"
