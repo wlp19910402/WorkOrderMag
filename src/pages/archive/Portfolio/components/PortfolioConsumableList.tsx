@@ -138,6 +138,7 @@ const EditableTable: React.FC<ConsumableEditableProps> = ({ queryConsumableList,
       title: '安装日期',
       dataIndex: 'replacementTime',
       editable: true,
+      width: "160px",
       render: (val: any) => pickerDateFormat(val)
     },
     {
@@ -150,6 +151,7 @@ const EditableTable: React.FC<ConsumableEditableProps> = ({ queryConsumableList,
       title: '到期日期',
       dataIndex: 'expirationTime',
       editable: true,
+      width: "160px",
       render: (val: any) => pickerDateFormat(val)
     },
     {

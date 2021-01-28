@@ -1,4 +1,4 @@
-import { Card, Descriptions, Divider, notification, Timeline, Spin } from 'antd';
+import { Card, Descriptions, Divider, notification, Timeline, Spin, Typography } from 'antd';
 import React, { useState, useEffect } from 'react';
 import { infoOrder, logOrder } from '@/pages/workOrder/service';
 import { WorkOrderInfoDataType, orderStatusData, orderTypeMatchInfo, WorkOrderWrokLogDataType } from '@/pages/workOrder/data.d';
@@ -43,9 +43,10 @@ const DictionaryList: React.FC<WorkOrderFinishProps> = ({ orderType = 'wx', matc
           { logs.map((item: WorkOrderWrokLogDataType) => (
             <Timeline.Item color={ orderStatusData.find(it => it.value === item.operationType)?.color }>
               <p />
-              <p>状态：{ orderStatusData.find(it => it.value === item.operationType)?.label }</p>
+              <p>操作：{ orderStatusData.find(it => it.value === item.operationType)?.label }</p>
               <p>日志：{ item.operationLog }</p>
-              <p>人员时间：{ item.createUsername }{ item.createTime }</p>
+              <p>操作人：{ item.createUsername }</p>
+              <p>时间：{ item.createTime }</p>
             </Timeline.Item>
           )) }
         </Timeline>,
@@ -71,7 +72,9 @@ const DictionaryList: React.FC<WorkOrderFinishProps> = ({ orderType = 'wx', matc
           <Descriptions.Item label="工程师姓名">{ currentRow?.engineerName }</Descriptions.Item>
           <Descriptions.Item label="支持人员">{ currentRow?.supporterNames }</Descriptions.Item>
           <Descriptions.Item label="接单时间">{ currentRow?.receivingTime }</Descriptions.Item>
-          <Descriptions.Item label="工单状态">{ orderStatusData.find(item => item.value === currentRow?.status)?.label }</Descriptions.Item>
+          <Descriptions.Item label="工单状态">
+            <Typography.Text type={ orderStatusData.find(item => item.value === currentRow?.status)?.textType }> { orderStatusData.find(item => item.value === currentRow?.status)?.label }</Typography.Text>
+          </Descriptions.Item>
           <Descriptions.Item label="工单来源">{ currentRow?.sourceType }</Descriptions.Item>
           <Descriptions.Item label="工单类型">{ orderTypeMatchInfo(currentRow?.orderType)?.label }</Descriptions.Item>
           <Descriptions.Item label="是否绑定档案">{ currentRow?.portfolioId !== "" ? "已绑定" : "未绑定" }</Descriptions.Item>

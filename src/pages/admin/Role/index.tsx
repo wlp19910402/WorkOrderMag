@@ -93,8 +93,8 @@ const RoleList: React.FC<RoleDataType> = () => {
             <ApiFilled className="qm-table-icon" />
           </Button>
         </Tooltip>
-      ],
-    },
+      ]
+    }
   ];
   const tiggerDeleteRole = async (id: string) => {
     const response = await deleteRole(id)

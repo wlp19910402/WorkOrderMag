@@ -94,6 +94,13 @@ const DictionaryList: React.FC<WorkOrderFinishProps> = ({ orderType = 'wx', matc
           <Form.Item
             label='结单说明'
             name="subRemark"
+            extra="内容最多支持100个字符"
+            rules={ [
+              {
+                max: 100,
+                message: `内容最多支持100个字符!`,
+              },
+            ] }
           >
             <Input.TextArea />
           </Form.Item>
@@ -106,9 +113,7 @@ const DictionaryList: React.FC<WorkOrderFinishProps> = ({ orderType = 'wx', matc
           </Form.Item>
         </Card>
         <FooterToolbar>
-          <Button type="primary" onClick={ () => { form?.submit() } } loading={ false }>
-            保存
-        </Button>
+          <Button type="primary" onClick={ () => { form?.submit() } } loading={ false }>结单</Button>
         </FooterToolbar>
       </Form>
     </>

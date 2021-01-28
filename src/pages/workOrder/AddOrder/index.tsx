@@ -108,6 +108,13 @@ const DictionaryList: React.FC<IRouteComponentProps> = ({ location, history }) =
             <Form.Item
               label='工单描述'
               name="workDescription"
+              extra="内容最多支持100个字符"
+              rules={ [
+                {
+                  max: 100,
+                  message: `内容最多支持100个字符!`,
+                },
+              ] }
             >
               <Input.TextArea />
             </Form.Item>

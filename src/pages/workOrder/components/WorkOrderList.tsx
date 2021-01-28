@@ -83,7 +83,7 @@ const DictionaryList: React.FC<WorkOrderListProps> = ({ orderType = 'wx' }) => {
       dataIndex: 'customerMobile',
     },
     {
-      title: '工程师姓名',
+      title: '工程师',
       dataIndex: 'engineerName',
     },
     {
@@ -197,8 +197,7 @@ const DictionaryList: React.FC<WorkOrderListProps> = ({ orderType = 'wx' }) => {
         <Tooltip title={ '详情' }>
           <Button
             onClick={ () => { history.push(`${orderTypeMatchInfo(orderType)?.listPath}/info/${record.id}`) } }
-            size="small" type="link"
-            disabled={ record.status === 'wc' || record.status === 'cancel' }>
+            size="small" type="link">
             <FileTextFilled className="qm-table-icon" />
           </Button>
         </Tooltip>

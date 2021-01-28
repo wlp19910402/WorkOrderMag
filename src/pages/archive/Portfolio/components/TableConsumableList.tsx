@@ -122,7 +122,7 @@ const TableConsumableList: React.FC<TableConsumableListProps> = ({ setSelectedRo
       headerTitle="请选择添加对应的耗材"
       rowKey="id"
       search={ {
-        labelWidth: 60,
+        labelWidth: 90,
       } }
       pagination={ {
         pageSize: 4

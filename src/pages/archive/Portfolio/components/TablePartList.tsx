@@ -120,7 +120,7 @@ const TablePartList: React.FC<TablePartListProps> = ({ setSelectedRows, selected
       headerTitle="请选择添加对应的备件"
       rowKey="id"
       search={ {
-        labelWidth: 60,
+        labelWidth: 90,
       } }
       pagination={ {
         pageSize: 4

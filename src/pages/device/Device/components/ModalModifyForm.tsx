@@ -147,6 +147,13 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
         label="设备描述"
         placeholder="请输入设备描述"
         initialValue={ currentRow?.description }
+        extra="内容最多支持100个字符"
+        rules={ [
+          {
+            max: 100,
+            message: `内容最多支持100个字符!`,
+          },
+        ] }
       />
       {/* //图片 */ }
       <Form.Item extra="外观图片（最多上传六张）带“删除”按钮" name="imgUrls" label="图片上传" valuePropName="checked">

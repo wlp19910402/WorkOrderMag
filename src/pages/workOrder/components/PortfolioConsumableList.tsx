@@ -143,11 +143,6 @@ const EditableTable: React.FC<ConsumableEditableProps> = ({ portfolioId, setCons
       }
     },
     {
-      title: '耗材编号',
-      dataIndex: 'baseInfo',
-      render: (val: any, entity: any) => val.no
-    },
-    {
       title: '耗材类型',
       dataIndex: 'baseInfo',
       render: (val: any, entity: any) => val.typeName
@@ -171,6 +166,7 @@ const EditableTable: React.FC<ConsumableEditableProps> = ({ portfolioId, setCons
       title: '到期日期',
       dataIndex: 'expirationTime',
       editable: true,
+      width: "180px",
       render: (val: any) => pickerDateFormat(val)
     },
     {

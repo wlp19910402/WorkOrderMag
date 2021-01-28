@@ -190,6 +190,12 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
         label="备注"
         placeholder="请输入备注"
         initialValue={ currentRow?.remark }
+        rules={ [
+          {
+            max: 100,
+            message: `内容最多支持100个字符!`,
+          },
+        ] }
       />
     </ModalForm >
   )

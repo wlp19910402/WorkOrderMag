@@ -36,11 +36,6 @@ const WorkOrderInfoConsumableList: React.FC<WorkOrderInfoConsumableListProps> = 
       }
     },
     {
-      title: '耗材编号',
-      dataIndex: 'baseInfo',
-      render: (val: any, entity: any) => val.no
-    },
-    {
       title: '耗材类型',
       dataIndex: 'baseInfo',
       render: (val: any, entity: any) => val.typeName
@@ -50,18 +45,13 @@ const WorkOrderInfoConsumableList: React.FC<WorkOrderInfoConsumableListProps> = 
       dataIndex: 'baseInfo',
       render: (val: any, entity: any) => val.modelName
     },
-    // {
-    //   title: '安装日期',
-    //   dataIndex: 'replacementTime',
-    //   render: (val: any) => pickerDateFormat(val)
-    // },
     {
-      title: '更换周期(天)',
-      dataIndex: 'replacementCycle',
-      inputType: "number",
+      title: '创建日期',
+      dataIndex: 'createTime',
+      render: (val: any) => pickerDateFormat(val)
     },
     {
-      title: '旧的到期时间',
+      title: '原到期日期',
       dataIndex: 'oldExpirationTime',
       render: (val: any, entity: any) => pickerDateFormat(val)
     },

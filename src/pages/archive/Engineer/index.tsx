@@ -30,7 +30,7 @@ const DictionaryList: React.FC<{}> = () => {
   const [ createModalVisible, handleModalVisible ] = useState<boolean>(false);
   const columns: ProColumns<any>[] = [
     {
-      title: "工程师姓名",
+      title: "工程师",
       dataIndex: 'engineerName',
       render: (val, entity) => {
         return (

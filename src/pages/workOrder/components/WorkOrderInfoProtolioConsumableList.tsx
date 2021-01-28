@@ -35,11 +35,6 @@ const WorkOrderInfoConsumableList: React.FC<WorkOrderInfoConsumableListProps> = 
       }
     },
     {
-      title: '耗材编号',
-      dataIndex: 'baseInfo',
-      render: (val: any, entity: any) => val.no
-    },
-    {
       title: '耗材类型',
       dataIndex: 'baseInfo',
       render: (val: any, entity: any) => val.typeName

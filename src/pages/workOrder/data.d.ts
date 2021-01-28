@@ -26,20 +26,20 @@ export const orderTypeEnum = {
   // jd: "建档工单"
 }
 export const orderStatusData = [
-  { label: "未派单", value: "wpd", color: "gray" },
-  { label: "派单", value: "pd", color: "blue" },
-  { label: "接单", value: "jd", color: "blue" },
-  { label: "转单", value: "zd", color: "blue" },
-  { label: "完成", value: "wc", color: "green" },
-  { label: "已撤单", value: "cancel", color: "red" }
+  { label: "未派单", value: "wpd", color: "gray", textType: "warning" },
+  { label: "派单", value: "pd", color: "blue", textType: "secondary" },
+  { label: "接单", value: "jd", color: "blue", textType: "secondary" },
+  { label: "转单", value: "zd", color: "blue", textType: "secondary" },
+  { label: "结单", value: "wc", color: "green", textType: "success" },
+  { label: "已撤单", value: "cancel", color: "red", textType: "danger" }
 ]
 
 export const orderStatusEnum = {
   wpd: { text: "未派单", status: 'Default' },
   pd: { text: "派单", status: 'Default' },
   jd: { text: "接单", status: 'Processing' },
-  zd: { text: "转单", status: 'Default' },
-  wc: { text: "完成", status: 'Success' },
+  zd: { text: "转单", status: 'Processing' },
+  wc: { text: "结单", status: 'Success' },
   cancel: { text: "已撤单", status: 'Error' }
 }
 export interface OrderListSearchType extends PageDataType {
