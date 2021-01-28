@@ -124,9 +124,10 @@ const RoleList: React.FC<RoleDataType> = () => {
           return response
         } }
         columns={ columns }
-        rowSelection={ {
-          onChange: (_, selectedRows: any) => setSelectedRows(selectedRows),
-        } }
+        // rowSelection={ {
+        //   onChange: (_, selectedRows: any) => setSelectedRows(selectedRows),
+        // } }
+        rowSelection={ false }
       />
 
       {createModalVisible && (

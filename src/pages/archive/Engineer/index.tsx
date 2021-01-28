@@ -126,9 +126,10 @@ const DictionaryList: React.FC<{}> = () => {
         // ] }
         request={ async (params, sorter, filter) => await fetchQueryList({ ...params, ...filter }) }
         columns={ columns }
-        rowSelection={ {
-          onChange: (_, selectedRows: any) => setSelectedRows(selectedRows),
-        } }
+        // rowSelection={ {
+        //   onChange: (_, selectedRows: any) => setSelectedRows(selectedRows),
+        // } }
+        rowSelection={ false }
       />
 
       {/* {createModalVisible && (

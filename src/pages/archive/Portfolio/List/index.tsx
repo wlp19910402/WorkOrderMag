@@ -293,9 +293,10 @@ const DictionaryList: React.FC<PortfolioListDataType> = () => {
         ] }
         request={ async (params, sorter, filter) => await fetchQueryList({ ...params, ...filter }) }
         columns={ columns }
-        rowSelection={ {
-          onChange: (_, selectedRows: any) => setSelectedRows(selectedRows),
-        } }
+        // rowSelection={ {
+        //   onChange: (_, selectedRows: any) => setSelectedRows(selectedRows),
+        // } }
+        rowSelection={ false }
       />
       {selectedRowsState?.length > 0 && (
         <FooterToolbar

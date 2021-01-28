@@ -209,9 +209,10 @@ const ResumeList: React.FC<UserListDataType> = () => {
         ] }
         request={ async (params, sorter, filter) => await fetchQueryUserList({ ...params, sorter, filter }) }
         columns={ columns }
-        rowSelection={ {
-          onChange: (_, selectedRows: any) => setSelectedRows(selectedRows),
-        } }
+        // rowSelection={ {
+        //   onChange: (_, selectedRows: any) => setSelectedRows(selectedRows),
+        // } }
+        rowSelection={ false }
       />
       {createModalVisible && (
         <ModalModifyForm
