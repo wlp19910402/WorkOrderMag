@@ -156,6 +156,7 @@ const EditableTable: React.FC<ConsumableEditableProps> = ({ queryConsumableList,
       title: '操作',
       dataIndex: 'operation',
       hideInDescriptions: true,
+      width: "110px",
       render: (_: any, record: RecordConsumableDataType) => {
         const editable = isEditing(record);
         return editable ? (

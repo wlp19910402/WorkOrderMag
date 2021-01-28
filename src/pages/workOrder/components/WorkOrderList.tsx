@@ -1,9 +1,9 @@
-import { PlusOutlined } from '@ant-design/icons';
-import { Button, Drawer, Popconfirm, Image, Row, Col, message } from 'antd';
+import { PlusOutlined, FileAddFilled, TagFilled, CarryOutFilled, FileTextFilled } from '@ant-design/icons';
+import { Button, Drawer, Popconfirm, Image, Tooltip, message } from 'antd';
 import React, { useState, useRef } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import type { ProColumns, ActionType } from '@ant-design/pro-table';
-import ProTable, { TableDropdown } from '@ant-design/pro-table';
+import ProTable from '@ant-design/pro-table';
 import type { ProDescriptionsItemProps } from '@ant-design/pro-descriptions';
 import ProDescriptions from '@ant-design/pro-descriptions';
 import { queryList, cancelOrder } from '@/pages/workOrder/service';
@@ -11,8 +11,9 @@ import { orderStatusEnum, OrderListType, orderTypeEnum, orderTypeMatchInfo } fro
 import ImgNull from '@/assets/images/images-null.png';
 import ModelBindProtolioAdd from '@/pages/workOrder/components/ModelBindProtolioAdd';
 import ModelSendOrder from '@/pages/workOrder/components/ModelSendOrder';
-import { history, Link } from 'umi';
+import { history } from 'umi';
 import ImageFlatList from '@/components/common/ImageFlatList'
+import { IconFont } from '@/components/common/IconFont'
 interface WorkOrderListProps {
   orderType: string;
 }
@@ -138,82 +139,87 @@ const DictionaryList: React.FC<WorkOrderListProps> = ({ orderType = 'wx' }) => {
     {
       title: '操作',
       valueType: 'option',
-      width: '200px',
+      width: '180px',
       render: (_, record) => <>
-        <Button
-          key="bind"
-          size="small"
-          style={ { width: '62px' } }
-          onClick={ () => {
-            fetchBindPortolio(record);
-          } }
-          type={ record.portfolioId === '' ? 'link' : 'text' }
-          disabled={ record.status === 'wc' || record.status === 'cancel' }
-        >
-          { record.portfolioId !== '' ? '重新绑定' : '绑定档案' }
-        </Button>
-        { record.portfolioId === '' ? (
-          <Popconfirm
-            key="send"
-            title="尚未绑定档案，确认去派单？"
-            onConfirm={ () => {
-              fetchSendOrder(record);
+        <Tooltip title={ record.portfolioId !== '' ? '重新绑定' : '绑定档案' }>
+          <Button
+            key="bind"
+            size="small"
+            onClick={ () => {
+              fetchBindPortolio(record);
             } }
+            type={ record.portfolioId === '' ? 'link' : 'text' }
             disabled={ record.status === 'wc' || record.status === 'cancel' }
           >
-            <Button
-              type={ record.engineerId === '' ? 'link' : 'text' }
-              style={ { width: '62px' } }
-              size="small"
-              disabled={ record.status === 'wc' || record.status === 'cancel' }
-            >
-              { record.engineerId !== '' ? '重新派单' : '派单' }
-            </Button>
-          </Popconfirm>
-        ) : (
-            <Button
-              key="send"
-              type={ record.engineerId === '' ? 'link' : 'text' }
-              style={ { width: '62px' } }
-              size="small"
-              onClick={ () => {
+            <FileAddFilled className="qm-table-icon" />
+          </Button>
+        </Tooltip>
+        <Tooltip title={ record.engineerId !== '' ? '重新派单' : '派单' }>
+          { record.portfolioId === '' ? (
+            <Popconfirm
+              title="尚未绑定档案，确认去派单？"
+              onConfirm={ () => {
                 fetchSendOrder(record);
               } }
               disabled={ record.status === 'wc' || record.status === 'cancel' }
             >
-              { record.engineerId !== '' ? '重新派单' : '派单' }
+              <Button
+                type={ record.engineerId === '' ? 'link' : 'text' }
+                size="small"
+                disabled={ record.status === 'wc' || record.status === 'cancel' }
+              >
+                <TagFilled className="qm-table-icon" />
+              </Button>
+            </Popconfirm>
+          ) : (
+              <Button
+                key="send"
+                type={ record.engineerId === '' ? 'link' : 'text' }
+                size="small"
+                onClick={ () => {
+                  fetchSendOrder(record);
+                } }
+                disabled={ record.status === 'wc' || record.status === 'cancel' }
+              >
+                <TagFilled className="qm-table-icon" />
+              </Button>
+            ) }
+        </Tooltip>
+        <Tooltip title={ '结单' }>
+          <Button
+            onClick={ () => { history.push(`${orderTypeMatchInfo(orderType)?.listPath}/finish/${record.orderNo}`) } }
+            size="small"
+            type="link"
+            disabled={ record.status === 'wc' || record.status === 'cancel' }>
+            <CarryOutFilled className="qm-table-icon" />
+          </Button>
+        </Tooltip>
+        <Tooltip title={ '详情' }>
+          <Button
+            onClick={ () => { history.push(`${orderTypeMatchInfo(orderType)?.listPath}/info/${record.id}`) } }
+            size="small" type="link"
+            disabled={ record.status === 'wc' || record.status === 'cancel' }>
+            <FileTextFilled className="qm-table-icon" />
+          </Button>
+        </Tooltip>
+        <Tooltip title='撤单'>
+          <Popconfirm
+            key="cancel"
+            title="是否要撤单？"
+            onConfirm={ () => {
+              record.id !== undefined && tiggerCancel(record.id?.toString());
+            } }
+            disabled={ record.status === 'wc' || record.status === 'cancel' }
+          >
+            <Button
+              size="small"
+              type="link"
+              disabled={ record.status === 'wc' || record.status === 'cancel' }
+            >
+              <IconFont type="icon-cheshen" style={ { fontSize: "17px" } } />
             </Button>
-          ) }
-        <Button key="wancheng" onClick={ () => { history.push(`${orderTypeMatchInfo(orderType)?.listPath}/finish/${record.orderNo}`) } } size="small" type="link" disabled={ record.status === 'wc' || record.status === 'cancel' }>
-          结单
-        </Button>
-        <TableDropdown
-          style={ { fontWeight: 'bold' } }
-          key="actionGroup"
-          menus={ [
-            {
-              key: "info",
-              name: <Link to={ `${orderTypeMatchInfo(orderType)?.listPath}/info/${record.id}` } ><Button type="text">详情</Button></Link>
-            },
-            {
-              key: 'cancel',
-              name: (
-                <Popconfirm
-                  key="cancel"
-                  title="是否要撤单？"
-                  onConfirm={ () => {
-                    record.id !== undefined && tiggerCancel(record.id?.toString());
-                  } }
-                  disabled={ record.status === 'wc' || record.status === 'cancel' }
-                >
-                  <Button type="text" disabled={ record.status === 'wc' || record.status === 'cancel' }>
-                    撤单
-                    </Button>
-                </Popconfirm>
-              ),
-            },
-          ] }
-        />
+          </Popconfirm>
+        </Tooltip>
       </>,
     },
   ];

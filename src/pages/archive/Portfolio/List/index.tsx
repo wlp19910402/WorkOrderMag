@@ -1,5 +1,5 @@
-import { PlusOutlined } from '@ant-design/icons';
-import { Button, Drawer, message, Popconfirm, Image, Row, Col, } from 'antd';
+import { PlusOutlined, EditFilled, DeleteFilled, FileTextFilled } from '@ant-design/icons';
+import { Button, Drawer, message, Popconfirm, Image, Tooltip } from 'antd';
 import React, { useState, useRef, useEffect } from 'react';
 import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
 import type { ProColumns, ActionType } from '@ant-design/pro-table';
@@ -236,18 +236,24 @@ const DictionaryList: React.FC<PortfolioListDataType> = () => {
       valueType: 'option',
       width: "120px",
       render: (_, record) => [
-        <Popconfirm
-          key="delete"
-          title="是否要删除此行？"
-          onConfirm={ () => { record.id !== undefined && tiggerDelete(record.id?.toString()); } }>
-          <a>删除</a>
-        </Popconfirm>,
-        <Link key="edit" to={ `/archive/portfolio/edit/${record.id}` }>
-          编辑
-        </Link>,
-        <Link key="info" to={ `/archive/portfolio/info/${record.id}` }>
-          详情
-        </Link>
+        <Tooltip title="编辑" key="edit">
+          <Link to={ `/archive/portfolio/edit/${record.id}` }>
+            <EditFilled className="qm-table-icon" />
+          </Link>
+        </Tooltip>,
+        <Tooltip title="删除" key="delete">
+          <Popconfirm
+            title="是否要删除此行？"
+            onConfirm={ () => { record.id !== undefined && tiggerDelete(record.id?.toString()); } }>
+            <Button size="small" type="link"><DeleteFilled className="qm-table-icon" /></Button>
+          </Popconfirm>
+        </Tooltip>,
+        ,
+        <Tooltip title="详情" key="info">
+          <Link key="edit" to={ `/archive/portfolio/info/${record.id}` }>
+            <FileTextFilled className="qm-table-icon" />
+          </Link>
+        </Tooltip>
       ],
     },
   ];

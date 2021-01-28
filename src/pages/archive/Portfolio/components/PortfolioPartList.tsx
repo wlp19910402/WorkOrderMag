@@ -133,6 +133,7 @@ const EditableTable: React.FC<ConsumableEditableProps> = ({ queryPartList, dataP
     {
       title: '操作',
       dataIndex: 'operation',
+      width: "110px",
       hideInDescriptions: true,
       render: (_: any, record: RecordPartsDataType) => {
         const editable = isEditing(record);

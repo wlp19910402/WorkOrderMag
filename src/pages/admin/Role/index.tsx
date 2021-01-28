@@ -1,5 +1,5 @@
-import { PlusOutlined } from '@ant-design/icons';
-import { Button, Drawer, message, Popconfirm } from 'antd';
+import { PlusOutlined, EditFilled, DeleteFilled, ApiFilled } from '@ant-design/icons';
+import { Button, Drawer, message, Popconfirm, Tooltip } from 'antd';
 import React, { useState, useRef } from 'react';
 import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
 import type { ProColumns, ActionType } from '@ant-design/pro-table';
@@ -68,28 +68,31 @@ const RoleList: React.FC<RoleDataType> = () => {
     },
     {
       title: "操作",
-      width: 200,
+      width: 140,
       valueType: 'option',
       key: "option",
       render: (_, record) => [
-        <a
-          key="edit"
-          onClick={ () => { handleModalVisible(true); setCurrentRow(record); } }
-        >
-          编辑
-        </a>,
-        <Popconfirm
-          key="delete"
-          title="是否要删除此行？"
-          onConfirm={ () => { record.id !== undefined && tiggerDeleteRole(record.id?.toString()); } }>
-          <a >删除</a>
-        </Popconfirm>,
-        <a
-          key="setBindRole"
-          onClick={ () => { handleModalTreeVisible(true); setCurrentRow(record); } }
-        >
-          绑定权限
-        </a>
+        <Tooltip title="编辑" key="edit">
+          <Button
+            type="link"
+            size="small"
+            onClick={ async () => { handleModalVisible(true); setCurrentRow(record); } }
+          >
+            <EditFilled className="qm-table-icon" />
+          </Button>
+        </Tooltip>,
+        <Tooltip title="删除" key="delete">
+          <Popconfirm
+            title="是否要删除此行？"
+            onConfirm={ () => { record.id !== undefined && tiggerDeleteRole(record.id?.toString()); } }>
+            <Button size="small" type="link"><DeleteFilled className="qm-table-icon" /></Button>
+          </Popconfirm>
+        </Tooltip>,
+        <Tooltip title="绑定权限" key="setBindRole">
+          <Button size="small" type="link" onClick={ () => { handleModalTreeVisible(true); setCurrentRow(record); } }>
+            <ApiFilled className="qm-table-icon" />
+          </Button>
+        </Tooltip>
       ],
     },
   ];
@@ -130,7 +133,7 @@ const RoleList: React.FC<RoleDataType> = () => {
         rowSelection={ false }
       />
 
-      {createModalVisible && (
+      { createModalVisible && (
         <ModalModifyForm
           createModalVisible={ createModalVisible }
           handleModalVisible={ handleModalVisible }
@@ -138,7 +141,7 @@ const RoleList: React.FC<RoleDataType> = () => {
           currentRow={ currentRow }
         />
       ) }
-      {modalTreeVisible && currentRow !== undefined && (
+      { modalTreeVisible && currentRow !== undefined && (
         <ModalMenuTree
           modalTreeVisible={ modalTreeVisible }
           handleModalTreeVisible={ handleModalTreeVisible }
@@ -146,8 +149,7 @@ const RoleList: React.FC<RoleDataType> = () => {
           currentRow={ currentRow }
         />
       ) }
-
-      {selectedRowsState?.length > 0 && (
+      { selectedRowsState?.length > 0 && (
         <FooterToolbar
           extra={
             <div>
