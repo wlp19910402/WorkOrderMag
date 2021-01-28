@@ -1,4 +1,4 @@
-import { Button, Form, Card, Input, Row, Col, Descriptions, message, Image, } from 'antd';
+import { Button, Form, Card, Input, Row, Col, Descriptions, message } from 'antd';
 import React, { useState, useEffect } from 'react';
 import { FooterToolbar } from '@ant-design/pro-layout';
 import { queryList } from '@/pages/workOrder/service';

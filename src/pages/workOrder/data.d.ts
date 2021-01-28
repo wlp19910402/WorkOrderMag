@@ -26,12 +26,12 @@ export const orderTypeEnum = {
   // jd: "建档工单"
 }
 export const orderStatusData = [
-  { label: "未派单", value: "wpd" },
-  { label: "派单", value: "pd" },
-  { label: "接单", value: "jd" },
-  { label: "转单", value: "zd" },
-  { label: "完成", value: "wc" },
-  { label: "已撤单", value: "cancel" }
+  { label: "未派单", value: "wpd", color: "gray" },
+  { label: "派单", value: "pd", color: "blue" },
+  { label: "接单", value: "jd", color: "blue" },
+  { label: "转单", value: "zd", color: "blue" },
+  { label: "完成", value: "wc", color: "green" },
+  { label: "已撤单", value: "cancel", color: "red" }
 ]
 
 export const orderStatusEnum = {

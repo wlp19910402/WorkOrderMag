@@ -44,3 +44,6 @@ export const submitOrder = async (params: any) => {
 export const infoOrder = async (id: React.Key) => {
   return await httpServer.get(`${API.WORK_ORDER_INFO}/${id}`)
 }
+export const logOrder = async (id: React.Key) => {
+  return await httpServer.get(`${API.WORK_ORDER_LOGS}/${id}`)
+}
