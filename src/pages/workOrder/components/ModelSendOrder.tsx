@@ -55,7 +55,7 @@ const ModelSendOrder: React.FC<ModalModifyFormDataProps> = ({ createModalVisible
   const conversionFormat = (data: EngineerListDataType[]) => {
     let obj: any[] = []
     data.forEach(item => {
-      obj.push({ value: item.id, label: `${item.engineerName}(${item.engineerMobile})`, style: { "width": "260px", display: "inline-block", margin: "0" } })
+      obj.push({ value: item.id, label: `${item.engineerName}(${item.engineerMobile})`, style: { "width": "240px", display: "inline-block", margin: "0" } })
     })
     setEngineerData(obj)
   }
@@ -71,7 +71,7 @@ const ModelSendOrder: React.FC<ModalModifyFormDataProps> = ({ createModalVisible
           okText: "保存"
         } }
         title="派单"
-        width="600px"
+        width="800px"
         visible={ createModalVisible }
         onVisibleChange={ handleModalVisible }
         onFinish={ async (value: any) => {

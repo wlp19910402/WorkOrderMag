@@ -84,7 +84,7 @@ const DictionaryList: React.FC<WorkOrderFinishProps> = ({ orderType = 'wx', matc
           </Descriptions.Item>
         </Descriptions>
       </Card>
-      { portfolioId !== undefined && portfolioId !== "" &&
+      {/* { portfolioId !== undefined && portfolioId !== "" &&
         <Card title="耗材信息" style={ { marginBottom: "20px" } } bordered={ false }>
           <PortfolioConsumableList
             portfolioId={ portfolioId }
@@ -92,7 +92,7 @@ const DictionaryList: React.FC<WorkOrderFinishProps> = ({ orderType = 'wx', matc
             consumableUpdate={ consumableUpdate }
           />
         </Card>
-      }
+      } */}
 
       <Card title="绑定档案信息信息" bordered={ false }>
 
