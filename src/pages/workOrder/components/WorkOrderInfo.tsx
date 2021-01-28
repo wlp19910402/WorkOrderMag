@@ -7,6 +7,7 @@ import { match } from 'react-router';
 import PortfolioConsumableList from '@/pages/workOrder/components/PortfolioConsumableList'
 import UploadImage from '@/components/Upload/index'
 import ImageFlatList from '@/components/common/ImageFlatList'
+import { setUploadUrlImage } from '@/components/Upload/service'
 interface WorkOrderFinishProps {
   matchRoute: match<{}>;
   orderType: string;
@@ -29,26 +30,9 @@ const DictionaryList: React.FC<WorkOrderFinishProps> = ({ orderType = 'wx', matc
   };
   useEffect(() => {
     fetchQueryCurrentOrderInfo();
-    setUploadUrlImage();
+    setUploadUrlImage(uploadImages, setUploadImages)
   }, [])
-  const setUploadUrlImage = async (url?: string, index?: number) => {
-    let tmp = uploadImages
-    if (url !== '' && !url) {
-      tmp = tmp.filter((item: any) => item !== '');
-      if (tmp.length < 6) {
-        tmp.push("")
-      }
-    } else {
-      tmp = tmp.map((item: any, idx: number) => {
-        return idx === index ? url : item
-      }).filter((item: any) => item !== '');
-      if (tmp.length < 6) {
-        tmp.push("")
-      }
-    }
-    await setUploadImages([])
-    setUploadImages(tmp)
-  }
+
   return (
     <>
       <Card title="工单详情" style={ { marginBottom: "20px" } } bordered={ false }>

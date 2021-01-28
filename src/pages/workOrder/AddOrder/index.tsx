@@ -6,6 +6,7 @@ import UploadImage from '@/components/Upload/index'
 import ModelBindProtolioAdd from '@/pages/workOrder/components/ModelBindProtolioAdd'
 import { IRouteComponentProps } from 'umi'
 import { PageContainer } from '@ant-design/pro-layout';
+import { setUploadUrlImage } from '@/components/Upload/service'
 const layout = {
   labelCol: { span: 6 },
   wrapperCol: { span: 18 },
@@ -17,7 +18,7 @@ const DictionaryList: React.FC<IRouteComponentProps> = ({ location, history }) =
   const [ protolioInfo, setProtolioInfo ] = useState<any>({})
   const orderTypeParams = location.query.orderType || orderTypeData[ 0 ].value
   const onFinish = async (values: { [ key: string ]: any }) => {
-    setUploadUrlImage()
+    setUploadUrlImage(uploadImages, setUploadImages)
     let params: OrderTypeType = {
       company: values?.company,
       customerMobile: values?.customerMobile,
@@ -35,26 +36,8 @@ const DictionaryList: React.FC<IRouteComponentProps> = ({ location, history }) =
       if (orderTypeInfo) history.push(orderTypeInfo.listPath);
     }, 1000);
   }
-  const setUploadUrlImage = async (url?: string, index?: number) => {
-    let tmp = uploadImages
-    if (url !== '' && !url) {
-      tmp = tmp.filter((item: any) => item !== '');
-      if (tmp.length < 6) {
-        tmp.push("")
-      }
-    } else {
-      tmp = tmp.map((item: any, idx: number) => {
-        return idx === index ? url : item
-      }).filter((item: any) => item !== '');
-      if (tmp.length < 6) {
-        tmp.push("")
-      }
-    }
-    await setUploadImages([])
-    setUploadImages(tmp)
-  }
   useEffect(() => {
-    setUploadUrlImage();
+    setUploadUrlImage(uploadImages, setUploadImages)
   }, [])
   const bindProtolioInfo = (record: any) => {
     setProtolioInfo(record);
@@ -131,7 +114,7 @@ const DictionaryList: React.FC<IRouteComponentProps> = ({ location, history }) =
             <Form.Item extra="外观图片（最多上传六张）带“删除”按钮" label="图片上传" valuePropName="checked">
               <Row gutter={ [ 16, 16 ] } >
                 { uploadImages.map((item, index) => {
-                  return <Col key={ index }><UploadImage uploadId={ `uploadImagesId_${index}` } value={ item } onChange={ (url) => { setUploadUrlImage(url, index) } } /></Col>
+                  return <Col key={ index }><UploadImage uploadId={ `uploadImagesId_${index}` } value={ item } onChange={ (url) => { setUploadUrlImage(uploadImages, setUploadImages, url, index) } } /></Col>
                 }) }
               </Row>
             </Form.Item>

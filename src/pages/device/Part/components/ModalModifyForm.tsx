@@ -9,6 +9,7 @@ import type { PartSaveDataType } from '../data.d';
 import { message, Form, Row, Col, Spin } from 'antd'
 import UploadImage from '@/components/Upload/index'
 import { fetchDicTypeSelectObj } from '@/pages/admin/Dictionary/service'
+import { setUploadUrlImage } from '@/components/Upload/service'
 type ModalModifyFormDataProps = {
   createModalVisible: boolean;
   handleModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
@@ -32,26 +33,8 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
     handleModalVisible(false);
     message.success(`${currentRow?.id !== undefined ? '修改' : '添加'}成功`);
   }
-  const setUploadUrlImage = async (url?: string, index?: number) => {
-    let tmp = uploadImages
-    if (url !== '' && !url) {
-      tmp = tmp.filter((item: any) => item !== '');
-      if (tmp.length < 6) {
-        tmp.push("")
-      }
-    } else {
-      tmp = tmp.map((item: any, idx: number) => {
-        return idx === index ? url : item
-      }).filter((item: any) => item !== '');
-      if (tmp.length < 6) {
-        tmp.push("")
-      }
-    }
-    await setUploadImages([])
-    setUploadImages(tmp)
-  }
   useEffect(() => {
-    setUploadUrlImage()
+    setUploadUrlImage(uploadImages, setUploadImages)
     currentRow?.type && fetchDicTypeSelectObj(currentRow?.type).then(res => {
       setSearchModel(res);
     });
@@ -133,7 +116,7 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
       <Form.Item extra="外观图片（最多上传六张）带“删除”按钮" name="imgUrls" label="图片上传" valuePropName="checked">
         <Row gutter={ [ 16, 16 ] } >
           { uploadImages.map((item, index) => {
-            return <Col key={ index }><UploadImage uploadId={ `uploadImagesId_${index}` } value={ item } onChange={ (url) => { setUploadUrlImage(url, index) } } /></Col>
+            return <Col key={ index }><UploadImage uploadId={ `uploadImagesId_${index}` } value={ item } onChange={ (url) => { setUploadUrlImage(uploadImages, setUploadImages, url, index) } } /></Col>
           }) }
         </Row>
       </Form.Item>

@@ -9,7 +9,7 @@ import PortfolioConsumableList from '@/pages/workOrder/components/PortfolioConsu
 import UploadImage from '@/components/Upload/index'
 import { submitOrder } from '@/pages/workOrder/service'
 import ImageFlatList from '@/components/common/ImageFlatList'
-
+import { setUploadUrlImage } from '@/components/Upload/service'
 interface WorkOrderFinishProps {
   matchRoute: match<{}>;
   orderType: string;
@@ -37,7 +37,7 @@ const DictionaryList: React.FC<WorkOrderFinishProps> = ({ orderType = 'wx', matc
   };
   useEffect(() => {
     fetchQueryCurrentOrderInfo();
-    setUploadUrlImage();
+    setUploadUrlImage(uploadImages, setUploadImages)
   }, [])
   const [ form ] = Form.useForm();
   const onFinish = async (values: { [ key: string ]: any }) => {
@@ -55,24 +55,6 @@ const DictionaryList: React.FC<WorkOrderFinishProps> = ({ orderType = 'wx', matc
     setTimeout(() => {
       if (orderTypeInfo) history.push(orderTypeInfo.listPath);
     }, 1000);
-  }
-  const setUploadUrlImage = async (url?: string, index?: number) => {
-    let tmp = uploadImages
-    if (url !== '' && !url) {
-      tmp = tmp.filter((item: any) => item !== '');
-      if (tmp.length < 6) {
-        tmp.push("")
-      }
-    } else {
-      tmp = tmp.map((item: any, idx: number) => {
-        return idx === index ? url : item
-      }).filter((item: any) => item !== '');
-      if (tmp.length < 6) {
-        tmp.push("")
-      }
-    }
-    await setUploadImages([])
-    setUploadImages(tmp)
   }
   return (
     <>
@@ -118,7 +100,7 @@ const DictionaryList: React.FC<WorkOrderFinishProps> = ({ orderType = 'wx', matc
           <Form.Item extra="外观图片（最多上传六张）带“删除”按钮" label="结单图片" valuePropName="checked">
             <Row gutter={ [ 16, 16 ] } >
               { uploadImages.map((item, index) => {
-                return <Col key={ index }><UploadImage uploadId={ `uploadImagesId_${index}` } value={ item } onChange={ (url) => { setUploadUrlImage(url, index) } } /></Col>
+                return <Col key={ index }><UploadImage uploadId={ `uploadImagesId_${index}` } value={ item } onChange={ (url) => { setUploadUrlImage(uploadImages, setUploadImages, url, index) } } /></Col>
               }) }
             </Row>
           </Form.Item>

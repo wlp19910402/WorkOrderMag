@@ -1,6 +1,6 @@
 import API from '@/services/API.d'
 import httpServer from '@/utils/httpServer'
-
+import React from 'react'
 type UploadOssSignParamsType = {
   fileMd5?: string;
   originalName: string;
@@ -27,4 +27,23 @@ export const uploadOssSign = async (params: UploadOssSignParamsType) => {
 // 获取sts签名
 export const uploadStsSign = async (params: UploadOssSignParamsType) => {
   return httpServer.post(API.UPLOAD_STS_SIGN, { data: { ...defaultUploadOssSign, ...params } });
+}
+
+export const setUploadUrlImage = async (uploadImages: string[], setUploadImages: (value: React.SetStateAction<string[]>) => void, url?: string, index?: number) => {
+  let tmp = uploadImages
+  if (url !== '' && !url) {
+    tmp = tmp.filter((item: any) => item !== '');
+    if (tmp.length < 6) {
+      tmp.push("")
+    }
+  } else {
+    tmp = tmp.map((item: any, idx: number) => {
+      return idx === index ? url : item
+    }).filter((item: any) => item !== '');
+    if (tmp.length < 6) {
+      tmp.push("")
+    }
+  }
+  await setUploadImages([])
+  setUploadImages(tmp)
 }
