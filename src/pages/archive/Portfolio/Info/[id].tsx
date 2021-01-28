@@ -10,6 +10,7 @@ import ModelPartAdd from '@/pages/archive/portfolio/components/ModelPartAdd'
 import PortfolioConsumableList from '@/pages/archive/portfolio/components/PortfolioConsumableList'
 import PortfolioPartList from '@/pages/archive/portfolio/components/PortfolioPartList'
 import { queryProtfolioConsumableList, queryProtfolioPartList } from '@/pages/archive/portfolio/service'
+import ImageFlatList from '@/components/common/ImageFlatList'
 interface PortfolioEditProps {
   match: match
 }
@@ -95,22 +96,7 @@ const DictionaryList: React.FC<PortfolioEditProps> = ({ match }) => {
             <Descriptions.Item label="创建时间">{ currentRow?.createTime }</Descriptions.Item>
             <Descriptions.Item label="修改人">{ currentRow?.updateUsername }</Descriptions.Item>
             <Descriptions.Item label="修改时间">{ currentRow?.updateTime }</Descriptions.Item> */ }
-            <Descriptions.Item label="设备图片"  >
-              { currentRow?.imgUrls.length > 0 ?
-                (
-                  <Row gutter={ [ 16, 16 ] } >
-                    { currentRow?.imgUrls.map((url: string, index: number) =>
-                      <Col key={ index }>
-                        <Image
-                          width="60px" height="60px"
-                          src={ `${url}?x-oss-process=image/resize,h_100,w_100,m_lfit` }
-                          preview={ { src: url } }
-                        />
-                      </Col>
-                    ) }</Row>
-                ) : "暂无图片"
-              }
-            </Descriptions.Item>
+            <Descriptions.Item label="设备图片"><ImageFlatList imageUrls={ currentRow?.imgUrls } /></Descriptions.Item>
           </Descriptions>
           <Alert
             style={ { fontSize: "12px", marginTop: "20px" } }

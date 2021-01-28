@@ -8,6 +8,8 @@ import { match } from 'react-router';
 import PortfolioConsumableList from '@/pages/workOrder/components/PortfolioConsumableList'
 import UploadImage from '@/components/Upload/index'
 import { submitOrder } from '@/pages/workOrder/service'
+import ImageFlatList from '@/components/common/ImageFlatList'
+
 interface WorkOrderFinishProps {
   matchRoute: match<{}>;
   orderType: string;
@@ -90,22 +92,7 @@ const DictionaryList: React.FC<WorkOrderFinishProps> = ({ orderType = 'wx', matc
           <Descriptions.Item label="设备名称">{ currentRow?.deviceName }</Descriptions.Item>
           {/* <Descriptions.Item label="设备类型">{ currentRow?.deviceTypeName }</Descriptions.Item> */ }
           <Descriptions.Item label="是否绑定档案">{ currentRow?.portfolioId !== "" ? "已绑定" : "未绑定" }</Descriptions.Item>
-          <Descriptions.Item label="工单图片">
-            { currentRow?.orderImgUrls && currentRow?.orderImgUrls.length > 0 ?
-              (
-                <Row gutter={ [ 16, 16 ] } >
-                  { currentRow?.orderImgUrls.map((url: string, index: number) =>
-                    <Col key={ index }>
-                      <Image
-                        width="60px" height="60px"
-                        src={ `${url}?x-oss-process=image/resize,h_100,w_100,m_lfit` }
-                        preview={ { src: url } }
-                      />
-                    </Col>
-                  ) }</Row>
-              ) : "暂无图片"
-            }
-          </Descriptions.Item>
+          <Descriptions.Item label="工单图片"><ImageFlatList imageUrls={ currentRow?.imgUrls } /></Descriptions.Item>
         </Descriptions>
       </Card>
       { portfolioId !== undefined && portfolioId !== "" &&

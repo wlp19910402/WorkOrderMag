@@ -12,6 +12,7 @@ import ImgNull from '@/assets/images/images-null.png';
 import ModelBindProtolioAdd from '@/pages/workOrder/components/ModelBindProtolioAdd';
 import ModelSendOrder from '@/pages/workOrder/components/ModelSendOrder';
 import { history, Link } from 'umi';
+import ImageFlatList from '@/components/common/ImageFlatList'
 interface WorkOrderListProps {
   orderType: string;
 }
@@ -222,24 +223,7 @@ const DictionaryList: React.FC<WorkOrderListProps> = ({ orderType = 'wx' }) => {
       title: '图片',
       dataIndex: 'orderImgUrls',
       hideInSearch: true,
-      render: (val: any) => {
-        return val && val.length > 0 ? (
-          <Row gutter={ [ 16, 16 ] }>
-            {val.map((url: string, index: number) => (
-              <Col key={ index }>
-                <Image
-                  width="60px"
-                  height="60px"
-                  src={ `${url}?x-oss-process=image/resize,h_100,w_100,m_lfit` }
-                  preview={ { src: url } }
-                />
-              </Col>
-            )) }
-          </Row>
-        ) : (
-            '暂无图片'
-          );
-      },
+      render: (val: any) => <ImageFlatList imageUrls={ val } />
     },
   ];
   const tiggerCancel = async (id: string) => {

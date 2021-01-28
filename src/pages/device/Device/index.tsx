@@ -13,6 +13,7 @@ import ImgNull from '@/assets/images/images-null.png';
 import { fetchDicTypeSelectObj } from '@/pages/admin/Dictionary/service'
 import CODE from '@/utils/DicCode.d'
 import SearchSelect from '@/components/common/SerchSelect'
+import ImageFlatList from '@/components/common/ImageFlatList'
 // const handleRemove = async (selectedRows: DeviceListDataType[]) => {
 //   const hide = message.loading('正在删除');
 //   if (!selectedRows) return true;
@@ -215,21 +216,7 @@ const DictionaryList: React.FC<DeviceListDataType> = () => {
       title: "图片",
       dataIndex: 'imgUrls',
       hideInSearch: true,
-      render: (val: any) => {
-        return val && val.length > 0 ?
-          (
-            <Row gutter={ [ 16, 16 ] } >
-              { val.map((url: string, index: number) =>
-                <Col key={ index }>
-                  <Image
-                    width="60px" height="60px"
-                    src={ `${url}?x-oss-process=image/resize,h_100,w_100,m_lfit` }
-                    preview={ { src: url } }
-                  />
-                </Col>
-              ) }</Row>
-          ) : "暂无图片"
-      }
+      render: (val: any) => <ImageFlatList imageUrls={ val } />
     } ]
   const tiggerDelete = async (id: string) => {
     const response = await deleteDevice(id)

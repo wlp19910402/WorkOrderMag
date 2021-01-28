@@ -13,6 +13,7 @@ import CODE from '@/utils/DicCode.d'
 import SearchSelect from '@/components/common/SerchSelect'
 import { pickerDateFormat } from '@/utils/parameter'
 import { bindProtolio } from '@/pages/workOrder/service'
+import ImageFlatList from '@/components/common/ImageFlatList'
 export type ColumnEditConsumableType = {
   consumableName: string;
   consumableNo: string;
@@ -269,21 +270,7 @@ const ModelConsumableAdd: React.FC<ModalModifyFormDataProps> = ({ createModalVis
       title: "设备图片",
       dataIndex: 'imgUrls',
       hideInSearch: true,
-      render: (val: any) => {
-        return val && val.length > 0 ?
-          (
-            <Row gutter={ [ 16, 16 ] } >
-              { val.map((url: string) =>
-                <Col>
-                  <Image
-                    width="60px" height="60px"
-                    src={ `${url}?x-oss-process=image/resize,h_100,w_100,m_lfit` }
-                    preview={ { src: url } }
-                  />
-                </Col>
-              ) }</Row>
-          ) : "暂无图片"
-      }
+      render: (val: any) => <ImageFlatList imageUrls={ val } />
     } ]
   const fetchQueryList = async (params: any) => {
     const response = await queryProtfolioList(params)

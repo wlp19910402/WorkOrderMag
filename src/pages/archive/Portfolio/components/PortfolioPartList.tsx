@@ -4,6 +4,7 @@ import { deleteProtfolioPart, updateProtfolioPart } from '@/pages/archive/portfo
 import { RecordPartsDataType } from '@/pages/archive/portfolio/data.d'
 import ProDescriptions from '@ant-design/pro-descriptions';
 import type { ProDescriptionsItemProps } from '@ant-design/pro-descriptions';
+import ImageFlatList from '@/components/common/ImageFlatList'
 interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
   editing: boolean;
   dataIndex: string;
@@ -177,22 +178,7 @@ const EditableTable: React.FC<ConsumableEditableProps> = ({ queryPartList, dataP
           <Descriptions.Item label="备件创建人">{ val?.createUsername }</Descriptions.Item>
           <Descriptions.Item label="备件修改时间">{ val?.updateTime }</Descriptions.Item>
           <Descriptions.Item label="备件修改人">{ val?.updateUsername }</Descriptions.Item>
-          <Descriptions.Item label="备件图片">
-            { val?.imgUrls.length > 0 ?
-              (
-                <Row gutter={ [ 16, 16 ] } >
-                  { val?.imgUrls.map((url: string, index: number) =>
-                    <Col key={ index }>
-                      <Image
-                        width="60px" height="60px"
-                        src={ `${url}?x-oss-process=image/resize,h_100,w_100,m_lfit` }
-                        preview={ { src: url } }
-                      />
-                    </Col>
-                  ) }</Row>
-              ) : "暂无图片"
-            }
-          </Descriptions.Item>
+          <Descriptions.Item label="备件图片"><ImageFlatList imageUrls={ val?.imgUrls } /></Descriptions.Item>
         </Descriptions>
       );
     }

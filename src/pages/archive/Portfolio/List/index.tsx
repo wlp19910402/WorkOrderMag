@@ -14,6 +14,7 @@ import CODE from '@/utils/DicCode.d'
 import { history, Link } from 'umi'
 import SearchSelect from '@/components/common/SerchSelect'
 import { pickerDateFormat } from '@/utils/parameter'
+import ImageFlatList from '@/components/common/ImageFlatList'
 // const handleRemove = async (selectedRows: PortfolioListDataType[]) => {
 //   const hide = message.loading('正在删除');
 //   if (!selectedRows) return true;
@@ -256,21 +257,7 @@ const DictionaryList: React.FC<PortfolioListDataType> = () => {
       title: "设备图片",
       dataIndex: 'imgUrls',
       hideInSearch: true,
-      render: (val: any) => {
-        return val && val.length > 0 ?
-          (
-            <Row gutter={ [ 16, 16 ] } >
-              { val.map((url: string) =>
-                <Col>
-                  <Image
-                    width="60px" height="60px"
-                    src={ `${url}?x-oss-process=image/resize,h_100,w_100,m_lfit` }
-                    preview={ { src: url } }
-                  />
-                </Col>
-              ) }</Row>
-          ) : "暂无图片"
-      }
+      render: (val: any) => <ImageFlatList imageUrls={ val } />
     } ]
   const tiggerDelete = async (id: string) => {
     const response = await deleteProtfolio(id)

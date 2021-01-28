@@ -76,6 +76,7 @@ export default {
   WORK_ORDER_CANCEL: "/api/work-order/cancel",//撤单
   WORK_ORDER_INFO: '/api//work-order/info',//详情
   WORK_ORDER_SUBMIT: "/api/work-order/submit",//结单
+  WORK_ORDER_LOGS: '/api/work-order/logs',//工单操作日志/work-order/logs/{id}
   //工程师管理
   ENGINEER_LIST: "/api/engineer/list"
 }

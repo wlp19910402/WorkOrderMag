@@ -1,3 +1,4 @@
+import { RecordPartsDataType, RecordConsumableDataType, ConsumableListDataType } from '@/pages/archive/portfolio/data.d'
 export type PageDataType = {
   current: number;
   pageSize: number;
@@ -76,4 +77,41 @@ export interface OrderListType extends OrderTypeType {
   sourceType: string;
   status: string;
   workDescription: string;
+}
+//更改的耗材列表数据类型
+export interface WorkConsumablesDataType {
+  baseInfo: ConsumableListDataType[]
+  createTime: string;
+  createUser: string;
+  reateUsername: string;//创建人名称
+  id: number;
+  expirationTime: string;//到期时间
+  oldExpirationTime: string;//旧的到期时间
+  orderId: number;//工单id
+  pcId: number;//档案耗材id
+  portfolioId: number;//档案id
+  replacementCycle: string;//更换周期
+}
+//工单详情页面
+export interface WorkOrderInfoDataType extends OrderListType {
+  consumables: RecordConsumableDataType[],//档案耗材信息
+  parts: RecordPartsDataType[];//档案备件信息
+  subImgUrls: string[];//结单图片
+  subRemark: string;//结单备注
+  subTime: string;//结单时间
+  subUser: string;//结单人id
+  subUsername: String;//结单人姓名
+  workConsumables: WorkConsumablesDataType[];//更换耗材
+  workDescription: string;//工单描述
+}
+
+//工单操作日志
+export interface WorkOrderWrokLogDataType {
+  createTime: string;//操作时间
+  createUser: string;//操作人id
+  createUsername: string;//操作人姓名
+  id: number;//日志id
+  operationLog: string;//操作日志
+  operationType: string;//操作类型：pd 派单，jd接单，zd 转单，wx 维修，wc 完成,可用值:pd,jd,zd,wx,wc,cancel
+  orderId: number;//工单ID
 }
