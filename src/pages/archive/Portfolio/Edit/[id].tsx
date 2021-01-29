@@ -9,14 +9,16 @@ interface PortfolioEditProps {
   match: match
 }
 const DictionaryList: React.FC<PortfolioEditProps> = ({ match }) => {
-  const [ currentRow, setCurrentRow ] = useState<any>()
+  const [ currentRow, setCurrentRow ] = useState<any>({})
   const [ loading, setLoading ] = useState<boolean>(true)
+  const [ hideNullPage, setHideNullPage ] = useState<boolean>(true)
   const routeParams: any = match.params
   useEffect(() => {
     infoProtfolio(routeParams.id).then(res => {
       setLoading(false)
       if (!res) {
         setCurrentRow(undefined)
+        setHideNullPage(false)
         return
       };
       setCurrentRow(res.data)
@@ -47,8 +49,8 @@ const DictionaryList: React.FC<PortfolioEditProps> = ({ match }) => {
       } }
     >
       <Spin spinning={ loading }>
-        { currentRow && <BasicModifyForm currentRow={ currentRow } /> }
-        { !currentRow && <NullInfo /> }
+        { hideNullPage && <BasicModifyForm currentRow={ currentRow } /> }
+        { !hideNullPage && <NullInfo /> }
       </Spin>
     </PageContainer>
   );

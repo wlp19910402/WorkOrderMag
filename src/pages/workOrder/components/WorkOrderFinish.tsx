@@ -20,16 +20,19 @@ const DictionaryList: React.FC<WorkOrderFinishProps> = ({ orderType = 'wx', matc
   const [ portfolioId, setPortfolioId ] = useState<React.Key>();
   const [ consumableUpdate, setConsumableUpdate ] = useState<any[]>([])
   const [ uploadImages, setUploadImages ] = useState<string[]>([])
+  const [ hideNullPage, setHideNullPage ] = useState<boolean>(true)
   const fetchQueryCurrentOrderInfo = async () => {
     let routeParams: any = matchRoute.params
     const response = await queryList({ current: 1, pageSize: 1, orderNo: routeParams.no });
     if (!response) {
       setCurrentRow(undefined)
+      setHideNullPage(false)
       return
     }
     if (response.data.records.length === 0) {
       setCurrentRow(undefined)
       message.error("当前工单不存在")
+      setHideNullPage(false)
       return
     }
     let data = response.data.records[ 0 ]
@@ -58,24 +61,24 @@ const DictionaryList: React.FC<WorkOrderFinishProps> = ({ orderType = 'wx', matc
   }
   return (
     <>
-      {currentRow && <>
+      {hideNullPage && <>
         <Card title="工单信息" style={ { marginBottom: "20px" } } bordered={ false }>
           <Descriptions bordered size="small"
             column={ { xs: 2, sm: 2, md: 2, lg: 2, xl: 2, xxl: 2 } }
             labelStyle={ { width: "120px", padding: "8px" } }
           >
-            <Descriptions.Item label="工单编号" >{ currentRow.orderNo }</Descriptions.Item>
-            <Descriptions.Item label="单位名称">{ currentRow.company }</Descriptions.Item>
-            <Descriptions.Item label="工程师姓名">{ currentRow.engineerName }</Descriptions.Item>
-            <Descriptions.Item label="支持人员">{ currentRow.supporterNames }</Descriptions.Item>
-            <Descriptions.Item label="工单状态">{ orderStatusData.find(item => item.value === currentRow.status)?.label }</Descriptions.Item>
-            <Descriptions.Item label="工单描述">{ currentRow.workDescription }</Descriptions.Item>
-            <Descriptions.Item label="工单来源">{ currentRow.sourceType }</Descriptions.Item>
-            <Descriptions.Item label="工单类型">{ orderTypeMatchInfo(currentRow.orderType)?.label }</Descriptions.Item>
-            <Descriptions.Item label="设备名称">{ currentRow.deviceName }</Descriptions.Item>
-            {/* <Descriptions.Item label="设备类型">{ currentRow.deviceTypeName }</Descriptions.Item> */ }
-            <Descriptions.Item label="是否绑定档案">{ currentRow.portfolioId !== "" ? "已绑定" : "未绑定" }</Descriptions.Item>
-            <Descriptions.Item label="工单图片"><ImageFlatList imageUrls={ currentRow.imgUrls } /></Descriptions.Item>
+            <Descriptions.Item label="工单编号" >{ currentRow?.orderNo }</Descriptions.Item>
+            <Descriptions.Item label="单位名称">{ currentRow?.company }</Descriptions.Item>
+            <Descriptions.Item label="工程师姓名">{ currentRow?.engineerName }</Descriptions.Item>
+            <Descriptions.Item label="支持人员">{ currentRow?.supporterNames }</Descriptions.Item>
+            <Descriptions.Item label="工单状态">{ orderStatusData.find(item => item.value === currentRow?.status)?.label }</Descriptions.Item>
+            <Descriptions.Item label="工单描述">{ currentRow?.workDescription }</Descriptions.Item>
+            <Descriptions.Item label="工单来源">{ currentRow?.sourceType }</Descriptions.Item>
+            <Descriptions.Item label="工单类型">{ orderTypeMatchInfo(currentRow?.orderType)?.label }</Descriptions.Item>
+            <Descriptions.Item label="设备名称">{ currentRow?.deviceName }</Descriptions.Item>
+            {/* <Descriptions.Item label="设备类型">{ currentRow?.deviceTypeName }</Descriptions.Item> */ }
+            <Descriptions.Item label="是否绑定档案">{ currentRow?.portfolioId !== "" ? "已绑定" : "未绑定" }</Descriptions.Item>
+            <Descriptions.Item label="工单图片"><ImageFlatList imageUrls={ currentRow?.imgUrls } /></Descriptions.Item>
           </Descriptions>
         </Card>
         { portfolioId !== undefined && portfolioId !== "" &&
@@ -118,7 +121,7 @@ const DictionaryList: React.FC<WorkOrderFinishProps> = ({ orderType = 'wx', matc
           </FooterToolbar>
         </Form>
       </> }
-      {!currentRow && <NullInfo /> }
+      {!hideNullPage && <NullInfo /> }
     </>
   );
 };

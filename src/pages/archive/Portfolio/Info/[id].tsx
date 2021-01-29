@@ -16,12 +16,13 @@ interface PortfolioEditProps {
   match: match
 }
 const DictionaryList: React.FC<PortfolioEditProps> = ({ match }) => {
-  const [ currentRow, setCurrentRow ] = useState<PortfolioInfoDataType>()
+  const [ currentRow, setCurrentRow ] = useState<PortfolioInfoDataType>({})
   const [ createModalVisible, handleModalVisible ] = useState<boolean>(false);
   const [ modalPartVisible, handleModalPartVisible ] = useState<boolean>(false);
   const [ dataConsumableList, setData ] = useState<any[]>([]);
   const [ dataPartList, setPartData ] = useState<any[]>([]);
   const [ Loading, setLoading ] = useState<boolean>(false)
+  const [ hideNullPage, setHideNullPage ] = useState<boolean>(true)
   const routeParams: any = match.params
   const portfolioId = routeParams.id
   useEffect(() => {
@@ -30,7 +31,7 @@ const DictionaryList: React.FC<PortfolioEditProps> = ({ match }) => {
   }, [])
   const initFun = async () => {
     let response = await infoProtfolio(portfolioId)
-    if (!response) { setLoading(false); setCurrentRow(undefined); return };
+    if (!response) { setLoading(false); setCurrentRow(undefined); setHideNullPage(false); return };
     setCurrentRow(response.data)
     await queryConsumableList()
     await queryPartList()
@@ -74,7 +75,7 @@ const DictionaryList: React.FC<PortfolioEditProps> = ({ match }) => {
       } }
     >
       <Spin spinning={ Loading }>
-        { currentRow && <>
+        { hideNullPage && <>
           <Card style={ { marginBottom: "20px" } } bordered={ false }>
             <Descriptions bordered size="small" title="档案基本信息"
               column={ { xs: 2, sm: 2, md: 3, lg: 3, xl: 3, xxl: 3 } }
@@ -141,7 +142,7 @@ const DictionaryList: React.FC<PortfolioEditProps> = ({ match }) => {
             />
           </Card>
         </> }
-        { !currentRow && <NullInfo /> }
+        { !hideNullPage && <NullInfo /> }
       </Spin>
     </PageContainer>
   );
