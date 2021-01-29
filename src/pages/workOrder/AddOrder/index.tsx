@@ -77,7 +77,10 @@ const DictionaryList: React.FC<IRouteComponentProps> = ({ location, history }) =
             <Form.Item
               label='客户电话'
               name="customerMobile"
-              rules={ [ { required: true, message: "请输入客户电话！" } ] }
+              rules={ [
+                { required: true, message: "请输入客户电话！" },
+                { pattern: /^1\d{10}$/, message: "请输入正确的手机号" }
+              ] }
             >
               <Input placeholder="请输入客户电话" />
             </Form.Item>

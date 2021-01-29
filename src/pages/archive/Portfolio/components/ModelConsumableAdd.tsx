@@ -33,19 +33,18 @@ const ModelConsumableAdd: React.FC<ModalModifyFormDataProps> = ({ createModalVis
       dataIndex: 'consumableNo',
       editable: false,
     },
-    // {
-    //   title: "耗材类型",
-    //   dataIndex: 'consumableTypeName',
-    //   editable: false,
-    //   width: "80px"
-    // },
-    // {
-    //   title: "耗材型号",
-    //   dataIndex: 'consumableModelName',
-    //   editable: false,
-    //   width: "80px"
-    // },
-
+    {
+      title: "耗材类型",
+      dataIndex: 'consumableTypeName',
+      editable: false,
+      width: "80px"
+    },
+    {
+      title: "耗材型号",
+      dataIndex: 'consumableModelName',
+      editable: false,
+      width: "80px"
+    },
     {
       title: "安装日期",
       dataIndex: 'replacementTime',
@@ -65,7 +64,7 @@ const ModelConsumableAdd: React.FC<ModalModifyFormDataProps> = ({ createModalVis
       dataIndex: 'replacementCycle',
       width: "100px",
       renderFormItem: (_, { isEditable }) => {
-        return isEditable ? <InputNumber style={ { width: "100%" } } min={ 0 }  /> : ""
+        return isEditable ? <InputNumber style={ { width: "100%" } } min={ 0 } /> : ""
       }
     },
     {
@@ -148,7 +147,7 @@ const ModelConsumableAdd: React.FC<ModalModifyFormDataProps> = ({ createModalVis
             onValuesChange: (record: any, recordList: any) => {
               setDataSource(recordList);
             },
-            onChange: setEditableRowKeys,
+            onChange: setEditableRowKeys
           } }
           scroll={ { y: 200 } }
         />

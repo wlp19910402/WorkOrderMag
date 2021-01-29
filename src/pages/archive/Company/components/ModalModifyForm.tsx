@@ -59,18 +59,6 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
         rules={ [
           {
             required: true,
-            message: "请输入联系电话！"
-          },
-        ] }
-        label="联系电话"
-        name="contactMobile"
-        placeholder="请输入联系电话"
-        initialValue={ currentRow?.contactMobile }
-      />
-      <ProFormText
-        rules={ [
-          {
-            required: true,
             message: "请输入联系人！"
           },
         ] }
@@ -78,6 +66,16 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
         name="contactUser"
         placeholder="请输入联系人"
         initialValue={ currentRow?.contactUser }
+      />
+      <ProFormText
+        rules={ [
+          { required: true, message: "请输入联系电话！" },
+          { pattern: /^1\d{10}$/, message: "请输入正确的手机号" }
+        ] }
+        label="联系电话"
+        name="contactMobile"
+        placeholder="请输入联系电话"
+        initialValue={ currentRow?.contactMobile }
       />
       <ProFormTextArea
         name="remark"

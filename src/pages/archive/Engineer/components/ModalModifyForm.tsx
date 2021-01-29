@@ -57,10 +57,8 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
       />
       <ProFormText
         rules={ [
-          {
-            required: true,
-            message: "请输入联系电话！"
-          },
+          { required: true, message: "请输入联系电话！" },
+          { pattern: /^1\d{10}$/, message: "请输入正确的手机号" }
         ] }
         label="联系电话"
         name="contactMobile"
