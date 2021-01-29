@@ -1,4 +1,4 @@
-import { PlusOutlined, EditFilled, DeleteFilled, FileTextFilled } from '@ant-design/icons';
+import { PlusOutlined, EditOutlined, DeleteOutlined, EyeOutlined } from '@ant-design/icons';
 import { Button, Drawer, message, Popconfirm, Image, Tooltip } from 'antd';
 import React, { useState, useRef, useEffect } from 'react';
 import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
@@ -238,20 +238,20 @@ const DictionaryList: React.FC<PortfolioListDataType> = () => {
       render: (_, record) => [
         <Tooltip title="编辑" key="edit">
           <Link to={ `/archive/portfolio/edit/${record.id}` }>
-            <EditFilled className="qm-table-icon" />
+            <EditOutlined className="qm-table-icon" />
           </Link>
         </Tooltip>,
         <Tooltip title="删除" key="delete">
           <Popconfirm
             title="是否要删除此行？"
             onConfirm={ () => { record.id !== undefined && tiggerDelete(record.id?.toString()); } }>
-            <Button size="small" type="link"><DeleteFilled className="qm-table-icon" /></Button>
+            <Button size="small" type="link"><DeleteOutlined className="qm-table-icon" /></Button>
           </Popconfirm>
         </Tooltip>,
         ,
         <Tooltip title="详情" key="info">
           <Link key="edit" to={ `/archive/portfolio/info/${record.id}` }>
-            <FileTextFilled className="qm-table-icon" />
+            <EyeOutlined className="qm-table-icon" />
           </Link>
         </Tooltip>
       ],

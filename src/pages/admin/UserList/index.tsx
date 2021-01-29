@@ -1,4 +1,4 @@
-import { PlusOutlined, EditFilled, DeleteFilled } from '@ant-design/icons';
+import { PlusOutlined, EditOutlined, DeleteOutlined, UserSwitchOutlined } from '@ant-design/icons';
 import { Button, Drawer, message, Popconfirm, Switch, Tooltip } from 'antd';
 import React, { useState, useRef } from 'react';
 import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
@@ -11,7 +11,6 @@ import type { UserListDataType } from '../data.d';
 import ModalModifyForm from './components/ModalModifyForm'
 import { queryRoleList } from '@/pages/admin/Role/service'
 import ModalAuthifyForm from './components/ModalAuthifyForm'
-import { IconFont } from '@/components/common/IconFont'
 /**
  *  删除节点
  * @param selectedRows
@@ -119,7 +118,7 @@ const ResumeList: React.FC<UserListDataType> = () => {
             disabled={ record.id === 1 }
             onClick={ async () => { fetchUserEdit(record) } }
           >
-            <EditFilled className="qm-table-icon"/>
+            <EditOutlined className="qm-table-icon" />
           </Button>
         </Tooltip>,
         <Tooltip title="删除" key="delete">
@@ -127,7 +126,7 @@ const ResumeList: React.FC<UserListDataType> = () => {
             disabled={ record.id === 1 }
             title="是否要删除此行？"
             onConfirm={ () => { record.id !== undefined && tiggerDeleteUser(record.id?.toString()); } }>
-            <Button disabled={ record.id === 1 } size="small" type="link"><DeleteFilled className="qm-table-icon"/></Button>
+            <Button disabled={ record.id === 1 } size="small" type="link"><DeleteOutlined className="qm-table-icon" /></Button>
           </Popconfirm>
         </Tooltip>,
         <Tooltip title="授权" key="setRole">
@@ -137,7 +136,7 @@ const ResumeList: React.FC<UserListDataType> = () => {
             disabled={ record.id === 1 }
             onClick={ async () => { fetchUserRoleId(record) } }
           >
-            <IconFont type="icon-shouquan" className="qm-table-icon"/>
+            <UserSwitchOutlined className="qm-table-icon" />
           </Button>
         </Tooltip>
       ],

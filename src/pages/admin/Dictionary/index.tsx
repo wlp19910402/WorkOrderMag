@@ -1,4 +1,4 @@
-import { PlusOutlined, EditFilled, DeleteFilled } from '@ant-design/icons';
+import { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import { Button, Drawer, message, Popconfirm, Tooltip } from 'antd';
 import React, { useState, useRef } from 'react';
 import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
@@ -83,7 +83,7 @@ const DictionaryList: React.FC<DictionaryDataType> = () => {
             disabled={ record.type === "0" }
             onClick={ () => { fetchUserEdit(record) } }
           >
-            <EditFilled className="qm-table-icon"/>
+            <EditOutlined className="qm-table-icon" />
           </Button>
         </Tooltip>,
         <Tooltip title="删除" key="delete">
@@ -92,7 +92,7 @@ const DictionaryList: React.FC<DictionaryDataType> = () => {
             disabled={ record.type === "0" }
             title="是否要删除此行？"
             onConfirm={ () => { record.type !== undefined && tiggerDeleteDictionary(record.id?.toString()); } }>
-            <Button disabled={ record.type === "0" } size="small" type="link"><DeleteFilled className="qm-table-icon"/></Button>
+            <Button disabled={ record.type === "0" } size="small" type="link"><DeleteOutlined className="qm-table-icon" /></Button>
           </Popconfirm>
         </Tooltip>
       ],

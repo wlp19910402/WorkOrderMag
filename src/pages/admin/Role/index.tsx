@@ -1,4 +1,4 @@
-import { PlusOutlined, EditFilled, DeleteFilled, ApiFilled } from '@ant-design/icons';
+import { PlusOutlined, EditOutlined, DeleteOutlined, AuditOutlined } from '@ant-design/icons';
 import { Button, Drawer, message, Popconfirm, Tooltip } from 'antd';
 import React, { useState, useRef } from 'react';
 import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
@@ -78,19 +78,19 @@ const RoleList: React.FC<RoleDataType> = () => {
             size="small"
             onClick={ async () => { handleModalVisible(true); setCurrentRow(record); } }
           >
-            <EditFilled className="qm-table-icon" />
+            <EditOutlined className="qm-table-icon" />
           </Button>
         </Tooltip>,
         <Tooltip title="删除" key="delete">
           <Popconfirm
             title="是否要删除此行？"
             onConfirm={ () => { record.id !== undefined && tiggerDeleteRole(record.id?.toString()); } }>
-            <Button size="small" type="link"><DeleteFilled className="qm-table-icon" /></Button>
+            <Button size="small" type="link"><DeleteOutlined className="qm-table-icon" /></Button>
           </Popconfirm>
         </Tooltip>,
         <Tooltip title="绑定权限" key="setBindRole">
           <Button size="small" type="link" onClick={ () => { handleModalTreeVisible(true); setCurrentRow(record); } }>
-            <ApiFilled className="qm-table-icon" />
+            <AuditOutlined className="qm-table-icon" />
           </Button>
         </Tooltip>
       ]

@@ -1,4 +1,4 @@
-import { PlusOutlined, FileAddFilled, TagFilled, CarryOutFilled, FileTextFilled } from '@ant-design/icons';
+import { PlusOutlined, FileDoneOutlined, SendOutlined, EyeOutlined, ContainerOutlined, RollbackOutlined } from '@ant-design/icons';
 import { Button, Drawer, Popconfirm, Image, Tooltip, message } from 'antd';
 import React, { useState, useRef } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
@@ -13,7 +13,6 @@ import ModelBindProtolioAdd from '@/pages/workOrder/components/ModelBindProtolio
 import ModelSendOrder from '@/pages/workOrder/components/ModelSendOrder';
 import { history } from 'umi';
 import ImageFlatList from '@/components/common/ImageFlatList'
-import { IconFont } from '@/components/common/IconFont'
 interface WorkOrderListProps {
   orderType: string;
 }
@@ -151,7 +150,7 @@ const DictionaryList: React.FC<WorkOrderListProps> = ({ orderType = 'wx' }) => {
             type={ record.portfolioId === '' ? 'link' : 'text' }
             disabled={ record.status === 'wc' || record.status === 'cancel' }
           >
-            <FileAddFilled className="qm-table-icon" />
+            <FileDoneOutlined className="qm-table-icon" />
           </Button>
         </Tooltip>
         <Tooltip title={ record.engineerId !== '' ? '重新派单' : '派单' }>
@@ -168,7 +167,7 @@ const DictionaryList: React.FC<WorkOrderListProps> = ({ orderType = 'wx' }) => {
                 size="small"
                 disabled={ record.status === 'wc' || record.status === 'cancel' }
               >
-                <TagFilled className="qm-table-icon" />
+                <SendOutlined className="qm-table-icon" />
               </Button>
             </Popconfirm>
           ) : (
@@ -181,7 +180,7 @@ const DictionaryList: React.FC<WorkOrderListProps> = ({ orderType = 'wx' }) => {
                 } }
                 disabled={ record.status === 'wc' || record.status === 'cancel' }
               >
-                <TagFilled className="qm-table-icon" />
+                <SendOutlined className="qm-table-icon" />
               </Button>
             ) }
         </Tooltip>
@@ -191,14 +190,14 @@ const DictionaryList: React.FC<WorkOrderListProps> = ({ orderType = 'wx' }) => {
             size="small"
             type="link"
             disabled={ record.status === 'wc' || record.status === 'cancel' }>
-            <CarryOutFilled className="qm-table-icon" />
+            <ContainerOutlined className="qm-table-icon" />
           </Button>
         </Tooltip>
         <Tooltip title={ '详情' }>
           <Button
             onClick={ () => { history.push(`${orderTypeMatchInfo(orderType)?.listPath}/info/${record.id}`) } }
             size="small" type="link">
-            <FileTextFilled className="qm-table-icon" />
+            <EyeOutlined className="qm-table-icon" />
           </Button>
         </Tooltip>
         <Tooltip title='撤单'>
@@ -215,7 +214,8 @@ const DictionaryList: React.FC<WorkOrderListProps> = ({ orderType = 'wx' }) => {
               type="link"
               disabled={ record.status === 'wc' || record.status === 'cancel' }
             >
-              <IconFont type="icon-cheshen" style={ { fontSize: "17px" } } />
+              {/* <IconFont type="icon-cheshen" style={ { fontSize: "17px" } } /> */ }
+              <RollbackOutlined className="qm-table-icon" />
             </Button>
           </Popconfirm>
         </Tooltip>
