@@ -16,6 +16,16 @@ interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
   value: string;
   children: React.ReactNode;
 }
+// const disabledDate = (current: any) => {
+//   // if (!dates || dates.length === 0) {
+//   //   return false;
+//   // }
+//   // const tooLate = dates[ 0 ] && current.diff(dates[ 0 ], 'days') > 7;
+//   // const tooEarly = dates[ 1 ] && dates[ 1 ].diff(current, 'days') > 7;
+//   // return tooEarly || tooLate;
+
+//   return current.diff(new Date(), 'days') < -1
+// };
 const EditableCell: React.FC<EditableCellProps> = ({
   editing,
   dataIndex,
@@ -27,12 +37,14 @@ const EditableCell: React.FC<EditableCellProps> = ({
   value,
   ...restProps
 }) => {
-  const inputNode = inputType === 'number' ? <InputNumber min={ 0 } max={ 1000 } /> : <DatePicker
+  const inputNode = inputType === 'number' ? <InputNumber min={ 0 } /> : <DatePicker
     picker="date"
     mode="date"
     format="YYYY-MM-DD"
     placeholder={ `请选择${title}` }
+    // disabledDate={ disabledDate }
     style={ { width: "100%" } }
+    allowClear={ false }
   />;
   return (
     <td { ...restProps }>
@@ -145,6 +157,7 @@ const EditableTable: React.FC<ConsumableEditableProps> = ({ queryConsumableList,
       title: '更换周期(天)',
       dataIndex: 'replacementCycle',
       editable: true,
+      width: "120px",
       inputType: "number",
     },
     {
@@ -208,7 +221,6 @@ const EditableTable: React.FC<ConsumableEditableProps> = ({ queryConsumableList,
               <Descriptions.Item label="耗材修改人">{ val?.updateUsername }</Descriptions.Item>
               <Descriptions.Item label="耗材图片"><ImageFlatList imageUrls={ val?.imgUrls } /></Descriptions.Item>
             </Descriptions>
-
           </span>
         );
       }

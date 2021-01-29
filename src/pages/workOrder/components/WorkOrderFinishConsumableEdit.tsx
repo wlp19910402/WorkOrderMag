@@ -32,6 +32,7 @@ const EditableCell: React.FC<EditableCellProps> = ({
     mode="date"
     format="YYYY-MM-DD"
     placeholder={ `请选择${title}` }
+    disabledDate={ (current) => current.diff(new Date(), 'days') < -1 }
     style={ { width: "100%" } }
   />;
   return (
@@ -70,7 +71,8 @@ const EditableTable: React.FC<ConsumableEditableProps> = ({ portfolioId, setCons
   const [ loading, setLoading ] = useState<boolean>(true)
   const isEditing = (record: any) => record.id === editingKey;
   const tiggerEdit = (record: any) => {
-    form.setFieldsValue({ expirationTime: pickerInitialValue(record.expirationTime), id: record.id });
+    let dateParems = (new Date()).getTime() + parseInt(record.replacementCycle) * 24 * 60 * 60 * 1000
+    form.setFieldsValue({ expirationTime: pickerInitialValue(new Date(dateParems)), id: record.id });
     setEditingKey(record.id);
   };
   const tiggerCancel = () => {

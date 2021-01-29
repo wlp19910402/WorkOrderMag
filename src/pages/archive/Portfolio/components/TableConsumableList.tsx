@@ -7,6 +7,7 @@ import { fetchDicTypeSelectObj } from '@/pages/admin/Dictionary/service'
 import CODE from '@/utils/DicCode.d'
 import SearchSelect from '@/components/common/SerchSelect'
 import { Button } from 'antd'
+import { pickerInitialValue } from '@/utils/parameter'
 interface TableConsumableListProps {
   setSelectedRows: React.Dispatch<React.SetStateAction<any[]>>
   selectedRowsState: any[];
@@ -92,15 +93,18 @@ const TableConsumableList: React.FC<TableConsumableListProps> = ({ setSelectedRo
   ];
 
   const selectRecord = (record: ConsumableListDataType) => {
+    let replacementTime = new Date()
+    let replacementCycle = 30
+    let expirationTime = new Date(replacementTime.getTime() + replacementCycle * 24 * 60 * 60 * 1000)
     setSelectedRows(
       [ ...selectedRowsState, {
         portfolioId: parseInt(portfolioId),
         consumableId: record.id,
         consumableName: record.name,
-        expirationTime: "",
+        expirationTime: pickerInitialValue(expirationTime),
         num: 1,
-        replacementCycle: "",
-        replacementTime: "",
+        replacementCycle: replacementCycle,
+        replacementTime: pickerInitialValue(replacementTime),
         consumableNo: record.no,
         consumableTypeName: record.typeName,
         consumableModelName: record.modelName

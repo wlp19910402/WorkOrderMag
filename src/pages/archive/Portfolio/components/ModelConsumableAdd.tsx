@@ -5,7 +5,7 @@ import { Modal, message, DatePicker, InputNumber } from 'antd';
 import { ConsumableAddDataType } from '@/pages/archive/portfolio/data.d'
 import { addConsumableProtfolio } from '@/pages/archive/portfolio/service'
 import TableConsumableList from '@/pages/archive/portfolio/components/TableConsumableList'
-import { pickerDateFormat } from '@/utils/parameter'
+import { pickerDateFormat, pickerInitialValue } from '@/utils/parameter'
 export type ColumnEditConsumableType = {
   consumableName: string;
   consumableNo: string;
@@ -55,6 +55,7 @@ const ModelConsumableAdd: React.FC<ModalModifyFormDataProps> = ({ createModalVis
           picker="date"
           format="YYYY-MM-DD"
           placeholder="请选择安装日期"
+          allowClear={ false }
           style={ { width: "100%" } }
         /> : ""
       }
@@ -64,7 +65,7 @@ const ModelConsumableAdd: React.FC<ModalModifyFormDataProps> = ({ createModalVis
       dataIndex: 'replacementCycle',
       width: "100px",
       renderFormItem: (_, { isEditable }) => {
-        return isEditable ? <InputNumber style={ { width: "100%" } } min={ 0 } max={ 1000 } /> : ""
+        return isEditable ? <InputNumber style={ { width: "100%" } } min={ 0 }  /> : ""
       }
     },
     {
@@ -75,9 +76,9 @@ const ModelConsumableAdd: React.FC<ModalModifyFormDataProps> = ({ createModalVis
         return isEditable ? <DatePicker
           format="YYYY-MM-DD"
           placeholder="请选择到期日期"
-          style={ { width: "100%" } }
-        /> : "ddd"
-      }
+          allowClear={ false }
+        /> : ""
+      },
     },
     {
       title: "数量",

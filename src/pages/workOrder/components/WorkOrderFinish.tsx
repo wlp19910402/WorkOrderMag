@@ -5,7 +5,7 @@ import { queryList } from '@/pages/workOrder/service';
 import { OrderListType, orderStatusData, orderTypeMatchInfo } from '@/pages/workOrder/data.d';
 import { history } from 'umi';
 import { match } from 'react-router';
-import PortfolioConsumableList from '@/pages/workOrder/components/PortfolioConsumableList'
+import WorkOrderFinishConsumableEdit from '@/pages/workOrder/components/WorkOrderFinishConsumableEdit'
 import UploadImage from '@/components/Upload/index'
 import { submitOrder } from '@/pages/workOrder/service'
 import ImageFlatList from '@/components/common/ImageFlatList'
@@ -83,7 +83,7 @@ const DictionaryList: React.FC<WorkOrderFinishProps> = ({ orderType = 'wx', matc
         </Card>
         { portfolioId !== undefined && portfolioId !== "" &&
           <Card title="耗材信息" style={ { marginBottom: "20px" } } bordered={ false }>
-            <PortfolioConsumableList
+            <WorkOrderFinishConsumableEdit
               portfolioId={ portfolioId }
               setConsumableUpdate={ setConsumableUpdate }
               consumableUpdate={ consumableUpdate }
