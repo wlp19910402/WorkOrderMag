@@ -4,6 +4,7 @@ import { infoProtfolio } from '../service'
 import { PageContainer } from '@ant-design/pro-layout';
 import { match } from 'react-router'
 import { Spin } from 'antd'
+import NullInfo from '@/components/common/NullInfo'
 interface PortfolioEditProps {
   match: match
 }
@@ -14,7 +15,10 @@ const DictionaryList: React.FC<PortfolioEditProps> = ({ match }) => {
   useEffect(() => {
     infoProtfolio(routeParams.id).then(res => {
       setLoading(false)
-      if (!res) return;
+      if (!res) {
+        setCurrentRow(undefined)
+        return
+      };
       setCurrentRow(res.data)
     }).catch(err => {
       setLoading(false)
@@ -44,6 +48,7 @@ const DictionaryList: React.FC<PortfolioEditProps> = ({ match }) => {
     >
       <Spin spinning={ loading }>
         { currentRow && <BasicModifyForm currentRow={ currentRow } /> }
+        { !currentRow && <NullInfo /> }
       </Spin>
     </PageContainer>
   );

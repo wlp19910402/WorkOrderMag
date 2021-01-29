@@ -11,6 +11,7 @@ import PortfolioConsumableList from '@/pages/archive/portfolio/components/Portfo
 import PortfolioPartList from '@/pages/archive/portfolio/components/PortfolioPartList'
 import { queryProtfolioConsumableList, queryProtfolioPartList } from '@/pages/archive/portfolio/service'
 import ImageFlatList from '@/components/common/ImageFlatList'
+import NullInfo from '@/components/common/NullInfo'
 interface PortfolioEditProps {
   match: match
 }
@@ -29,7 +30,7 @@ const DictionaryList: React.FC<PortfolioEditProps> = ({ match }) => {
   }, [])
   const initFun = async () => {
     let response = await infoProtfolio(portfolioId)
-    if (!response) { setLoading(false); return };
+    if (!response) { setLoading(false); setCurrentRow(undefined); return };
     setCurrentRow(response.data)
     await queryConsumableList()
     await queryPartList()
@@ -73,71 +74,74 @@ const DictionaryList: React.FC<PortfolioEditProps> = ({ match }) => {
       } }
     >
       <Spin spinning={ Loading }>
-        <Card style={ { marginBottom: "20px" } } bordered={ false }>
-          <Descriptions bordered size="small" title="档案基本信息"
-            column={ { xs: 2, sm: 2, md: 3, lg: 3, xl: 3, xxl: 3 } }
-            labelStyle={ { width: "120px", padding: "8px" } }
-          >
-            <Descriptions.Item label="单位名称">{ currentRow?.companyName }</Descriptions.Item>
-            <Descriptions.Item label="单位编号">{ currentRow?.companyNo }</Descriptions.Item>
-            <Descriptions.Item label="单位联系人">{ currentRow?.contactUser }</Descriptions.Item>
-            <Descriptions.Item label="单位联系电话">{ currentRow?.contactMobile }</Descriptions.Item>
-            <Descriptions.Item label="设备名称">{ currentRow?.deviceName }</Descriptions.Item>
-            <Descriptions.Item label="设备编号">{ currentRow?.deviceNo }</Descriptions.Item>
-            <Descriptions.Item label="设备类型">{ currentRow?.typeName }</Descriptions.Item>
-            <Descriptions.Item label="设备品牌">{ currentRow?.brandName }</Descriptions.Item>
-            <Descriptions.Item label="设备型号">{ currentRow?.modelName }</Descriptions.Item>
-            <Descriptions.Item label="档案编号">{ currentRow?.no }</Descriptions.Item>
-            <Descriptions.Item label="安装位置">{ currentRow?.installLocation }</Descriptions.Item>
-            <Descriptions.Item label="安装日期">{ pickerDateFormat(currentRow?.installTime) }</Descriptions.Item>
-            <Descriptions.Item label="保修周期">{ currentRow?.warrantyPeriod }个月</Descriptions.Item>
-            <Descriptions.Item label="二维码编号">{ currentRow?.qrCodde }</Descriptions.Item>
-            <Descriptions.Item label="">{ }</Descriptions.Item>
-            {/*  <Descriptions.Item label="创建人">{ currentRow?.createUsername }</Descriptions.Item>
+        { currentRow && <>
+          <Card style={ { marginBottom: "20px" } } bordered={ false }>
+            <Descriptions bordered size="small" title="档案基本信息"
+              column={ { xs: 2, sm: 2, md: 3, lg: 3, xl: 3, xxl: 3 } }
+              labelStyle={ { width: "120px", padding: "8px" } }
+            >
+              <Descriptions.Item label="单位名称">{ currentRow?.companyName }</Descriptions.Item>
+              <Descriptions.Item label="单位编号">{ currentRow?.companyNo }</Descriptions.Item>
+              <Descriptions.Item label="单位联系人">{ currentRow?.contactUser }</Descriptions.Item>
+              <Descriptions.Item label="单位联系电话">{ currentRow?.contactMobile }</Descriptions.Item>
+              <Descriptions.Item label="设备名称">{ currentRow?.deviceName }</Descriptions.Item>
+              <Descriptions.Item label="设备编号">{ currentRow?.deviceNo }</Descriptions.Item>
+              <Descriptions.Item label="设备类型">{ currentRow?.typeName }</Descriptions.Item>
+              <Descriptions.Item label="设备品牌">{ currentRow?.brandName }</Descriptions.Item>
+              <Descriptions.Item label="设备型号">{ currentRow?.modelName }</Descriptions.Item>
+              <Descriptions.Item label="档案编号">{ currentRow?.no }</Descriptions.Item>
+              <Descriptions.Item label="安装位置">{ currentRow?.installLocation }</Descriptions.Item>
+              <Descriptions.Item label="安装日期">{ pickerDateFormat(currentRow?.installTime) }</Descriptions.Item>
+              <Descriptions.Item label="保修周期">{ currentRow?.warrantyPeriod }个月</Descriptions.Item>
+              <Descriptions.Item label="二维码编号">{ currentRow?.qrCodde }</Descriptions.Item>
+              <Descriptions.Item label="">{ }</Descriptions.Item>
+              {/*  <Descriptions.Item label="创建人">{ currentRow?.createUsername }</Descriptions.Item>
             <Descriptions.Item label="创建时间">{ currentRow?.createTime }</Descriptions.Item>
             <Descriptions.Item label="修改人">{ currentRow?.updateUsername }</Descriptions.Item>
             <Descriptions.Item label="修改时间">{ currentRow?.updateTime }</Descriptions.Item> */ }
-            <Descriptions.Item label="设备图片"><ImageFlatList imageUrls={ currentRow?.imgUrls } /></Descriptions.Item>
-          </Descriptions>
-          <Alert
-            style={ { fontSize: "12px", marginTop: "20px" } }
-            message={
-              `创建人：${currentRow?.createUsername}
+              <Descriptions.Item label="设备图片"><ImageFlatList imageUrls={ currentRow?.imgUrls } /></Descriptions.Item>
+            </Descriptions>
+            <Alert
+              style={ { fontSize: "12px", marginTop: "20px" } }
+              message={
+                `创建人：${currentRow?.createUsername}
                创建时间：${currentRow?.createTime}
               ${currentRow?.updateUsername ? '修改人：' + currentRow?.updateUsername + '修改时间：' + currentRow?.updateTime : ""}
                `
-            } type="info" showIcon />
-        </Card>
-        { createModalVisible && (
-          <ModelConsumableAdd
-            createModalVisible={ createModalVisible }
-            handleModalVisible={ handleModalVisible }
-            portfolioId={ portfolioId }
-            queryConsumableList={ queryConsumableList }
-          />
-        ) }
-        <Card title="耗材信息"
-          style={ { marginBottom: "20px" } }
-          extra={ <Button type="primary" onClick={ () => handleModalVisible(true) }>新增</Button> }>
-          <PortfolioConsumableList
-            queryConsumableList={ queryConsumableList }
-            dataConsumableList={ dataConsumableList }
-          />
-        </Card>
-        { modalPartVisible && (
-          <ModelPartAdd
-            createModalVisible={ modalPartVisible }
-            handleModalVisible={ handleModalPartVisible }
-            portfolioId={ portfolioId }
-            queryPartList={ queryPartList }
-          />
-        ) }
-        <Card title="备件信息" extra={ <Button type="primary" onClick={ () => handleModalPartVisible(true) }>新增</Button> }>
-          <PortfolioPartList
-            queryPartList={ queryPartList }
-            dataPartList={ dataPartList }
-          />
-        </Card>
+              } type="info" showIcon />
+          </Card>
+          { createModalVisible && (
+            <ModelConsumableAdd
+              createModalVisible={ createModalVisible }
+              handleModalVisible={ handleModalVisible }
+              portfolioId={ portfolioId }
+              queryConsumableList={ queryConsumableList }
+            />
+          ) }
+          <Card title="耗材信息"
+            style={ { marginBottom: "20px" } }
+            extra={ <Button type="primary" onClick={ () => handleModalVisible(true) }>新增</Button> }>
+            <PortfolioConsumableList
+              queryConsumableList={ queryConsumableList }
+              dataConsumableList={ dataConsumableList }
+            />
+          </Card>
+          { modalPartVisible && (
+            <ModelPartAdd
+              createModalVisible={ modalPartVisible }
+              handleModalVisible={ handleModalPartVisible }
+              portfolioId={ portfolioId }
+              queryPartList={ queryPartList }
+            />
+          ) }
+          <Card title="备件信息" extra={ <Button type="primary" onClick={ () => handleModalPartVisible(true) }>新增</Button> }>
+            <PortfolioPartList
+              queryPartList={ queryPartList }
+              dataPartList={ dataPartList }
+            />
+          </Card>
+        </> }
+        { !currentRow && <NullInfo /> }
       </Spin>
     </PageContainer>
   );
