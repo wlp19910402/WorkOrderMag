@@ -42,7 +42,6 @@ const EditableCell: React.FC<EditableCellProps> = ({
     mode="date"
     format="YYYY-MM-DD"
     placeholder={ `请选择${title}` }
-    // disabledDate={ disabledDate }
     style={ { width: "100%" } }
     allowClear={ false }
   />;
@@ -246,7 +245,17 @@ const EditableTable: React.FC<ConsumableEditableProps> = ({ queryConsumableList,
   }, [])
   return (
     <>
-      <Form form={ form } component={ false }>
+      <Form form={ form }
+        onFieldsChange={ (data) => {
+          let fieldName = data[ 0 ].name[ 0 ]
+          if (fieldName === "replacementCycle" || fieldName === "replacementTime") {
+            let timeCycle = parseInt(form.getFieldValue("replacementCycle") ? form.getFieldValue("replacementCycle") : "0") * 1000 * 24 * 60 * 60
+            let getReplaceTime = (new Date(pickerDateFormat(form.getFieldValue("replacementTime")))).getTime()
+            form.setFieldsValue({ "expirationTime": pickerInitialValue(new Date(getReplaceTime + timeCycle)) })
+          }
+        } }
+        component={ false }
+      >
         <Table
           components={ {
             body: {
