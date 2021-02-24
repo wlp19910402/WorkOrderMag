@@ -130,7 +130,7 @@ const DictionaryList: React.FC<DeviceListDataType> = () => {
       },
     },
     {
-      title: "设备品牌",
+      title: "设备型号",
       dataIndex: 'modelName',
       hideInSearch: true,
     },

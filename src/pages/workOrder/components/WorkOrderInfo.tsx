@@ -85,6 +85,8 @@ const DictionaryList: React.FC<WorkOrderFinishProps> = ({ orderType = 'wx', matc
               <Descriptions.Item label="工单类型">{ orderTypeMatchInfo(currentRow?.orderType)?.label }</Descriptions.Item>
               <Descriptions.Item label="是否绑定档案" >{ currentRow?.portfolioId !== "" ? "已绑定" : "未绑定" }</Descriptions.Item>
               <Descriptions.Item label="工单描述" >{ currentRow?.workDescription }</Descriptions.Item>
+              <Descriptions.Item label="创建人员" >{ currentRow?.createUserName }</Descriptions.Item>
+              <Descriptions.Item label="创建时间" >{ currentRow?.createTime }</Descriptions.Item>
               <Descriptions.Item label="工单图片" span={ 2 } ><ImageFlatList imageUrls={ currentRow?.orderImgUrls } /></Descriptions.Item>
               {
                 currentRow?.status === "wc" &&
