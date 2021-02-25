@@ -21,6 +21,7 @@ const DictionaryList: React.FC<WorkOrderFinishProps> = ({ orderType = 'wx', matc
   const [ hideNullPage, setHideNullPage ] = useState<boolean>(true)
   let routeParams: any = matchRoute.params
   const fetchQueryCurrentOrderInfo = async () => {
+    console.log("执行了哦")
     const response = await infoOrder(routeParams.id);
     if (!response) {
       setCurrentRow(undefined)
@@ -130,7 +131,7 @@ const DictionaryList: React.FC<WorkOrderFinishProps> = ({ orderType = 'wx', matc
                 <Descriptions.Item label="安装日期">{ pickerDateFormat(currentRow?.portfolio.installTime) }</Descriptions.Item>
                 <Descriptions.Item label="保修周期">{ currentRow?.portfolio.warrantyPeriod }个月</Descriptions.Item>
                 <Descriptions.Item label="二维码编号" span={ 2 }>{ currentRow?.portfolio.qrCodde }</Descriptions.Item>
-                <Descriptions.Item label="设备图片" span={ 3 }><ImageFlatList imageUrls={ currentRow?.imgUrls } /></Descriptions.Item>
+                <Descriptions.Item label="设备图片" span={ 3 }><ImageFlatList imageUrls={ currentRow?.portfolio.imgUrls } /></Descriptions.Item>
               </Descriptions>
               <Divider orientation="left">耗材信息</Divider>
               { currentRow?.consumables && currentRow?.consumables.length > 0 ?
