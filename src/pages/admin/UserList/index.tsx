@@ -7,7 +7,7 @@ import ProTable from '@ant-design/pro-table';
 import type { ProDescriptionsItemProps } from '@ant-design/pro-descriptions';
 import ProDescriptions from '@ant-design/pro-descriptions';
 import { queryUserList, deleteUser, statusUser, getUserRoleId } from './service';
-import type { UserListDataType } from '../data.d';
+import type { UserListDataType, searchBindFlag } from '../data.d';
 import ModalModifyForm from './components/ModalModifyForm'
 import { queryRoleList } from '@/pages/admin/Role/service'
 import ModalAuthifyForm from './components/ModalAuthifyForm'
@@ -50,6 +50,7 @@ const ResumeList: React.FC<UserListDataType> = () => {
       title: "姓名",
       dataIndex: 'realname',
       tip: '规则名称是唯一的 key',
+      hideInSearch: true,
       key: 'realname',
       render: (val, entity) => {
         return (
@@ -70,19 +71,34 @@ const ResumeList: React.FC<UserListDataType> = () => {
       key: "username",
     },
     {
+      title: "范围",
+      dataIndex: 'bindFlag',//0:查询所有， 1:查询已绑定微信管理员， 2:查询未绑定微信管理员
+      // defaultSortOrder: 0,
+      hideInTable: true,
+      valueEnum: {
+        // ...searchBindFlag,
+        0: { text: "所有", status: 'Default' },
+        1: { text: "已绑定微信管理员", status: 'Default' },
+        2: { text: "未绑定微信管理员", status: 'Processing' }
+      },
+    },
+    {
       title: "部门id",
       key: "deptId",
+      hideInSearch: true,
       dataIndex: 'deptId'
     },
     {
       title: "电子邮箱",
       dataIndex: 'email',
+      hideInSearch: true,
       valueType: 'textarea',
       key: "email",
     },
     {
       title: "手机号",
       dataIndex: 'mobile',
+      hideInSearch: true,
       valueType: 'textarea',
       key: "mobile",
     },
@@ -97,6 +113,7 @@ const ResumeList: React.FC<UserListDataType> = () => {
     {
       title: "状态",
       dataIndex: 'status',
+      hideInSearch: true,
       hideInForm: true,
       key: "status",
       render: ((val, record) => {
@@ -199,10 +216,6 @@ const ResumeList: React.FC<UserListDataType> = () => {
         headerTitle="查询表格"
         actionRef={ actionRef }
         rowKey="id"
-        // search={ {
-        //   labelWidth: 80,
-        // } }
-        search={ false }
         pagination={ {
           pageSize: 10,
         } }

@@ -78,5 +78,7 @@ export default {
   WORK_ORDER_SUBMIT: "/api/work-order/submit",//结单
   WORK_ORDER_LOGS: '/api/work-order/logs',//工单操作日志/work-order/logs/{id}
   //工程师管理
-  ENGINEER_LIST: "/api/engineer/list"
+  ENGINEER_LIST: "/api/wx/engineers", //工程师管理列表
+  WX_USER_LIST: "/api/wx/list", //工程师管理列表
+  WX_BIND_ADMIN: "/api/wx/bind-admin",//绑定管理员
 }

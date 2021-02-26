@@ -1,4 +1,4 @@
-import type { PageDataType, EditUserDataType } from '../data.d';
+import type { UserSearchType, EditUserDataType } from '../data.d';
 import API from '@/services/API.d'
 import httpServer from '@/utils/httpServer'
 
@@ -6,11 +6,13 @@ export type UserAuthorityType = {
   "roleIds": string[],
   "userId": number
 }
-export const queryUserList = async (params: PageDataType) => {
+export const queryUserList = async (params: UserSearchType) => {
   return await httpServer.get(API.USER_LIST, {
     params: {
       pageSize: params.pageSize,
-      pageNo: params.current
+      pageNo: params.current,
+      username: params.username,
+      bindFlag: params.bindFlag
     }
   });
 }
@@ -33,5 +35,5 @@ export const statusUser = async (id: string) => {
 }
 // 获取用户角色
 export const getUserRoleId = async (id: string) => {
-  return await httpServer.get(`${API.USER_ROLE_ID  }/${  id}`)
+  return await httpServer.get(`${API.USER_ROLE_ID}/${id}`)
 }

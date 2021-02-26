@@ -7,21 +7,20 @@ export type EngineerSearchType = {
   // roleName?: string;// 工程师角色: role_engineer 微信工程师,可用值:role_engineer
   status?: number;// 状态：0不可用，1可用
 }
-
+export type WxBindAdminType = {
+  adminId: number,
+  id: number,
+  mobile: string,
+  realName: string
+}
 // 工程师列表
-export type EngineerListDataType = {
+export type wxUserListDataType = {
   mobile: string;// 工程手机号
   realName: string;// 工程师姓名
+  wxNickname: string;//微信昵称
+  createTime: string;//创建时间
+  adminUsername: string;//管理员名称
+  adminId: number;//管理员id
   id: number;// 状态：0不可用，1可用
-}
-//工程状态的值
-export const ENGINNER_STATUS = {
-  OFF: 0,//不可用
-  ON: 1  //
-}
-//工程师的状态
-export const engineerStatusEnum = {
-  0: { text: "不可用" },
-  1: { text: "可用" }
 }
 

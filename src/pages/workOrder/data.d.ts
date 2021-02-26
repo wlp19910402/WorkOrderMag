@@ -1,4 +1,4 @@
-import { RecordPartsDataType, RecordConsumableDataType, ConsumableListDataType,PortfolioListDataType } from '@/pages/archive/portfolio/data.d'
+import { RecordPartsDataType, RecordConsumableDataType, ConsumableListDataType, PortfolioListDataType } from '@/pages/archive/portfolio/data.d'
 export type PageDataType = {
   current: number;
   pageSize: number;

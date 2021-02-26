@@ -1,9 +1,9 @@
-import type { EngineerSearchType } from './data';
+import type { EngineerSearchType, WxBindAdminType } from '@/pages/archive/WxUser/data.d'
 import API from '@/services/API.d'
 import httpServer from '@/utils/httpServer'
 
 export const queryList = async (params: EngineerSearchType) => {
-  return await httpServer.get(API.ENGINEER_LIST, {
+  return await httpServer.get(API.WX_USER_LIST, {
     params: {
       pageSize: params.pageSize,
       pageNo: params.current,
@@ -11,6 +11,9 @@ export const queryList = async (params: EngineerSearchType) => {
       realName: params.realName
     }
   });
+}
+export const fetchWxBindAdmin = async (params: WxBindAdminType) => {
+  return await httpServer.post(API.WX_BIND_ADMIN, { data: params })
 }
 // export const saveCompany = async (params: CompanySaveDataType) => {
 //   return httpServer.post(API.COMPANY_SAVE, { data: params });

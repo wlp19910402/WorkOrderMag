@@ -141,6 +141,11 @@
                     component: './archive/Engineer'
                   },
                   {
+                    path: '/archive/wxUser',
+                    name: "微信用户管理",
+                    component: './archive/WxUser'
+                  },
+                  {
                     path: "*",
                     component: './404',
                   },
@@ -193,7 +198,7 @@
                         path: '/workOrder/maintain/finish/:no',
                         name: "结单",
                         component: './workOrder/Maintain/Finish',
-                      },
+                      }
                     ]
                   },
                   {
@@ -218,7 +223,7 @@
                         path: '/workOrder/patrol/finish/:no',
                         name: "结单",
                         component: './workOrder/Patrol/Finish',
-                      },
+                      }
                     ]
                   },
                   {

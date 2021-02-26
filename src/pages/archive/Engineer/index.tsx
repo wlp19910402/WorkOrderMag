@@ -31,7 +31,7 @@ const DictionaryList: React.FC<{}> = () => {
   const columns: ProColumns<any>[] = [
     {
       title: "工程师",
-      dataIndex: 'engineerName',
+      dataIndex: 'realName',
       render: (val, entity) => {
         return (
           <a
@@ -47,14 +47,7 @@ const DictionaryList: React.FC<{}> = () => {
     },
     {
       title: "工程师手机号",
-      dataIndex: 'engineerMobile'
-    },
-    {
-      title: "工程师角色",
-      dataIndex: 'roleName',
-      // valueEnum: {
-      //   role_engineer:"微信工程师"
-      // }
+      dataIndex: 'mobile'
     },
     {
       title: "状态",
