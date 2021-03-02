@@ -6,8 +6,8 @@ import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
 import type { ProDescriptionsItemProps } from '@ant-design/pro-descriptions';
 import ProDescriptions from '@ant-design/pro-descriptions';
-import { queryList } from '@/pages/archive/Engineer/service';
-import { EngineerListDataType, engineerStatusEnum } from "@/pages/archive/Engineer/data.d";
+import { queryList } from '@/pages/admin/Engineer/service';
+import { EngineerListDataType, engineerStatusEnum } from "@/pages/admin/Engineer/data.d";
 import ModalModifyForm from './components/ModalModifyForm'
 // const handleRemove = async (selectedRows: DeviceListDataType[]) => {
 //   const hide = message.loading('正在删除');

@@ -3,9 +3,9 @@ import { message, Spin, Alert, Divider } from 'antd';
 import React, { useState, useRef, useEffect } from 'react';
 import { ModalForm, ProFormCheckbox, ProFormRadio } from '@ant-design/pro-form';
 import { sendOrder } from '@/pages/workOrder/service'
-import { queryList } from '@/pages/archive/Engineer/service';
-import type { EngineerListDataType, } from "@/pages/archive/Engineer/data.d";
-import { ENGINNER_STATUS } from '@/pages/archive/Engineer/data.d'
+import { queryList } from '@/pages/admin/Engineer/service';
+import type { EngineerListDataType, } from "@/pages/admin/Engineer/data.d";
+import { ENGINNER_STATUS } from '@/pages/admin/Engineer/data.d';
 import style from "./sendOrder.less"
 export type ColumnEditConsumableType = {
   consumableName: string;

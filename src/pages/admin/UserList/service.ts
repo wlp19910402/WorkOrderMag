@@ -16,6 +16,17 @@ export const queryUserList = async (params: UserSearchType) => {
     }
   });
 }
+
+export const queryUserNotBindWxList = async (params: UserSearchType) => {
+  return await httpServer.get(API.USER_NOT_BIND_WX, {
+    params: {
+      pageSize: params.pageSize,
+      pageNo: params.current,
+      username: params.username,
+      bindFlag: params.bindFlag
+    }
+  });
+}
 export const addUser = async (params: EditUserDataType) => {
   return httpServer.post(API.USER_ADD, { data: params });
 }

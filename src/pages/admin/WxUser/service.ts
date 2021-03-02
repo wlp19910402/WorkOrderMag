@@ -1,4 +1,4 @@
-import type { EngineerSearchType, WxBindAdminType } from '@/pages/archive/WxUser/data.d'
+import type { EngineerSearchType, WxBindAdminType } from '@/pages/admin/WxUser/data'
 import API from '@/services/API.d'
 import httpServer from '@/utils/httpServer'
 

@@ -3,8 +3,8 @@ import { message, Spin, Alert, Divider } from 'antd';
 import type { ActionType } from '@ant-design/pro-table';
 import React, { useState, useRef, useEffect } from 'react';
 import { ModalForm, ProFormRadio, ProFormText } from '@ant-design/pro-form';
-import { fetchWxBindAdmin } from '@/pages/archive/WxUser/service'
-import { queryUserList } from '@/pages/admin/UserList/service';
+import { fetchWxBindAdmin } from '@/pages/admin/WxUser/service'
+import { queryUserNotBindWxList } from '@/pages/admin/UserList/service';
 import { UserListDataType } from '@/pages/admin/data.d'
 import style from "@/pages/workOrder/components/sendOrder.less"
 export type ColumnEditConsumableType = {
@@ -41,11 +41,10 @@ const ModelSendOrder: React.FC<ModalModifyFormDataProps> = ({ createModalVisible
       actionRef.current.reload();
     }
     if (listReloadAndRest) listReloadAndRest();
-
     handleModalVisible(false);
   }
   const fetchQueryList = async () => {
-    const response = await queryUserList({
+    const response = await queryUserNotBindWxList({
       pageSize: 10000000,
       current: 1,
       bindFlag: 2
@@ -58,7 +57,7 @@ const ModelSendOrder: React.FC<ModalModifyFormDataProps> = ({ createModalVisible
   const conversionFormat = (data: UserListDataType[]) => {
     let obj: any[] = []
     data.forEach(item => {
-      obj.push({ value: item.id, label: `${item.username}(${item.mobile})`, style: { "width": "240px", display: "inline-block", margin: "0" } })
+      obj.push({ value: item.id, label: `${item.realname}(${item.mobile})`, style: { "width": "240px", display: "inline-block", margin: "0" } })
     })
     setEngineerData(obj)
   }

@@ -6,8 +6,8 @@ import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
 import type { ProDescriptionsItemProps } from '@ant-design/pro-descriptions';
 import ProDescriptions from '@ant-design/pro-descriptions';
-import { queryList } from '@/pages/archive/WxUser/service';
-import { wxUserListDataType } from "@/pages/archive/WxUser/data.d";
+import { queryList } from '@/pages/admin/WxUser/service';
+import { wxUserListDataType } from "@/pages/admin/WxUser/data";
 import ModalModifyForm from './components/ModalModifyForm'
 
 const DictionaryList: React.FC<{}> = () => {

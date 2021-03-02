@@ -62,6 +62,16 @@
                     component: "./admin/Dictionary"
                   },
                   {
+                    path: '/admin/wxUser',
+                    name: "微信用户管理",
+                    component: './admin/WxUser'
+                  },
+                  {
+                    path: '/admin/engineer',
+                    name: "工程师管理",
+                    component: './admin/Engineer'
+                  },
+                  {
                     path: "*",
                     component: './404',
                   }
@@ -134,16 +144,6 @@
                         component: './404',
                       },
                     ]
-                  },
-                  {
-                    path: '/archive/engineer',
-                    name: "工程师管理",
-                    component: './archive/Engineer'
-                  },
-                  {
-                    path: '/archive/wxUser',
-                    name: "微信用户管理",
-                    component: './archive/WxUser'
                   },
                   {
                     path: "*",
