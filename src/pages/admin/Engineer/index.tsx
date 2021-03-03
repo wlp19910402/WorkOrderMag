@@ -1,5 +1,4 @@
-import { PlusOutlined } from '@ant-design/icons';
-import { Button, Drawer, message, Popconfirm } from 'antd';
+import { Button, Drawer, Popconfirm } from 'antd';
 import React, { useState, useRef } from 'react';
 import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
 import type { ProColumns, ActionType } from '@ant-design/pro-table';
@@ -7,31 +6,18 @@ import ProTable from '@ant-design/pro-table';
 import type { ProDescriptionsItemProps } from '@ant-design/pro-descriptions';
 import ProDescriptions from '@ant-design/pro-descriptions';
 import { queryList } from '@/pages/admin/Engineer/service';
-import { EngineerListDataType, engineerStatusEnum } from "@/pages/admin/Engineer/data.d";
-import ModalModifyForm from './components/ModalModifyForm'
-// const handleRemove = async (selectedRows: DeviceListDataType[]) => {
-//   const hide = message.loading('正在删除');
-//   if (!selectedRows) return true;
-//   try {
-//     hide;
-//     message.success('删除成功，即将刷新');
-//     return true;
-//   } catch (error) {
-//     hide;
-//     message.error('删除失败，请重试');
-//     return false;
-//   }
-// };
+import { EngineerListDataType } from "@/pages/admin/Engineer/data.d";
+
 const DictionaryList: React.FC<{}> = () => {
   const [ showDetail, setShowDetail ] = useState<boolean>(false);
   const actionRef = useRef<ActionType>();
   const [ currentRow, setCurrentRow ] = useState<EngineerListDataType>();
   const [ selectedRowsState, setSelectedRows ] = useState<EngineerListDataType[]>([]);
-  const [ createModalVisible, handleModalVisible ] = useState<boolean>(false);
   const columns: ProColumns<any>[] = [
     {
       title: "工程师",
       dataIndex: 'realName',
+      hideInSearch: true,
       render: (val, entity) => {
         return (
           <a
@@ -47,52 +33,17 @@ const DictionaryList: React.FC<{}> = () => {
     },
     {
       title: "工程师手机号",
-      dataIndex: 'mobile'
+      dataIndex: 'mobile',
+      hideInSearch: true
     },
     {
       title: "状态",
       dataIndex: 'status',
-      valueEnum: {
-        ...engineerStatusEnum
-      },
+      hideInSearch: true,
       hideInDescriptions: true,
       hideInTable: true
-    },
-    // {
-    //   title: "操作",
-    //   valueType: 'option',
-    //   width: "140px",
-    //   render: (_, record) => [
-    //     <Button
-    //       key="edit"
-    //       type="text"
-    //       size="small"
-    //       onClick={ () => { fetchUserEdit(record) } }
-    //     >
-    //       编辑
-    //     </Button>,
-    //     <Popconfirm
-    //       key="delete"
-    //       title="是否要删除此行？"
-    //       onConfirm={ () => { record.id !== undefined && tiggerDelete(record.id?.toString()); } }>
-    //       <Button size="small" type="text" >删除</Button>
-    //     </Popconfirm>
-    //   ],
-    // },
+    }
   ];
-
-  const tiggerDelete = async (id: string) => {
-    // const response = await deleteCompany(id)
-    // if (!response) return
-    // if (actionRef.current) {
-    //   actionRef.current.reloadAndRest?.();
-    // }
-    // message.success("删除成功")
-  }
-  const fetchUserEdit = async (record: EngineerListDataType) => {
-    await setCurrentRow(record);
-    handleModalVisible(true);
-  }
   const fetchQueryList = async (params: any) => {
     const response = await queryList(params)
     if (!response) return { data: [] }
@@ -106,34 +57,15 @@ const DictionaryList: React.FC<{}> = () => {
         headerTitle="查询表格"
         actionRef={ actionRef }
         rowKey="id"
-        search={ {
-          labelWidth: 120,
-        } }
+        search={ false }
         pagination={ {
           pageSize: 10,
         } }
-        // toolBarRender={ () => [
-        //   <Button type="primary" onClick={ async () => { await setCurrentRow(undefined); handleModalVisible(true); } }>
-        //     <PlusOutlined />新建
-        //   </Button>,
-        // ] }
         request={ async (params, sorter, filter) => await fetchQueryList({ ...params, ...filter }) }
         columns={ columns }
-        // rowSelection={ {
-        //   onChange: (_, selectedRows: any) => setSelectedRows(selectedRows),
-        // } }
+
         rowSelection={ false }
       />
-
-      {/* {createModalVisible && (
-        <ModalModifyForm
-          createModalVisible={ createModalVisible }
-          handleModalVisible={ handleModalVisible }
-          actionRef={ actionRef }
-          currentRow={ currentRow }
-        />
-      ) } */}
-
       {selectedRowsState?.length > 0 && (
         <FooterToolbar
           extra={
@@ -146,7 +78,6 @@ const DictionaryList: React.FC<{}> = () => {
           <Popconfirm
             title={ `是否要批量删除 ${selectedRowsState.length} 项` }
             onConfirm={ async () => {
-              // await handleRemove(selectedRowsState);
               setSelectedRows([]);
               actionRef.current?.reloadAndRest?.();
             } }>
