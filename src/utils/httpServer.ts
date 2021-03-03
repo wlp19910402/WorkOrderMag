@@ -16,9 +16,9 @@ const codeMatch = (res: any) => {
       });
       break;
     default:
+      message.error(res.message, 4);
       break;
   }
-  message.error(res.message, 4);
   return undefined
 }
 const get = async (url: string, params?: any) => {

@@ -18,7 +18,7 @@ const DictionaryList: React.FC<{}> = () => {
   const columns: ProColumns<any>[] = [
     {
       title: "微信昵称",
-      dataIndex: 'mobile',
+      dataIndex: 'wxNickname',
       render: (val, entity) => {
         return (
           <a
@@ -30,7 +30,17 @@ const DictionaryList: React.FC<{}> = () => {
             {`${val}` }
           </a>
         );
-      }
+      },
+      hideInSearch: true
+    },
+    {
+      title: "查询范围",
+      dataIndex: 'onlyEngineer',
+      hideInTable: true,
+      valueEnum: {
+        0: { text: "所有", status: false },
+        1: { text: "工程师", status: true }
+      },
     },
     {
       title: "工程师姓名",
@@ -43,12 +53,12 @@ const DictionaryList: React.FC<{}> = () => {
     {
       title: "管理员名称",
       dataIndex: 'adminUsername',
-
+      hideInSearch: true
     },
     {
       title: "创建时间",
       dataIndex: 'createTime',
-
+      hideInSearch: true
     },
     {
       title: "操作",
@@ -91,7 +101,9 @@ const DictionaryList: React.FC<{}> = () => {
         headerTitle="查询表格"
         actionRef={ actionRef }
         rowKey="id"
-        search={ false }
+        search={ {
+          labelWidth: 120,
+        } }
         pagination={ {
           pageSize: 10,
         } }
