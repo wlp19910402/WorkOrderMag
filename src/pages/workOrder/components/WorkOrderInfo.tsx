@@ -47,7 +47,7 @@ const DictionaryList: React.FC<WorkOrderFinishProps> = ({ orderType = 'wx', matc
       description:
         <Timeline style={ { maxHeight: "400px", overflow: "auto" } }>
           { logs.map((item: WorkOrderWrokLogDataType) => (
-            <Timeline.Item color={ orderStatusData.find(it => it.value === item.operationType)?.color }>
+            <Timeline.Item key={ item.id } color={ orderStatusData.find(it => it.value === item.operationType)?.color }>
               <p />
               <p>操作：{ orderStatusData.find(it => it.value === item.operationType)?.label }</p>
               <p>日志：{ item.operationLog }</p>
