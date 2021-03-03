@@ -3,12 +3,14 @@ import API from '@/services/API.d'
 import httpServer from '@/utils/httpServer'
 
 export const queryList = async (params: EngineerSearchType) => {
+
   return await httpServer.get(API.WX_USER_LIST, {
     params: {
       pageSize: params.pageSize,
       pageNo: params.current,
       mobile: params.mobile,
-      realName: params.realName
+      realName: params.realName,
+      onlyEngineer: params.onlyEngineer
     }
   });
 }

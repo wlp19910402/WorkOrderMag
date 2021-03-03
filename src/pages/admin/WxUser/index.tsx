@@ -74,13 +74,6 @@ const DictionaryList: React.FC<{}> = () => {
             <UserSwitchOutlined className="qm-table-icon" />
           </Button>
         </Tooltip>
-        // ,
-        // <Popconfirm
-        //   key="delete"
-        //   title="是否要删除此行？"
-        //   onConfirm={ () => { record.id !== undefined && tiggerDelete(record.id?.toString()); } }>
-        //   <Button size="small" type="text" >删除</Button>
-        // </Popconfirm>
       ],
     },
   ];
@@ -89,7 +82,7 @@ const DictionaryList: React.FC<{}> = () => {
     handleModalVisible(true);
   }
   const fetchQueryList = async (params: any) => {
-    const response = await queryList(params)
+    const response = await queryList({ ...params, onlyEngineer: params.onlyEngineer === "1" ? true : false })
     if (!response) return { data: [] }
     const { data } = response;
     return ({ ...data, data: data.records })
