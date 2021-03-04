@@ -46,7 +46,7 @@ const WorkOrderInfoConsumableList: React.FC<WorkOrderInfoConsumableListProps> = 
       render: (val: any, entity: any) => val.modelName
     },
     {
-      title: '创建日期',
+      title: '安装日期',
       dataIndex: 'createTime',
       render: (val: any) => pickerDateFormat(val)
     },
