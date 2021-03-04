@@ -95,7 +95,12 @@ const ModelSendOrder: React.FC<ModalModifyFormDataProps> = ({ createModalVisible
                 radioType="radio"
                 options={ [ ...engineerData ] }
                 normalize={ (val, prevValue, all) => {
-                  setCurrentEngineer(engineerData.find(item => item.value === val).label)
+                  let currentEngineerData = engineerData.find(item => item.value === val).label
+                  setCurrentEngineer(currentEngineerData)
+                  formRef.current.setFieldsValue({
+                    "realName": currentEngineerData.split("(")[ 0 ],
+                    "mobile": currentEngineerData.split("(")[ 1 ].split(")")[ 0 ]
+                  })
                   return val
                 } }
               /> : "暂时无可用人员，请在新增管理员人员"
