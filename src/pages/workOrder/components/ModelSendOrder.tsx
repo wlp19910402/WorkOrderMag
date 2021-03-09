@@ -55,7 +55,7 @@ const ModelSendOrder: React.FC<ModalModifyFormDataProps> = ({ createModalVisible
   const conversionFormat = (data: EngineerListDataType[]) => {
     let obj: any[] = []
     data.forEach(item => {
-      obj.push({ value: item.id, label: `${item.realName}(${item.mobile})`, style: { "width": "240px", display: "inline-block", margin: "0" } })
+      obj.push({ value: item.id, label: `${item.realname}(${item.mobile})`, style: { "width": "240px", display: "inline-block", margin: "0" } })
     })
     setEngineerData(obj)
   }

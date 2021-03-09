@@ -44,7 +44,7 @@ const DictionaryList: React.FC<{}> = () => {
     },
     {
       title: "工程师姓名",
-      dataIndex: 'realName'
+      dataIndex: 'realname'
     },
     {
       title: "工程师手机号",

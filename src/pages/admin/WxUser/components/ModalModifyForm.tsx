@@ -31,7 +31,7 @@ const ModelSendOrder: React.FC<ModalModifyFormDataProps> = ({ createModalVisible
     let response = await fetchWxBindAdmin({
       id: wxUserId,
       adminId: record.adminId,
-      realName: record.realName,
+      realname: record.realname,
       mobile: record.mobile
     })
     await setLoading(false)
@@ -98,7 +98,7 @@ const ModelSendOrder: React.FC<ModalModifyFormDataProps> = ({ createModalVisible
                   let currentEngineerData = engineerData.find(item => item.value === val).label
                   setCurrentEngineer(currentEngineerData)
                   formRef.current.setFieldsValue({
-                    "realName": currentEngineerData.split("(")[ 0 ],
+                    "realname": currentEngineerData.split("(")[ 0 ],
                     "mobile": currentEngineerData.split("(")[ 1 ].split(")")[ 0 ]
                   })
                   return val
@@ -110,7 +110,7 @@ const ModelSendOrder: React.FC<ModalModifyFormDataProps> = ({ createModalVisible
         <Divider />
         <ProFormText
           label="工程师姓名"
-          name={ "realName" }
+          name={ "realname" }
           rules={ [
             {
               required: true,

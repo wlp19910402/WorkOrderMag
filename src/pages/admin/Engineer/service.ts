@@ -8,7 +8,7 @@ export const queryList = async (params: EngineerSearchType) => {
       pageSize: params.pageSize,
       pageNo: params.current,
       mobile: params.mobile,
-      realName: params.realName
+      realname: params.realname
     }
   });
 }

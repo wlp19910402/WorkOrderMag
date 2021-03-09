@@ -16,7 +16,7 @@ const DictionaryList: React.FC<{}> = () => {
   const columns: ProColumns<any>[] = [
     {
       title: "工程师",
-      dataIndex: 'realName',
+      dataIndex: 'realname',
       hideInSearch: true,
       render: (val, entity) => {
         return (
