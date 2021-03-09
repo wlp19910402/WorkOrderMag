@@ -72,7 +72,7 @@ export interface OrderListType extends OrderTypeType {
   orderType: string;
   portfolioId: string;//档案id
   supporterNames: string;
-  supporterIds: string;
+  supporterIds: number;
   receivingTime: string;
   sourceType: string;
   status: string;

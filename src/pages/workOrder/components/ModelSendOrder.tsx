@@ -25,7 +25,7 @@ const ModelSendOrder: React.FC<ModalModifyFormDataProps> = ({ createModalVisible
   const [ currentEngineer, setCurrentEngineer ] = useState<string>(currentOrder.engineerName);
   const [ supporters, setSupporters ] = useState<string>(currentOrder.supporterNames);
   const currentEngineerId = currentOrder.engineerId
-  const supportersId = currentOrder.supporterIds
+  const supportersId=currentOrder.supporterIds?currentOrder.supporterIds.split(",").map(item=>parseInt(item)):[]
   const [ loading, setLoading ] = useState<boolean>(true)
   const submitForm = async (record: any) => {
     await setLoading(true)
@@ -112,7 +112,7 @@ const ModelSendOrder: React.FC<ModalModifyFormDataProps> = ({ createModalVisible
               options={ [ ...engineerData ] }
               initialValue={ supportersId }
               normalize={ (val, prevValue, all) => {
-                let res = "";
+                let res = [];
                 val.forEach((item: any) => {
                   res += engineerData.find(ite => ite.value === item).label + ";"
                 });
