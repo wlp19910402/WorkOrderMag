@@ -206,7 +206,7 @@ const DictionaryList: React.FC<ModifyFormTypeProps> = ({ currentRow }) => {
               { ...formItemLayout }
               label='二维码编号'
               name="qrCodde"
-              rules={ [ { message: '请输入二维码编号' } ] }
+              rules={ [ {required: true,  message: '请输入二维码编号' } ] }
               initialValue={ currentRow?.qrCodde }
             >
               <Input placeholder="请输入二维码编号" />

@@ -16,7 +16,7 @@ const DictionaryList: React.FC<IRouteComponentProps> = ({ location, history }) =
   const [ form ] = Form.useForm();
   const [ createModalVisible, handleModalVisible ] = useState<boolean>(false);
   const [ protolioInfo, setProtolioInfo ] = useState<any>({})
-  const orderTypeParams = location.query.orderType || orderTypeData[ 0 ].value
+  const [orderTypeParams,setOrderTypeParams] = useState<string>(location.query.orderType || orderTypeData[ 0 ].value)
   const onFinish = async (values: { [ key: string ]: any }) => {
     setUploadUrlImage(uploadImages, setUploadImages)
     let params: OrderTypeType = {
@@ -35,6 +35,9 @@ const DictionaryList: React.FC<IRouteComponentProps> = ({ location, history }) =
     setTimeout(() => {
       if (orderTypeInfo) history.push(orderTypeInfo.listPath);
     }, 1000);
+  }
+  const changeOptionType=(e)=>{
+    setOrderTypeParams(e.target.value)
   }
   useEffect(() => {
     setUploadUrlImage(uploadImages, setUploadImages)
@@ -65,7 +68,7 @@ const DictionaryList: React.FC<IRouteComponentProps> = ({ location, history }) =
               initialValue={ orderTypeParams }
               name="orderType"
             >
-              <Radio.Group optionType="button" options={ [ ...orderTypeData ] } />
+              <Radio.Group onChange={changeOptionType} optionType="button" options={ [ ...orderTypeData ] } />
             </Form.Item>
             <Form.Item
               label='客户姓名'
@@ -89,7 +92,7 @@ const DictionaryList: React.FC<IRouteComponentProps> = ({ location, history }) =
               name="company"
               rules={ [ { required: true, message: "请输入报单单位！" } ] }
             >
-              <Input onChange={ (event) => { inputChangeCompany(event.nativeEvent) } } placeholder="请输入报单单位" addonAfter={ <a onClick={ () => handleModalVisible(true) }>或去绑定档案</a> } />
+              <Input onChange={ (event) => { inputChangeCompany(event.nativeEvent) } } placeholder="请输入报单单位" addonAfter={orderTypeParams!=='xj'?<a onClick={ () => handleModalVisible(true) }>或去绑定档案</a>:false } />
             </Form.Item>
             { protolioInfo.id !== undefined && <>
               <Form.Item

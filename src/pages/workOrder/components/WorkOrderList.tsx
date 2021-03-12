@@ -92,11 +92,17 @@ const DictionaryList: React.FC<WorkOrderListProps> = ({ orderType = 'wx' }) => {
       hideInTable: true
     },
     {
-      title: '工单状态',
+      title: '工单状态及时间',
       dataIndex: 'status',
-      valueEnum: {
-        ...orderStatusEnum,
-      },
+      width:"160px",
+      render:(val,record)=>{
+        return (
+          <>
+          <div>{orderStatusEnum[val].text}</div>
+          <div style={{fontSize:'12px',color:"#999999"}}>{val!=='wpd'?record.latestOperationTime:record.createTime}</div>
+          </>
+        )
+      }
     },
     {
       title: '设备名称',
@@ -138,9 +144,10 @@ const DictionaryList: React.FC<WorkOrderListProps> = ({ orderType = 'wx' }) => {
     {
       title: '操作',
       valueType: 'option',
-      width: '180px',
+      width: orderType!=='xj'?'180px':'150px',
       render: (_, record) => <>
-        <Tooltip title={ record.portfolioId !== '' ? '重新绑定' : '绑定档案' }>
+      {orderType!=='xj'&&
+        <Tooltip  title={ record.portfolioId !== '' ? '重新绑定' : '绑定档案' }>
           <Button
             key="bind"
             size="small"
@@ -152,7 +159,7 @@ const DictionaryList: React.FC<WorkOrderListProps> = ({ orderType = 'wx' }) => {
           >
             <FileDoneOutlined className="qm-table-icon" />
           </Button>
-        </Tooltip>
+        </Tooltip>}
         <Tooltip title={ record.engineerId !== '' ? '重新派单' : '派单' }>
           { record.portfolioId === '' ? (
             <Popconfirm
