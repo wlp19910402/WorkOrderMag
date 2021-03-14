@@ -82,5 +82,7 @@ export default {
   ENGINEER_LIST: "/api/wx/engineers", //工程师管理列表
   WX_USER_LIST: "/api/wx/list", //工程师管理列表
   WX_BIND_ADMIN: "/api/wx/bind-admin",//绑定管理员
-
+  // 监控管理
+  MONITOR_CONSUMABLE_LIST: '/api/monitor/consumables',//耗材监控列表
+  WORK_ORDER_QUICK_CREATE: "/api/work-order/quick-create",//快捷创建工单
 }

@@ -258,6 +258,26 @@
                 ]
               },
               {
+                path: '/monitor',
+                name: "监控管理",
+                icon: 'smile',
+                routes: [
+                  {
+                    path: '/monitor/consumable/',
+                    redirect: '/monitor/consumable/list',
+                  },
+                  {
+                    path: '/monitor/consumable/list',
+                    name: "耗材监控",
+                    component: './monitor/consumable/List/index',
+                  },
+                  {
+                    path: "*",
+                    component: './404',
+                  },
+                ]
+              },
+              {
                 name: "exception",
                 path: "/exception",
                 routes: [

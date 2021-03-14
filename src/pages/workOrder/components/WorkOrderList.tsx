@@ -98,8 +98,8 @@ const DictionaryList: React.FC<WorkOrderListProps> = ({ orderType = 'wx' }) => {
       render:(val,record)=>{
         return (
           <>
-          <div>{orderStatusEnum[val].text}</div>
-          <div style={{fontSize:'12px',color:"#999999"}}>{val!=='wpd'?record.latestOperationTime:record.createTime}</div>
+            <div>{orderStatusEnum[val].text}</div>
+            <div style={{fontSize:'12px',color:"#999999"}}>{val!=='wpd'?record.latestOperationTime:record.createTime}</div>
           </>
         )
       }
