@@ -17,8 +17,8 @@ export const queryProtfolioList = async (params: PortfolioConsumableSearchType) 
       consumableModel: params.consumableModel,
       consumableName: params.consumableName,
       consumableType: params.consumableType,
-      expirationEntTime: params.expirationEntTime,
-      expirationStartTime: params.expirationStartTime
+      expirationEntTime: params.expirationStartTime ? params.expirationStartTime[ 1 ] : undefined,
+      expirationStartTime: params.expirationStartTime ? params.expirationStartTime[ 0 ] : undefined
     }
   });
 }

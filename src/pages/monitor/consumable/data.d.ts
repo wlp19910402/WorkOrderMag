@@ -18,7 +18,7 @@ export type PortfolioConsumableSearchType = {
   consumableName?: string;//耗材名称
   consumableType?: string;//耗材类型
   expirationEntTime?: string;//到期时间2
-  expirationStartTime?: string;//到期时间1
+  expirationStartTime?: any;//到期时间1
 } & PageDataType
 
 // 设备列表详情

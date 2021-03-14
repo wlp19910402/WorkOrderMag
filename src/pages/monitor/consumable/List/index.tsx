@@ -185,6 +185,13 @@ const DictionaryList: React.FC<PortfolioConsumableListDataType> = () => {
       },
     },
     {
+      title: "到期日期范围",
+      dataIndex: 'expirationStartTime',
+      hideInDescriptions: true,
+      hideInTable: true,
+      valueType: 'dateRange'
+    },
+    {
       title: "耗材图片",
       dataIndex: 'imgUrls',
       hideInSearch: true,
@@ -220,34 +227,17 @@ const DictionaryList: React.FC<PortfolioConsumableListDataType> = () => {
     {
       title: "实际更换日期",
       dataIndex: 'replacementTime',
+      hideInSearch: true
+    },
+    {
+      title: "是否过期",
+      dataIndex: 'expireFlag',
       hideInSearch: true,
-      // render: (val: any) => val ? pickerDateFormat(val) : val
+      valueEnum: {
+        false: { text: '未过期', status: 'Default' },
+        true: { text: '已过期', status: 'Error' }
+      },
     }
-
-    // {
-    //   title: "操作",
-    //   valueType: 'option',
-    //   width: "60px",
-    //   render: (_, record) => [
-    //     <Tooltip title="转换为工单" key="edit">
-    //       <Link to={ `/archive/portfolio/edit/${record.id}` }>
-    //         <EditOutlined className="qm-table-icon" />
-    //       </Link>
-    //     </Tooltip>,
-    //     <Tooltip title="删除" key="delete">
-    //       <Popconfirm
-    //         title="是否要删除此行？"
-    //         onConfirm={ () => { record.id !== undefined && tiggerDelete(record.id?.toString()); } }>
-    //         <Button size="small" type="link"><DeleteOutlined className="qm-table-icon" /></Button>
-    //       </Popconfirm>
-    //     </Tooltip>,
-    //     <Tooltip title="详情" key="info">
-    //       <Link key="edit" to={ `/archive/portfolio/info/${record.id}` }>
-    //         <EyeOutlined className="qm-table-icon" />
-    //       </Link>
-    //     </Tooltip>
-    //   ],
-    // },
   ];
   const columnsDrawer = [
     ...columns.filter(item => item.dataIndex !== 'imgUrls'),
@@ -298,7 +288,7 @@ const DictionaryList: React.FC<PortfolioConsumableListDataType> = () => {
               if (portfolioIdArr.length === 1) {
                 let response = await quickCreateWorkOrder(portfolioIdArr[ 0 ])
                 if (!response) return
-                message.success("新增成功")
+                message.success("新增工单成功，请在维修工单列表中查看")
               } else {
                 message.error(`勾选了${portfolioIdArr.length}个不同的档案耗材，请勾选相同的档案耗材`)
               }
