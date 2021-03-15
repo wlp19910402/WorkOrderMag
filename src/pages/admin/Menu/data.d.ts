@@ -18,5 +18,5 @@ export const menuDefault: MenuDataType = {
   orderNum: 0,
   icon: "",
   perms: "",
-  type: 1,
+  type: 0,
 }

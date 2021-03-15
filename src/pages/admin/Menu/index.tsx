@@ -19,22 +19,6 @@ type MenuTreeTypeProps = {
   dispatch: Dispatch;
   loading: boolean;
 }
-// const handleRemove = async (selectedRows: MenuDataType[]) => {
-//   const hide = message.loading('正在删除');
-//   if (!selectedRows) return true;
-//   try {
-//     // await removeRule({
-//     //   deleteId: selectedRows.map((row) => row.id),
-//     // });
-//     hide;
-//     message.success('删除成功，即将刷新');
-//     return true;
-//   } catch (error) {
-//     hide;
-//     message.error('删除失败，请重试');
-//     return false;
-//   }
-// };
 export const treeData: any = (data: MenuDataType[] | []) => treeData ? data.filter(ite => ite.id !== undefined).map(item => ({
   key: item.id?.toString(),
   title: item.name,
@@ -53,17 +37,17 @@ const MenuTree: React.FC<MenuTreeTypeProps> = (props) => {
   const [ parentRow, setParentRow ] = useState<MenuDataType>();
   const [ expandedKeys, setExpandedKeys ] = useState<any[]>([ '0' ])
   const [ autoExpandParent, setAutoExpandParent ] = useState<boolean>(true)
+  const [ typeFormTypeTmp, setTypeFormTypeTmp ] = useState<TypeFormType>(0);
   const onSelect = async (keys: any) => {
     await formDefault(keys[ 0 ]);
     setEditDisable(true);
-
   };
   const formDefault = async (keys: string) => {
     const current = flatMenuData.find(item => item.id === parseInt(keys))
     await setCurrentRow(undefined)
     if (keys === 'new' || !current) {
-      await setCurrentRow({ ...menuDefault, parentId: parentRow?.id })
-      setTypeFormType(1)
+      await setCurrentRow({ ...menuDefault, parentId: parentRow?.id, type: typeFormTypeTmp })
+      setTypeFormType(typeFormTypeTmp)
     } else {
       await setCurrentRow(current)
       setTypeFormType(current?.type)
@@ -91,7 +75,17 @@ const MenuTree: React.FC<MenuTreeTypeProps> = (props) => {
   const addMenu = async (e: any, Render: any) => {
     e.stopPropagation();
     await setCurrentRow(undefined)
-    await setCurrentRow({ ...menuDefault, parentId: parseInt(Render?.key) })
+    let typeTmp: TypeFormType = 0;
+    if (Render.key === "0") {
+      typeTmp = 0;
+    } else if (Render.parentKeys[ 0 ] === "0" && Render.parentKeys.length === 1) {
+      typeTmp = 1;
+    } else {
+      typeTmp = 2;
+    }
+    setTypeFormTypeTmp(typeTmp)
+    setTypeFormType(typeTmp)
+    await setCurrentRow({ ...menuDefault, parentId: parseInt(Render?.key), type: typeTmp })
     await setParentRow(flatMenuData.find(item => item.id === parseInt(Render?.key)))
     setExpandedKeys([ ...expandedKeys, Render?.key ])
     setEditDisable(false);

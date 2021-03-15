@@ -293,10 +293,7 @@ const DictionaryList: React.FC<PortfolioConsumableListDataType> = () => {
                 message.error(`勾选了${portfolioIdArr.length}个不同的档案耗材，请勾选相同的档案耗材`)
               }
             } }>
-            <Button
-            >
-              转换为工单
-          </Button>
+            <Button type="primary"> 转换为工单</Button>
           </Popconfirm>
         </FooterToolbar>
       ) }

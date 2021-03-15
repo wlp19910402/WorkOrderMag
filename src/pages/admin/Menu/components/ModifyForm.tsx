@@ -46,7 +46,6 @@ const ModifyForm: React.FC<ModifyFormDataProps> = (props) => {
       layout="horizontal"
       initialValues={ { typeFormType } }
       onFinish={ onFinish }
-
     >
       <Form.Item name="parentId" hidden initialValue={ currentRow.parentId || 0 } >
         <Input />
