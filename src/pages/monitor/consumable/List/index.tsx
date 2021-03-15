@@ -1,5 +1,4 @@
-import { PlusOutlined, EditOutlined, DeleteOutlined, EyeOutlined } from '@ant-design/icons';
-import { Button, Drawer, message, Popconfirm, Image, Tooltip } from 'antd';
+import { Button, Drawer, message, Popconfirm, Image } from 'antd';
 import React, { useState, useRef, useEffect } from 'react';
 import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
 import type { ProColumns, ActionType } from '@ant-design/pro-table';
@@ -289,6 +288,8 @@ const DictionaryList: React.FC<PortfolioConsumableListDataType> = () => {
                 let response = await quickCreateWorkOrder(portfolioIdArr[ 0 ])
                 if (!response) return
                 message.success("新增工单成功，请在维修工单列表中查看")
+                setSelectedRows([]);
+                actionRef.current?.reloadAndRest?.();
               } else {
                 message.error(`勾选了${portfolioIdArr.length}个不同的档案耗材，请勾选相同的档案耗材`)
               }
