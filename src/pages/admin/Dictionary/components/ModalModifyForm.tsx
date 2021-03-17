@@ -3,10 +3,10 @@
  */
 import React, { useRef, useState, useEffect } from 'react';
 import type { ActionType } from '@ant-design/pro-table';
-import { ModalForm, ProFormText, ProFormTextArea, ProFormSelect, ProFormRadio } from '@ant-design/pro-form';
+import { ModalForm, ProFormText, ProFormTextArea, ProFormRadio } from '@ant-design/pro-form';
 import { saveDictionary } from '../service';
 import type { DictionaryDataType } from '../../data.d';
-import { message } from 'antd'
+import { message, Alert } from 'antd'
 import { dicTypeData } from '@/utils/DicCode.d'
 import { fetchDicTypeSelect } from '@/pages/admin/Dictionary/service'
 import CODE, { matchDicClass } from '@/utils/DicCode.d'
@@ -25,6 +25,7 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
   const { createModalVisible, handleModalVisible, actionRef, currentRow } = props
   const [ setList, handleSetList ] = useState<any>(matchDicClass(CODE.DEVICE_TYPE))
   const [ addSelect, handleAddSelect ] = useState<any[]>([])
+  const [ nullData, handleNullData ] = useState<any>({ status: false, text: "" })
   const submitForm = async (value: DictionaryDataType) => {
     let params = currentRow?.id !== undefined ? { ...value, id: currentRow.id } : value;
     const response = await saveDictionary({ ...params })
@@ -62,6 +63,10 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
       let parentType = formRef.current.getFieldValue("parentType");
       let response = await fetchDicTypeSelect(parentType)
       let label = dicTypeData.find(item => item.value === parentType)?.label
+      if (response.length === 0) {
+        handleNullData({ status: true, text: `请先设置对应的" ${label} "的值，上级不能为空哦~` })
+        return
+      }
       arr.push({
         name: "addSelect-0",
         label: label,
@@ -73,6 +78,11 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
       if (val === 2) {
         let labelNewCode = matchDicClass(parentType)[ val - 1 ].label
         let res = await fetchDicTypeSelect(response[ 0 ].value);
+        if (res.length === 0) {
+          handleNullData({ status: true, text: `请先设置对应的" ${labelNewCode} "的值，上级不能为空哦~` })
+          return
+        }
+        handleNullData({ status: false, text: "" })
         arr.push({
           name: `addSelect-1`,
           label: labelNewCode,
@@ -91,6 +101,11 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
       modalProps={ {
         maskClosable: false,
         okText: "保存"
+      } }
+      submitter={ {
+        submitButtonProps: {
+          disabled: nullData.status
+        }
       } }
       title={ currentRow?.id !== undefined ? "字典编辑" : "字典新增" }
       width="600px"
@@ -113,7 +128,6 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
               ...dicTypeData
             ] }
             initialValue={ CODE.DEVICE_TYPE }
-
             normalize={ (val, prevValue, all) => {
               handleNewCode(val)
               return val
@@ -132,8 +146,9 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
               return val
             } }
           />
-          {addSelect.length > 0 && addSelect.map((item: any, index: number) => {
+          {!nullData.status && addSelect.length > 0 && addSelect.map((item: any, index: number) => {
             return <AddSelect
+              key={ index }
               name={ item.name }
               label={ item.label }
               value={ item.value }
@@ -146,57 +161,63 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
           }) }
         </>
       ) }
-      <ProFormText
-        label="字典类型"
-        name="type"
-        placeholder="请输入字典类型"
-        initialValue={ currentRow?.type }
-        disabled
-      />
-      <ProFormText
-        label="字典名称"
-        name={ "name" }
-        placeholder="请输入字典名称"
-        initialValue={ currentRow?.name }
-        disabled
-      />
-      <ProFormText
-        rules={ [
-          {
-            required: true,
-            message: "请输入字典码！"
-          },
-        ] }
-        label="字典码"
-        name="code"
-        placeholder="请输入字典码"
-        initialValue={ currentRow?.code }
-        disabled={ currentRow?.id !== undefined }
-      />
-      <ProFormText
-        rules={ [
-          {
-            required: true,
-            message: "请输入字典值！"
-          },
-        ] }
-        label="字典值"
-        name="value"
-        placeholder="请输入字典值"
-        initialValue={ currentRow?.value }
-      />
-      <ProFormTextArea
-        name="remark"
-        label="备注"
-        placeholder="请输入备注"
-        initialValue={ currentRow?.remark }
-        rules={ [
-          {
-            max: 100,
-            message: `内容最多支持100个字符!`,
-          },
-        ] }
-      />
+      {nullData.status &&
+        <Alert
+          style={ { fontSize: "12px", marginTop: "20px" } }
+          message={ nullData.text } type="warning" showIcon />
+      }
+      {!nullData.status && <>
+        <ProFormText
+          label="字典类型"
+          name="type"
+          placeholder="请输入字典类型"
+          initialValue={ currentRow?.type }
+          disabled
+        />
+        <ProFormText
+          label="字典名称"
+          name={ "name" }
+          placeholder="请输入字典名称"
+          initialValue={ currentRow?.name }
+          disabled
+        />
+        <ProFormText
+          rules={ [
+            {
+              required: true,
+              message: "请输入字典码！"
+            },
+          ] }
+          label="字典码"
+          name="code"
+          placeholder="请输入字典码"
+          initialValue={ currentRow?.code }
+          disabled={ currentRow?.id !== undefined }
+        />
+        <ProFormText
+          rules={ [
+            {
+              required: true,
+              message: "请输入字典值！"
+            },
+          ] }
+          label="字典值"
+          name="value"
+          placeholder="请输入字典值"
+          initialValue={ currentRow?.value }
+        />
+        <ProFormTextArea
+          name="remark"
+          label="备注"
+          placeholder="请输入备注"
+          initialValue={ currentRow?.remark }
+          rules={ [
+            {
+              max: 100,
+              message: `内容最多支持100个字符!`,
+            },
+          ] }
+        /></> }
     </ModalForm >
   )
 }
