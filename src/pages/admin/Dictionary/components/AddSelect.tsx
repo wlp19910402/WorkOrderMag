@@ -1,6 +1,6 @@
 // import { Select, Spin } from 'antd';
 import React from 'react';
-import { fetchDicTypeSelect } from '@/pages/admin/Dictionary/service'
+import { queryDictionaryParentId } from '@/pages/admin/Dictionary/service'
 import { ProFormSelect } from '@ant-design/pro-form'
 import { OptionProps } from './ModalModifyForm'
 interface SelectProps {
@@ -24,18 +24,22 @@ const AddSelect: React.FC<SelectProps> = (props) => {
       placeholder={ `请选择${label}` }
       initialValue={ value }
       allowClear={ false }
+      rules={ [
+        {
+          required: true,
+          message: `请输入${label}`
+        },
+      ] }
       normalize={ (val, preVal, allVals) => {
         if (isControlType) {
-          let name2 = option.find(item => item.value === val)?.label
-          formRefCurrent.setFieldsValue({ "type": val, "name": name2 });
+          formRefCurrent.setFieldsValue({ "parentId": val });
         } else {
           handleAddSelect(addSelect.filter((item, index) => index === 0))
-          formRefCurrent.setFieldsValue({ "addSelect-1": undefined })
-          fetchDicTypeSelect(val).then(res => {
+          queryDictionaryParentId(val).then(res => {
             let tmp = addSelect;
             tmp[ 1 ].option = res
             handleAddSelect(tmp);
-            formRefCurrent.setFieldsValue({ "type": res[ 0 ].value, "name": res[ 0 ].label, "addSelect-1": res[ 0 ].value });
+            formRefCurrent.setFieldsValue({ "parentId": res[ 0 ] ? res[ 0 ].value : undefined, "addSelect-1": res[ 0 ] ? res[ 0 ].label : undefined });
           })
         }
         return val

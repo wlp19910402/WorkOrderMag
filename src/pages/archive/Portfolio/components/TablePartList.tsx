@@ -98,7 +98,7 @@ const TablePartList: React.FC<TablePartListProps> = ({ setSelectedRows, selected
         partId: record.id,
         partName: record.name,
         num: 1,
-        warrantyPeriod: "",
+        warrantyPeriod: 1,
         partNo: record.no,
         partTypeName: record.typeName,
         paryModelName: record.modelName

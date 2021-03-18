@@ -14,6 +14,8 @@ export type ConsumableSaveDataType = {
   model: string;
   name: string;// 名称
   type: string;
+  modelName: string;
+  typeName: string;
 }
 // 耗材详情
 export type ConsumableListDataType = {

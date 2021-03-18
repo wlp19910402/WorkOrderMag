@@ -33,9 +33,11 @@ export type EditUserDataType = {
 
 export type DictionaryDataType = {
   id?: number,
-  code: string,
+  parentId: number,
   name: string,
   remark: string,
   type: string,
-  value: string
+  typeName: string,
+  parentPath: string,
+  parentPathName: string
 }

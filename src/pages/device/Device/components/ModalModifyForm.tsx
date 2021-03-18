@@ -8,8 +8,9 @@ import { saveDevice } from '../service';
 import type { DeviceSaveDataType } from '../data.d';
 import { message, Form, Row, Col, Spin } from 'antd'
 import UploadImage from '@/components/Upload/index'
-import { fetchDicTypeSelectObj } from '@/pages/admin/Dictionary/service'
+import { fetchDicTypeSelectParentIdObj } from '@/pages/admin/Dictionary/service'
 import { setUploadUrlImage } from '@/components/Upload/service'
+import { infoProtfolio } from '@/pages/archive/portfolio/service';
 type ModalModifyFormDataProps = {
   createModalVisible: boolean;
   handleModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
@@ -24,10 +25,13 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
   const [ searchBrand, setSearchBrand ] = useState<any>({});
   const [ loadingModel, setLoadingModel ] = useState<boolean>(false)
   const [ loadingBrand, setLoadingBrand ] = useState<boolean>(false)
+  const [ selectAnmaite, setSelectAnmaite ] = useState<any>({})
+  const formRef = useRef<any | null>(null);
   const submitForm = async (value: DeviceSaveDataType) => {
     let params = currentRow?.id !== undefined ? { ...value, id: currentRow.id } : value;
     const response = await saveDevice({
       ...params,
+      ...selectAnmaite,
       imgUrls: uploadImages.filter((item: any) => item !== '')
     })
     if (!response) return
@@ -37,14 +41,21 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
   }
   useEffect(() => {
     setUploadUrlImage(uploadImages, setUploadImages)
-    currentRow?.type && fetchDicTypeSelectObj(currentRow?.type).then(res => {
-      setSearchBrand(res);
-    });
-    currentRow?.brand && fetchDicTypeSelectObj(currentRow?.brand).then(res => {
-      setSearchModel(res);
-    });
+    if (currentRow?.type) {
+      setLoadingModel(true);
+      setLoadingBrand(true);
+      fetchDicTypeSelectParentIdObj(currentRow?.type).then(res => {
+        setSearchBrand(res);
+        setLoadingBrand(false);
+      });
+      fetchDicTypeSelectParentIdObj(currentRow?.brand).then(res => {
+        setSearchModel(res);
+        setLoadingModel(false);
+      });
+      setSelectAnmaite({ type: currentRow?.type, brand: currentRow?.brand, model: currentRow?.model })
+    }
   }, [])
-  const formRef = useRef<any | null>(null);
+
   return (
     <ModalForm
       modalProps={ {
@@ -85,9 +96,10 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
         label="设备类型"
         valueEnum={ { ...searchType } }
         placeholder="请选择设备类型"
-        initialValue={ currentRow?.type }
+        initialValue={ currentRow?.typeName }
         getValueFromEvent={ (arg) => {
-          fetchDicTypeSelectObj(arg).then(async (res) => {
+          fetchDicTypeSelectParentIdObj(arg).then(async (res) => {
+            console.log(res)
             await setLoadingModel(true);
             await setLoadingBrand(true);
             await setSearchBrand(res);
@@ -95,6 +107,7 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
             setLoadingBrand(false);
             formRef.current.setFieldsValue({ "model": undefined })
             formRef.current.setFieldsValue({ "brand": undefined })
+            setSelectAnmaite({ type: arg, brand: undefined, model: undefined })
           });
           return arg
         } }
@@ -113,13 +126,14 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
             ...searchBrand
           } }
           placeholder="请选择设备品牌"
-          initialValue={ currentRow?.brand }
+          initialValue={ currentRow?.brandName }
           getValueFromEvent={ (arg) => {
-            fetchDicTypeSelectObj(arg).then(async (res) => {
+            fetchDicTypeSelectParentIdObj(arg).then(async (res) => {
               await setLoadingBrand(true);
               await setSearchModel(res);
               setLoadingBrand(false);
               formRef.current.setFieldsValue({ "model": undefined })
+              setSelectAnmaite({ type: selectAnmaite.type, brand: arg, model: undefined })
             });
             return arg
           } }
@@ -139,7 +153,11 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
             ...searchModel
           } }
           placeholder="请选择设备型号"
-          initialValue={ currentRow?.model }
+          getValueFromEvent={ (arg) => {
+            setSelectAnmaite({ type: selectAnmaite.type, brand: selectAnmaite.brand, model: arg })
+            return arg
+          } }
+          initialValue={ currentRow?.modelName }
         />
       </Spin>
       <ProFormTextArea

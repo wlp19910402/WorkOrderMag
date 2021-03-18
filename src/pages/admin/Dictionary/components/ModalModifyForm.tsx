@@ -8,7 +8,7 @@ import { saveDictionary } from '../service';
 import type { DictionaryDataType } from '../../data.d';
 import { message, Alert } from 'antd'
 import { dicTypeData } from '@/utils/DicCode.d'
-import { fetchDicTypeSelect } from '@/pages/admin/Dictionary/service'
+import { fetchDicTypeSelect, queryDictionaryParentId } from '@/pages/admin/Dictionary/service'
 import CODE, { matchDicClass } from '@/utils/DicCode.d'
 import AddSelect from './AddSelect'
 export interface OptionProps {
@@ -23,9 +23,10 @@ type ModalModifyFormDataProps = {
 }
 const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
   const { createModalVisible, handleModalVisible, actionRef, currentRow } = props
-  const [ setList, handleSetList ] = useState<any>(matchDicClass(CODE.DEVICE_TYPE))
+  const [ setList, handleSetList ] = useState<any>(matchDicClass(CODE.DEVICE_DIC))
   const [ addSelect, handleAddSelect ] = useState<any[]>([])
   const [ nullData, handleNullData ] = useState<any>({ status: false, text: "" })
+  const [ currentEditDic, handleCurrentEditDic ] = useState<any>({})
   const submitForm = async (value: DictionaryDataType) => {
     let params = currentRow?.id !== undefined ? { ...value, id: currentRow.id } : value;
     const response = await saveDictionary({ ...params })
@@ -38,59 +39,73 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
   }
   const formRef = useRef<any | null>(null)
   useEffect(() => {
-    handleNewCode(CODE.DEVICE_TYPE)
+    handleNewCode(CODE.DEVICE_DIC)
   }, [])
   const handleNewCode = async (val: any) => {
-    await handleSetList(matchDicClass(val))
-    setList.length > 0 && formRef.current.setFieldsValue({ "newCode": setList[ 0 ].value })
+    let currentSetList = matchDicClass(val)
+    await handleSetList(currentSetList)
+    currentSetList.length > 0 && formRef.current.setFieldsValue({ type: currentSetList[ 0 ].value })
+    currentSetList.length > 0 && handleCurrentEditDic({ typeName: currentSetList[ 0 ].label, type: currentSetList[ 0 ].value })
+    handleNullData({ status: false, text: "" })
     dicTypeData.forEach(item => {
       if (item.value === val) {
-        formRef.current.setFieldsValue({ "type": item.value, "name": item.label });
+        formRef.current.setFieldsValue({ "parentId": 0 });
       }
     })
+    handleAddSelect([])
   }
   const handleTypeCode = async (val: any) => {
-    if (val === 0) {
+    let valIndex = setList.findIndex((item: any) => item.value === val)
+    handleNullData({ status: false, text: "" })
+    handleCurrentEditDic({ typeName: setList.find((item: any) => item.value === val).label, type: val })
+    formRef.current.setFieldsValue({ type: val, "addSelect-1": null, "addSelect-0": null });
+    handleAddSelect([])
+    if (valIndex === 0) {
       let parentType = formRef.current.getFieldValue("parentType")
       dicTypeData.forEach(item => {
         if (item.value === parentType) {
-          formRef.current.setFieldsValue({ "type": item.value, "name": item.label });
+          formRef.current.setFieldsValue({ "parentId": 0 });
         }
       })
-      handleAddSelect([])
+
     } else {
       let arr = [];
       let parentType = formRef.current.getFieldValue("parentType");
       let response = await fetchDicTypeSelect(parentType)
-      let label = dicTypeData.find(item => item.value === parentType)?.label
-      if (response.length === 0) {
-        handleNullData({ status: true, text: `请先设置对应的" ${label} "的值，上级不能为空哦~` })
-        return
-      }
+      let label = matchDicClass(parentType)[ 0 ].label
+      // if (response.length === 0) {
+      //   handleNullData({ status: true, text: `请先设置对应的" ${label} "的值，上级不能为空哦~` })
+      //   return
+      // }
       arr.push({
         name: "addSelect-0",
         label: label,
-        value: response[ 0 ].value,
+        value: response[ 0 ] ? response[ 0 ].value : undefined,
         option: response,
-        isControlType: val === 1
+        isControlType: valIndex === 1
       })
-      let typeObj = { type: response[ 0 ].value, name: response[ 0 ].label }
-      if (val === 2) {
-        let labelNewCode = matchDicClass(parentType)[ val - 1 ].label
-        let res = await fetchDicTypeSelect(response[ 0 ].value);
-        if (res.length === 0) {
-          handleNullData({ status: true, text: `请先设置对应的" ${labelNewCode} "的值，上级不能为空哦~` })
-          return
-        }
+      let typeObj: any = response[ 0 ] ? { parentId: response[ 0 ].value } : { parentId: null }
+      if (valIndex === 2) {
+        let labelNewCode = matchDicClass(parentType)[ 1 ].label
+        let res = response[ 0 ] ? await queryDictionaryParentId(response[ 0 ].value) : []
+        // if (res.length === 0) {
+        //   handleNullData({ status: true, text: `请先设置对应的" ${labelNewCode} "的值，上级不能为空哦~` })
+        //   return
+        // }
         handleNullData({ status: false, text: "" })
         arr.push({
           name: `addSelect-1`,
           label: labelNewCode,
           option: res,
-          value: res[ 0 ].value,
-          isControlType: val === 2
+          value: res[ 0 ] ? res[ 0 ].value : undefined,
+          isControlType: valIndex === 2
         })
-        typeObj = { type: res[ 0 ].value, name: res[ 0 ].label }
+        typeObj = res[ 0 ] ?
+          {
+            parentId: res[ 0 ].value
+          } : {
+            parentId: null
+          }
       }
       formRef.current.setFieldsValue(typeObj);
       handleAddSelect(arr)
@@ -127,20 +142,20 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
             options={ [
               ...dicTypeData
             ] }
-            initialValue={ CODE.DEVICE_TYPE }
+            initialValue={ CODE.DEVICE_DIC }
             normalize={ (val, prevValue, all) => {
               handleNewCode(val)
               return val
             } }
           />
           <ProFormRadio.Group
-            name="newCode"
+            name="type"
             label="选择类型"
             radioType="button"
             options={ [
               ...setList
             ] }
-            initialValue={ CODE.DEVICE_TYPE }
+            initialValue={ CODE.DEVICE_DIC }
             normalize={ (val, prevValue, all) => {
               handleTypeCode(val)
               return val
@@ -168,43 +183,24 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
       }
       {!nullData.status && <>
         <ProFormText
-          label="字典类型"
-          name="type"
-          placeholder="请输入字典类型"
-          initialValue={ currentRow?.type }
+          label="父级id"
+          name={ "parentId" }
+          placeholder="请输入父级id"
+          initialValue={ currentRow?.parentId }
           disabled
+          hidden
         />
         <ProFormText
-          label="字典名称"
-          name={ "name" }
-          placeholder="请输入字典名称"
+          rules={ [
+            {
+              required: true,
+              message: `请输入${currentEditDic.typeName}`
+            },
+          ] }
+          label={ currentEditDic.typeName }
+          name="name"
+          placeholder={ `请输入${currentEditDic.typeName}` }
           initialValue={ currentRow?.name }
-          disabled
-        />
-        <ProFormText
-          rules={ [
-            {
-              required: true,
-              message: "请输入字典码！"
-            },
-          ] }
-          label="字典码"
-          name="code"
-          placeholder="请输入字典码"
-          initialValue={ currentRow?.code }
-          disabled={ currentRow?.id !== undefined }
-        />
-        <ProFormText
-          rules={ [
-            {
-              required: true,
-              message: "请输入字典值！"
-            },
-          ] }
-          label="字典值"
-          name="value"
-          placeholder="请输入字典值"
-          initialValue={ currentRow?.value }
         />
         <ProFormTextArea
           name="remark"

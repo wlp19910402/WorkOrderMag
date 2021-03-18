@@ -1,7 +1,7 @@
 import { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import { Button, Drawer, message, Popconfirm, Tooltip } from 'antd';
 import React, { useState, useRef } from 'react';
-import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
+import { PageContainer } from '@ant-design/pro-layout';
 import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
 import type { ProDescriptionsItemProps } from '@ant-design/pro-descriptions';
@@ -13,22 +13,6 @@ export type RoleCheckBoxDataType = {
   label: string;
   value: number;
 }
-// const handleRemove = async (selectedRows: DictionaryDataType[]) => {
-//   const hide = message.loading('正在删除');
-//   if (!selectedRows) return true;
-//   try {
-//     // await removeRule({
-//     //   deleteId: selectedRows.map((row) => row.id),
-//     // });
-//     hide;
-//     message.success('删除成功，即将刷新');
-//     return true;
-//   } catch (error) {
-//     hide;
-//     message.error('删除失败，请重试');
-//     return false;
-//   }
-// };
 const DictionaryList: React.FC<DictionaryDataType> = () => {
   const [ showDetail, setShowDetail ] = useState<boolean>(false);
   const actionRef = useRef<ActionType>();
@@ -37,10 +21,24 @@ const DictionaryList: React.FC<DictionaryDataType> = () => {
   const [ createModalVisible, handleModalVisible ] = useState<boolean>(false);
   const columns: ProColumns<any>[] = [
     {
-      title: "字典名称",
+      title: "字典类型",
+      dataIndex: 'type',
+      hideInTable: true,
+      valueEnum: {
+        "": { text: "所有" },
+        sb_type: { text: "设备类型" },
+        sb_brand: { text: "设备品牌" },
+        sb_model: { text: "设备型号" },
+        hc_type: { text: "耗材类型" },
+        hc_model: { text: "耗材型号" },
+        bj_type: { text: "备件类型" },
+        bj_model: { text: "备件型号" }
+      },
+    },
+    {
+      title: "字典值",
       dataIndex: 'name',
-      tip: 'id是唯一的key',
-      key: 'id',
+      key: 'name',
       render: (val, entity) => {
         return (
           <a
@@ -56,19 +54,26 @@ const DictionaryList: React.FC<DictionaryDataType> = () => {
     },
     {
       title: "字典类型",
-      dataIndex: 'type',
+      dataIndex: 'typeName',
+      hideInSearch: true
     },
     {
-      title: "字典码",
-      dataIndex: 'code',
+      title: "字典路径",
+      dataIndex: 'parentPathName',
+      hideInSearch: true
     },
     {
-      title: "字典值",
-      dataIndex: 'value'
+      title: "字典路径",
+      dataIndex: 'parentPath',
+      hideInDescriptions: true,
+      hideInTable: true,
+      hideInSearch: true
     },
     {
       title: "备注",
       dataIndex: 'remark',
+      hideInSearch: true,
+      ellipsis: true
     },
     {
       title: "操作",
@@ -123,10 +128,9 @@ const DictionaryList: React.FC<DictionaryDataType> = () => {
         headerTitle="查询表格"
         actionRef={ actionRef }
         rowKey="id"
-        // search={ {
-        //   labelWidth: 80,
-        // } }
-        search={ false }
+        search={ {
+          labelWidth: 80,
+        } }
         pagination={ {
           pageSize: 10,
         } }
@@ -137,9 +141,6 @@ const DictionaryList: React.FC<DictionaryDataType> = () => {
         ] }
         request={ async (params, sorter, filter) => await fetchQueryList({ ...params, sorter, filter }) }
         columns={ columns }
-        // rowSelection={ {
-        //   onChange: (_, selectedRows: any) => setSelectedRows(selectedRows),
-        // } }
         rowSelection={ false }
       />
       {createModalVisible && (
@@ -149,30 +150,6 @@ const DictionaryList: React.FC<DictionaryDataType> = () => {
           actionRef={ actionRef }
           currentRow={ currentRow }
         />
-      ) }
-
-      {selectedRowsState?.length > 0 && (
-        <FooterToolbar
-          extra={
-            <div>
-              已选择{ ' ' }<a style={ { fontWeight: 600 } }>{ selectedRowsState.length }</a>{ ' ' }
-              项
-            </div>
-          }
-        >
-          <Popconfirm
-            title={ `是否要批量删除 ${selectedRowsState.length} 项` }
-            onConfirm={ async () => {
-              // await handleRemove(selectedRowsState);
-              setSelectedRows([]);
-              actionRef.current?.reloadAndRest?.();
-            } }>
-            <Button
-            >
-              批量删除
-          </Button>
-          </Popconfirm>
-        </FooterToolbar>
       ) }
       <Drawer
         width={ 600 }

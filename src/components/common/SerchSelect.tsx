@@ -1,6 +1,6 @@
 import { Select, Spin } from 'antd';
 import React, { useState, useEffect } from 'react';
-import { fetchDicTypeSelect } from '@/pages/admin/Dictionary/service'
+import { fetchDicTypeSelect, queryDictionaryParentId } from '@/pages/admin/Dictionary/service'
 interface SelectOptionProps {
   state: {
     type: any;
@@ -20,11 +20,17 @@ const SearchSelect: React.FC<SelectOptionProps> = (props) => {
     setLoading(true);
     onChange(undefined);
     const { type } = state || {};
-    fetchDicTypeSelect(type).then(async (res: any) => {
-      await setOptions([]);
-      setOptions(res);
+    if (type) {
+      queryDictionaryParentId(type).then(async (res: any) => {
+        await setOptions([]);
+        setOptions(res);
+        setLoading(false);
+      });
+    } else {
+      setOptions([]);
       setLoading(false);
-    });
+    }
+
   }, [ JSON.stringify(state) ]);
   return (
     <Spin spinning={ loading }>

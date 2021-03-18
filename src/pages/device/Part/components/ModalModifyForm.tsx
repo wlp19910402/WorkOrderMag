@@ -8,7 +8,7 @@ import { savePart } from '../service';
 import type { PartSaveDataType } from '../data.d';
 import { message, Form, Row, Col, Spin } from 'antd'
 import UploadImage from '@/components/Upload/index'
-import { fetchDicTypeSelectObj } from '@/pages/admin/Dictionary/service'
+import { fetchDicTypeSelectParentIdObj } from '@/pages/admin/Dictionary/service'
 import { setUploadUrlImage } from '@/components/Upload/service'
 type ModalModifyFormDataProps = {
   createModalVisible: boolean;
@@ -22,10 +22,12 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
   const [ uploadImages, setUploadImages ] = useState<string[]>(currentRow?.imgUrls ? currentRow?.imgUrls : [])
   const [ searchModel, setSearchModel ] = useState<any>({});
   const [ loading, setLoading ] = useState<boolean>(false)
+  const [ selectAnmaite, setSelectAnmaite ] = useState<any>({})
   const submitForm = async (value: PartSaveDataType) => {
     let params = currentRow?.id !== undefined ? { ...value, id: currentRow.id } : value;
     const response = await savePart({
       ...params,
+      ...selectAnmaite,
       imgUrls: uploadImages.filter((item: any) => item !== '')
     })
     if (!response) return
@@ -35,9 +37,12 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
   }
   useEffect(() => {
     setUploadUrlImage(uploadImages, setUploadImages)
-    currentRow?.type && fetchDicTypeSelectObj(currentRow?.type).then(res => {
-      setSearchModel(res);
-    });
+    if (currentRow?.type) {
+      fetchDicTypeSelectParentIdObj(currentRow?.type).then(res => {
+        setSearchModel(res);
+      });
+      setSelectAnmaite({ type: currentRow?.type, model: currentRow?.model })
+    }
   }, [])
   const formRef = useRef<any | null>(null);
   return (
@@ -82,11 +87,12 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
         placeholder="请选择备件类型"
         initialValue={ currentRow?.type }
         getValueFromEvent={ (arg) => {
-          fetchDicTypeSelectObj(arg).then(async (res) => {
+          fetchDicTypeSelectParentIdObj(arg).then(async (res) => {
             await setLoading(true);
             await setSearchModel(res);
             setLoading(false);
             formRef.current.setFieldsValue({ "model": undefined })
+            setSelectAnmaite({ type: arg, model: undefined })
           });
           return arg
         } }
@@ -104,6 +110,10 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
           valueEnum={ { ...searchModel } }
           placeholder="请选择备件型号"
           initialValue={ currentRow?.model }
+          getValueFromEvent={ (arg) => {
+            setSelectAnmaite({ type: selectAnmaite.type, model: arg })
+            return arg
+          } }
         />
       </Spin>
       <ProFormTextArea

@@ -16,6 +16,9 @@ export type DeviceSaveDataType = {
   name: string;// 设备名称
   model: string;// 规格
   type: string;// 设备类型
+  typeName: string;
+  modelName: string;
+  brandName: string;
 }
 // 设备详情
 export type DeviceListDataType = {

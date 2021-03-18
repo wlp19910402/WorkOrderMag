@@ -29,6 +29,7 @@ export default {
   DICTIONARY_SAVE: '/api/sys/dic/save',
   DICTIONARY_DELETE: '/api/sys/dic/del',/// sys/dic/del/{id}
   DICTIONARY_TYPE: '/api/sys/dic/list',/// sys/dic/list/{type}字典类型查询该字典的数据
+  DICTIONARY_PARENT_ID: '/api/sys/dic/childs',//sys/dic/childs/{parentId}//父级id查询子集的内容
   // 上传文件的接口
   UPLOAD_OSS_SIGN: '/api/oss/upload-sign',// 获取上传签名信息
   UPLOAD_FILE: '/api/oss/upload-file',// 文件直传服务
