@@ -14,6 +14,8 @@ export type PartSaveDataType = {
   model: string;
   name: string;// 名称
   type: string;
+  typeName: string;
+  modelName: string;
 }
 // 备件详情
 export type PartListDataType = {

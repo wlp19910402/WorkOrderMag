@@ -85,7 +85,7 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
         label="备件类型"
         valueEnum={ { ...searchType } }
         placeholder="请选择备件类型"
-        initialValue={ currentRow?.type }
+        initialValue={ currentRow?.typeName }
         getValueFromEvent={ (arg) => {
           fetchDicTypeSelectParentIdObj(arg).then(async (res) => {
             await setLoading(true);
@@ -109,7 +109,7 @@ const ModalModifyForm: React.FC<ModalModifyFormDataProps> = (props) => {
           ] }
           valueEnum={ { ...searchModel } }
           placeholder="请选择备件型号"
-          initialValue={ currentRow?.model }
+          initialValue={ currentRow?.modelName }
           getValueFromEvent={ (arg) => {
             setSelectAnmaite({ type: selectAnmaite.type, model: arg })
             return arg
