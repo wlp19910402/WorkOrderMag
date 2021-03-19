@@ -1,6 +1,7 @@
 import React from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import { Card, Alert, Typography, Col, Row } from 'antd';
+import { Link } from 'umi'
 import { ExperimentTwoTone, ReconciliationTwoTone, DatabaseTwoTone, ApiTwoTone, RocketTwoTone, DashboardTwoTone } from '@ant-design/icons';
 import '@/pages/Welcome.less'
 const topColResponsiveProps = {
@@ -19,38 +20,43 @@ const welcomeModel = [
   {
     Icon: () => <ReconciliationTwoTone twoToneColor="#eb2f96" { ...iconPorps } />,
     title: "工单",
-    dec: "工单描述信息",
-
+    dec: "微信工单列表",
+    link: "/workOrder/maintain/list"
   },
   {
     Icon: () => <DatabaseTwoTone twoToneColor="#eb2f96" { ...iconPorps } />,
     title: "档案",
-    dec: "档案描述信息",
-    twoToneColor: "#eb2f96"
+    dec: "档案列表",
+    twoToneColor: "#eb2f96",
+    link: "/archive/portfolio/list"
   },
   {
     Icon: () => <ApiTwoTone twoToneColor="#eb2f96" { ...iconPorps } />,
     title: "设备",
-    dec: "设备的描述信息",
-    twoToneColor: "#eb2f96"
+    dec: "设备列表",
+    twoToneColor: "#eb2f96",
+    link: "/device/list"
   },
   {
     Icon: () => <RocketTwoTone twoToneColor="#eb2f96" { ...iconPorps } />,
     title: "耗材",
-    dec: "耗材的描述信息",
-    twoToneColor: "#eb2f96"
+    dec: "耗材列表",
+    twoToneColor: "#eb2f96",
+    link: "/device/consumable"
   },
   {
     Icon: () => <ExperimentTwoTone twoToneColor="#eb2f96" { ...iconPorps } />,
     title: "备件",
-    dec: "设备的描述信息",
-    twoToneColor: "#eb2f96"
+    dec: "设备列表",
+    twoToneColor: "#eb2f96",
+    link: "/device/part"
   },
   {
     Icon: () => <DashboardTwoTone twoToneColor="#eb2f96" { ...iconPorps } />,
     title: "监控",
-    dec: "监控的描述信息",
-    twoToneColor: "#eb2f96"
+    dec: "耗材监控列表",
+    twoToneColor: "#eb2f96",
+    link: "/monitor/consumable/list"
   }
 ]
 export default (): React.ReactNode => {
@@ -73,14 +79,16 @@ export default (): React.ReactNode => {
         <Row gutter={ 24 } style={ { marginTop: "20px" } }>
           { welcomeModel.map((item, index) => (
             <Col key={ index } { ...topColResponsiveProps }>
-              <Card
-                className="welcomeModelBox"
-                hoverable
-                style={ { width: 180, height: 180, textAlign: "center", overflow: "hidden" } }
-              >
-                { item.Icon() }
-                <Card.Meta style={ { textAlign: "center" } } title={ item.title } description={ item.dec } />
-              </Card>
+              <Link to={ item.link }>
+                <Card
+                  className="welcomeModelBox"
+                  hoverable
+                  style={ { width: 180, height: 180, textAlign: "center", overflow: "hidden" } }
+                >
+                  { item.Icon() }
+                  <Card.Meta style={ { textAlign: "center" } } title={ item.title } description={ item.dec } />
+                </Card>
+              </Link>
             </Col>
           )) }
         </Row>

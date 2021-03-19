@@ -1,4 +1,4 @@
-import { PlusOutlined, EditOutlined, DeleteOutlined, UserSwitchOutlined } from '@ant-design/icons';
+import { PlusOutlined, EditOutlined, DeleteOutlined, UserSwitchOutlined, LockOutlined } from '@ant-design/icons';
 import { Button, Drawer, message, Popconfirm, Switch, Tooltip } from 'antd';
 import React, { useState, useRef } from 'react';
 import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
@@ -11,26 +11,8 @@ import type { UserListDataType, searchBindFlag } from '../data.d';
 import ModalModifyForm from './components/ModalModifyForm'
 import { queryRoleList } from '@/pages/admin/Role/service'
 import ModalAuthifyForm from './components/ModalAuthifyForm'
-/**
- *  删除节点
- * @param selectedRows
- */
-// const handleRemove = async (selectedRows: UserListDataType[]) => {
-//   const hide = message.loading('正在删除');
-//   if (!selectedRows) return true;
-//   try {
-//     // await removeRule({
-//     //   deleteId: selectedRows.map((row) => row.id),
-//     // });
-//     hide;
-//     message.success('删除成功，即将刷新');
-//     return true;
-//   } catch (error) {
-//     hide;
-//     message.error('删除失败，请重试');
-//     return false;
-//   }
-// };
+import ModalModifyPasswordForm from './components/ModalModifyPasswordForm'
+
 export type RoleCheckBoxDataType = {
   label: string;
   value: number;
@@ -42,6 +24,7 @@ const ResumeList: React.FC<UserListDataType> = () => {
   const [ currentRow, setCurrentRow ] = useState<UserListDataType>();
   const [ selectedRowsState, setSelectedRows ] = useState<UserListDataType[]>([]);
   const [ createModalVisible, handleModalVisible ] = useState<boolean>(false);
+  const [ createModalPasswordVisible, handleModalPasswordVisible ] = useState<boolean>(false);
   const [ modalAuthifyVisible, handleModalAuthifyVisible ] = useState<boolean>(false);
   const [ roleData, setRoleData ] = useState<RoleCheckBoxDataType[] | undefined>();
   const [ initialRoleIds, setInitialRoleIds ] = useState<number[] | undefined>(undefined)
@@ -138,6 +121,15 @@ const ResumeList: React.FC<UserListDataType> = () => {
             <EditOutlined className="qm-table-icon" />
           </Button>
         </Tooltip>,
+        <Tooltip title="修改密码" key="password">
+          <Button
+            type="link"
+            size="small"
+            onClick={ async () => { fetchUserPasswordEdit(record) } }
+          >
+            <LockOutlined className="qm-table-icon" />
+          </Button>
+        </Tooltip>,
         <Tooltip title="删除" key="delete">
           <Popconfirm
             disabled={ record.id === 1 }
@@ -193,6 +185,10 @@ const ResumeList: React.FC<UserListDataType> = () => {
         handleModalVisible(true);
       })
   }
+  const fetchUserPasswordEdit = async (record: UserListDataType) => {
+    setCurrentRow(record);
+    handleModalPasswordVisible(true);
+  }
   const fetchRoleListData = async () => {
     if (roleData === undefined) {
       const response = await queryRoleList()
@@ -242,6 +238,15 @@ const ResumeList: React.FC<UserListDataType> = () => {
           setShowDetail={ setShowDetail }
         />
       ) }
+      {createModalPasswordVisible && currentRow && (
+        <ModalModifyPasswordForm
+          createModalVisible={ createModalPasswordVisible }
+          handleModalVisible={ handleModalPasswordVisible }
+          actionRef={ actionRef }
+          currentRow={ currentRow }
+          setShowDetail={ setShowDetail }
+        />
+      ) }
       {modalAuthifyVisible && (
         <ModalAuthifyForm
           modalAuthifyVisible={ modalAuthifyVisible }
@@ -252,29 +257,6 @@ const ResumeList: React.FC<UserListDataType> = () => {
           initialRoleIds={ initialRoleIds }
           setShowDetail={ setShowDetail }
         />
-      ) }
-      {selectedRowsState?.length > 0 && (
-        <FooterToolbar
-          extra={
-            <div>
-              已选择{ ' ' }<a style={ { fontWeight: 600 } }>{ selectedRowsState.length }</a>{ ' ' }
-              项
-            </div>
-          }
-        >
-          <Popconfirm
-            title={ `是否要批量删除 ${selectedRowsState.length} 项` }
-            onConfirm={ async () => {
-              // await handleRemove(selectedRowsState);
-              setSelectedRows([]);
-              actionRef.current?.reloadAndRest?.();
-            } }>
-            <Button
-            >
-              批量删除
-          </Button>
-          </Popconfirm>
-        </FooterToolbar>
       ) }
       <Drawer
         width={ 600 }

@@ -33,6 +33,9 @@ export const addUser = async (params: EditUserDataType) => {
 export const editUser = async (params: EditUserDataType) => {
   return httpServer.post(API.USER_EDIT, { data: params });
 }
+export const editUserPassword = async (params: any) => {
+  return httpServer.post(API.USER_EDIT_PWD, { data: params });
+}
 // 授权信息添加
 export async function saveUserAuthority (params: UserAuthorityType) {
   return httpServer.post(API.USER_AUTHORITY, { data: params })

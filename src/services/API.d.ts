@@ -11,6 +11,7 @@ export default {
   USER_ROLE_ID: '/api/user/role',/// user/role/{id}
   USER_EDIT: '/api/user/edit',// 用户编辑
   USER_NOT_BIND_WX: '/api/user/not-bind-wx',//未绑定管理员用户
+  USER_EDIT_PWD: "/api/user/edit-pwd",//修改密码
   // 角色管理接口
   ROLE_LIST: '/api/sys/role/list',
   ROLE_USERID_CHECKID: '/api/sys/role/list',// 角色列表标记指定用户拥有的权限/sys/role/list/{userId}
