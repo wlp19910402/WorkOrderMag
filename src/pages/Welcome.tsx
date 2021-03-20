@@ -20,7 +20,7 @@ const welcomeModel = [
   {
     Icon: () => <ReconciliationTwoTone twoToneColor="#eb2f96" { ...iconPorps } />,
     title: "工单",
-    dec: "微信工单列表",
+    dec: "维修工单列表",
     link: "/workOrder/maintain/list"
   },
   {
