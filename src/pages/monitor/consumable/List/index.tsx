@@ -137,7 +137,7 @@ const DictionaryList: React.FC<PortfolioConsumableListDataType> = () => {
               setShowDetail(true);
             } }
           >
-            {`${val}` }
+            { `${val}` }
           </a>
         );
       },
@@ -271,7 +271,7 @@ const DictionaryList: React.FC<PortfolioConsumableListDataType> = () => {
           onChange: (_, selectedRows: any) => setSelectedRows(selectedRows),
         } }
       />
-      {selectedRowsState?.length > 0 && (
+      { selectedRowsState?.length > 0 && (
         <FooterToolbar
           extra={
             <div>

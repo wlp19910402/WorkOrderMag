@@ -1,0 +1,64 @@
+.qmAntdIcon {
+  font-size: 2rem;
+  color: #bbb;
+  margin: 0 auto;
+}
+.qmUploadContainer {
+  width: 100%;
+  border: 1px solid #eee;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-items: center;
+  justify-content: center;
+  display: block ;
+}
+.qmUploadBox {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.05);
+  position: relative;
+  display: flex;
+  align-items: center;
+  text-align: left;
+  flex-direction: column;
+}
+.qmUploadBox input {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+  z-index: 10000;
+}
+.qmUploadBox img {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+.qmUploadBox .uploadImgError {
+  color: #999;
+  margin: 4px 0;
+  text-align: left;
+}
+.closeBtn {
+  position: absolute;
+  right: 2px;
+  top: 2px;
+  font-size: 1em;
+  z-index: 333;
+  color: #fff;
+  width: 1.4rem;
+  height: 1.4rem;
+  display: flex;
+  align-items: center;
+  vertical-align: middle;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 50%;
+  z-index: 3;
+}
+.closeBtn svg {
+  margin: 0 auto;
+}

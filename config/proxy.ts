@@ -9,7 +9,9 @@ export default {
   dev: {
     '/api/': {
       // target: 'https://127.0.0.1:8000',
-      target: 'http://lingyun.labsmart.cn/api/',
+      // target: 'http://lingyun.labsmart.cn/api/',
+      // target: 'http://47.92.226.93:8901',
+      target: "http://smart.labsmart.cn:8082/api",
       changeOrigin: true,
       pathRewrite: { '^/api': '' },
     },

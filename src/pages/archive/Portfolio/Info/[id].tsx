@@ -11,6 +11,7 @@ import PortfolioConsumableList from '@/pages/archive/portfolio/components/Portfo
 import PortfolioPartList from '@/pages/archive/portfolio/components/PortfolioPartList'
 import { queryProtfolioConsumableList, queryProtfolioPartList } from '@/pages/archive/portfolio/service'
 import ImageFlatList from '@/components/common/ImageFlatList'
+import FilesFlatList from '@/components/common/FilesFlatList'
 import NullInfo from '@/components/common/NullInfo'
 interface PortfolioEditProps {
   match: match
@@ -101,6 +102,13 @@ const DictionaryList: React.FC<PortfolioEditProps> = ({ match }) => {
             <Descriptions.Item label="修改人">{ currentRow?.updateUsername }</Descriptions.Item>
             <Descriptions.Item label="修改时间">{ currentRow?.updateTime }</Descriptions.Item> */ }
               <Descriptions.Item label="设备图片"><ImageFlatList imageUrls={ currentRow?.imgUrls } /></Descriptions.Item>
+            </Descriptions>
+            <Descriptions bordered size="small"
+              column={ { xs: 2, sm: 2, md: 3, lg: 3, xl: 3, xxl: 3 } }
+              labelStyle={ { width: "120px", padding: "8px" } }
+            >
+              <Descriptions.Item label="档案附件"><FilesFlatList filesUrls={ currentRow?.fileUrls } /></Descriptions.Item>
+
             </Descriptions>
             <Alert
               style={ { fontSize: "12px", marginTop: "20px" } }

@@ -27,6 +27,7 @@ export type PortfolioSaveDataType = {
   id?: number;// 主键
   model?: string;// 设备型号
   type?: string;// 设备类型
+  fileUrls: string[]; //附件地址
 }
 // 设备列表详情
 export type PortfolioListDataType = {
@@ -65,7 +66,8 @@ export type RecordConsumableDataType = {
 }
 export type PortfolioInfoDataType = {
   consumables: RecordConsumableDataType[],
-  parts: RecordPartsDataType[]//档案耗材信息
+  parts: RecordPartsDataType[],//档案耗材信息,
+  fileUrls: string[]//附件列表
 } & PortfolioListDataType
 //档案耗材添加
 export type ConsumableAddDataType = {

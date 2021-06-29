@@ -22,7 +22,7 @@ export default defineConfig({
   history: {
     type: "hash",
   },
-  chunks: ['vendors', 'umi'],
+  chunks: [ 'vendors', 'umi' ],
   chainWebpack: function (config, { webpack }) {
     config.merge({
       optimization: {
@@ -34,7 +34,7 @@ export default defineConfig({
           cacheGroups: {
             vendor: {
               name: 'vendors',
-              test({ resource }) {
+              test ({ resource }) {
                 return /[\\/]node_modules[\\/]/.test(resource);
               },
               priority: 10,

@@ -55,5 +55,15 @@ npm test
 ## More
 
 You can view full document on our [official website](https://pro.ant.design). And welcome any feedback in our [github](https://github.com/ant-design/ant-design-pro).
+
 # ResumeMagClient
+
 # WorkOrderMag
+
+## 先打包
+
+npm run build
+
+## 执行命令
+
+./build.sh

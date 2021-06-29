@@ -7,6 +7,8 @@ import { queryDeviceList } from '@/pages/device/Device/service'
 import { DeviceListDataType } from '@/pages/device/Device/data.d'
 import { CompanyListDataType } from '@/pages/archive/Company/data.d'
 import { saveProtfolio } from '@/pages/archive/portfolio/service'
+import UploadFile from '@/components/UploadFile/index'
+import { setUploadUrlImage } from '@/components/UploadFile/service'
 import { history } from 'umi'
 import { pickerDateFormat, pickerInitialValue } from '@/utils/parameter'
 import getErrorInfo, { ErrorField } from '@/components/common/ErrorForm'
@@ -22,9 +24,10 @@ const formItemLayout = {
     sm: { span: 16 },
   },
 };
-const colProps = { xs: 24, sm: 24, md: 12, lg: 12, xl: 8, xxl: 8 };
+const colProps = { xs: 24, sm: 24, md: 12, lg: 12, xl: 12, xxl: 12 };
 const DictionaryList: React.FC<ModifyFormTypeProps> = ({ currentRow }) => {
   const [ companyNameOptions, setCompanyNameOptions ] = useState<any[]>([])
+  const [ uploadFiles, setUploadFiles ] = useState<string[]>(currentRow?.fileUrls ? currentRow?.fileUrls : [])
   const [ selectCompanyData, setSelectCompanyData ] = useState<CompanyListDataType>()
   const [ deviceNameOptions, setDeviceNameOptions ] = useState<any[]>([])
   const [ selectDeviceData, setSelectDeviceData ] = useState<DeviceListDataType>()
@@ -84,6 +87,7 @@ const DictionaryList: React.FC<ModifyFormTypeProps> = ({ currentRow }) => {
     });
   }
   useEffect(() => {
+    setUploadUrlImage(uploadFiles, setUploadFiles)
     initFetchData()
   }, [])
   const [ form ] = Form.useForm();
@@ -103,7 +107,8 @@ const DictionaryList: React.FC<ModifyFormTypeProps> = ({ currentRow }) => {
       qrCodde: values.qrCodde,
       warrantyPeriod: values.warrantyPeriod.toString(),
       model: selectDeviceData?.model,
-      type: selectDeviceData?.type
+      type: selectDeviceData?.type,
+      fileUrls: uploadFiles.filter((item: any) => item !== '')
     }
     let response = await saveProtfolio(params)
     if (!response) { return }
@@ -206,7 +211,7 @@ const DictionaryList: React.FC<ModifyFormTypeProps> = ({ currentRow }) => {
               { ...formItemLayout }
               label='二维码编号'
               name="qrCodde"
-              rules={ [ {required: true,  message: '请输入二维码编号' } ] }
+              rules={ [ { required: true, message: '请输入二维码编号' } ] }
               initialValue={ currentRow?.qrCodde }
             >
               <Input placeholder="请输入二维码编号" />
@@ -224,6 +229,20 @@ const DictionaryList: React.FC<ModifyFormTypeProps> = ({ currentRow }) => {
             </Form.Item>
           </Col>
         </Row>
+        <Row justify="start">
+          <Col span={ 24 } >
+            {/* //附件 */ }
+            <Form.Item
+              labelCol={ { xs: 24, sm: 24, md: 4, lg: 4, xl: 4, xxl: 4 } }
+              extra="最多上传六个附件" name="imgUrls" label="附件上传" valuePropName="checked">
+              <Row gutter={ [ 16, 16 ] }>
+                { uploadFiles.map((item, index) => {
+                  return <Col key={ index } span={ 20 }><UploadFile uploadId={ `uploadImagesId_${index}` } value={ item } onChange={ (url) => { setUploadUrlImage(uploadFiles, setUploadFiles, url, index) } } /></Col>
+                }) }
+              </Row>
+            </Form.Item>
+          </Col>
+        </Row>
       </Card>
       <FooterToolbar>
         { getErrorInfo(error) }
@@ -231,7 +250,7 @@ const DictionaryList: React.FC<ModifyFormTypeProps> = ({ currentRow }) => {
           保存
         </Button>
       </FooterToolbar>
-    </Form>
+    </Form >
   );
 };
 
