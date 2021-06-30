@@ -62,7 +62,15 @@ You can view full document on our [official website](https://pro.ant.design). An
 
 ## 先打包
 
-npm run build
+## 执行命令
+
+npm run build5
+
+打开 docker
+
+## 执行命令
+
+docker images
 
 ## 执行命令
 
